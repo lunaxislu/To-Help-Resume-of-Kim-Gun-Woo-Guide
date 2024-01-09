@@ -1,9 +1,31 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
+import { supabase } from './supabaseClient';
 const WritePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('말머리 선택');
+  const navigate = useNavigate();
+  const addPost = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('community')
+        .insert([
+          {
+            title,
+            content,
+            category,
+            post_user: 'sweetPotato',
+            nickname: 'goguma'
+          }
+        ])
+        .select();
+      if (error) throw error;
+      navigate('/community');
+    } catch (error) {}
+  };
+
   return (
     <Container>
       <h1>커뮤니티 글 작성란데스</h1>
@@ -35,7 +57,7 @@ const WritePost = () => {
           setContent(e.target.value);
         }}
       ></textarea>
-      <button>등록하기</button>
+      <button onClick={() => addPost()}>등록하기</button>
     </Container>
   );
 };
