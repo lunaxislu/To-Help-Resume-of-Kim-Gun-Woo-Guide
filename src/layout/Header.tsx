@@ -11,7 +11,7 @@ const Header = () => {
           <StButton>판매하기</StButton>
           <StButton>찜</StButton>
           <StButton>알림</StButton>
-          <StUserIcon>user</StUserIcon>
+          <StUserIcon>User</StUserIcon>
         </StButtonContainer>
       </StHeaderSection>
       <StNavSection>
@@ -27,6 +27,7 @@ const Header = () => {
 
 export default Header;
 const StHeaderContainer = styled.header`
+  height: 200px;
   display: flex;
   flex-direction: column;
   padding: 10px 20px;
@@ -36,7 +37,7 @@ const StHeaderContainer = styled.header`
 const StHeaderSection = styled.section`
   display: flex;
   justify-content: space-between;
-  margin: 0px 100px;
+  margin: 50px 100px;
 `;
 const StLogo = styled.div`
   font-size: 30px;
