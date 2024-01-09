@@ -36,6 +36,7 @@ const StHeaderContainer = styled.header`
 const StHeaderSection = styled.section`
   display: flex;
   justify-content: space-between;
+  margin: 0px 100px;
 `;
 const StLogo = styled.div`
   font-size: 30px;
@@ -44,7 +45,7 @@ const StButtonContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-right: 100px;
+  /* margin-right: 100px; */
 `;
 const StButton = styled.button`
   border-radius: 5px;
@@ -56,6 +57,7 @@ const StUserIcon = styled.button`
 const StNavSection = styled.section`
   display: flex;
   justify-content: space-between;
+  margin: 0px 100px;
 `;
 const StNavBar = styled.nav``;
 const StNavButton = styled(Link)`
@@ -63,5 +65,5 @@ const StNavButton = styled(Link)`
 `;
 const StSearchBar = styled.input`
   width: 300px;
-  margin-right: 100px;
+  /* margin-right: 100px; */
 `;
