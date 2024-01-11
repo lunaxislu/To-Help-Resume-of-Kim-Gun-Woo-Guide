@@ -101,6 +101,8 @@ const ProductsExplanation = () => {
 
   const handleOnSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
+      console.log('textTypeValue', textTypeValue)
+      console.log('majorCheckedList', majorCheckedList)
     },
     [textTypeValue, majorCheckedList]
   );
