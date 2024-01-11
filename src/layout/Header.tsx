@@ -1,70 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import * as St from '../styles/headerStyle/HeaderStyle';
 
 const Header = () => {
   return (
-    <StHeaderContainer>
-      <StHeaderSection>
-        <StLogo>logo</StLogo>
-        <StButtonContainer>
-          <StButton>판매하기</StButton>
-          <StButton>찜</StButton>
-          <StButton>알림</StButton>
-          <StUserIcon>User</StUserIcon>
-        </StButtonContainer>
-      </StHeaderSection>
-      <StNavSection>
-        <StNavBar>
-          <StNavButton to="/">중고거래</StNavButton>
-          <StNavButton to="/">커뮤니티</StNavButton>
-        </StNavBar>
-        <StSearchBar placeholder="찾는 내용을 검색해보세요."></StSearchBar>
-      </StNavSection>
-    </StHeaderContainer>
+    <St.HeaderContainer>
+      <St.HeaderSection>
+        <St.Logo>logo</St.Logo>
+        <St.ButtonContainer>
+          <St.Button>판매하기</St.Button>
+          <St.Button>찜</St.Button>
+          <St.Button>알림</St.Button>
+          <St.UserIcon>User</St.UserIcon>
+        </St.ButtonContainer>
+      </St.HeaderSection>
+      <St.NavSection>
+        <St.NavBar>
+          <St.NavButton to="/secondhand">중고거래</St.NavButton>
+          <St.NavButton to="/community">커뮤니티</St.NavButton>
+        </St.NavBar>
+        <St.SearchBar placeholder="찾는 내용을 검색해보세요."></St.SearchBar>
+      </St.NavSection>
+    </St.HeaderContainer>
   );
 };
 
 export default Header;
-const StHeaderContainer = styled.header`
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  padding: 10px 20px;
-  background-color: #f2f2f2;
-`;
-
-const StHeaderSection = styled.section`
-  display: flex;
-  justify-content: space-between;
-  margin: 50px 100px;
-`;
-const StLogo = styled.div`
-  font-size: 30px;
-`;
-const StButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  /* margin-right: 100px; */
-`;
-const StButton = styled.button`
-  border-radius: 5px;
-`;
-const StUserIcon = styled.button`
-  border-radius: 5px;
-`;
-
-const StNavSection = styled.section`
-  display: flex;
-  justify-content: space-between;
-  margin: 0px 100px;
-`;
-const StNavBar = styled.nav``;
-const StNavButton = styled(Link)`
-  margin-right: 10px;
-`;
-const StSearchBar = styled.input`
-  width: 300px;
-  /* margin-right: 100px; */
-`;
