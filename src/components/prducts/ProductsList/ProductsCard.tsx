@@ -16,6 +16,7 @@ type Product = {
   likes: number,
   quality: string,
   changable: boolean,
+  exchange_product: string,
   shipping_cost: boolean,
   agreement: boolean,
 };
