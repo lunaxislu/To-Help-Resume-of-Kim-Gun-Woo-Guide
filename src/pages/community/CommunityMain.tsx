@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { supabase } from './supabaseClient';
 type Post = {
@@ -42,7 +41,7 @@ const CommunityMain: React.FC = () => {
   return (
     <Container>
       <h1>커뮤니티</h1>
-      <Link to={'/community_write'}> 작성하기</Link>
+      {/* <Link to={'/community_write'}> 작성하기</Link> */}
       <div>
         <button>전체</button>
         <button>꿀팁</button>
