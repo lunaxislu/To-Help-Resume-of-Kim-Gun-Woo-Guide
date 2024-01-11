@@ -1,5 +1,20 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react'
 import { supabase } from '../../../utils/SupabaseClient';
+
+type TextValue = {
+  title: string,
+  contents: string,
+  price: number,
+  count: number, 
+  exchange_product: string,
+}
+const producsPostsTextInit: TextValue = {
+  title: "",
+  contents: "",
+  price: 0,
+  count: 0, 
+  exchange_product: "",
+}
 
 type ProductsPost = {
   title: string,
@@ -14,59 +29,87 @@ type ProductsPost = {
   shipping_cost: boolean,
   agreement: boolean,
 };
+const addProducsPosts: ProductsPost[] = [{
+  title: "",
+  contents: "",
+  price: 0,
+  count: 0, 
+  tags: "", 
+  location: "",
+  dealType: "",
+  quality: "",
+  changable: false,
+  shipping_cost: false,
+  agreement: false,
+}]
+
+const major = ['회화', '조소', '판화', '금속공예', '도예', '유리공예', '목공예', '섬유공예', '기타']
+
+const quality = [
+  {
+    condition: '새상품(미사용)',
+    shape: '사용하지 않은 새 상품이에요'
+  },
+  {
+    condition: '사용감 없음',
+    shape: '사용은 했지만 눈에 띄는 흔적이나 얼룩이 없어요 / 아주 조금 사용했어요'
+  },
+  {
+    condition: '사용감 적음',
+    shape: '눈에 띄는 흔적이나 얼룩이 약간 있어요 / 절반정도 사용했어요'
+  },
+  {
+    condition: '사용감 많음',
+    shape: '눈에 띄는 흔적이나 얼룩이 많이 있어요 / 많이 사용했어요'
+  },
+  {
+    condition: '고장/파손 상품',
+    shape: '기능 이상이나 외관 손상 등으로 수리가 필요해요'
+  },
+]
 
 const ProductsExplanation = () => {
 
-  const major = ['회화', '조소', '판화', '금속공예', '도예', '유리공예', '목공예', '섬유공예', '기타']
-  const quality = [
-    {
-      condition: '새상품(미사용)',
-      shape: '사용하지 않은 새 상품이에요'
-    },
-    {
-      condition: '사용감 없음',
-      shape: '사용은 했지만 눈에 띄는 흔적이나 얼룩이 없어요 / 아주 조금 사용했어요'
-    },
-    {
-      condition: '사용감 적음',
-      shape: '눈에 띄는 흔적이나 얼룩이 약간 있어요 / 절반정도 사용했어요'
-    },
-    {
-      condition: '사용감 많음',
-      shape: '눈에 띄는 흔적이나 얼룩이 많이 있어요 / 많이 사용했어요'
-    },
-    {
-      condition: '고장/파손 상품',
-      shape: '기능 이상이나 외관 손상 등으로 수리가 필요해요'
-    },
-  ]
+  // input text value
+  const [textTypeValue, setTextTypeValue] = useState(producsPostsTextInit)
+  
+  const handleOnChangeTextTypeValue = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setTextTypeValue({ ...textTypeValue, [name]: value });
+  };
+  
+  // input checkbox value
+  const [majorCheckedList, setMajorCheckedList] = useState<string[]>([]);
+  const [isChecked, setIsChecked] = useState(false);
 
-  const addProducsPosts = [{
-    title: "",
-    contents: "",
-    price: 0,
-    count: 0, 
-    tags: "", 
-    location: "",
-    dealType: "",
-    quality: "",
-    changable: false,
-    shipping_cost: false,
-    agreement: false,
-  }]
+  const handleCheckedMajor = (value: string, isChecked: boolean) => {
+    if (isChecked) {
+      setMajorCheckedList((prev) => [...prev, value]);
+      return;
+    }
+    if (!isChecked && majorCheckedList.includes(value)) {
+      setMajorCheckedList(majorCheckedList.filter((item) => item !== value));
+      return;
+    }
+    return;
+  };
+
+  const handleOnChangeCheckMajor = (e: ChangeEvent<HTMLInputElement>, value: string) => {
+    setIsChecked(!isChecked);
+    handleCheckedMajor(value, e.target.checked);
+  }
+
+  const handleOnSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+    },
+    [textTypeValue, majorCheckedList]
+  );
 
   const [productsPosts, setProductsPosts] = useState<ProductsPost[]>(addProducsPosts);
-  const onChangeAddPostsInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target
-    setProductsPosts({
-      ...productsPosts,
-      [name]: value,
-    })
-  }
 
   const addPosts = async () => {
     try {
-      const {data: products, error} = await supabase
+      const {data, error} = await supabase
         .from('products')
         .insert([
           {
@@ -90,28 +133,32 @@ const ProductsExplanation = () => {
     }
   }
 
+
+  // input radio
+
+
   return (
-    <form>
+    <form onSubmit={handleOnSubmit}>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>상품명*</h2>
-        <input type='text' placeholder='상품명을 입력해주세요' />
+        <input type='text' name='title' value={textTypeValue.title} onChange={handleOnChangeTextTypeValue} placeholder='상품명을 입력해주세요' />
         <p>0/40</p>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>가격*</h2>
-        <input type='number' placeholder='가격을 입력해주세요'/>
+        <input type='number' name='price' value={textTypeValue.price} onChange={handleOnChangeTextTypeValue} placeholder='가격을 입력해주세요'/>
         <label><input type='checkbox' />배송비 포함</label>
         <label><input type='checkbox' />배송비 별도</label>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>수량*</h2>
-        <input type='number' placeholder='수량을 입력해주세요'/>
+        <input type='number' name='count' value={textTypeValue.count} onChange={handleOnChangeTextTypeValue} placeholder='수량을 입력해주세요'/>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>태그*</h2>
         <div>
           {major.map(major => 
-            <label key={major}><input type='checkbox' />{major}</label>
+            <label key={major} htmlFor='major'><input type='checkbox' id='major' checked={majorCheckedList.includes(major)} onChange={(e) => handleOnChangeCheckMajor(e, major)} />{major}</label>
           )}
         </div>
       </div>
@@ -145,11 +192,11 @@ const ProductsExplanation = () => {
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>교환*</h2>
         <input type='checkbox' /><label>불가</label>
         <input type='checkbox' /><label>가능</label>
-        <input type='text' placeholder='교환을 원하는 상품을 입력해주세요.' />
+        <input type='text' name='exchange_product' value={textTypeValue.exchange_product} onChange={handleOnChangeTextTypeValue} placeholder='교환을 원하는 상품을 입력해주세요.' />
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>설명*</h2>
-        <textarea style={{width: '75%'}} placeholder='설명을 입력해 주세요' />
+        <textarea value={textTypeValue.contents} name='contents' onChange={(e: any) => handleOnChangeTextTypeValue(e)} style={{width: '75%', resize: 'none'}} placeholder='설명을 입력해 주세요' />
         <p>0/2000</p>
       </div>
       <div style={{backgroundColor: 'lightgrey', padding: '15px'}}>
