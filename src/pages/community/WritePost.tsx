@@ -5,7 +5,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
-import { supabase } from './supabaseClient';
+import { supabase } from '../../api/supabase/supabaseClient';
 
 const WritePost = () => {
   const [title, setTitle] = useState('');
