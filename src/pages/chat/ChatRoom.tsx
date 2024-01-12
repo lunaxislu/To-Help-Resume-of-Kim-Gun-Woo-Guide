@@ -90,6 +90,8 @@ export default function ChatRoom() {
       .select()
       .eq('chat_room_id', room_id)
       .eq('isNew', false);
+
+    return chat_messages?.length;
   };
 
   // 채팅방 목록을 생성할 때
