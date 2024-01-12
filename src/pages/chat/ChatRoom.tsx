@@ -11,6 +11,11 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import { User } from '@supabase/supabase-js';
 import { v4 as uuid } from 'uuid';
 
+const ImageInput = styled.input.attrs({ type: 'file' })`
+  width: 100%;
+  padding: 1rem;
+`;
+
 type RoomProps = {
   $current: string | undefined;
   children: ReactNode;
@@ -23,12 +28,15 @@ export default function ChatRoom() {
   const [clicked, setClicked] = useState<string | undefined>('');
   const [messages, setMessages] = useState<any>(null);
   const [unread, setUnread] = useState<any[] | null>(null);
+  const [images, setImages] = useState<string>('');
 
   const handleUserInput = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     name === 'chat' && setChatInput(value);
   };
 
+  // 작동순서 3번
+  // 메세지를 전송하면
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
     try {
@@ -38,9 +46,13 @@ export default function ChatRoom() {
             id: uuid(),
             sender_id: curUser?.id,
             chat_room_id: clicked,
-            content: chatInput
+            content: chatInput,
+            // image_url 필드값으로 publick_url이 저장된 state를 메세지와 함께 저장합니다
+            image_url: images
           }
         ]);
+        setChatInput('');
+        setImages('');
       }
     } catch (err) {
       console.log('전송 실패', err);
@@ -190,6 +202,39 @@ export default function ChatRoom() {
     }
   }, [rooms]);
 
+  // 작동순서 1번
+  // file type 인풋에 change event 발생 시 파일을 받아서
+  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files;
+    if (file) {
+      // handleImageUpload로 넘겨줍니다
+      handleImageUpload(file[0]);
+    } else {
+      return;
+    }
+  };
+
+  // 작동순저 2번
+  // file을 받은 이 함수는
+  const handleImageUpload = async (file: File) => {
+    // storage에 이미지를 업로드 하고
+    const { data, error } = await supabase.storage
+      .from('images')
+      .upload(`messages/${file.name}`, file, {
+        contentType: file.type
+      });
+
+    // 에러나면 에러 주고
+    if (error) {
+      console.error('파일 업로드 실패:', error);
+      return;
+    }
+    // 에러가 아니라면 스토리지에서 방금 올린 이미지의 publicURL을 받아와서
+    const res = supabase.storage.from('images').getPublicUrl(data.path);
+    // image 경로를 저장하는 state에 set 해주고
+    setImages(res.data.publicUrl);
+  };
+
   return (
     <>
       <div>
@@ -236,14 +281,41 @@ export default function ChatRoom() {
           <StChatBoardHeader>사용자 이름</StChatBoardHeader>
           {messages?.map((msg: any) => {
             return msg.sender_id === curUser?.id ? (
-              <StMyChatballoon key={msg.id}>{msg.content}</StMyChatballoon>
+              <>
+                {msg.image_url && (
+                  <img
+                    style={{
+                      width: '200px',
+                      display: 'block',
+                      marginLeft: 'auto'
+                    }}
+                    src={msg.image_url}
+                    alt=""
+                  ></img>
+                )}
+                <StMyChatballoon key={msg.id}>{msg.content}</StMyChatballoon>
+              </>
             ) : (
-              <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
-                {msg.content}
-              </StChatballoon>
+              <>
+                {msg.image_url && (
+                  <img
+                    style={{
+                      width: '200px',
+                      display: 'block',
+                      marginRight: 'auto'
+                    }}
+                    src={msg.image_url}
+                    alt=""
+                  />
+                )}
+                <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
+                  {msg.content}
+                </StChatballoon>
+              </>
             );
           })}
           <StChatForm onSubmit={sendMessage}>
+            <ImageInput onChange={handleImage} placeholder="이미지 보내기" />
             <StChatInput
               onChange={handleUserInput}
               type="text"
@@ -315,6 +387,17 @@ const StChatballoon = styled.div`
 
 const StMyChatballoon = styled.div`
   width: fit-content;
+  background-color: yellow;
+  margin-left: auto;
+  margin-right: 1rem;
+  margin-block: 1rem;
+  padding: 1rem;
+  border-radius: 60px;
+  font-weight: 600;
+`;
+
+const StMyImgChatballoon = styled.div`
+  width: 500px;
   background-color: yellow;
   margin-left: auto;
   margin-right: 1rem;
