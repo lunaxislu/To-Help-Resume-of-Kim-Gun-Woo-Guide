@@ -31,7 +31,9 @@ const ProductsCard = ({product}: {product: Product}) => {
         </image>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
-        <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>{tags}</li>
+        {tags.map(major =>
+          <li key={major} style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>{major}</li>
+        )}
       </div>
       <h2 style={{marginBottom: '10px'}}>{title}</h2>
       <h3>{price}원</h3>
