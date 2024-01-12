@@ -7,7 +7,6 @@ import Login from '../pages/login/Login';
 import { GlobalStyles } from '../styles/GlobalStyle';
 import Layout from '../layout/Layout';
 
-
 const Router = () => {
   return (
     <BrowserRouter>
@@ -16,11 +15,11 @@ const Router = () => {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-        <Route path="/community" element={<CommunityMain />} />
-        <Route path="/community_write" element={<WritePost />} />
+          <Route path="/community" element={<CommunityMain />} />
+          <Route path="/community_write" element={<WritePost />} />
           <Route path="login" element={<Login />} />
+          <Route path="/chat" element={<ChatRoom />} />
         </Route>
-        <Route path="/chat" element={<ChatRoom />} />
       </Routes>
     </BrowserRouter>
   );
