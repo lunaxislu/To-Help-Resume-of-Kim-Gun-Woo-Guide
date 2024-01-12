@@ -1,4 +1,4 @@
-import { supabase } from './Supabase';
+import { supabase } from './../api/supabase/supabaseClient';
 
 async function seedData() {
   const fakeData = [

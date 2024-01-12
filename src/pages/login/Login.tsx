@@ -3,23 +3,23 @@ import { supabase } from '../../api/supabase/supabaseClient';
 
 const Login = () => {
   const googleLogin = async () => {
-    // const { data, error } = await supabase.auth.signInWithOAuth({
-    //   provider: 'google'
-    // });
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'google'
+    });
   };
 
   const kakaoLogin = async () => {
-    // const { data, error } = await supabase.auth.signInWithOAuth({
-    //   provider: 'kakao'
-    // });
-    // console.log(data);
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'kakao'
+    });
+    console.log(data);
   };
 
   const facebookLogin = async () => {
-    // const { data, error } = await supabase.auth.signInWithOAuth({
-    //   provider: 'facebook'
-    // });
-    // console.log(data);
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'facebook'
+    });
+    console.log(data);
   };
 
   return (

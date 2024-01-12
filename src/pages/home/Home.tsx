@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { UsedItem } from '../usedtypes';
-import { supabase } from '../Supabase';
+import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
 
 export const fetchUsedItems = async (): Promise<UsedItem[]> => {
