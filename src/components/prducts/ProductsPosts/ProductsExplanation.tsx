@@ -7,6 +7,7 @@ type TextValue = {
   price: number,
   count: number, 
   exchange_product: string,
+  major:any[]
 }
 const producsPostsTextInit: TextValue = {
   title: "",
@@ -14,6 +15,7 @@ const producsPostsTextInit: TextValue = {
   price: 0,
   count: 0, 
   exchange_product: "",
+  major: []
 }
 
 type ProductsPost = {
@@ -106,6 +108,10 @@ const ProductsExplanation = () => {
     },
     [textTypeValue, majorCheckedList]
   );
+
+  // 객체에 major 키 만들어서 checkedList 합치고 state로 만들어서 업로드
+  console.log(textTypeValue.major = majorCheckedList)
+  
 
   const [productsPosts, setProductsPosts] = useState<ProductsPost[]>(addProducsPosts);
 
