@@ -55,6 +55,9 @@ const CommunityMain: React.FC = () => {
         <button>일상생활</button>
         <button>공구거래</button>
       </div>
+      <p>
+        
+      </p>
 
       {posts.map((post: Post) => {
         return (
@@ -63,7 +66,8 @@ const CommunityMain: React.FC = () => {
               <h2>
                 [{post.category}]{post.title}
               </h2>
-              <p>{post.content}</p>
+              {/* <p>{post.content}</p> */}
+              <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
             </Post_content>
             <img src="/assets/주황똥.png" />
           </Post>

@@ -40,6 +40,24 @@ const WritePost = () => {
     setContent(newState);
   };
 
+  const toolbarOptions = {
+    options: ['inline', 'list', 'link', 'emoji', 'image'],
+    inline: {
+      options: ['bold', 'italic', 'underline', 'strikethrough']
+    },
+
+    list: {
+      options: ['unordered', 'ordered']
+    },
+
+    link: {
+      options: ['link']
+    },
+    emoji: {
+      options: ['emoji']
+    }
+  };
+
   return (
     <Container>
       <h1>커뮤니티 글 작성란데스</h1>
@@ -65,7 +83,11 @@ const WritePost = () => {
         />
       </div>
 
-      <Editor editorState={content} onEditorStateChange={handleEditorChange} />
+      <Editor
+        editorState={content}
+        onEditorStateChange={handleEditorChange}
+        toolbar={toolbarOptions}
+      />
       <button onClick={() => addPost()}>등록하기</button>
       {/* <button onClick={() => console.log(convertContentToHtml())}>
         Convert to HTML
