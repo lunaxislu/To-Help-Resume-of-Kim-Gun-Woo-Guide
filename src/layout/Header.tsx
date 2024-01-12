@@ -15,6 +15,7 @@ const Header = () => {
       </St.HeaderSection>
       <St.NavSection>
         <St.NavBar>
+          <St.NavButton to="/introduce">서비스 소개</St.NavButton>
           <St.NavButton to="/secondhand">중고거래</St.NavButton>
           <St.NavButton to="/community">커뮤니티</St.NavButton>
         </St.NavBar>

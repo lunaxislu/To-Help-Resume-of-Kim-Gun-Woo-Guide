@@ -10,7 +10,7 @@ export const FooterContainer = styled.div`
   background-color: #f2f2f2;
   justify-content: center;
   align-items: center;
-  position: fixed;
+  /* position: fixed; */
   bottom: 0;
   left: 0;
 `;

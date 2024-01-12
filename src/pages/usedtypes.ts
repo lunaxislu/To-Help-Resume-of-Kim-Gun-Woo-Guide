@@ -19,6 +19,10 @@ export interface UsedItem {
   agreement: boolean;
   image_filename?: string;
   imageData?: any;
+  image_url: string;
+  image_Url: string;
+  publicURL: string;
+  error: string;
 }
 
 export type Database = {
