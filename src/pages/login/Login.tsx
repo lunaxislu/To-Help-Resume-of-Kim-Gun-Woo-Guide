@@ -12,7 +12,6 @@ const Login = () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao'
     });
-
     console.log(data);
   };
 
@@ -20,7 +19,6 @@ const Login = () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'facebook'
     });
-
     console.log(data);
   };
 
