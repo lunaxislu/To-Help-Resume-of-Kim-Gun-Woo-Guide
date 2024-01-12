@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ProductsCard from './ProductsCard'
-import { supabase } from '../../../utils/SupabaseClient';
+import { supabase } from '../../../api/supabase/supabaseClient';
 import { useNavigate } from 'react-router';
 
 type ProductsPost = {

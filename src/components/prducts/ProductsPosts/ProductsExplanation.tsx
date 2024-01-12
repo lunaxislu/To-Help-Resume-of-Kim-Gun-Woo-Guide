@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react'
-import { supabase } from '../../../utils/SupabaseClient';
+import { supabase } from '../../../api/supabase/supabaseClient';
 
 type TextValue = {
   title: string,
