@@ -11,104 +11,10 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import { User } from '@supabase/supabase-js';
 import { v4 as uuid } from 'uuid';
 
-const FadeAni = keyframes`
-  from{
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-`;
-
-const ChatContainer = styled.div`
-  width: 100%;
-  max-width: 1440px;
-  display: flex;
-  border: 1px solid black;
-  height: fit-content;
-  max-height: 700px;
-  margin: auto;
-  animation: ${FadeAni} 1s forwards;
-`;
-const ChatList = styled.div`
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid black;
-  overflow-y: scroll;
-`;
-
-const ChatBoard = styled.div`
-  width: 70%;
-  border: 1px solid black;
-  overflow-y: scroll;
-  position: relative;
-  animation: ${FadeAni} 1s forwards;
-`;
-
-const ChatBoardHeader = styled.div`
-  width: 100%;
-  position: sticky;
-  top: 0;
-  left: 0;
-  padding: 1rem;
-  background-color: #eee;
-`;
-
-const Chatballoon = styled.div`
-  width: fit-content;
-  background-color: #eee;
-  margin-right: auto;
-  margin-left: 1rem;
-  margin-block: 1rem;
-  padding: 1rem;
-  border-radius: 40px;
-  font-weight: 600;
-`;
-
-const MyChatballoon = styled.div`
-  width: fit-content;
-  background-color: yellow;
-  margin-left: auto;
-  margin-right: 1rem;
-  margin-block: 1rem;
-  padding: 1rem;
-  border-radius: 60px;
-  font-weight: 600;
-`;
-
-const ChatForm = styled.form`
-  width: 100%;
-  position: sticky;
-  bottom: 0;
-`;
-
-const ChatInput = styled.input`
-  width: 100%;
-  padding: 1rem;
-  position: sticky;
-  bottom: 0;
-  border: none;
-  outline: none;
-  background-color: #eee;
-`;
-
 type RoomProps = {
   $current: string | undefined;
   children: ReactNode;
 };
-
-const ListRoom = styled.div<RoomProps>`
-  width: 100%;
-  ${(props) => {
-    if (props.$current === props.children) {
-      return css`
-        background-color: #eee;
-      `;
-    }
-  }}
-`;
 
 export default function ChatRoom() {
   const [curUser, setCurUser] = useState<User | null>();
@@ -164,9 +70,6 @@ export default function ChatRoom() {
             ]
           }
         ]);
-
-        let { data: chat_room } = await supabase.from('chat_room').select('*');
-        console.log(chat_room);
       }
     } catch (err) {
       console.log('failed', err);
@@ -187,7 +90,8 @@ export default function ChatRoom() {
       .select()
       .eq('chat_room_id', room_id)
       .eq('isNew', false);
-    return <p>{chat_messages?.length}</p>;
+
+    return chat_messages?.length;
   };
 
   // 채팅방 목록을 생성할 때
@@ -231,7 +135,6 @@ export default function ChatRoom() {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'chat_messages' },
         (payload) => {
-          console.log('업뎃!');
           setMessages((prev: any) => [...prev, payload.new]);
           if (rooms) {
             Promise.all(rooms.map((room) => unreadCount(room.id))).then(
@@ -285,7 +188,6 @@ export default function ChatRoom() {
         setUnread(counts);
       });
     }
-    console.log(1);
   }, [rooms]);
 
   return (
@@ -304,11 +206,11 @@ export default function ChatRoom() {
           유저 2와 채팅하기
         </button>
       </div>
-      <ChatContainer>
-        <ChatList>
+      <StChatContainer>
+        <StChatList>
           {rooms?.map((room, i) => {
             return (
-              <ListRoom
+              <StListRoom
                 onClick={handleCurClicked}
                 $current={clicked}
                 id={room.id}
@@ -326,31 +228,125 @@ export default function ChatRoom() {
                     새 메세지: &nbsp; {unread && unread[i]}
                   </p>
                 </div>
-              </ListRoom>
+              </StListRoom>
             );
           })}
-        </ChatList>
-        <ChatBoard>
-          <ChatBoardHeader>사용자 이름</ChatBoardHeader>
+        </StChatList>
+        <StChatBoard>
+          <StChatBoardHeader>사용자 이름</StChatBoardHeader>
           {messages?.map((msg: any) => {
             return msg.sender_id === curUser?.id ? (
-              <MyChatballoon key={msg.id}>{msg.content}</MyChatballoon>
+              <StMyChatballoon key={msg.id}>{msg.content}</StMyChatballoon>
             ) : (
-              <Chatballoon style={{ textAlign: 'left' }} key={msg.id}>
+              <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
                 {msg.content}
-              </Chatballoon>
+              </StChatballoon>
             );
           })}
-          <ChatForm onSubmit={sendMessage}>
-            <ChatInput
+          <StChatForm onSubmit={sendMessage}>
+            <StChatInput
               onChange={handleUserInput}
               type="text"
               name="chat"
               value={chatInput}
             />
-          </ChatForm>
-        </ChatBoard>
-      </ChatContainer>
+          </StChatForm>
+        </StChatBoard>
+      </StChatContainer>
     </>
   );
 }
+
+const StFadeAni = keyframes`
+  from{
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
+
+const StChatContainer = styled.div`
+  width: 100%;
+  max-width: 1440px;
+  display: flex;
+  border: 1px solid black;
+  height: fit-content;
+  max-height: 700px;
+  margin: auto;
+  animation: ${StFadeAni} 1s forwards;
+`;
+const StChatList = styled.div`
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  overflow-y: scroll;
+`;
+
+const StChatBoard = styled.div`
+  width: 70%;
+  border: 1px solid black;
+  overflow-y: scroll;
+  position: relative;
+  animation: ${StFadeAni} 1s forwards;
+`;
+
+const StChatBoardHeader = styled.div`
+  width: 100%;
+  position: sticky;
+  top: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #eee;
+`;
+
+const StChatballoon = styled.div`
+  width: fit-content;
+  background-color: #eee;
+  margin-right: auto;
+  margin-left: 1rem;
+  margin-block: 1rem;
+  padding: 1rem;
+  border-radius: 40px;
+  font-weight: 600;
+`;
+
+const StMyChatballoon = styled.div`
+  width: fit-content;
+  background-color: yellow;
+  margin-left: auto;
+  margin-right: 1rem;
+  margin-block: 1rem;
+  padding: 1rem;
+  border-radius: 60px;
+  font-weight: 600;
+`;
+
+const StChatForm = styled.form`
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+`;
+
+const StChatInput = styled.input`
+  width: 100%;
+  padding: 1rem;
+  position: sticky;
+  bottom: 0;
+  border: none;
+  outline: none;
+  background-color: #eee;
+`;
+
+const StListRoom = styled.div<RoomProps>`
+  width: 100%;
+  ${(props) => {
+    if (props.$current === props.children) {
+      return css`
+        background-color: #eee;
+      `;
+    }
+  }}
+`;

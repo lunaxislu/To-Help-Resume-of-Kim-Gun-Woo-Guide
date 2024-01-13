@@ -1,43 +1,62 @@
 import React from 'react';
 import styled from 'styled-components';
-import { UsedItem } from '../usedtypes';
+import { Community, UsedItem } from '../usedtypes';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
+import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
-export const fetchUsedItems = async (): Promise<UsedItem[]> => {
+// 중고게시물 및 커뮤니티 게시물 + 사진 받아오는 로직
+export const fetchData = async (): Promise<{
+  usedItems: UsedItem[];
+  communityItems: Community[];
+}> => {
   try {
-    const { data, error } = await supabase
+    const { data: usedItemsData, error: usedItemsError } = await supabase
       .from('used_item__board')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(5);
 
-    if (error) {
-      console.error('Error fetching data from Supabase:', error);
-      return [];
+    const { data: communityItemsData, error: communityItemsError } =
+      await supabase
+        .from('community')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+    if (usedItemsError || communityItemsError) {
+      console.error(
+        '데이터 베이스에 요청을 실패하였습니다:',
+        usedItemsError || communityItemsError
+      );
+      return { usedItems: [], communityItems: [] };
     }
-    // https://apoudtyiediwwawobaah.supabase.co/storage/v1/object/sign/picture_test/pictures/bicycle.svg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaWN0dXJlX3Rlc3QvcGljdHVyZXMvYmljeWNsZS5zdmciLCJpYXQiOjE3MDUwMjYxNzMsImV4cCI6MTczNjU2MjE3M30.gZmM59FnL57LRaZxbb2S5ldrua3xXqPlogAUjOyPmnM&t=2024-01-12T02%3A22%3A53.757Z
 
-    const itemsWithImages = await Promise.all(
-      data.map(async (item) => {
-        // const image_Url =
-        //   'https://apoudtyiediwwawobaah.supabase.co/storage/v1/object/sign/picture_test/pictures/bicycle.svg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaWN0dXJlX3Rlc3QvcGljdHVyZXMvYmljeWNsZS5zdmciLCJpYXQiOjE3MDUwMjYxNzMsImV4cCI6MTczNjU2MjE3M30.gZmM59FnL57LRaZxbb2S5ldrua3xXqPlogAUjOyPmnM&t=2024-01-12T02%3A22%3A53.757Z';
-
+    const usedItemsWithImages = await Promise.all(
+      usedItemsData.map(async (item) => {
         const pathToImage = `pictures/${item.image_Url}.png`;
-
-        const { data } = supabase.storage
-          .from('picture_test')
+        const { data } = await supabase.storage
+          .from('picture')
           .getPublicUrl(pathToImage);
-        console.log(data);
-        if (error) {
-          console.error('수파베이스 요청 실패', error);
-          return item;
-        }
         return { ...item, data };
       })
     );
 
-    return itemsWithImages || [];
+    const communityItemsWithImages = await Promise.all(
+      communityItemsData.map(async (item) => {
+        const pathToImage = `pictures/${item.image_Url}.png`;
+        const { data } = await supabase.storage
+          .from('community_picture')
+          .getPublicUrl(pathToImage);
+        return { ...item, data };
+      })
+    );
+
+    return {
+      usedItems: usedItemsWithImages || [],
+      communityItems: communityItemsWithImages || []
+    };
   } catch (error) {
     console.error('수파베이스에 요청 중 실패:', error);
     throw error;
@@ -46,10 +65,10 @@ export const fetchUsedItems = async (): Promise<UsedItem[]> => {
 
 const Home = () => {
   const {
-    data: usedItems = [],
+    data: { usedItems = [], communityItems = [] } = {},
     isLoading,
     isError
-  } = useQuery('usedItems', fetchUsedItems);
+  } = useQuery('data', fetchData);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -62,6 +81,13 @@ const Home = () => {
   return (
     <HomeContainer>
       <HomeSection>
+        <div className="one">
+          <div>
+            {<span>{usedItems.length}개</span>}의 상품이 거래되고 있어요!
+          </div>
+          <LinktoProducts to="/products">전체보기</LinktoProducts>
+        </div>
+
         <h2>오늘의 중고거래</h2>
         <ul>
           {usedItems.map((item) => (
@@ -76,31 +102,57 @@ const Home = () => {
           ))}
         </ul>
       </HomeSection>
+
+      <div>
+        <h2>커뮤니티</h2>
+        <ul>
+          {communityItems.map((item) => (
+            <div key={item.post_id}>
+              {item.image_Url && (
+                <img src={item.image_Url} alt="Community Post" />
+              )}
+              <h3>{item.title}</h3>
+              <p>{item.content}</p>
+              <p>Category: {item.category}</p>
+              <p>Likes: {item.likes}</p>
+            </div>
+          ))}
+        </ul>
+      </div>
     </HomeContainer>
   );
 };
 
 const HomeContainer = styled.section`
   border-top: 1px solid #000;
+  display: flex;
+  flex-direction: column;
 `;
 
 const HomeSection = styled.section`
   margin: 0 400px;
-  display: flex;
+  /* display: flex; */
   justify-content: center;
   align-items: center;
+  span {
+    font-weight: bold;
+  }
+  .one {
+    display: flex;
+    justify-content: space-between;
+  }
 
   h2 {
-    /* display: flex; */
-    /* justify-content: center; */
-    text-align: center;
+    text-align: left;
+    margin-top: 20px;
   }
 
   ul {
     list-style: none;
     padding: 0;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 20px;
 
     hr {
       width: 100%;
@@ -111,7 +163,12 @@ const HomeSection = styled.section`
     }
   }
 `;
-
+const LinktoProducts = styled(Link)`
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+`;
 const SupabaseList = styled.div`
   padding: 10px;
   display: flex;

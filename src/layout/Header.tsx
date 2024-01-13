@@ -1,13 +1,22 @@
 import React from 'react';
 import * as St from '../styles/headerStyle/HeaderStyle';
+import { useNavigate } from 'react-router';
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+  const handleSellbuttonClick = () => {
+    navigate('/productsposts');
+  };
   return (
     <St.HeaderContainer>
       <St.HeaderSection>
-        <St.Logo>logo</St.Logo>
+        <St.Logo onClick={handleLogoClick}>logo</St.Logo>
         <St.ButtonContainer>
-          <St.Button>판매하기</St.Button>
+          <St.Button onClick={handleSellbuttonClick}>판매하기</St.Button>
           <St.Button>찜</St.Button>
           <St.Button>알림</St.Button>
           <St.UserIcon>User</St.UserIcon>

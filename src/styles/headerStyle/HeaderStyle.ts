@@ -17,6 +17,8 @@ export const HeaderSection = styled.section`
 `;
 export const Logo = styled.div`
   font-size: 30px;
+  cursor: pointer;
+  user-select: none;
 `;
 export const ButtonContainer = styled.div`
   display: flex;
