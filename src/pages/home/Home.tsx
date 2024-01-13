@@ -5,6 +5,7 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import Carousel from '../../components/mainpage/Carousel';
 
 // 중고게시물 및 커뮤니티 게시물 + 사진 받아오는 로직
 export const fetchData = async (): Promise<{
@@ -78,8 +79,16 @@ const Home = () => {
     return <div>데이터 불러오기를 실패했습니다.</div>;
   }
 
+  const carouselImages: string[] = [
+    process.env.PUBLIC_URL + '/assets/carousel1.png',
+    process.env.PUBLIC_URL + '/assets/carousel2.png',
+    process.env.PUBLIC_URL + '/assets/carousel3.png'
+  ];
+  console.log(carouselImages);
+
   return (
     <HomeContainer>
+      <Carousel images={carouselImages} />
       <HomeSection>
         <div className="one">
           <div>
@@ -131,6 +140,7 @@ const HomeContainer = styled.section`
 
 const HomeSection = styled.section`
   margin: 0 400px;
+  margin-top: 20px;
   /* display: flex; */
   justify-content: center;
   align-items: center;
