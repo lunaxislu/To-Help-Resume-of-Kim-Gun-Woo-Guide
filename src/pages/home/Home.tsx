@@ -6,7 +6,14 @@ import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import Carousel from '../../components/mainpage/Carousel';
-
+import { count } from 'console';
+import { NullLiteral } from 'typescript';
+type UsedItemsCountData = {
+  count: number | null;
+  data: {
+    length: number;
+  } | null;
+};
 // 중고게시물 및 커뮤니티 게시물 + 사진 받아오는 로직
 export const fetchData = async (): Promise<{
   usedItems: UsedItem[];
@@ -47,7 +54,7 @@ export const fetchData = async (): Promise<{
     const communityItemsWithImages = await Promise.all(
       communityItemsData.map(async (item) => {
         const pathToImage = `pictures/${item.image_Url}.png`;
-        const { data } = await supabase.storage
+        const { data } = supabase.storage
           .from('community_picture')
           .getPublicUrl(pathToImage);
         return { ...item, data };
@@ -65,12 +72,21 @@ export const fetchData = async (): Promise<{
 };
 
 const Home = () => {
+  // 전체 데이터 개수를 가져오는 쿼리
+  const {
+    data: usedItemsCountData,
+    isLoading: usedItemsCountLoading,
+    isError: usedItemsCountError
+  } = useQuery<UsedItemsCountData>('usedItemsCount', async () => {
+    const count = await supabase.from('used_item__board').select('*');
+    return count;
+  });
+
   const {
     data: { usedItems = [], communityItems = [] } = {},
     isLoading,
     isError
   } = useQuery('data', fetchData);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -91,58 +107,43 @@ const Home = () => {
       <HomeSection>
         <div className="one">
           <div>
-            {<span>{usedItems.length}개</span>}의 상품이 거래되고 있어요!
+            {<span>{usedItemsCountData?.data?.length}개</span>}의 상품이
+            거래되고 있어요!
           </div>
           <LinktoProducts to="/products">전체보기</LinktoProducts>
         </div>
 
-        <h2>오늘의 중고거래</h2>
         <SupabaseListContainer>
           {usedItems.map((item) => (
             <SupabaseList key={item.id}>
               {item.image_Url && <img src={item.image_Url} alt="Item" />}
+
               <h1>{item.quality}</h1>
               <h3>{item.title}</h3>
               <p>{item.price},000원</p>
             </SupabaseList>
           ))}
-          <SupabaseList>
-            <img
-              src="https://apoudtyiediwwawobaah.supabase.co/storage/v1/object/sign/picture_test/pictures/Rectangle%2090%20(3).png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaWN0dXJlX3Rlc3QvcGljdHVyZXMvUmVjdGFuZ2xlIDkwICgzKS5wbmciLCJpYXQiOjE3MDUyMzUwNTMsImV4cCI6MTcwNzgyNzA1M30.h0-eCT4ecs_DOMqQr4XE6NI6ynan0mOD8MBD31KzvbM&t=2024-01-14T12%3A24%3A13.597Z"
-              alt="laptop"
-            />
-            <h1>사용감 많음</h1>
-            <h3>클램프</h3>
-            <p>600,000원</p>
-          </SupabaseList>
-          <SupabaseList>
-            <img
-              src="https://apoudtyiediwwawobaah.supabase.co/storage/v1/object/sign/picture_test/pictures/Rectangle%2090%20(4).png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaWN0dXJlX3Rlc3QvcGljdHVyZXMvUmVjdGFuZ2xlIDkwICg0KS5wbmciLCJpYXQiOjE3MDUyMzMxNzMsImV4cCI6MTcwNzgyNTE3M30.mSJuS-bbX3BM3cnSzj7zRBOWueZXrthZyuMwBFLzbT0&t=2024-01-14T11%3A52%3A53.155Z"
-              alt="laptop"
-            />
-            <h1>사용감 적음</h1>
-            <h3>절단기</h3>
-            <p>600,000원</p>
-          </SupabaseList>
         </SupabaseListContainer>
       </HomeSection>
 
-      <div>
-        <h2>커뮤니티</h2>
-        <ul>
+      <ComunityContainer>
+        <h2>작업자들의 커뮤니티에 함께해볼까요?</h2>
+        <ComunityWrapper>
           {communityItems.map((item) => (
-            <div key={item.post_id}>
-              {item.image_Url && (
-                <img src={item.image_Url} alt="Community Post" />
-              )}
-              <h3>{item.title}</h3>
-              <p>{item.content}</p>
-              <p>Category: {item.category}</p>
-              <p>Likes: {item.likes}</p>
-            </div>
+            <ComunityList key={item.post_id}>
+              <div>
+                {item.image_Url && (
+                  <img src={item.image_Url} alt="Community Post" />
+                )}
+              </div>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.content}</p>
+              </div>
+            </ComunityList>
           ))}
-        </ul>
-      </div>
+        </ComunityWrapper>
+      </ComunityContainer>
     </HomeContainer>
   );
 };
@@ -155,10 +156,8 @@ const HomeContainer = styled.section`
 
 const HomeSection = styled.div`
   margin: 0 100px;
-  margin-top: 20px;
-  /* display: flex; */
-  /* justify-content: center;
-  align-items: center; */
+  margin-top: 40px;
+
   span {
     font-weight: bold;
   }
@@ -224,5 +223,29 @@ const SupabaseList = styled.li`
     text-align: left;
   }
 `;
-
+const ComunityContainer = styled.div`
+  width: 100%;
+  height: 760px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 100px;
+  margin-top: 40px;
+  h2 {
+    margin-top: 80px;
+  }
+`;
+const ComunityWrapper = styled.ul`
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+`;
+const ComunityList = styled.li`
+  width: 100%;
+  height: 100px;
+  img {
+    width: 54px;
+    height: 54px;
+    margin: 24px 30px;
+  }
+`;
 export default Home;
