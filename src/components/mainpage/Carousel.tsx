@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 interface CarouselProps {
@@ -21,7 +21,11 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
   const goToImage = (index: number) => {
     setCurrentIndex(index);
   };
+  useEffect(() => {
+    const intervalId = setInterval(goToNext, 8000);
 
+    return () => clearInterval(intervalId);
+  }, [currentIndex, images.length]);
   return (
     <CarouselContainer>
       <CarouselContent
@@ -35,11 +39,11 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
           />
         ))}
       </CarouselContent>
-      <Button className="left">
-        <Icon src={'/assets/goprev.png'} alt="Previous" onClick={goToPrev} />
+      <Button className="left" onClick={goToPrev}>
+        <Icon src={'/assets/goprev.png'} alt="Previous" />
       </Button>
-      <Button className="right">
-        <Icon src={'/assets/gonext.png'} alt="Next" onClick={goToNext} />
+      <Button className="right" onClick={goToNext}>
+        <Icon src={'/assets/gonext.png'} alt="Next" />
       </Button>
       <DotContainer>
         {images.map((_, index) => (
@@ -69,6 +73,7 @@ const CarouselContent = styled.div`
 `;
 
 const CarouselImage = styled.img`
+  flex: 0 0 100%;
   width: 100%;
   height: 100%;
   object-fit: cover;

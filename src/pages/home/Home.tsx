@@ -84,7 +84,6 @@ const Home = () => {
     process.env.PUBLIC_URL + '/assets/carousel2.png',
     process.env.PUBLIC_URL + '/assets/carousel3.png'
   ];
-  console.log(carouselImages);
 
   return (
     <HomeContainer>
@@ -98,18 +97,34 @@ const Home = () => {
         </div>
 
         <h2>오늘의 중고거래</h2>
-        <ul>
+        <SupabaseListContainer>
           {usedItems.map((item) => (
             <SupabaseList key={item.id}>
               {item.image_Url && <img src={item.image_Url} alt="Item" />}
+              <h1>{item.quality}</h1>
               <h3>{item.title}</h3>
-              <p>{item.contents}</p>
-              <p>Price: {item.price}</p>
-              <p>Location: {item.location}</p>
-              <p>Deal Type: {item.deal_type}</p>
+              <p>{item.price},000원</p>
             </SupabaseList>
           ))}
-        </ul>
+          <SupabaseList>
+            <img
+              src="https://apoudtyiediwwawobaah.supabase.co/storage/v1/object/sign/picture_test/pictures/Rectangle%2090%20(3).png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaWN0dXJlX3Rlc3QvcGljdHVyZXMvUmVjdGFuZ2xlIDkwICgzKS5wbmciLCJpYXQiOjE3MDUyMzUwNTMsImV4cCI6MTcwNzgyNzA1M30.h0-eCT4ecs_DOMqQr4XE6NI6ynan0mOD8MBD31KzvbM&t=2024-01-14T12%3A24%3A13.597Z"
+              alt="laptop"
+            />
+            <h1>사용감 많음</h1>
+            <h3>클램프</h3>
+            <p>600,000원</p>
+          </SupabaseList>
+          <SupabaseList>
+            <img
+              src="https://apoudtyiediwwawobaah.supabase.co/storage/v1/object/sign/picture_test/pictures/Rectangle%2090%20(4).png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaWN0dXJlX3Rlc3QvcGljdHVyZXMvUmVjdGFuZ2xlIDkwICg0KS5wbmciLCJpYXQiOjE3MDUyMzMxNzMsImV4cCI6MTcwNzgyNTE3M30.mSJuS-bbX3BM3cnSzj7zRBOWueZXrthZyuMwBFLzbT0&t=2024-01-14T11%3A52%3A53.155Z"
+              alt="laptop"
+            />
+            <h1>사용감 적음</h1>
+            <h3>절단기</h3>
+            <p>600,000원</p>
+          </SupabaseList>
+        </SupabaseListContainer>
       </HomeSection>
 
       <div>
@@ -134,43 +149,29 @@ const Home = () => {
 
 const HomeContainer = styled.section`
   border-top: 1px solid #000;
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
 `;
 
-const HomeSection = styled.section`
-  margin: 0 400px;
+const HomeSection = styled.div`
+  margin: 0 100px;
   margin-top: 20px;
   /* display: flex; */
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
   span {
     font-weight: bold;
   }
   .one {
     display: flex;
     justify-content: space-between;
+    margin: 0 10px;
   }
 
   h2 {
     text-align: left;
     margin-top: 20px;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-
-    hr {
-      width: 100%;
-      margin: 10px 0;
-      border: none;
-      height: 1px;
-      background-color: #000;
-    }
+    margin-left: 10px;
   }
 `;
 const LinktoProducts = styled(Link)`
@@ -179,18 +180,48 @@ const LinktoProducts = styled(Link)`
   cursor: pointer;
   font-weight: bold;
 `;
-const SupabaseList = styled.div`
+
+const SupabaseListContainer = styled.ul`
+  width: 100%;
+  height: 325px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+`;
+const SupabaseList = styled.li`
+  flex: 1 0 calc(20% - 20px);
+  width: 208px;
+  height: 325px;
   padding: 10px;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
-  gap: 20px;
-  margin: 20px;
-  border: 1px solid black;
+
   img {
-    width: 200px;
-    height: 200px;
+    width: 100%;
+    height: 208px;
     object-fit: cover;
+    border-style: none;
+  }
+  h1 {
+    width: 90px;
+    padding: 8px;
+    color: #656464;
+    text-align: center;
+    background-color: rgba(255, 122, 0, 0.1);
+    border-radius: 3px;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  h3 {
+    font-size: 16px;
+    margin-top: 30px;
+  }
+
+  p {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: left;
   }
 `;
 
