@@ -11,6 +11,9 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import { User } from '@supabase/supabase-js';
 import { v4 as uuid } from 'uuid';
 
+// sender_read, receiver_read : boolean
+// create_chat_room - receiver_name
+
 const ImageInput = styled.input.attrs({ type: 'file' })`
   width: 100%;
   padding: 1rem;
@@ -35,8 +38,6 @@ export default function ChatRoom() {
     name === 'chat' && setChatInput(value);
   };
 
-  // 작동순서 3번
-  // 메세지를 전송하면
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
     try {
@@ -47,7 +48,6 @@ export default function ChatRoom() {
             sender_id: curUser?.id,
             chat_room_id: clicked,
             content: chatInput,
-            // image_url 필드값으로 publick_url이 저장된 state를 메세지와 함께 저장합니다
             image_url: images
           }
         ]);
@@ -71,17 +71,23 @@ export default function ChatRoom() {
     const id = e.currentTarget.id;
     try {
       if (curUser && curUser.identities !== undefined) {
-        const { data, error } = await supabase.from('chat_room').insert([
-          {
-            participants: [
-              { user_id: id, user_name: 'test1' },
-              {
-                user_id: curUser.id,
-                user2_name: 'test2'
-              }
-            ]
-          }
-        ]);
+        const { data, error } = await supabase
+          .from('user')
+          .select('*')
+          .eq('uid', id);
+        console.log(data);
+        //   const { data, error } = await supabase.from('chat_room').insert([
+        //     {
+        //       participants: [
+        //         { user_id: id, user_name: 'test1' },
+        //         {
+        //           user_id: curUser.id,
+        //           user2_name: 'test2'
+        //         }
+        //       ]
+        //     }
+        //   ]);
+        // }
       }
     } catch (err) {
       console.log('failed', err);
@@ -202,8 +208,6 @@ export default function ChatRoom() {
     }
   }, [rooms]);
 
-  // 작동순서 1번
-  // file type 인풋에 change event 발생 시 파일을 받아서
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files;
     if (file) {
@@ -214,17 +218,13 @@ export default function ChatRoom() {
     }
   };
 
-  // 작동순저 2번
-  // file을 받은 이 함수는
   const handleImageUpload = async (file: File) => {
-    // storage에 이미지를 업로드 하고
     const { data, error } = await supabase.storage
       .from('images')
       .upload(`messages/${file.name}`, file, {
         contentType: file.type
       });
 
-    // 에러나면 에러 주고
     if (error) {
       console.error('파일 업로드 실패:', error);
       return;
@@ -262,7 +262,6 @@ export default function ChatRoom() {
                 key={room.id}
               >
                 <div
-                  key={room.id}
                   onClick={() => {
                     updateToRead(room.id);
                   }}
@@ -279,41 +278,43 @@ export default function ChatRoom() {
         </StChatList>
         <StChatBoard>
           <StChatBoardHeader>사용자 이름</StChatBoardHeader>
-          {messages?.map((msg: any) => {
-            return msg.sender_id === curUser?.id ? (
-              <>
-                {msg.image_url && (
-                  <img
-                    style={{
-                      width: '200px',
-                      display: 'block',
-                      marginLeft: 'auto'
-                    }}
-                    src={msg.image_url}
-                    alt=""
-                  ></img>
-                )}
-                <StMyChatballoon key={msg.id}>{msg.content}</StMyChatballoon>
-              </>
-            ) : (
-              <>
-                {msg.image_url && (
-                  <img
-                    style={{
-                      width: '200px',
-                      display: 'block',
-                      marginRight: 'auto'
-                    }}
-                    src={msg.image_url}
-                    alt=""
-                  />
-                )}
-                <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
-                  {msg.content}
-                </StChatballoon>
-              </>
-            );
-          })}
+          {messages
+            ?.sort((a: any, b: any) => b.created_at - a.created_at)
+            .map((msg: any) => {
+              return msg.sender_id === curUser?.id ? (
+                <>
+                  {msg.image_url && (
+                    <img
+                      style={{
+                        width: '200px',
+                        display: 'block',
+                        marginLeft: 'auto'
+                      }}
+                      src={msg.image_url}
+                      alt=""
+                    ></img>
+                  )}
+                  <StMyChatballoon key={msg.id}>{msg.content}</StMyChatballoon>
+                </>
+              ) : (
+                <>
+                  {msg.image_url && (
+                    <img
+                      style={{
+                        width: '200px',
+                        display: 'block',
+                        marginRight: 'auto'
+                      }}
+                      src={msg.image_url}
+                      alt=""
+                    />
+                  )}
+                  <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
+                    {msg.content}
+                  </StChatballoon>
+                </>
+              );
+            })}
           <StChatForm onSubmit={sendMessage}>
             <ImageInput onChange={handleImage} placeholder="이미지 보내기" />
             <StChatInput

@@ -9,21 +9,27 @@ import { GlobalStyles } from '../styles/GlobalStyle';
 import Products from '../pages/products/Products';
 import ProductsPosts from '../pages/products/ProductsPosts';
 import Layout from '../layout/Layout';
+import ProductDetail from '../pages/productsDetail/ProductDetail';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <GlobalStyles />
       <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="mypage" element={<MyPage />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="mypage" element={<MyPage />} />
           <Route path="/products" element={<Products />} />
           <Route path="/productsposts" element={<ProductsPosts />} />
           <Route path="/community" element={<CommunityMain />} />
           <Route path="/community_write" element={<WritePost />} />
           <Route path="/chat" element={<ChatRoom />} />
+          <Route path="/products/detail/:id" element={<ProductDetail />} />
+          <Route
+            path="/products/detail/*"
+            element={<h1>존재하지 않는 게시물입니다</h1>}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
