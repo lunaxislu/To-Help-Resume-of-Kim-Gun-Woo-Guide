@@ -1,12 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import React, { MouseEvent, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
+import { StFadeAni } from '../chat/ChatRoom';
+import {
+  Factor,
+  User,
+  UserAppMetadata,
+  UserIdentity,
+  UserMetadata
+} from '@supabase/supabase-js';
 
 const StDetailContainer = styled.div`
   width: 100%;
   max-width: 1440px;
   margin: auto;
+  font-family: 'Pretendard-Regular';
 `;
 
 const StDetailInfoSection = styled.section`
@@ -68,13 +77,14 @@ const StUserImage = styled.div`
   width: fit-content;
 `;
 const StProfileImages = styled.div`
-  width: 50px;
-  height: 50px;
+  width: 28px;
+  height: 28px;
   background-color: #eee;
   border-radius: 50%;
 `;
 const StUserNickname = styled.h4`
   width: 100%;
+  font-size: 0.875rem;
 `;
 const StAlertButton = styled.button`
   width: fit-content;
@@ -82,8 +92,8 @@ const StAlertButton = styled.button`
 
 const StHeaderTitle = styled.div`
   width: 100%;
-  font-weight: 600;
-  font-size: 1.6rem;
+  font-family: 'Pretendard-Medium';
+  font-size: 1.375rem;
   margin-block: 2rem;
 `;
 const StHeaderPriceWrapper = styled.div`
@@ -94,8 +104,8 @@ const StHeaderPriceWrapper = styled.div`
   margin-block: 2rem;
 `;
 const StPrice = styled.h3`
-  font-weight: 600;
-  font-size: 1.4rem;
+  font-family: 'Pretendard-Bold';
+  font-size: 1.375rem;
 `;
 const StTimeLeft = styled.div`
   max-width: 20%;
@@ -118,12 +128,43 @@ const StProductRow = styled.div`
 `;
 const StRowLabel = styled.div`
   width: 150px;
-  font-weight: 600;
+  font-family: 'Pretendard-Medium';
+  font-size: 0.875rem;
   color: #878787;
 `;
+
 const StRowValue = styled.div`
   width: 100%;
+  font-family: 'Pretendard-Medium';
+  font-size: 0.875rem;
   text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const StQuailityInfo = styled.div`
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  text-align: center;
+  background-color: var(--primary-color);
+  color: white;
+  line-height: 1.4;
+  cursor: pointer;
+  position: relative;
+`;
+
+const StQuilityInfoBox = styled.div`
+  width: 220px;
+  height: 250px;
+  background-color: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  left: -250px;
+  bottom: -150px;
+  padding: 1rem;
+  color: white;
+  animation: ${StFadeAni} 0.2s forwards;
 `;
 
 const ButtonWrapper = styled.div`
@@ -135,20 +176,22 @@ const ButtonWrapper = styled.div`
   justify-content: space-between;
   margin-block: 2rem;
 `;
+
 type ButtonProps = {
   $role: string;
 };
+
 const Button = styled.div<ButtonProps>`
   width: ${(props) => (props.$role === 'like' ? '40%' : '60%')};
-  padding: 1.5rem;
-  font-size: 2rem;
-  font-weight: 400;
-  border-radius: 12px;
+  padding: ${(props) =>
+    props.$role === 'like' ? '1.063rem 7.188rem' : '1.063rem 5.813rem'};
+  font-size: 1.125rem;
+  border-radius: 5px;
   background-color: #eee;
   cursor: pointer;
 
   &:hover {
-    background-color: #2f9eff;
+    background-color: var(--primary-color);
     color: white;
   }
 `;
@@ -167,7 +210,6 @@ const StProductContent = styled.div`
   width: 100%;
   margin-block: 2rem;
   white-space: break-spaces;
-  line-height: 1.2;
 `;
 const StProductCategory = styled.div`
   width: 100%;
@@ -181,7 +223,6 @@ const StCategoryTag = styled.li`
   font-weight: 600;
   color: #4f4f4f;
   list-style: none;
-  letter-spacing: -0.09rem;
   background-color: #eee;
   border-radius: 6px;
   cursor: pointer;
@@ -189,6 +230,7 @@ const StCategoryTag = styled.li`
 
 interface Product {
   id: string;
+  uid: string;
   created_at: string;
   post_user: string;
   nickname: string;
@@ -209,9 +251,44 @@ interface Product {
   category: string[];
 }
 
+type CustomUser = {
+  id: string;
+  uid: string;
+  created_at: string;
+  username: string;
+  nickname: string;
+  address: string;
+  chat_rooms: {}[];
+  likes: {}[];
+  board: {}[];
+  comment: {}[];
+};
+
 const ProductDetail = () => {
   const { id } = useParams();
+  const [curUser, setCurUser] = useState<CustomUser | null>(null);
+  const [target, setTarget] = useState<CustomUser | null>(null);
   const [product, setProduct] = useState<Product[] | null>(null);
+  const [isHover, setIsHover] = useState<boolean>(false);
+
+  const navi = useNavigate();
+
+  const getUserData = async () => {
+    const { data: user, error } = await supabase.auth.getUser();
+    if (user.user) {
+      const { data: currentLogined, error } = await supabase
+        .from('user')
+        .select('*')
+        .eq('uid', user.user.id);
+
+      // 현재 로그인 유저의 데이터가 있다면
+      if (currentLogined && currentLogined.length > 0) {
+        setCurUser(currentLogined[0]);
+        console.log(curUser);
+      }
+    }
+    if (error) console.log('cannot get User Info');
+  };
 
   const getProduct = async (id: string) => {
     let { data: products, error } = await supabase
@@ -225,11 +302,157 @@ const ProductDetail = () => {
     }
   };
 
+  const showQuality = () => {
+    setIsHover(true);
+  };
+
+  const hideQuality = () => {
+    setIsHover(false);
+  };
+
+  const makeChatRoom = async (e: MouseEvent) => {
+    const targetId = e.currentTarget.id;
+
+    // user 테이블에서 채팅 상대 정보 가져오기
+    const { data: targetUser, error: noUser } = await supabase
+      .from('user')
+      .select('*')
+      .eq('uid', targetId);
+
+    console.log(targetUser);
+    if (targetUser && targetUser.length > 0) {
+      setTarget(targetUser[0]);
+      console.log(target);
+    }
+
+    if (noUser) console.log('user is not exists', noUser);
+  };
+
+  // 생성된 채팅방 row에 현재 로그인 유저와 타겟 유저 정보 삽입
+  const insertUserIntoChatRoom = async (
+    curUser: CustomUser,
+    target: CustomUser
+  ) => {
+    const participants = [
+      {
+        participants: [
+          { user_id: target.uid, user_name: target.username },
+          {
+            user_id: curUser.uid,
+            user2_name: curUser.username
+          }
+        ]
+      }
+    ];
+    const { data: chatRoom, error } = await supabase
+      .from('chat_room')
+      .insert(participants);
+
+    await findRoom();
+
+    if (error) console.log('생성 실패');
+  };
+
+  // 유저가 속한 채팅방 찾기
+  const findRoom = async () => {
+    const { data: foundRoom, error } = await supabase
+      .from('chat_room')
+      .select('*');
+
+    if (error) {
+      console.error('Error fetching chat rooms:', error);
+      return;
+    }
+
+    if (foundRoom && curUser) {
+      const filtered = foundRoom.filter((room: any) => {
+        // curUser.id와 일치하는 participant를 포함한 방만 필터링
+        return room.participants.some(
+          (participant: any) => participant.user_id === curUser.uid
+        );
+      });
+
+      return filtered;
+    }
+  };
+
+  // 각 유저에게 채팅방을 추가하자
+  const findUser = async (User: CustomUser) => {
+    const { data: userInfo, error } = await supabase
+      .from('user')
+      .select('*')
+      .eq('uid', User?.uid);
+
+    if (userInfo) {
+      await insertRoomintoUser(userInfo as any);
+    }
+  };
+
+  // 유저의 chat_rooms 필드값에 방을 업뎃해주자
+  const insertRoomintoUser = async (userInfo: CustomUser[]) => {
+    const room = (await findRoom()) as any;
+
+    if (room && userInfo) {
+      const room_id = room[0].id;
+      const { data, error } = await supabase
+        .from('user')
+        .update({ chat_rooms: [room_id] })
+        .eq('uid', userInfo[0].uid)
+        .select();
+
+      if (error) {
+        console.error('Error adding chat room id to user:', error.message);
+        return false;
+      }
+    }
+  };
+
+  // 게시물 관련 데이터를 첫 메세지로 보낸당
+  const sendFirstMessage = async () => {
+    if (product && curUser) {
+      const room = await findRoom();
+      if (room) {
+        const InitMessage = [
+          {
+            sender_id: curUser.uid,
+            content: `제목: ${product[0].title}`,
+            chat_room_id: room[0]?.id
+          },
+          {
+            sender_id: curUser.uid,
+            content: `${product[0].price}원`,
+            chat_room_id: room[0]?.id
+          },
+          {
+            sender_id: curUser.uid,
+            content: '상품에 관심 있어요!',
+            chat_room_id: room[0]?.id
+          }
+        ];
+        const { data, error } = await supabase
+          .from('chat_messages')
+          .insert(InitMessage);
+
+        if (error) console.log('Send Messages Failed', error);
+      }
+    } else console.log('Failed, no data');
+  };
+
   useEffect(() => {
     if (id) {
       getProduct(id);
     }
+    getUserData();
   }, []);
+
+  useEffect(() => {
+    if (curUser && target) {
+      insertUserIntoChatRoom(curUser, target);
+      findUser(curUser);
+      findUser(target);
+      sendFirstMessage();
+    }
+  }, [target]);
 
   if (product === null) return <div>로딩 중</div>;
 
@@ -277,7 +500,34 @@ const ProductDetail = () => {
               return (
                 <StProductRow key={i}>
                   <StRowLabel>* {label}</StRowLabel>
-                  <StRowValue>{productInfo[i]}</StRowValue>
+                  {productInfo[i] === data.quality ? (
+                    <StRowValue>
+                      <p
+                        style={{
+                          padding: '.3rem',
+                          backgroundColor: '#f3f3f3',
+                          width: 'fit-content'
+                        }}
+                      >
+                        {productInfo[i]}
+                      </p>
+                      <StQuailityInfo>
+                        <p
+                          onMouseEnter={showQuality}
+                          onMouseLeave={hideQuality}
+                        >
+                          i
+                        </p>
+                        {isHover && (
+                          <StQuilityInfoBox>
+                            거의 새것 - 대충 깔끔하다는 뜻
+                          </StQuilityInfoBox>
+                        )}
+                      </StQuailityInfo>
+                    </StRowValue>
+                  ) : (
+                    <StRowValue>{productInfo[i]}</StRowValue>
+                  )}
                 </StProductRow>
               );
             })}
@@ -285,7 +535,9 @@ const ProductDetail = () => {
           <ButtonWrapper>
             <Button $role="like">찜하기</Button>
             {/* 작성자 ID 가져오기 */}
-            <Button $role="chat">채팅하기</Button>
+            <Button $role="chat" id={product[0].uid} onClick={makeChatRoom}>
+              채팅 보내고 구매하기
+            </Button>
           </ButtonWrapper>
         </StProductInfo>
       </StDetailInfoSection>

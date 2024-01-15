@@ -15,14 +15,21 @@ import { v4 as uuid } from 'uuid';
 // create_chat_room - receiver_name
 
 const ImageInput = styled.input.attrs({ type: 'file' })`
-  width: 100%;
+  width: fit-content;
   padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.3);
 `;
 
 type RoomProps = {
   $current: string | undefined;
   children: ReactNode;
 };
+
+// 로그인 기능 연결
+
+// 채팅 시작 시
+// 내가 채팅하기 누른 게시물의 아이디 조회해서 데이터 가져오고
+// 자동으로 첫 채팅에 보내지도록
 
 export default function ChatRoom() {
   const [curUser, setCurUser] = useState<User | null>();
@@ -40,22 +47,20 @@ export default function ChatRoom() {
 
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
-    try {
-      if (curUser) {
-        const { data, error } = await supabase.from('chat_messages').insert([
-          {
-            id: uuid(),
-            sender_id: curUser?.id,
-            chat_room_id: clicked,
-            content: chatInput,
-            image_url: images
-          }
-        ]);
-        setChatInput('');
-        setImages('');
-      }
-    } catch (err) {
-      console.log('전송 실패', err);
+    if (curUser) {
+      const { data, error } = await supabase.from('chat_messages').insert([
+        {
+          id: uuid(),
+          sender_id: curUser?.id,
+          chat_room_id: clicked,
+          content: chatInput,
+          image_url: images
+        }
+      ]);
+      setChatInput('');
+      setImages('');
+
+      if (error) console.log('전송 실패', error);
     }
   };
 
@@ -64,33 +69,9 @@ export default function ChatRoom() {
       .from('chat_messages')
       .select('*')
       .eq('chat_room_id', room_id);
-    setMessages((prev: any) => [...prev, chat_messages]);
-  };
 
-  const makeChatRoom = async (e: MouseEvent<HTMLButtonElement>) => {
-    const id = e.currentTarget.id;
-    try {
-      if (curUser && curUser.identities !== undefined) {
-        const { data, error } = await supabase
-          .from('user')
-          .select('*')
-          .eq('uid', id);
-        console.log(data);
-        //   const { data, error } = await supabase.from('chat_room').insert([
-        //     {
-        //       participants: [
-        //         { user_id: id, user_name: 'test1' },
-        //         {
-        //           user_id: curUser.id,
-        //           user2_name: 'test2'
-        //         }
-        //       ]
-        //     }
-        //   ]);
-        // }
-      }
-    } catch (err) {
-      console.log('failed', err);
+    if (chat_messages) {
+      setMessages((prev: any) => [...prev, ...(chat_messages as any)]);
     }
   };
 
@@ -122,91 +103,25 @@ export default function ChatRoom() {
   };
 
   const getRoomsforUser = async () => {
-    try {
-      const { data: chat_room, error } = await supabase
-        .from('chat_room')
-        .select('*');
+    const { data: chat_room, error } = await supabase
+      .from('chat_room')
+      .select('*');
 
-      if (error) {
-        console.error('Error fetching chat rooms:', error);
-        return;
-      }
+    if (error) {
+      console.error('Error fetching chat rooms:', error);
+      return;
+    }
 
-      if (chat_room && curUser) {
-        const filtered = chat_room.filter((room: any) => {
-          // curUser.id와 일치하는 participant를 포함한 방만 필터링
-          return room.participants.some(
-            (participant: any) => participant.user_id === curUser.id
-          );
-        });
-        setRooms(filtered);
-      }
-    } catch (error) {
-      console.error('Error in getRoomsforUser:', error);
+    if (chat_room && curUser) {
+      const filtered = chat_room.filter((room: any) => {
+        // curUser.id와 일치하는 participant를 포함한 방만 필터링
+        return room.participants.some(
+          (participant: any) => participant.user_id === curUser.id
+        );
+      });
+      setRooms(filtered);
     }
   };
-
-  useEffect(() => {
-    const chatMessages = supabase
-      .channel('custom-all-channel')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'chat_messages' },
-        (payload) => {
-          setMessages((prev: any) => [...prev, payload.new]);
-          if (rooms) {
-            Promise.all(rooms.map((room) => unreadCount(room.id))).then(
-              (counts) => {
-                setUnread(counts);
-              }
-            );
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      chatMessages.unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    const getUserData = async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (data) {
-        setCurUser(data.user);
-        if (data.user) {
-          getRoomsforUser();
-        } else {
-          console.log('user data is empty');
-        }
-      }
-    };
-
-    getUserData();
-  }, []);
-
-  useEffect(() => {
-    if (curUser) {
-      getRoomsforUser();
-    }
-  }, [curUser]);
-
-  useEffect(() => {
-    if (clicked) {
-      setMessages([]);
-      getMessages(clicked);
-    }
-  }, [clicked]);
-
-  useEffect(() => {
-    // 각 채팅방 목록이 업데이트될 때마다 안 읽은 메세지 수를 가져오고 상태에 저장
-    if (rooms) {
-      Promise.all(rooms.map((room) => unreadCount(room.id))).then((counts) => {
-        setUnread(counts);
-      });
-    }
-  }, [rooms]);
 
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files;
@@ -235,22 +150,85 @@ export default function ChatRoom() {
     setImages(res.data.publicUrl);
   };
 
+  useEffect(() => {
+    const chatMessages = supabase
+      .channel('custom-insert-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'chat_messages' },
+        (payload) => {
+          if (rooms) {
+            Promise.all(rooms.map((room) => unreadCount(room.id))).then(
+              (counts) => {
+                setUnread(counts);
+              }
+            );
+            setMessages((prev: any) => [...prev, payload.new]);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      chatMessages.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const chatRooms = supabase
+      .channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'chat_room' },
+        (payload) => {
+          getRoomsforUser();
+        }
+      )
+      .subscribe();
+    return () => {
+      chatRooms.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (data) {
+        setCurUser(data.user);
+        if (data.user) {
+          getRoomsforUser();
+        } else {
+          console.log('user data is empty');
+        }
+      }
+    };
+    getUserData();
+  }, []);
+
+  useEffect(() => {
+    if (curUser) {
+      getRoomsforUser();
+    }
+  }, [curUser]);
+
+  useEffect(() => {
+    if (clicked) {
+      setMessages([]);
+      getMessages(clicked);
+    }
+  }, [clicked]);
+
+  useEffect(() => {
+    // 각 채팅방 목록이 업데이트될 때마다 안 읽은 메세지 수를 가져오고 상태에 저장
+    if (rooms) {
+      Promise.all(rooms.map((room) => unreadCount(room.id))).then((counts) => {
+        setUnread(counts);
+      });
+    }
+  }, [rooms]);
+
   return (
     <>
-      <div>
-        <button
-          onClick={makeChatRoom}
-          id="a5664ecd-c9f2-475f-8308-3d4db8be0489"
-        >
-          유저 1과 채팅하기
-        </button>
-        <button
-          onClick={makeChatRoom}
-          id="5f59cf0d-4787-4d25-bd8d-dcc8004d233d"
-        >
-          유저 2와 채팅하기
-        </button>
-      </div>
       <StChatContainer>
         <StChatList>
           {rooms?.map((room, i) => {
@@ -277,44 +255,52 @@ export default function ChatRoom() {
           })}
         </StChatList>
         <StChatBoard>
-          <StChatBoardHeader>사용자 이름</StChatBoardHeader>
-          {messages
-            ?.sort((a: any, b: any) => b.created_at - a.created_at)
-            .map((msg: any) => {
-              return msg.sender_id === curUser?.id ? (
-                <>
-                  {msg.image_url && (
-                    <img
-                      style={{
-                        width: '200px',
-                        display: 'block',
-                        marginLeft: 'auto'
-                      }}
-                      src={msg.image_url}
-                      alt=""
-                    ></img>
-                  )}
-                  <StMyChatballoon key={msg.id}>{msg.content}</StMyChatballoon>
-                </>
-              ) : (
-                <>
-                  {msg.image_url && (
-                    <img
-                      style={{
-                        width: '200px',
-                        display: 'block',
-                        marginRight: 'auto'
-                      }}
-                      src={msg.image_url}
-                      alt=""
-                    />
-                  )}
-                  <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
-                    {msg.content}
-                  </StChatballoon>
-                </>
-              );
-            })}
+          <StChatBoardHeader>
+            <StChatBoardHeaderName>사용자 이름</StChatBoardHeaderName>
+            점점점
+          </StChatBoardHeader>
+          <StChatGround>
+            {messages
+              ?.sort((a: any, b: any) => b.created_at - a.created_at)
+              .map((msg: any) => {
+                return msg.sender_id === curUser?.id ? (
+                  <>
+                    {msg.image_url && (
+                      <img
+                        style={{
+                          width: '200px',
+                          display: 'block',
+                          marginLeft: 'auto'
+                        }}
+                        src={msg.image_url}
+                        alt=""
+                      ></img>
+                    )}
+                    <StMyChatballoon key={msg.id}>
+                      {msg.content}
+                    </StMyChatballoon>
+                  </>
+                ) : (
+                  <>
+                    {msg.image_url && (
+                      <img
+                        style={{
+                          width: '200px',
+                          display: 'block',
+                          marginRight: 'auto'
+                        }}
+                        src={msg.image_url}
+                        alt=""
+                      />
+                    )}
+                    <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
+                      {msg.content}
+                    </StChatballoon>
+                  </>
+                );
+              })}
+          </StChatGround>
+
           <StChatForm onSubmit={sendMessage}>
             <ImageInput onChange={handleImage} placeholder="이미지 보내기" />
             <StChatInput
@@ -330,7 +316,7 @@ export default function ChatRoom() {
   );
 }
 
-const StFadeAni = keyframes`
+export const StFadeAni = keyframes`
   from{
     opacity: 0;
   }
@@ -342,16 +328,20 @@ const StFadeAni = keyframes`
 
 const StChatContainer = styled.div`
   width: 100%;
-  max-width: 1440px;
+  max-width: 1114px;
+  max-height: 597px;
   display: flex;
   border: 1px solid black;
   height: fit-content;
-  max-height: 700px;
   margin: auto;
   animation: ${StFadeAni} 1s forwards;
+  font-family: 'Pretendard-Regular';
 `;
 const StChatList = styled.div`
-  width: 30%;
+  width: 724.9px;
+  height: 597px;
+  max-width: 384px;
+  max-height: 597px;
   display: flex;
   flex-direction: column;
   border: 1px solid black;
@@ -360,19 +350,35 @@ const StChatList = styled.div`
 
 const StChatBoard = styled.div`
   width: 70%;
+  height: 597px;
   border: 1px solid black;
-  overflow-y: scroll;
+  overflow-y: hidden;
   position: relative;
   animation: ${StFadeAni} 1s forwards;
 `;
 
+const StChatGround = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 1rem 0 5rem 0;
+`;
+
 const StChatBoardHeader = styled.div`
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: sticky;
   top: 0;
   left: 0;
-  padding: 1rem;
+  padding: 1.375rem 1.25rem;
   background-color: #eee;
+`;
+
+const StChatBoardHeaderName = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 500;
 `;
 
 const StChatballoon = styled.div`
@@ -381,7 +387,7 @@ const StChatballoon = styled.div`
   margin-right: auto;
   margin-left: 1rem;
   margin-block: 1rem;
-  padding: 1rem;
+  padding: 0.75rem 1.688rem;
   border-radius: 40px;
   font-weight: 600;
 `;
@@ -392,18 +398,7 @@ const StMyChatballoon = styled.div`
   margin-left: auto;
   margin-right: 1rem;
   margin-block: 1rem;
-  padding: 1rem;
-  border-radius: 60px;
-  font-weight: 600;
-`;
-
-const StMyImgChatballoon = styled.div`
-  width: 500px;
-  background-color: yellow;
-  margin-left: auto;
-  margin-right: 1rem;
-  margin-block: 1rem;
-  padding: 1rem;
+  padding: 0.75rem 1.688rem;
   border-radius: 60px;
   font-weight: 600;
 `;

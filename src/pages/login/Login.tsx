@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { supabase } from '../../api/supabase/supabaseClient';
 
 const Login = () => {
@@ -21,6 +21,15 @@ const Login = () => {
     });
     console.log(data);
   };
+
+  const getUser = async () => {
+    const { data, error } = await supabase.auth.getUser();
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <div>

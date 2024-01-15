@@ -6,11 +6,10 @@ export const FooterContainer = styled.div`
   width: 100%;
   height: 200px;
 
-  margin-top: 550px;
   background-color: #f2f2f2;
   justify-content: center;
   align-items: center;
-  /* position: fixed; */
+  /* position: absolute; */
   bottom: 0;
   left: 0;
 `;
