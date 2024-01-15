@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Community, UsedItem } from '../usedtypes';
 import { supabase } from '../../api/supabase/supabaseClient';
@@ -44,7 +44,7 @@ export const fetchData = async (): Promise<{
     const usedItemsWithImages = await Promise.all(
       usedItemsData.map(async (item) => {
         const pathToImage = `pictures/${item.image_Url}.png`;
-        const { data } = await supabase.storage
+        const { data } = supabase.storage
           .from('picture')
           .getPublicUrl(pathToImage);
         return { ...item, data };
@@ -72,6 +72,34 @@ export const fetchData = async (): Promise<{
 };
 
 const Home = () => {
+  const [showScrollButton, setShowScrollButton] = useState(false);
+
+  useEffect(() => {
+    // 스크롤 이벤트 리스너
+    const handleScroll = () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop;
+
+      const isBottom30Percent =
+        scrollY > document.documentElement.clientHeight * 0.7;
+
+      // 스크롤-상단 이동 버튼 보이기/숨기기 상태 업데이트
+      setShowScrollButton(isBottom30Percent);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  // 상단 스크롤
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
   // 전체 데이터 개수를 가져오는 쿼리
   const {
     data: usedItemsCountData,
@@ -112,7 +140,14 @@ const Home = () => {
           </div>
           <LinktoProducts to="/products">전체보기</LinktoProducts>
         </div>
-
+        {showScrollButton && (
+          <ScrollToTopButton onClick={scrollToTop}>
+            <img
+              src={process.env.PUBLIC_URL + '/assets/upbutton.png'}
+              alt="상단으로 이동"
+            />
+          </ScrollToTopButton>
+        )}
         <SupabaseListContainer>
           {usedItems.map((item) => (
             <SupabaseList key={item.id}>
@@ -135,8 +170,13 @@ const Home = () => {
           {communityItems.map((item) => (
             <ComunityList key={item.post_id}>
               <div>
-                {item.image_Url && (
+                {item.image_Url ? (
                   <img src={item.image_Url} alt="Community Post" />
+                ) : (
+                  <img
+                    src={process.env.PUBLIC_URL + '/assets/defaultuser.png'}
+                    alt="Default User"
+                  />
                 )}
               </div>
               <div>
@@ -176,6 +216,27 @@ const HomeSection = styled.div`
     margin-left: 10px;
   }
 `;
+const ScrollToTopButton = styled.button`
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  background-color: #fff;
+  border: 1px solid #000;
+  border-radius: 50%;
+  padding: 10px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  img {
+    width: 30px;
+    height: 30px;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
 const LinktoProducts = styled(Link)`
   text-decoration: none;
   color: #000;
@@ -269,8 +330,8 @@ const ComunityList = styled.li`
     width: 80px;
     height: 80px;
     object-fit: cover;
-    /* border-radius: 50%; */
-    margin-left: 20px;
+    border-radius: 50%;
+    margin-left: 30px;
   }
 
   div {
