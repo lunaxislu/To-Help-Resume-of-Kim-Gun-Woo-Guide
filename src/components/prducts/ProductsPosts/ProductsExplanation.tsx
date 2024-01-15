@@ -80,8 +80,18 @@ const ProductsExplanation = () => {
   const [textTypeValue, setTextTypeValue] = useState(producsPostsTextInit)
   
   const handleOnChangeTextTypeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { name, value, valueAsNumber } = e.target;
+    if (name === 'tags') {
+    setTextTypeValue({ ...textTypeValue, [name]: [...value.split(',')] }); 
+    } else if (name === 'price' || name === 'count') {
+      setTextTypeValue({ ...textTypeValue, [name]: valueAsNumber });
+    }
+    //==========================
+      // radio input까지 합쳐보기
+    //==========================  
+    else {
     setTextTypeValue({ ...textTypeValue, [name]: value });
+    }
   };
 
   // input radio value
@@ -123,32 +133,17 @@ const ProductsExplanation = () => {
 
   // input값이 모두 들어있는 새로운 객체 만들어서 state로 만들어서 업로드
    const entireProductsPosts = {...textTypeValue, category, ...radioCheckedList, agreement}
-   console.log(entireProductsPosts)
+   // console.log(entireProductsPosts)
 
-  const [productsPosts, setProductsPosts] = useState<ProductsPost[]>([entireProductsPosts]);
-
+  const [productsPosts, setProductsPosts] = useState<ProductsPost>(entireProductsPosts);
+  console.log(productsPosts)
   const addPosts = async () => {
     try {
       const {data, error} = await supabase
         .from('products')
         .insert([
-          {
-            productsPosts: productsPosts
-            // exchange_product: 'exchange_product',
-            // category: 'category',
-            // title: 'title',
-            // tegs: 'tegs',
-            // price: 'price',
-            // count: 'count',
-            // contents: 'contents',
-            // deal_type: 'dealType',
-            // quality: 'quality',
-            // changeable: 'changeable',
-            // shipping_cost: 'shipping_cost',
-            // agreement: 'agreement',
-          },
+          entireProductsPosts
         ])
-        .single();
 
       if (data) {
         console.log(data)
