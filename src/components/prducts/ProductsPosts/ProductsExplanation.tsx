@@ -7,7 +7,8 @@ type TextValue = {
   price: number,
   count: number, 
   exchange_product: string,
-  major:any[]
+  major: string[],
+  tags: string[]
 }
 const producsPostsTextInit: TextValue = {
   title: "",
@@ -15,7 +16,8 @@ const producsPostsTextInit: TextValue = {
   price: 0,
   count: 0, 
   exchange_product: "",
-  major: []
+  major: [],
+  tags: []
 }
 
 type ProductsPost = {
@@ -25,6 +27,7 @@ type ProductsPost = {
   count: number, 
   tags: string, 
   location: string,
+  locationCheck: boolean,
   dealType: string,
   quality: string,
   changable: boolean,
@@ -38,6 +41,7 @@ const addProducsPosts: ProductsPost[] = [{
   count: 0, 
   tags: "", 
   location: "",
+  locationCheck: false,
   dealType: "",
   quality: "",
   changable: false,
@@ -83,6 +87,8 @@ const ProductsExplanation = () => {
   // input checkbox value
   const [majorCheckedList, setMajorCheckedList] = useState<string[]>([]);
   const [isChecked, setIsChecked] = useState(false);
+  const [locationCheckedList, setLocationCheckedList] = useState(false);
+  const [agreementCheckedList, setAgreementCheckedList] = useState(false);
 
   const handleCheckedMajor = (value: string, isChecked: boolean) => {
     if (isChecked) {
@@ -105,8 +111,10 @@ const ProductsExplanation = () => {
       e.preventDefault();
       console.log('textTypeValue', textTypeValue)
       console.log('majorCheckedList', majorCheckedList)
+      console.log('locationCheckedList', locationCheckedList)
+      console.log('agreementCheckedList', agreementCheckedList)
     },
-    [textTypeValue, majorCheckedList]
+    [textTypeValue, majorCheckedList, locationCheckedList, agreementCheckedList]
   );
 
   // 객체에 major 키 만들어서 checkedList 합치고 state로 만들어서 업로드
@@ -153,17 +161,7 @@ const ProductsExplanation = () => {
         <p>0/40</p>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
-        <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>가격*</h2>
-        <input type='number' name='price' value={textTypeValue.price} onChange={handleOnChangeTextTypeValue} placeholder='가격을 입력해주세요'/>
-        <label><input type='checkbox' />배송비 포함</label>
-        <label><input type='checkbox' />배송비 별도</label>
-      </div>
-      <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
-        <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>수량*</h2>
-        <input type='number' name='count' value={textTypeValue.count} onChange={handleOnChangeTextTypeValue} placeholder='수량을 입력해주세요'/>
-      </div>
-      <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
-        <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>태그*</h2>
+        <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>카테고리*</h2>
         <div>
           {major.map(major => 
             <label key={major} htmlFor='major'><input type='checkbox' id='major' checked={majorCheckedList.includes(major)} onChange={(e) => handleOnChangeCheckMajor(e, major)} />{major}</label>
@@ -171,23 +169,32 @@ const ProductsExplanation = () => {
         </div>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
+        <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>가격*</h2>
+        <input type='number' name='price' value={textTypeValue.price} onChange={handleOnChangeTextTypeValue} placeholder='가격을 입력해주세요'/>
+        <label><input type='radio' />배송비 포함</label>
+        <label><input type='radio' />배송비 별도</label>
+      </div>
+      <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
+        <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>수량*</h2>
+        <input type='number' name='count' value={textTypeValue.count} onChange={handleOnChangeTextTypeValue} placeholder='수량을 입력해주세요'/>
+      </div>
+      <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>거래방식*</h2>
-        <label><input type='checkbox' />택배</label>
-        <label><input type='checkbox' />직거래</label>
-        <label><input type='checkbox' />협의 후 결정</label>
+        <label><input type='radio' />택배</label>
+        <label><input type='radio' />직거래</label>
+        <label><input type='radio' />협의 후 결정</label>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>직거래 지역</h2>
-        <button>내 위치</button>
         <button>최근 지역</button>
         <button>주소 검색</button>
-        <label><input type='checkbox' />협의 후 결정</label>
+        <label htmlFor='location'><input type='checkbox' id='location' checked={locationCheckedList} onChange={() => setLocationCheckedList(!locationCheckedList)} />협의 후 결정</label>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>상품상태*</h2>
         <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginRight: '20px'}}>
           {quality.map((quality) => 
-              <label key={quality.condition}><input type='checkbox' />{quality.condition}</label>
+              <label key={quality.condition}><input type='radio' />{quality.condition}</label>
           )}
         </div>
         <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
@@ -198,14 +205,23 @@ const ProductsExplanation = () => {
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>교환*</h2>
-        <input type='checkbox' /><label>불가</label>
-        <input type='checkbox' /><label>가능</label>
+        <input type='radio' /><label>불가</label>
+        <input type='radio' /><label>가능</label>
         <input type='text' name='exchange_product' value={textTypeValue.exchange_product} onChange={handleOnChangeTextTypeValue} placeholder='교환을 원하는 상품을 입력해주세요.' />
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>설명*</h2>
         <textarea value={textTypeValue.contents} name='contents' onChange={(e: any) => handleOnChangeTextTypeValue(e)} style={{width: '75%', resize: 'none'}} placeholder='설명을 입력해 주세요' />
         <p>0/2000</p>
+      </div>
+      <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
+        <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>태그</h2>
+        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+          <input type='text' name='tags' value={textTypeValue.tags} onChange={handleOnChangeTextTypeValue} maxLength={9} placeholder='태그를 입력해주세요.' />
+          <p style={{color: 'darkgray'}}>띄어쓰기로 구분되며 최대 9자까지 입력할 수 있어요.</p>
+          <p style={{color: 'darkgray'}}>사람들이 내 상품을 더 잘 찾을 수 있어요.</p>
+          <p style={{color: 'darkgray'}}>상품과 관련 없는 태그를 입력할 경우, 판매에 제재를 받을 수 있어요.</p>
+        </div>
       </div>
       <div style={{backgroundColor: 'lightgrey', padding: '15px'}}>
         <p style={{marginBottom: '20px'}}>
@@ -220,7 +236,7 @@ const ProductsExplanation = () => {
            불순한 의도는 처벌을 피할 수 없습니다.
            불순한 의도는 처벌을 피할 수 없습니다.
            불순한 의도는 처벌을 피할 수 없습니다. </p>
-        <label><input type='checkbox' />동의합니다.</label>
+        <label htmlFor='agreement'><input type='checkbox' id='agreement' checked={agreementCheckedList} onChange={() => setAgreementCheckedList(!agreementCheckedList)} />동의합니다.</label>
       </div>
       <div style={{display: 'flex', justifyContent: 'flex-end', position: 'fixed', bottom: 0, left: 0, right:0, backgroundColor: 'pink', height: '50px', padding: '15px', gap: '10px'}}>
         <button>임시저장</button>
