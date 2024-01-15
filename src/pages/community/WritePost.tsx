@@ -10,7 +10,6 @@ const Write = () => {
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('말머리 선택');
   const [file, setFile] = useState('');
-  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
 
   const navigate = useNavigate();
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +25,7 @@ const Write = () => {
       .from('files')
       .upload(`files/${newFileName}`, file);
     if (error) {
-      console.log('파일 안올라감ㅋ');
+      console.log('파일 업로드에 오류가 생겼습니다.');
       return;
     }
     const res = supabase.storage.from('files').getPublicUrl(data.path);
@@ -90,16 +89,12 @@ const Write = () => {
         console.log(response);
         if (response.data) {
           const postImageUrl = response.data.publicUrl;
-          console.log(response.data.publicUrl);
           const editor = quillRef.current?.getEditor();
           const range = editor?.getSelection(true);
-          console.log(editor);
-          console.log(range);
 
           // 이미지를 붙이고 커서를 이동
           editor?.insertEmbed(range?.index || 0, 'image', postImageUrl);
           editor?.setSelection((range?.index || 0) + 1, 0);
-          console.log('가져왔다');
         } else {
           console.error('No public URL found in response data.');
         }
