@@ -80,7 +80,7 @@ const Home = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
 
       const isBottom30Percent =
-        scrollY > document.documentElement.clientHeight * 0.7;
+        scrollY > document.documentElement.clientHeight * 0.6;
 
       // 스크롤-상단 이동 버튼 보이기/숨기기 상태 업데이트
       setShowScrollButton(isBottom30Percent);
@@ -132,6 +132,7 @@ const Home = () => {
   return (
     <HomeContainer>
       <Carousel images={carouselImages} />
+
       <HomeSection>
         <div className="one">
           <div>
@@ -150,13 +151,18 @@ const Home = () => {
         )}
         <SupabaseListContainer>
           {usedItems.map((item) => (
-            <SupabaseList key={item.id}>
-              {item.image_Url && <img src={item.image_Url} alt="Item" />}
+            <TousedItemDetailPage
+              key={item.id}
+              to={`/products/detail/${item.id}`}
+            >
+              <SupabaseList>
+                {item.image_Url && <img src={item.image_Url} alt="Item" />}
 
-              <h1>{item.quality}</h1>
-              <h3>{item.title}</h3>
-              <p>{item.price},000원</p>
-            </SupabaseList>
+                <h1>{item.quality}</h1>
+                <h3>{item.title}</h3>
+                <p>{item.price},000원</p>
+              </SupabaseList>
+            </TousedItemDetailPage>
           ))}
         </SupabaseListContainer>
       </HomeSection>
@@ -168,37 +174,46 @@ const Home = () => {
         </Communitytitle>
         <ComunityWrapper>
           {communityItems.map((item) => (
-            <ComunityList key={item.post_id}>
-              <div>
-                {item.image_Url ? (
-                  <img src={item.image_Url} alt="Community Post" />
-                ) : (
-                  <img
-                    src={process.env.PUBLIC_URL + '/assets/defaultuser.png'}
-                    alt="Default User"
-                  />
-                )}
-              </div>
-              <div>
-                <h3>{item.title}</h3>
-                <p>{item.content}</p>
-              </div>
-            </ComunityList>
+            <ToCommunityDetailPage
+              key={item.post_id}
+              to={`/community/detail/${item.post_id}`}
+            >
+              <ComunityList>
+                <div className="commupic">
+                  {item.image_Url ? (
+                    <img src={item.image_Url} alt="Community Post" />
+                  ) : (
+                    <img
+                      src={process.env.PUBLIC_URL + '/assets/defaultuser.png'}
+                      alt="Default User"
+                    />
+                  )}
+                </div>
+                <div className="commucontent">
+                  <h3>{item.title}</h3>
+                  <p>{item.content}</p>
+                </div>
+              </ComunityList>
+            </ToCommunityDetailPage>
           ))}
         </ComunityWrapper>
       </ComunityContainer>
     </HomeContainer>
   );
 };
+export default Home;
 
 const HomeContainer = styled.section`
   border-top: 1px solid #000;
-  /* display: flex; */
+  display: flex;
+  height: 1870px;
+
   flex-direction: column;
 `;
 
 const HomeSection = styled.div`
-  margin: 0 100px;
+  width: 1116px;
+  margin: 0 auto;
   margin-top: 40px;
 
   span {
@@ -219,17 +234,16 @@ const HomeSection = styled.div`
 const ScrollToTopButton = styled.button`
   position: fixed;
   bottom: 100px;
-  right: 20px;
-  background-color: #fff;
-  border: 1px solid #000;
-  border-radius: 50%;
+  right: 10px;
   padding: 10px;
+  border: none;
   cursor: pointer;
-  transition: opacity 0.3s;
+  transition: opacity 0.5s;
+  background-color: transparent;
 
   img {
-    width: 30px;
-    height: 30px;
+    width: 60px;
+    height: 60px;
   }
 
   &:hover {
@@ -248,12 +262,12 @@ const SupabaseListContainer = styled.ul`
   width: 100%;
   height: 325px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   margin-top: 20px;
 `;
 const SupabaseList = styled.li`
   flex: 1 0 calc(20% - 20px);
-  width: 208px;
+  width: 100%;
   height: 325px;
   padding: 10px;
   display: flex;
@@ -287,12 +301,17 @@ const SupabaseList = styled.li`
     text-align: left;
   }
 `;
+const TousedItemDetailPage = styled(Link)`
+  text-decoration: none;
+  cursor: pointer;
+  color: black;
+`;
+
 const ComunityContainer = styled.div`
-  width: 1110;
-  height: 760px;
+  width: 1116px;
   display: flex;
   flex-wrap: wrap;
-  margin: 0 100px;
+  margin: 0 auto;
   margin-top: 40px;
 `;
 
@@ -314,18 +333,30 @@ const ComunityWrapper = styled.ul`
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+  background-color: transparent;
+`;
+
+const ToCommunityDetailPage = styled(Link)`
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
 `;
 
 const ComunityList = styled.li`
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
-  width: 100%;
+  /* width: 100%; */
   height: 120px;
   border: 1px solid #ccc;
+  border-radius: 10px;
   margin-top: 20px;
+  /* margin-bottom: 20px; */
   background-color: #d9d9d9;
-
+  /* .commupic {
+    width: 100px;
+  } */
   img {
     width: 80px;
     height: 80px;
@@ -333,20 +364,16 @@ const ComunityList = styled.li`
     border-radius: 50%;
     margin-left: 30px;
   }
-
-  div {
-    flex: 1;
+  .commucontent {
+    margin-left: 15px;
   }
-
   h3 {
     font-size: 18px;
     margin-bottom: 10px;
   }
 
   p {
-    font-size: 14px;
+    font-size: 16px;
     color: #555;
   }
 `;
-
-export default Home;

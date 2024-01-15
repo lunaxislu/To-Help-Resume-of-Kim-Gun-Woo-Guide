@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 interface CarouselProps {
@@ -7,31 +7,61 @@ interface CarouselProps {
 
 const Carousel: React.FC<CarouselProps> = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const infiniteCarousel = [images[images.length - 1], ...images, images[0]];
+  const carouselRef = useRef<HTMLUListElement>(null);
+  // 총 3개임. 인덱스는 0,1,2
+  // 여기에 앞 뒤로 끝 슬라이드 추가함 -> 2,0,1,2,0 이런식 / 그걸 무한캐러셀 배열에 넣고 map을 돌림
+  // 새로운 배열의 인덱스는 0,1,2,3,4가 됨. 인덱스 번호가 4가 되면 자연스럽게 1 슬라이드로 가게 하고
+  // 인덱스 번호가 0이 되면 자연스럽게 3 슬라이드로 가도록 해야 함.
+
+  const moveToNthSlide = (index: number) => {
+    setTimeout(() => {
+      setCurrentIndex(index);
+      if (carouselRef.current !== null) {
+        carouselRef.current.style.transition = '';
+      }
+    }, 500);
+  };
 
   const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setCurrentIndex((prevIndex) => {
+      if (prevIndex === images.length - 1) {
+        setTimeout(() => {
+          setCurrentIndex(0);
+        }, 0);
+        return images.length;
+      } else {
+        return prevIndex + 1;
+      }
+    });
   };
 
   const goToPrev = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
-    );
+    setCurrentIndex((prevIndex) => {
+      if (prevIndex === 0) {
+        return images.length - 1;
+      } else {
+        return prevIndex - 1;
+      }
+    });
   };
 
   const goToImage = (index: number) => {
     setCurrentIndex(index);
   };
-  useEffect(() => {
-    const intervalId = setInterval(goToNext, 8000);
 
-    return () => clearInterval(intervalId);
-  }, [currentIndex, images.length]);
+  // useEffect(() => {
+  //   const intervalId = setInterval(goToNext, 10000);
+
+  //   return () => clearInterval(intervalId);
+  // }, [currentIndex, images.length]);
+
   return (
     <CarouselContainer>
       <CarouselContent
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
-        {images.map((image, index) => (
+        {infiniteCarousel.map((image, index) => (
           <CarouselImage
             key={index}
             src={process.env.PUBLIC_URL + image}
@@ -62,9 +92,9 @@ export default Carousel;
 
 const CarouselContainer = styled.div`
   position: relative;
-  width: 100%;
-  height: 400px;
-  overflow: hidden;
+  /* max-width: 100%; */
+  /* height: 400px; */
+  overflow: visible;
 `;
 
 const CarouselContent = styled.div`
@@ -74,9 +104,12 @@ const CarouselContent = styled.div`
 
 const CarouselImage = styled.img`
   flex: 0 0 100%;
-  width: 100%;
-  height: 100%;
+  max-width: 100%;
+  max-height: 300px;
   object-fit: cover;
+  /* background-repeat: no-repeat; */
+  border: 2px solid red;
+  box-sizing: border-box;
 `;
 
 const DotContainer = styled.div`
@@ -120,6 +153,7 @@ const Button = styled.button`
     right: 20px;
   }
 `;
+
 const Icon = styled.img`
   width: 30px;
   height: 30px;

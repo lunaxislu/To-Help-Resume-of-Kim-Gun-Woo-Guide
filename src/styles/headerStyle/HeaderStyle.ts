@@ -6,6 +6,7 @@ export const HeaderContainer = styled.header`
   display: flex;
   flex-direction: column;
   padding: 10px 20px;
+  margin: 0px auto;
 
   background-color: #f2f2f2;
 `;
@@ -39,7 +40,11 @@ export const NavSection = styled.section`
 `;
 export const NavBar = styled.nav``;
 export const NavButton = styled(Link)`
+  text-decoration: none;
   margin-right: 10px;
+  cursor: pointer;
+  color: black;
+  font-size: 18px;
 `;
 export const SearchBar = styled.input`
   width: 300px;
