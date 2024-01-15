@@ -12,6 +12,7 @@ type ProductsPost = {
   contents: string,
   price: number,
   count: number, 
+  category: string[],
   tags: string[], 
   location: string,
   dealType: string,
@@ -50,10 +51,373 @@ console.log(products)
 
   return (
     <>
-      <div style={{display: 'flex', flexDirection: 'row', gap: '10px', marginBottom: '10px'}}>
+      <div style={{display: 'flex', flexDirection: 'row', gap: '10px', marginBottom: '10px', flexWrap: 'wrap'}}>
         {products.map((product) => {
           return <ProductsCard product={product}/>
         })}
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
+        <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
+          <div style={{marginBottom: '10px', width: '230px', height: '230px', backgroundColor: 'pink'}}>
+            <image>
+            </image>
+          </div>
+          <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
+              <li style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>회화</li>
+          </div>
+          <h2 style={{marginBottom: '10px'}}>팔레트</h2>
+          <h3>20000원</h3>
+        </div>
       </div>
       <button onClick={()=>{navigate('/productsposts')}}>글쓰기</button>
     </>
