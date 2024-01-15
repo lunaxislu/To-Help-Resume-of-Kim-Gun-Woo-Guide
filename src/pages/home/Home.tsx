@@ -31,7 +31,7 @@ export const fetchData = async (): Promise<{
         .from('community')
         .select('*')
         .order('created_at', { ascending: false })
-        .limit(5);
+        .limit(6);
 
     if (usedItemsError || communityItemsError) {
       console.error(
@@ -127,7 +127,10 @@ const Home = () => {
       </HomeSection>
 
       <ComunityContainer>
-        <h2>작업자들의 커뮤니티에 함께해볼까요?</h2>
+        <Communitytitle>
+          <h2>작업자들의 커뮤니티에 함께해볼까요?</h2>
+          <CommunityLink to="/community">전체보기</CommunityLink>
+        </Communitytitle>
         <ComunityWrapper>
           {communityItems.map((item) => (
             <ComunityList key={item.post_id}>
@@ -224,28 +227,65 @@ const SupabaseList = styled.li`
   }
 `;
 const ComunityContainer = styled.div`
-  width: 100%;
+  width: 1110;
   height: 760px;
   display: flex;
   flex-wrap: wrap;
   margin: 0 100px;
   margin-top: 40px;
-  h2 {
-    margin-top: 80px;
-  }
 `;
+
+const Communitytitle = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 80px;
+`;
+const CommunityLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+`;
+
 const ComunityWrapper = styled.ul`
+  width: 100%;
   margin-top: 20px;
   display: flex;
   flex-direction: column;
 `;
+
 const ComunityList = styled.li`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  height: 100px;
+  height: 120px;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  background-color: #d9d9d9;
+
   img {
-    width: 54px;
-    height: 54px;
-    margin: 24px 30px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    /* border-radius: 50%; */
+    margin-left: 20px;
+  }
+
+  div {
+    flex: 1;
+  }
+
+  h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #555;
   }
 `;
+
 export default Home;
