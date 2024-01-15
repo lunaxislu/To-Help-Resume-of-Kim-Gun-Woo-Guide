@@ -13,6 +13,7 @@ type Post = {
   comment: { user_id: string; user_name: string } | null;
   likes: number | null;
   like_user: { uid: string }[] | null;
+  files: string;
 };
 // const categorys = ["전체",'꿀팁', "일상생활", "공구거래"]
 const CommunityMain: React.FC = () => {
@@ -39,6 +40,7 @@ const CommunityMain: React.FC = () => {
   //   return;
   // });
   const navigate = useNavigate();
+  console.log(posts);
   return (
     <Container>
       <h1>커뮤니티</h1>
@@ -55,21 +57,31 @@ const CommunityMain: React.FC = () => {
         <button>일상생활</button>
         <button>공구거래</button>
       </div>
-      <p>
-        
-      </p>
+      <p></p>
 
       {posts.map((post: Post) => {
         return (
           <Post key={post.post_id}>
             <Post_content>
+              {' '}
               <h2>
                 [{post.category}]{post.title}
               </h2>
+              {post.files && (
+                <div>
+                  <p>Uploaded File:</p>
+                  <a
+                    href={post.files}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    첨부파일
+                  </a>
+                </div>
+              )}
               {/* <p>{post.content}</p> */}
               <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
             </Post_content>
-            <img src="/assets/주황똥.png" />
           </Post>
         );
       })}
