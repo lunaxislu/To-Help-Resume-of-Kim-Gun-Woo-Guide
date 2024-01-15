@@ -10,6 +10,7 @@ import {
   UserIdentity,
   UserMetadata
 } from '@supabase/supabase-js';
+import ProductDetailInfo from '../../components/productDetailInfoBody/ProductDetailInfo';
 
 const StDetailContainer = styled.div`
   width: 100%;
@@ -121,52 +122,6 @@ const StProductInfoBody = styled.div`
   border-radius: 9px;
 `;
 
-const StProductRow = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-`;
-const StRowLabel = styled.div`
-  width: 150px;
-  font-family: 'Pretendard-Medium';
-  font-size: 0.875rem;
-  color: #878787;
-`;
-
-const StRowValue = styled.div`
-  width: 100%;
-  font-family: 'Pretendard-Medium';
-  font-size: 0.875rem;
-  text-align: left;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const StQuailityInfo = styled.div`
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  text-align: center;
-  background-color: var(--primary-color);
-  color: white;
-  line-height: 1.4;
-  cursor: pointer;
-  position: relative;
-`;
-
-const StQuilityInfoBox = styled.div`
-  width: 220px;
-  height: 250px;
-  background-color: rgba(0, 0, 0, 0.3);
-  position: absolute;
-  left: -250px;
-  bottom: -150px;
-  padding: 1rem;
-  color: white;
-  animation: ${StFadeAni} 0.2s forwards;
-`;
-
 const ButtonWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -228,7 +183,7 @@ const StCategoryTag = styled.li`
   cursor: pointer;
 `;
 
-interface Product {
+export interface Product {
   id: string;
   uid: string;
   created_at: string;
@@ -269,7 +224,6 @@ const ProductDetail = () => {
   const [curUser, setCurUser] = useState<CustomUser | null>(null);
   const [target, setTarget] = useState<CustomUser | null>(null);
   const [product, setProduct] = useState<Product[] | null>(null);
-  const [isHover, setIsHover] = useState<boolean>(false);
 
   const navi = useNavigate();
 
@@ -300,14 +254,6 @@ const ProductDetail = () => {
     } else {
       setProduct(products);
     }
-  };
-
-  const showQuality = () => {
-    setIsHover(true);
-  };
-
-  const hideQuality = () => {
-    setIsHover(false);
   };
 
   const makeChatRoom = async (e: MouseEvent) => {
@@ -496,41 +442,11 @@ const ProductDetail = () => {
             <StTimeLeft>{data.created_at.slice(0, 10)}</StTimeLeft>
           </StHeaderPriceWrapper>
           <StProductInfoBody>
-            {labels.map((label: string, i: number) => {
-              return (
-                <StProductRow key={i}>
-                  <StRowLabel>* {label}</StRowLabel>
-                  {productInfo[i] === data.quality ? (
-                    <StRowValue>
-                      <p
-                        style={{
-                          padding: '.3rem',
-                          backgroundColor: '#f3f3f3',
-                          width: 'fit-content'
-                        }}
-                      >
-                        {productInfo[i]}
-                      </p>
-                      <StQuailityInfo>
-                        <p
-                          onMouseEnter={showQuality}
-                          onMouseLeave={hideQuality}
-                        >
-                          i
-                        </p>
-                        {isHover && (
-                          <StQuilityInfoBox>
-                            거의 새것 - 대충 깔끔하다는 뜻
-                          </StQuilityInfoBox>
-                        )}
-                      </StQuailityInfo>
-                    </StRowValue>
-                  ) : (
-                    <StRowValue>{productInfo[i]}</StRowValue>
-                  )}
-                </StProductRow>
-              );
-            })}
+            <ProductDetailInfo
+              labels={labels}
+              productInfo={productInfo}
+              data={data}
+            />
           </StProductInfoBody>
           <ButtonWrapper>
             <Button $role="like">찜하기</Button>
@@ -541,7 +457,6 @@ const ProductDetail = () => {
           </ButtonWrapper>
         </StProductInfo>
       </StDetailInfoSection>
-
       <StProductIntroSection>
         <StProductIntroTitle>상품 설명</StProductIntroTitle>
         <StProductContent>{data.contents}</StProductContent>
