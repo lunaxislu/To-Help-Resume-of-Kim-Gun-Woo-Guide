@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { supabase } from '../../../api/supabase/supabaseClient';
 
 type TextValue = {
@@ -133,23 +133,31 @@ const ProductsExplanation = () => {
         .from('products')
         .insert([
           {
-            title: 'title',
-            tegs: 'tegs',
-            price: 'price',
-            count: 'count',
-            contents: 'contents',
-            location: 'location',
-            dealType: 'dealType',
-            quality: 'quality',
-            changeable: 'changeable',
-            shipping_cost: 'shipping_cost',
-            agreement: 'agreement',
+            productsPosts: productsPosts
+            // exchange_product: 'exchange_product',
+            // category: 'category',
+            // title: 'title',
+            // tegs: 'tegs',
+            // price: 'price',
+            // count: 'count',
+            // contents: 'contents',
+            // deal_type: 'dealType',
+            // quality: 'quality',
+            // changeable: 'changeable',
+            // shipping_cost: 'shipping_cost',
+            // agreement: 'agreement',
           },
         ])
+        .single();
+
+      if (data) {
+        console.log(data)
+      }
       
       if (error) throw error;
+      window.location.reload();
     } catch (error) {
-      //alert('예상치 못한 문제가 발생하였습니다. 다시 시도하여 주십시오.')
+      alert('예상치 못한 문제가 발생하였습니다. 다시 시도하여 주십시오.')
     }
   }
 

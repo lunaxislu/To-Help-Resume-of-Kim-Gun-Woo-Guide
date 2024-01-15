@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ProductsCard from './ProductsCard'
 import { supabase } from '../../../api/supabase/supabaseClient';
 import { useNavigate } from 'react-router';
@@ -33,7 +33,8 @@ const ProductList = () => {
   useEffect(() => {
     getProducts();
   }, [])
-
+  
+  // 나중에 필요한 것만 가져오기 ex. select('id, name')
   const getProducts = async () => {
     try {
       const { data, error } = await supabase
