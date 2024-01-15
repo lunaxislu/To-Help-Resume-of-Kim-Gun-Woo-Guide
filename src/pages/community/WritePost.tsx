@@ -9,50 +9,63 @@ const Write = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('말머리 선택');
-  const [file, setFile] = useState('');
-
+  // const [file, setFile] = useState('');
+  const [files, setFiles] = useState<File[]>([]);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
+  const [mainImage, setMainImage] = useState('');
   const navigate = useNavigate();
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files;
+    const fileList = e.target.files;
+    if (fileList) {
+      const filesArray = Array.from(fileList);
 
-    if (file) {
-      handleFilesUpload(file[0]);
+      // 각 파일을 개별적으로 처리 (필요한 경우)
+      filesArray.forEach((file) => {
+        handleFilesUpload(file);
+      });
     }
   };
   const handleFilesUpload = async (file: File) => {
-    const newFileName = uuid();
-    const { data, error } = await supabase.storage
-      .from('files')
-      .upload(`files/${newFileName}`, file);
-    if (error) {
-      console.log('파일 업로드에 오류가 생겼습니다.');
-      return;
-    }
-    const res = supabase.storage.from('files').getPublicUrl(data.path);
-    setFile(res.data.publicUrl);
-    console.log(res.data.publicUrl);
-  };
-
-  const addPost = async () => {
-    if (file) {
-      try {
-        // FileList를 배열로 변환
-
-        const { data, error } = await supabase.from('community').insert([
-          {
-            title,
-            content,
-            category,
-            post_user: 'sweetPotato',
-            nickname: 'goguma',
-            files: file
-          }
-        ]);
-        if (error) throw error;
-        navigate('/community');
-      } catch (error) {
-        console.error('Error adding post:', error);
+    try {
+      // const newFileName = uuid();
+      const { data, error } = await supabase.storage
+        .from('files')
+        .upload(`files/${file.name}${uuid()}`, file);
+      if (error) {
+        console.log('파일 안올라감ㅋ', error);
+        return;
       }
+      const res = supabase.storage.from('files').getPublicUrl(data.path);
+      setFiles((prevFiles) => [...prevFiles, file]);
+      setUploadedFileUrl(res.data.publicUrl);
+      // file 객체를 저장하도록 수정
+      console.log(res.data.publicUrl);
+    } catch (error) {
+      console.error('Error handling file upload:', error);
+    }
+  };
+  console.log(files);
+  const addPost = async () => {
+    try {
+      // FileList를 배열로 변환
+      const { data, error } = await supabase.from('community').insert([
+        {
+          title,
+          content,
+          category,
+          post_user: 'sweetPotato',
+          nickname: 'goguma',
+          files: files.map((file) => ({
+            name: file.name,
+            url: uploadedFileUrl
+          })),
+          main_image: mainImage
+        }
+      ]);
+      if (error) throw error;
+      navigate('/community');
+    } catch (error) {
+      console.error('Error adding post:', error);
     }
   };
 
@@ -71,7 +84,7 @@ const Write = () => {
         console.log('온체인지');
         const file = input.files![0];
         const fileNewName = uuid();
-        console.log(file);
+
         // console.log(fileNewName);
         // file을 서버에 업로드
         const { data, error } = await supabase.storage
@@ -89,12 +102,20 @@ const Write = () => {
         console.log(response);
         if (response.data) {
           const postImageUrl = response.data.publicUrl;
+          console.log(response.data.publicUrl);
+          // const editor = quillRef.current!.getEditor();
           const editor = quillRef.current?.getEditor();
           const range = editor?.getSelection(true);
+          console.log(editor);
+          console.log(range);
 
           // 이미지를 붙이고 커서를 이동
           editor?.insertEmbed(range?.index || 0, 'image', postImageUrl);
+          if (mainImage === '') {
+            setMainImage(postImageUrl);
+          }
           editor?.setSelection((range?.index || 0) + 1, 0);
+          console.log('가져왔다');
         } else {
           console.error('No public URL found in response data.');
         }
@@ -152,56 +173,61 @@ const Write = () => {
 
   return (
     <Container>
-      <h1>커뮤니티 글 작성란데스</h1>
-      <div>
-        <select
-          value={category}
-          onChange={(e) => {
-            setCategory(e.target.value);
-          }}
-        >
-          <option disabled hidden>
-            말머리 선택
-          </option>
-          <option>꿀팁</option>
-          <option>공구거래</option>
-          <option>일상생활</option>
-        </select>
-        <input
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value);
-          }}
-        />
-      </div>
-      <input type="file" onChange={handleFiles} />
-      <div>
-        <ReactQuill
-          style={{ height: '600px' }}
-          ref={quillRef}
-          value={content}
-          onChange={setContent}
-          modules={modules}
-          formats={formats}
-          theme="snow"
-        />
-      </div>
+      <ContentContainer>
+        <h1>커뮤니티 글 작성란데스</h1>
+        <div>
+          <select
+            value={category}
+            onChange={(e) => {
+              setCategory(e.target.value);
+            }}
+          >
+            <option disabled hidden>
+              말머리 선택
+            </option>
+            <option>꿀팁</option>
+            <option>공구거래</option>
+            <option>일상생활</option>
+          </select>
+          <TitleInput
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+          />
+        </div>
+        <input type="file" onChange={handleFiles} multiple />
+        <div>
+          <ReactQuill
+            style={{ height: '600px', marginBottom: '30px' }}
+            ref={quillRef}
+            value={content}
+            onChange={setContent}
+            modules={modules}
+            formats={formats}
+            theme="snow"
+          />
+        </div>
+        <label>
+          <CheckBoxInput type="checkbox" /> 익명으로 작성하기
+        </label>
 
-      <AddButton onClick={() => addPost()}>등록하기</AddButton>
+        <AddButton onClick={() => addPost()}>등록하기</AddButton>
+      </ContentContainer>
     </Container>
   );
 };
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
-
+`;
+const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   gap: 20px;
-  & input {
-    width: 600px;
-    height: 40px;
-  }
+  max-width: 906px;
+  width: 80%;
   & select {
     width: 100px;
     height: 40px;
@@ -216,8 +242,16 @@ const Container = styled.div`
     text-align: center;
   }
 `;
+const CheckBoxInput = styled.input`
+  height: 20px;
+  width: 20px;
+`;
+const TitleInput = styled.input`
+  height: 40px;
+  width: 100%;
+`;
 const AddButton = styled.button`
-  margin-top: 100px;
+  margin-top: 30px;
 `;
 
 export default Write;
