@@ -57,16 +57,19 @@ const ProductsExplanation = () => {
 
   // input text, radio value
   const [textRadioValue, setTextRadioValue] = useState(producsPostsTextInit)
+  const [inputCount, setInputCount] = useState<number>(0)
   
   const handleOnChangeTextRadioValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, valueAsNumber } = e.target;
     if (name === 'tags') {
-    setTextRadioValue({ ...textRadioValue, [name]: [...value.split(' ')] }); 
+    setTextRadioValue({ ...textRadioValue, [name]: [...value.split(',', 9)] });
     } else if (name === 'price' || name === 'count') {
       setTextRadioValue({ ...textRadioValue, [name]: valueAsNumber });
-    }
-    else {
+    } else {
     setTextRadioValue({ ...textRadioValue, [name]: value });
+    }
+    if (name === 'title' || name === 'contents') {
+      setInputCount(value.length)
     }
     // 디바운싱 적용시켜 input 값 입력마다 렌더링되지 않도록 리팩토링해보기
     console.log(textRadioValue)
@@ -101,7 +104,7 @@ const ProductsExplanation = () => {
   const category = majorCheckedList
   const agreement = agreementCheckedList
 
-  // input값이 모두 들어있는 새로운 객체 만들어서 state로 만들어서 업로드
+  // input값이 모두 들어있는 새로운 객체 만들어서 supabase insert
    const entireProductsPosts = {...textRadioValue, category, agreement}
    // console.log(entireProductsPosts)
 
@@ -128,8 +131,8 @@ const ProductsExplanation = () => {
     <form onSubmit={handleOnSubmit}>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>제목*</h2>
-        <input type='text' name='title' value={textRadioValue.title} onChange={handleOnChangeTextRadioValue} placeholder='상품명이 들어간 제목을 입력해주세요' />
-        <p>0/40</p>
+        <input type='text' name='title' value={textRadioValue.title} onChange={handleOnChangeTextRadioValue} maxLength={40} placeholder='상품명이 들어간 제목을 입력해주세요' />
+        <span>{inputCount}/40</span>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>카테고리*</h2>
@@ -184,13 +187,13 @@ const ProductsExplanation = () => {
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>설명*</h2>
         <textarea value={textRadioValue.contents} name='contents' onChange={(e: any) => handleOnChangeTextRadioValue(e)} style={{width: '75%', resize: 'none'}} placeholder='설명을 입력해 주세요' />
-        <p>0/2000</p>
+        <span>{inputCount}/2000</span>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>태그</h2>
         <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <input type='text' name='tags' value={textRadioValue.tags} onChange={handleOnChangeTextRadioValue} maxLength={9} placeholder='태그를 입력해주세요.' />
-          <p style={{color: 'darkgray'}}>띄어쓰기로 구분되며 최대 9자까지 입력할 수 있어요.</p>
+          <input type='text' name='tags' value={textRadioValue.tags} onChange={handleOnChangeTextRadioValue} placeholder='태그를 입력해주세요.' />
+          <p style={{color: 'darkgray'}}>콤마(,)로 구분되며 최대 9개까지 입력할 수 있어요.</p>
           <p style={{color: 'darkgray'}}>사람들이 내 상품을 더 잘 찾을 수 있어요.</p>
           <p style={{color: 'darkgray'}}>상품과 관련 없는 태그를 입력할 경우, 판매에 제재를 받을 수 있어요.</p>
         </div>
