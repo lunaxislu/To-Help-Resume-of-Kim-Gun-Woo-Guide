@@ -2,6 +2,11 @@ import React from 'react';
 import * as St from '../styles/headerStyle/HeaderStyle';
 import { useNavigate } from 'react-router';
 import SearchBar from '../components/layout/header/SearchBar';
+import { supabase } from '../api/supabase/supabaseClient';
+const getOut = async () => {
+  let { error } = await supabase.auth.signOut();
+  if (error) console.log(error);
+};
 
 const Header = () => {
   const navigate = useNavigate();
@@ -28,6 +33,7 @@ const Header = () => {
           <St.NavButton to="/introduce">서비스 소개</St.NavButton>
           <St.NavButton to="/products">중고거래</St.NavButton>
           <St.NavButton to="/community">커뮤니티</St.NavButton>
+          <button onClick={getOut}>로그아웃</button>
         </St.NavBar>
         <St.SearchBar>
           <SearchBar />
