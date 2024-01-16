@@ -2,15 +2,8 @@ import React, { MouseEvent, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
-import { StFadeAni } from '../chat/ChatRoom';
-import {
-  Factor,
-  User,
-  UserAppMetadata,
-  UserIdentity,
-  UserMetadata
-} from '@supabase/supabase-js';
 import ProductDetailInfo from '../../components/productDetailInfoBody/ProductDetailInfo';
+import { CustomUser, Product } from './types';
 
 const StDetailContainer = styled.div`
   width: 100%;
@@ -183,49 +176,11 @@ const StCategoryTag = styled.li`
   cursor: pointer;
 `;
 
-export interface Product {
-  id: string;
-  uid: string;
-  created_at: string;
-  post_user: string;
-  nickname: string;
-  title: string;
-  contents: string;
-  price: number;
-  tags: string[];
-  location: string;
-  dealType: string;
-  like_user: { user_id: string; user_name: string }[];
-  likes: number;
-  quality: string;
-  changable: boolean;
-  shipping_cost: boolean;
-  agreement: boolean;
-  exchange_product: string;
-  count: number;
-  category: string[];
-}
-
-type CustomUser = {
-  id: string;
-  uid: string;
-  created_at: string;
-  username: string;
-  nickname: string;
-  address: string;
-  chat_rooms: {}[];
-  likes: {}[];
-  board: {}[];
-  comment: {}[];
-};
-
 const ProductDetail = () => {
   const { id } = useParams();
   const [curUser, setCurUser] = useState<CustomUser | null>(null);
   const [target, setTarget] = useState<CustomUser | null>(null);
   const [product, setProduct] = useState<Product[] | null>(null);
-
-  const navi = useNavigate();
 
   const getUserData = async () => {
     const { data: user, error } = await supabase.auth.getUser();
@@ -238,8 +193,9 @@ const ProductDetail = () => {
       // 현재 로그인 유저의 데이터가 있다면
       if (currentLogined && currentLogined.length > 0) {
         setCurUser(currentLogined[0]);
-        console.log(curUser);
       }
+
+      await findRoom();
     }
     if (error) console.log('cannot get User Info');
   };
@@ -265,10 +221,8 @@ const ProductDetail = () => {
       .select('*')
       .eq('uid', targetId);
 
-    console.log(targetUser);
     if (targetUser && targetUser.length > 0) {
       setTarget(targetUser[0]);
-      console.log(target);
     }
 
     if (noUser) console.log('user is not exists', noUser);

@@ -2,68 +2,72 @@ import React, {
   ChangeEvent,
   FormEvent,
   MouseEvent,
-  ReactNode,
   useEffect,
   useState
 } from 'react';
-import styled, { css, keyframes } from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { User } from '@supabase/supabase-js';
 import { v4 as uuid } from 'uuid';
-
-// sender_read, receiver_read : boolean
-// create_chat_room - receiver_name
-
-const ImageInput = styled.input.attrs({ type: 'file' })`
-  width: fit-content;
-  padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.3);
-`;
-
-type RoomProps = {
-  $current: string | undefined;
-  children: ReactNode;
-};
-
-// 로그인 기능 연결
-
-// 채팅 시작 시
-// 내가 채팅하기 누른 게시물의 아이디 조회해서 데이터 가져오고
-// 자동으로 첫 채팅에 보내지도록
+import ChatRoomList from '../../components/chat/ChatRoomList';
+import ChatMessages from '../../components/chat/ChatMessages';
+import type {
+  MessageType,
+  Participants,
+  RoomType
+} from '../../components/chat/types';
+import * as St from './style';
 
 export default function ChatRoom() {
   const [curUser, setCurUser] = useState<User | null>();
   const [chatInput, setChatInput] = useState<string>('');
-  const [rooms, setRooms] = useState<any[] | null>();
+  const [rooms, setRooms] = useState<RoomType[] | null>();
   const [clicked, setClicked] = useState<string | undefined>('');
-  const [messages, setMessages] = useState<any>(null);
-  const [unread, setUnread] = useState<any[] | null>(null);
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [unread, setUnread] = useState<number[] | null>(null);
   const [images, setImages] = useState<string>('');
 
+  // 채팅 인풋을 받아 state에 업뎃
   const handleUserInput = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     name === 'chat' && setChatInput(value);
   };
 
+  // 클릭 된 채팅방의 아이디를 state에 저장
+  const handleCurClicked = (e: MouseEvent<HTMLDivElement>) => {
+    setClicked(e.currentTarget.id);
+  };
+
+  // submit 발생 시 인풋 초기화
+  const resetInput = () => {
+    setChatInput('');
+    setImages('');
+  };
+
+  // 메세지 전송 - 메세지 테이블에 insert
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (!curUser) return;
+
+    const messageTemp = {
+      id: uuid(),
+      sender_id: curUser?.id,
+      chat_room_id: clicked,
+      content: chatInput,
+      image_url: images
+    };
+
     if (curUser) {
-      const { data, error } = await supabase.from('chat_messages').insert([
-        {
-          id: uuid(),
-          sender_id: curUser?.id,
-          chat_room_id: clicked,
-          content: chatInput,
-          image_url: images
-        }
-      ]);
-      setChatInput('');
-      setImages('');
+      const { error } = await supabase
+        .from('chat_messages')
+        .insert([messageTemp]);
+
+      resetInput();
 
       if (error) console.log('전송 실패', error);
     }
   };
-
+  // 어느 채팅방을 클릭 시 해당 채팅방과 연결 된 메세지 가져오는 함수
   const getMessages = async (room_id: string | undefined) => {
     let { data: chat_messages, error } = await supabase
       .from('chat_messages')
@@ -71,18 +75,16 @@ export default function ChatRoom() {
       .eq('chat_room_id', room_id);
 
     if (chat_messages) {
-      setMessages((prev: any) => [...prev, ...(chat_messages as any)]);
+      setMessages((prev: any) => [
+        ...prev,
+        ...(chat_messages as MessageType[])
+      ]);
     }
+
+    if (error) console.log('failed set message', error);
   };
 
-  const updateToRead = async (room_id: string) => {
-    const { data, error } = await supabase
-      .from('chat_messages')
-      .update({ isNew: true })
-      .eq('chat_room_id', room_id)
-      .select();
-  };
-
+  // 안 읽은 메세지를 count 해주는 함수
   const unreadCount = async (room_id: string) => {
     let { data: chat_messages, error } = await supabase
       .from('chat_messages')
@@ -90,49 +92,40 @@ export default function ChatRoom() {
       .eq('chat_room_id', room_id)
       .eq('isNew', false);
 
+    if (error) console.log('count error', error);
+
     return chat_messages?.length;
   };
 
-  // 채팅방 목록을 생성할 때
-  // 채팅방과 연결된 메세지 테이블에 isRead가 false인 데이터를 가져와
-  // 그 length를 취합하여 각각의 채팅방에 표기..
-  // 채팅방을 누르면 각각의 채팅방에 isRead를 true로 전부 update
-
-  const handleCurClicked = (e: MouseEvent<HTMLDivElement>) => {
-    setClicked(e.currentTarget.id);
-  };
-
+  // mount 시 유저 정보를 확인하여 유저가 속한 채팅방 가져오는 함수
   const getRoomsforUser = async () => {
     const { data: chat_room, error } = await supabase
       .from('chat_room')
       .select('*');
 
-    if (error) {
-      console.error('Error fetching chat rooms:', error);
-      return;
-    }
-
+    // curUser.id와 일치하는 participant를 포함한 방만 필터링
     if (chat_room && curUser) {
-      const filtered = chat_room.filter((room: any) => {
-        // curUser.id와 일치하는 participant를 포함한 방만 필터링
+      const filtered = chat_room.filter((room: RoomType) => {
         return room.participants.some(
-          (participant: any) => participant.user_id === curUser.id
+          (participant: Participants) => participant.user_id === curUser.id
         );
       });
       setRooms(filtered);
     }
-  };
 
-  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files;
-    if (file) {
-      // handleImageUpload로 넘겨줍니다
-      handleImageUpload(file[0]);
-    } else {
+    if (error) {
+      console.error('채팅방 가져오기 오류', error);
       return;
     }
   };
 
+  // 이미지 인풋의 파일을 받아 storage에 올리는 함수에 전달
+  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files;
+    if (file) handleImageUpload(file[0]);
+  };
+
+  // 이미지 정보 받아서 storage에 올리는 함수
   const handleImageUpload = async (file: File) => {
     const { data, error } = await supabase.storage
       .from('images')
@@ -144,37 +137,15 @@ export default function ChatRoom() {
       console.error('파일 업로드 실패:', error);
       return;
     }
-    // 에러가 아니라면 스토리지에서 방금 올린 이미지의 publicURL을 받아와서
+
+    // 에러가 아니라면 스토리지에서 방금 올린 이미지의 publicURL을 받아와서 image state에 set
     const res = supabase.storage.from('images').getPublicUrl(data.path);
-    // image 경로를 저장하는 state에 set 해주고
     setImages(res.data.publicUrl);
   };
 
-  useEffect(() => {
-    const chatMessages = supabase
-      .channel('custom-insert-channel')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'chat_messages' },
-        (payload) => {
-          if (rooms) {
-            Promise.all(rooms.map((room) => unreadCount(room.id))).then(
-              (counts) => {
-                setUnread(counts);
-              }
-            );
-            setMessages((prev: any) => [...prev, payload.new]);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      chatMessages.unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
+  // 실시간으로 구독 중인 DB 관리하는 함수
+  const handleRealtime = () => {
+    // 채팅방 테이블 구독
     const chatRooms = supabase
       .channel('custom-all-channel')
       .on(
@@ -185,247 +156,90 @@ export default function ChatRoom() {
         }
       )
       .subscribe();
+
+    // unmount 시 구독 해제 하기 위해서 반환
+    return { chatRooms };
+  };
+
+  // // unmount 시 구독 해제
+  useEffect(() => {
+    const { chatRooms } = handleRealtime();
+
+    // unmount 시 구독 해제하기
     return () => {
       chatRooms.unsubscribe();
     };
   }, []);
 
+  // mount시 로그인한 유저의 데이터를 가져와 state에 set
   useEffect(() => {
     const getUserData = async () => {
       const { data, error } = await supabase.auth.getUser();
-      if (data) {
-        setCurUser(data.user);
-        if (data.user) {
-          getRoomsforUser();
-        } else {
-          console.log('user data is empty');
-        }
-      }
+
+      if (data) setCurUser(data.user);
+      if (error) console.log('user data fetch failed', error);
     };
+
     getUserData();
   }, []);
 
-  useEffect(() => {
-    if (curUser) {
-      getRoomsforUser();
-    }
-  }, [curUser]);
-
+  // 클릭 된 채팅방 id, 현재 로그인 유저에 따라서
+  // 해당 채팅방에 해당하는 메세지를 가져오고
+  // 유저가 소속된 채팅방을 가져오는 부분
   useEffect(() => {
     if (clicked) {
       setMessages([]);
       getMessages(clicked);
     }
-  }, [clicked]);
+    if (curUser) {
+      getRoomsforUser();
+      handleRealtime();
+    }
+  }, [clicked, curUser]);
 
   useEffect(() => {
-    // 각 채팅방 목록이 업데이트될 때마다 안 읽은 메세지 수를 가져오고 상태에 저장
+    getRoomsforUser();
+  }, []);
+
+  // 각 채팅방이 업데이트 시 안 읽은 메세지 수를 가져오고 상태에 저장
+  useEffect(() => {
     if (rooms) {
       Promise.all(rooms.map((room) => unreadCount(room.id))).then((counts) => {
-        setUnread(counts);
+        setUnread(counts as number[]);
       });
     }
   }, [rooms]);
 
   return (
     <>
-      <StChatContainer>
-        <StChatList>
-          {rooms?.map((room, i) => {
-            return (
-              <StListRoom
-                onClick={handleCurClicked}
-                $current={clicked}
-                id={room.id}
-                key={room.id}
-              >
-                <div
-                  onClick={() => {
-                    updateToRead(room.id);
-                  }}
-                  style={{ padding: '1rem' }}
-                >
-                  <p>{room.id}</p>
-                  <p style={{ display: 'flex' }}>
-                    새 메세지: &nbsp; {unread && unread[i]}
-                  </p>
-                </div>
-              </StListRoom>
-            );
-          })}
-        </StChatList>
-        <StChatBoard>
-          <StChatBoardHeader>
-            <StChatBoardHeaderName>사용자 이름</StChatBoardHeaderName>
+      <St.StChatContainer>
+        <St.StChatList>
+          <ChatRoomList
+            clicked={clicked}
+            rooms={rooms}
+            handleCurClicked={handleCurClicked}
+            unread={unread}
+          />
+        </St.StChatList>
+        <St.StChatBoard>
+          <St.StChatBoardHeader>
+            <St.StChatBoardHeaderName>사용자 이름</St.StChatBoardHeaderName>
             점점점
-          </StChatBoardHeader>
-          <StChatGround>
-            {messages
-              ?.sort((a: any, b: any) => b.created_at - a.created_at)
-              .map((msg: any) => {
-                return msg.sender_id === curUser?.id ? (
-                  <>
-                    {msg.image_url && (
-                      <img
-                        style={{
-                          width: '200px',
-                          display: 'block',
-                          marginLeft: 'auto'
-                        }}
-                        src={msg.image_url}
-                        alt=""
-                      ></img>
-                    )}
-                    <StMyChatballoon key={msg.id}>
-                      {msg.content}
-                    </StMyChatballoon>
-                  </>
-                ) : (
-                  <>
-                    {msg.image_url && (
-                      <img
-                        style={{
-                          width: '200px',
-                          display: 'block',
-                          marginRight: 'auto'
-                        }}
-                        src={msg.image_url}
-                        alt=""
-                      />
-                    )}
-                    <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
-                      {msg.content}
-                    </StChatballoon>
-                  </>
-                );
-              })}
-          </StChatGround>
-
-          <StChatForm onSubmit={sendMessage}>
-            <ImageInput onChange={handleImage} placeholder="이미지 보내기" />
-            <StChatInput
+          </St.StChatBoardHeader>
+          <St.StChatGround>
+            <ChatMessages messages={messages} curUser={curUser} />
+          </St.StChatGround>
+          <St.StChatForm onSubmit={sendMessage}>
+            <St.ImageInput onChange={handleImage} placeholder="이미지 보내기" />
+            <St.StChatInput
               onChange={handleUserInput}
               type="text"
               name="chat"
               value={chatInput}
             />
-          </StChatForm>
-        </StChatBoard>
-      </StChatContainer>
+          </St.StChatForm>
+        </St.StChatBoard>
+      </St.StChatContainer>
     </>
   );
 }
-
-export const StFadeAni = keyframes`
-  from{
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-`;
-
-const StChatContainer = styled.div`
-  width: 100%;
-  max-width: 1114px;
-  max-height: 597px;
-  display: flex;
-  border: 1px solid black;
-  height: fit-content;
-  margin: auto;
-  animation: ${StFadeAni} 1s forwards;
-  font-family: 'Pretendard-Regular';
-`;
-const StChatList = styled.div`
-  width: 724.9px;
-  height: 597px;
-  max-width: 384px;
-  max-height: 597px;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid black;
-  overflow-y: scroll;
-`;
-
-const StChatBoard = styled.div`
-  width: 70%;
-  height: 597px;
-  border: 1px solid black;
-  overflow-y: hidden;
-  position: relative;
-  animation: ${StFadeAni} 1s forwards;
-`;
-
-const StChatGround = styled.div`
-  width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-  padding: 1rem 0 5rem 0;
-`;
-
-const StChatBoardHeader = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  left: 0;
-  padding: 1.375rem 1.25rem;
-  background-color: #eee;
-`;
-
-const StChatBoardHeaderName = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 500;
-`;
-
-const StChatballoon = styled.div`
-  width: fit-content;
-  background-color: #eee;
-  margin-right: auto;
-  margin-left: 1rem;
-  margin-block: 1rem;
-  padding: 0.75rem 1.688rem;
-  border-radius: 40px;
-  font-weight: 600;
-`;
-
-const StMyChatballoon = styled.div`
-  width: fit-content;
-  background-color: yellow;
-  margin-left: auto;
-  margin-right: 1rem;
-  margin-block: 1rem;
-  padding: 0.75rem 1.688rem;
-  border-radius: 60px;
-  font-weight: 600;
-`;
-
-const StChatForm = styled.form`
-  width: 100%;
-  position: sticky;
-  bottom: 0;
-`;
-
-const StChatInput = styled.input`
-  width: 100%;
-  padding: 1rem;
-  position: sticky;
-  bottom: 0;
-  border: none;
-  outline: none;
-  background-color: #eee;
-`;
-
-const StListRoom = styled.div<RoomProps>`
-  width: 100%;
-  ${(props) => {
-    if (props.$current === props.children) {
-      return css`
-        background-color: #eee;
-      `;
-    }
-  }}
-`;
