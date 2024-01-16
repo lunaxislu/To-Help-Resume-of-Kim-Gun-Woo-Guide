@@ -16,3 +16,16 @@ export type FilesObject = {
   url: string;
   name: string;
 };
+export type ProfileObject =
+  | {
+      id: string;
+      created_at: string;
+      avartar_url: string;
+      username: string;
+      nickname: string;
+      email: string;
+      chat_rooms: string[];
+      likes: string[];
+      board: string[];
+      comment: string[];
+    }[];

@@ -1,24 +1,34 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import { supabase } from '../../api/supabase/supabaseClient';
+import { ProfileObject } from './model';
+
+const categoryArray = [
+  '고민상담',
+  '구인공고',
+  '공동구매',
+  '꿀팁공유',
+  '일상생활'
+];
 const Write = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [category, setCategory] = useState('말머리 선택');
-  // const [file, setFile] = useState('');
-  const [files, setFiles] = useState<File[]>([]);
-  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [mainImage, setMainImage] = useState('');
+  const [category, setCategory] = useState('말머리 선택');
+  const [files, setFiles] = useState<File[]>([]);
+  const [profile, setProfile] = useState<ProfileObject>();
+  const [userId, setUserId] = useState('');
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
+  const [anon, setAnon] = useState(false);
   const navigate = useNavigate();
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
     if (fileList) {
       const filesArray = Array.from(fileList);
-
       // 각 파일을 개별적으로 처리 (필요한 경우)
       filesArray.forEach((file) => {
         handleFilesUpload(file);
@@ -44,7 +54,65 @@ const Write = () => {
       console.error('Error handling file upload:', error);
     }
   };
-  console.log(files);
+
+  // useEffect(() => {
+  //   const getCurrentUser = async () => {
+  //     const {
+  //       data: { user }
+  //     } = await supabase.auth.getUser();
+  //     setUserId(user!.id);
+  //   };
+  //   getCurrentUser();
+  //   const getProfile = async () => {
+  //     try {
+  //       let { data: profiles, error } = await supabase
+  //         .from('profiles')
+  //         .select('*')
+  //         .eq('id', userId);
+
+  //       // 추후에 nickname으로 바꾸기
+  //       if (error) {
+  //         console.log(error);
+  //       }
+  //       if (profiles != null) {
+  //         setProfile(profiles);
+  //       }
+  //       console.log(profiles);
+  //     } catch (error: any) {
+  //       console.log(error.message);
+  //     }
+  //   };
+  //   getProfile();
+  // }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const {
+          data: { user }
+        } = await supabase.auth.getUser();
+        setUserId(user!.id);
+
+        const { data: profiles, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user!.id);
+
+        if (error) {
+          console.log(error);
+        }
+
+        if (profiles != null) {
+          setProfile(profiles);
+        }
+
+        console.log(profiles);
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
   const addPost = async () => {
     try {
       // FileList를 배열로 변환
@@ -109,7 +177,7 @@ const Write = () => {
           console.log(editor);
           console.log(range);
 
-          // 이미지를 붙이고 커서를 이동
+          //마우스 위치에 이미지를 넣고 다음 으로 커서 옮기기
           editor?.insertEmbed(range?.index || 0, 'image', postImageUrl);
           if (mainImage === '') {
             setMainImage(postImageUrl);
@@ -132,15 +200,9 @@ const Write = () => {
       toolbar: {
         container: [
           [{ header: [1, 2, 3, 4, 5, 6, false] }], // header 설정
-          ['bold', 'italic', 'underline', 'strike', 'blockquote'], // 굵기, 기울기, 밑줄 등 부가 tool 설정
-          [
-            { list: 'ordered' },
-            { list: 'bullet' },
-            { indent: '-1' },
-            { indent: '+1' }
-          ], // 리스트, 인덴트 설정
+          ['bold', 'italic', 'underline', 'strike'], // 굵기, 기울기, 밑줄 등 부가 tool 설정
           ['image', 'video'], // 링크, 이미지, 비디오 업로드 설정
-          [{ align: [] }, { color: [] }, { background: [] }] // 정렬, 글자 색, 글자 배경색 설정
+          [{ color: [] }, { background: [] }] // 정렬, 글자 색, 글자 배경색 설정
           // ["clean"], // toolbar 설정 초기화 설정
         ],
 
@@ -160,13 +222,8 @@ const Write = () => {
     'italic',
     'underline',
     'strike',
-    'blockquote',
-    'list',
-    'bullet',
-    'indent',
     'video',
     'image',
-    'align',
     'color',
     'background'
   ];
@@ -175,41 +232,58 @@ const Write = () => {
     <Container>
       <ContentContainer>
         <h1>커뮤니티 글 작성란데스</h1>
+
+        <TitleInput
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value);
+          }}
+          placeholder="제목을 입력해주세요"
+        />
+        <CategoryContainer>
+          {categoryArray.map((item) => {
+            return (
+              <label key={item}>
+                <input
+                  type="radio"
+                  name={category}
+                  value={item}
+                  onChange={(e) => {
+                    setCategory(e.target.value);
+                  }}
+                />
+                {item}
+              </label>
+            );
+          })}
+        </CategoryContainer>
+
+        <FileUploader>
+          {files.length !== 0
+            ? files.map((file) => file.name)
+            : '파일을 업로드하려면 클릭하세요'}
+
+          <input type="file" onChange={handleFiles} multiple />
+        </FileUploader>
+
         <div>
-          <select
-            value={category}
-            onChange={(e) => {
-              setCategory(e.target.value);
-            }}
-          >
-            <option disabled hidden>
-              말머리 선택
-            </option>
-            <option>꿀팁</option>
-            <option>공구거래</option>
-            <option>일상생활</option>
-          </select>
-          <TitleInput
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-            }}
-          />
-        </div>
-        <input type="file" onChange={handleFiles} multiple />
-        <div>
-          <ReactQuill
-            style={{ height: '600px', marginBottom: '30px' }}
+          <QuillEditor
             ref={quillRef}
             value={content}
             onChange={setContent}
             modules={modules}
             formats={formats}
             theme="snow"
+            placeholder="내용을 입력해주세요"
           />
         </div>
         <label>
-          <CheckBoxInput type="checkbox" /> 익명으로 작성하기
+          <CheckBoxInput
+            type="checkbox"
+            checked={anon}
+            onChange={() => setAnon(!anon)}
+          />{' '}
+          익명으로 작성하기
         </label>
 
         <AddButton onClick={() => addPost()}>등록하기</AddButton>
@@ -242,16 +316,60 @@ const ContentContainer = styled.div`
     text-align: center;
   }
 `;
+const CategoryContainer = styled.div`
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+`;
 const CheckBoxInput = styled.input`
   height: 20px;
   width: 20px;
 `;
 const TitleInput = styled.input`
-  height: 40px;
+  height: 54px;
   width: 100%;
+  background-color: #f3f3f3;
+  border: none;
+  border-radius: 5px;
+  padding-left: 16px;
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 16px;
+  }
 `;
 const AddButton = styled.button`
   margin-top: 30px;
+`;
+const FileUploader = styled.label`
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+  & input {
+    display: none;
+  }
+`;
+const QuillEditor = styled(ReactQuill)`
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  .ql-container {
+    height: 600px;
+    border: none;
+  }
+  .ql-toolbar {
+    border: none;
+  }
+  .ql-editor strong {
+    font-weight: bold;
+  }
+  .ql-editor em {
+    font-style: italic;
+  }
 `;
 
 export default Write;

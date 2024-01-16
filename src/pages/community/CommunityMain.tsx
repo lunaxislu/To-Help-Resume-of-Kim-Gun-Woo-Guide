@@ -29,9 +29,9 @@ const CommunityMain: React.FC = () => {
   // });
   const navigate = useNavigate();
 
-  const extractTextFromHtml = (htmlString: string): string => {
+  const handleText = (content: string): string => {
     // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
-    const textOnly = htmlString.replace(/<[^>]*>/g, '');
+    const textOnly = content.replace(/<[^>]*>/g, '');
 
     return textOnly;
   };
@@ -67,21 +67,7 @@ const CommunityMain: React.FC = () => {
                 [{post.category}]{post.title}
                 {post.main_image ? '🎞' : ''}
               </h2>
-              {/* {post.files && post.files.length > 0 && (
-                <div>
-                  {post.files.map((file: FilesObject, index) => (
-                    <a
-                      key={index}
-                      href={file.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {file.name}
-                    </a>
-                  ))}
-                </div>
-              )} */}
-              <Post_content>{extractTextFromHtml(post.content)}</Post_content>
+              <Post_content>{handleText(post.content)}</Post_content>
             </div>
           </Posts>
         );

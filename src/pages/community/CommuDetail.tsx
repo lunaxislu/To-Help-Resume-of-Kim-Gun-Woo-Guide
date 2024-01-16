@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
-import { Post } from './model';
+import { FilesObject, Post } from './model';
 const CommuDetail = () => {
   const param = useParams();
   const [posts, setPosts] = useState<Post[]>([]);
+
   const [comments, setComments] = useState();
   useEffect(() => {
     const getPost = async () => {
@@ -30,8 +31,8 @@ const CommuDetail = () => {
     <Container>
       {posts.map((post) => {
         return (
-          <div>
-            <Topper key={post.post_id}>
+          <div key={post.post_id}>
+            <Topper>
               <TopperLeft>
                 <h1>{post.title}</h1>
                 <p>{post.post_user}</p>
@@ -50,6 +51,20 @@ const CommuDetail = () => {
             <div>
               <p>{post.category}</p>
               <p dangerouslySetInnerHTML={{ __html: post.content }}></p>
+              {post.files && post.files.length > 0 && (
+                <div>
+                  {post.files.map((file: FilesObject, index) => (
+                    <a
+                      key={index}
+                      href={file.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {file.name}
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         );
@@ -65,6 +80,12 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  & strong {
+    font-weight: bold;
+  }
+  & em {
+    font-style: italic;
+  }
 `;
 
 const Icon = styled.img`
