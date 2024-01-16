@@ -12,13 +12,11 @@ import ProductsPosts from '../pages/products/ProductsPosts';
 import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
 
-
 const Router = () => {
   return (
     <BrowserRouter>
       <GlobalStyles />
       <Routes>
-   
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="login" element={<Login />} />
@@ -29,7 +27,7 @@ const Router = () => {
           <Route path="/community_write" element={<WritePost />} />
           <Route path="/search-results" element={<SearchResults />} />
           <Route path="/chat" element={<ChatRoom />} />
-          <Route path="/community/:id" element={<CommuDetail />} />
+          <Route path="/community/detail/:id" element={<CommuDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>
