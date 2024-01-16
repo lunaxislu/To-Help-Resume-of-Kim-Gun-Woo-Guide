@@ -121,13 +121,14 @@ const Write = () => {
           title,
           content,
           category,
-          post_user: 'sweetPotato',
-          nickname: 'goguma',
+          post_user: profile![0].id,
+          nickname: profile![0].username,
           files: files.map((file) => ({
             name: file.name,
             url: uploadedFileUrl
           })),
-          main_image: mainImage
+          main_image: mainImage,
+          anon
         }
       ]);
       if (error) throw error;

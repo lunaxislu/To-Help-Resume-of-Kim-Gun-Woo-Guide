@@ -11,6 +11,7 @@ export type Post = {
   like_user: { uid: string }[] | null;
   files: [];
   main_image: string;
+  anon: boolean;
 };
 export type FilesObject = {
   url: string;

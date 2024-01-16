@@ -29,46 +29,49 @@ const CommuDetail = () => {
 
   return (
     <Container>
-      {posts.map((post) => {
-        return (
-          <div key={post.post_id}>
-            <Topper>
-              <TopperLeft>
-                <h1>{post.title}</h1>
-                <p>{post.post_user}</p>
-              </TopperLeft>
+      <ContentsContainer>
+        {posts.map((post) => {
+          return (
+            <div key={post.post_id}>
+              <Topper>
+                <TopperLeft>
+                  <h1>{post.title}</h1>
+                  <p>{!!post.anon ? '익명의 작업자' : post.nickname}</p>
+                </TopperLeft>
 
-              <TopperRight>
-                <p>{post.created_at}</p>
-                <IconContainer>
-                  <Icon src="/assets/comment.png" />
-                  <p>0</p>
-                  <Icon src="/assets/heart.png" />
-                  <p>0</p>
-                </IconContainer>
-              </TopperRight>
-            </Topper>
-            <div>
-              <p>{post.category}</p>
-              <p dangerouslySetInnerHTML={{ __html: post.content }}></p>
-              {post.files && post.files.length > 0 && (
-                <div>
-                  {post.files.map((file: FilesObject, index) => (
-                    <a
-                      key={index}
-                      href={file.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {file.name}
-                    </a>
-                  ))}
-                </div>
-              )}
+                <TopperRight>
+                  <p>{post.created_at}</p>
+                  <IconContainer>
+                    <Icon src="/assets/comment.png" />
+                    <p>0</p>
+                    <Icon src="/assets/heart.png" />
+                    <p>0</p>
+                  </IconContainer>
+                </TopperRight>
+              </Topper>
+              <div>
+                <p>{post.category}</p>
+                <p dangerouslySetInnerHTML={{ __html: post.content }}></p>
+                {post.files && post.files.length > 0 && (
+                  <div>
+                    {post.files.map((file: FilesObject, index) => (
+                      <a
+                        key={index}
+                        href={file.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {file.name}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </ContentsContainer>
+
       <form>
         <input />
         <button>댓글 등록하기</button>
@@ -80,12 +83,18 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   & strong {
     font-weight: bold;
   }
   & em {
     font-style: italic;
   }
+`;
+const ContentsContainer = styled.div`
+  width: 80%;
+  max-width: 1116px;
+  min-height: 600px;
 `;
 
 const Icon = styled.img`
@@ -94,7 +103,7 @@ const Icon = styled.img`
 const Topper = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  width: 100%;
   max-width: 1116px;
 `;
 const TopperRight = styled.div`
