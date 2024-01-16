@@ -7,9 +7,10 @@ import React, {
 } from 'react';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { User } from '@supabase/supabase-js';
-import { v4 as uuid } from 'uuid';
 import ChatRoomList from '../../components/chat/ChatRoomList';
 import ChatMessages from '../../components/chat/ChatMessages';
+import { v4 as uuid } from 'uuid';
+
 import type {
   MessageType,
   Participants,

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MessageCompProps } from './types';
+import type { MessageCompProps } from './types';
 
 const ChatMessages = ({ messages, curUser }: MessageCompProps) => {
   return (
