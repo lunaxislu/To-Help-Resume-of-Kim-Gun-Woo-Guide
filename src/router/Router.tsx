@@ -9,6 +9,7 @@ import { GlobalStyles } from '../styles/GlobalStyle';
 import Products from '../pages/products/Products';
 import ProductsPosts from '../pages/products/ProductsPosts';
 import Layout from '../layout/Layout';
+import SearchResults from '../pages/searchResults/SearchResults';
 
 const Router = () => {
   return (
@@ -23,7 +24,7 @@ const Router = () => {
           <Route path="/productsposts" element={<ProductsPosts />} />
           <Route path="/community" element={<CommunityMain />} />
           <Route path="/community_write" element={<WritePost />} />
-
+          <Route path="/search-results" element={<SearchResults />} />
           <Route path="/chat" element={<ChatRoom />} />
         </Route>
       </Routes>

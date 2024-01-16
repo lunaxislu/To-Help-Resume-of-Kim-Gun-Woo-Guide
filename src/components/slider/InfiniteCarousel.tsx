@@ -21,7 +21,7 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
+    // autoplay: true,
     autoplaySpeed: 8000,
     draggable: true,
     arrows: false,
@@ -135,5 +135,6 @@ const ArrowButton = styled.div`
     width: 50px;
     height: 50px;
     cursor: pointer;
+    user-select: none;
   }
 `;

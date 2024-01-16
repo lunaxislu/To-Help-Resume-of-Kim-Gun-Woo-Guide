@@ -46,7 +46,11 @@ export const NavButton = styled(Link)`
   color: black;
   font-size: 18px;
 `;
-export const SearchBar = styled.input`
-  width: 300px;
+export const SearchBar = styled.div`
+  width: 488px;
+  height: 37px;
+  border-radius: 19px;
+  padding-left: 10px;
+  font-size: 15px;
   /* margin-right: 100px; */
 `;

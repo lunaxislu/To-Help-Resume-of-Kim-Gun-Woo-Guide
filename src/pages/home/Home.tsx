@@ -76,14 +76,13 @@ const Home = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
 
   useEffect(() => {
-    // 스크롤 이벤트 리스너
+    // 스크롤 이벤트
     const handleScroll = () => {
       const scrollY = window.scrollY || document.documentElement.scrollTop;
 
       const isBottom30Percent =
-        scrollY > document.documentElement.clientHeight * 0.6;
+        scrollY > document.documentElement.clientHeight * 0.7;
 
-      // 스크롤-상단 이동 버튼 보이기/숨기기 상태 업데이트
       setShowScrollButton(isBottom30Percent);
     };
 
@@ -163,7 +162,7 @@ const Home = () => {
 
                 <h1>{item.quality}</h1>
                 <h3>{item.title}</h3>
-                <p>{item.price},000원</p>
+                <p>{item.price}원</p>
               </SupabaseList>
             </TousedItemDetailPage>
           ))}
