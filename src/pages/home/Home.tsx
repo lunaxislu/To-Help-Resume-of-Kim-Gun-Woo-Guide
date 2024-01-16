@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import Carousel from '../../components/mainpage/Carousel';
 import { count } from 'console';
 import { NullLiteral } from 'typescript';
+import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
 type UsedItemsCountData = {
   count: number | null;
   data: {
@@ -131,7 +132,9 @@ const Home = () => {
 
   return (
     <HomeContainer>
-      <Carousel images={carouselImages} />
+      <CarouselWrapper>
+        <InfiniteCarousel carouselImages={carouselImages} />
+      </CarouselWrapper>
 
       <HomeSection>
         <div className="one">
@@ -211,6 +214,10 @@ const HomeContainer = styled.section`
   flex-direction: column;
 `;
 
+const CarouselWrapper = styled.div`
+  width: 100%;
+  cursor: pointer;
+`;
 const HomeSection = styled.div`
   width: 1116px;
   margin: 0 auto;
