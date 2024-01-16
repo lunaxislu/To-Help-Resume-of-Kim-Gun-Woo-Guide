@@ -1,19 +1,9 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { supabase } from '../../../api/supabase/supabaseClient';
+import AddressForm from './AddressForm';
+import { TextRadioValueType } from '../ProductsType';
 
-type TextValue = {
-  title: string,
-  contents: string,
-  price: number,
-  count: number, 
-  exchange_product: string,
-  tags: string[],
-  shipping_cost: string,
-  deal_type: string,
-  quality: string,
-  changable: string
-}
-const producsPostsTextInit: TextValue = {
+const producsPostsTextInit: TextRadioValueType = {
   title: "",
   contents: "",
   price: 0,
@@ -23,7 +13,9 @@ const producsPostsTextInit: TextValue = {
   shipping_cost: "",
   deal_type: "",
   quality: "",
-  changable: ""
+  changable: "",
+  address: "",
+  detailAddress: ""
 }
 
 const major = ['회화', '조소', '판화', '금속공예', '도예', '유리공예', '목공예', '섬유공예', '기타']
@@ -57,7 +49,8 @@ const ProductsExplanation = () => {
 
   // input text, radio value
   const [textRadioValue, setTextRadioValue] = useState(producsPostsTextInit)
-  const [inputCount, setInputCount] = useState<number>(0)
+  const [titleCount, setTitleCount] = useState(0)
+  const [contentsCount, setContentsCount] = useState(0)
   
   const handleOnChangeTextRadioValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, valueAsNumber } = e.target;
@@ -68,8 +61,10 @@ const ProductsExplanation = () => {
     } else {
     setTextRadioValue({ ...textRadioValue, [name]: value });
     }
-    if (name === 'title' || name === 'contents') {
-      setInputCount(value.length)
+    if (name === 'title') {
+      setTitleCount(value.length)
+    } else if (name === 'contents') {
+      setContentsCount(value.length)
     }
     // 디바운싱 적용시켜 input 값 입력마다 렌더링되지 않도록 리팩토링해보기
     console.log(textRadioValue)
@@ -132,7 +127,7 @@ const ProductsExplanation = () => {
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>제목*</h2>
         <input type='text' name='title' value={textRadioValue.title} onChange={handleOnChangeTextRadioValue} maxLength={40} placeholder='상품명이 들어간 제목을 입력해주세요' />
-        <span>{inputCount}/40</span>
+        <span>{titleCount}/40</span>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>카테고리*</h2>
@@ -159,11 +154,11 @@ const ProductsExplanation = () => {
           <label key={i} htmlFor={deal_type}><input type='radio' id={deal_type} name='deal_type' value={deal_type} onChange={handleOnChangeTextRadioValue} />{deal_type}</label>
         )}
       </div>
-      {textRadioValue.deal_type === '직거래'}
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px' }}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>직거래 지역</h2>
-        <button disabled={textRadioValue.deal_type === '택배' || textRadioValue.deal_type === '협의 후 결정'}>최근 지역</button>
-        <button disabled={textRadioValue.deal_type === '택배' || textRadioValue.deal_type === '협의 후 결정'}>주소 검색</button>
+        <AddressForm textRadioValue={textRadioValue} setTextRadioValue={setTextRadioValue} />
+        <input readOnly type='text' name='address' value={textRadioValue.address} onChange={handleOnChangeTextRadioValue} placeholder='주소검색을 이용해주세요.' />
+        <input type='text' name='detailAddress' value={textRadioValue.detailAddress} onChange={handleOnChangeTextRadioValue} placeholder='상세주소를 입력해주세요.' />
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>상품상태*</h2>
@@ -183,12 +178,12 @@ const ProductsExplanation = () => {
           {changable.map((changable, i) => 
             <label key={i} htmlFor={changable}><input type='radio' id={changable} name='changable' value={changable} onChange={handleOnChangeTextRadioValue} />{changable}</label>
           )}
-        <input type='text' name='exchange_product' value={textRadioValue.exchange_product} onChange={handleOnChangeTextRadioValue} placeholder='교환을 원하는 상품을 입력해주세요.' />
+        <input type='text' name='exchange_product' value={textRadioValue.exchange_product} onChange={handleOnChangeTextRadioValue} disabled={textRadioValue.changable === '불가능'} placeholder='교환을 원하는 상품을 입력해주세요.' />
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>설명*</h2>
         <textarea value={textRadioValue.contents} name='contents' onChange={(e: any) => handleOnChangeTextRadioValue(e)} style={{width: '75%', resize: 'none'}} placeholder='설명을 입력해 주세요' />
-        <span>{inputCount}/2000</span>
+        <span>{contentsCount}/2000</span>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>태그</h2>
