@@ -1,4 +1,3 @@
-import React from 'react'
 
 type Product = {
   id:string,
@@ -9,6 +8,7 @@ type Product = {
   contents: string,
   price: number,
   count: number, 
+  category: string[],
   tags: string[], 
   location: string,
   dealType: string,
@@ -22,7 +22,7 @@ type Product = {
 };
 
 const ProductsCard = ({product}: {product: Product}) => {
-  const { title, price, tags } = product
+  const { title, price, quality } = product
 
   return (
     <div style={{padding: '10px', width: '250px', listStyle: 'none', border: '2px solid magenta'}}>
@@ -31,8 +31,8 @@ const ProductsCard = ({product}: {product: Product}) => {
         </image>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px', marginBottom: '10px'}}>
-        {tags.map(major =>
-          <li key={major} style={{width: '90px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>{major}</li>
+        {[quality].map(condition =>
+          <li key={condition} style={{width: '120px', backgroundColor: 'lightblue', textAlign: 'center', border: '1px solid skyblue'}}>{condition}</li>
         )}
       </div>
       <h2 style={{marginBottom: '10px'}}>{title}</h2>
