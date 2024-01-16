@@ -57,7 +57,7 @@ const CommunityMain: React.FC = () => {
         return (
           <Posts
             key={post.post_id}
-            onClick={() => navigate(`/community/${post.post_id}`)}
+            onClick={() => navigate(`/community/detail/${post.post_id}`)}
           >
             {/* <img src={post.main_image} /> */}
 

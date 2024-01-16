@@ -1,5 +1,6 @@
-import { ImageResize } from 'quill-image-resize-module-ts';
-import React, { useEffect, useRef, useState } from 'react';
+import { ImageActions } from '@xeger/quill-image-actions';
+import { ImageFormats } from '@xeger/quill-image-formats';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router';
@@ -14,6 +15,9 @@ const categoryArray = [
   '꿀팁공유',
   '일상생활'
 ];
+Quill.register('modules/imageActions', ImageActions);
+Quill.register('modules/imageFormats', ImageFormats);
+
 const Write: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -62,21 +66,21 @@ const Write: React.FC = () => {
           data: { user }
         } = await supabase.auth.getUser();
         setUserId(user!.id);
+        console.log(userId);
 
         const { data: profiles, error } = await supabase
-          .from('profiles')
+          .from('user')
           .select('*')
           .eq('id', user!.id);
-
+        console.log(profiles);
         if (error) {
           console.log(error);
         }
 
         if (profiles != null) {
           setProfile(profiles);
+          console.log(profiles);
         }
-
-        console.log(profiles);
       } catch (error: any) {
         console.log(error.message);
       }
@@ -146,8 +150,6 @@ const Write: React.FC = () => {
           // const editor = quillRef.current!.getEditor();
           const editor = quillRef.current?.getEditor();
           const range = editor?.getSelection(true);
-          console.log(editor);
-          console.log(range);
 
           //마우스 위치에 이미지를 넣고 다음 으로 커서 옮기기
           editor?.insertEmbed(range?.index || 0, 'image', postImageUrl);
@@ -164,12 +166,12 @@ const Write: React.FC = () => {
       console.log('error', error);
     }
   };
-  useEffect(() => {
-    Quill.register('modules/imageResize', ImageResize);
-  }, []);
+
   // 에디터 설정
-  const modules = React.useMemo(
+  const modules = useMemo(
     () => ({
+      imageActions: {},
+      imageFormats: {},
       // 툴바 설정
       toolbar: {
         container: [
@@ -183,11 +185,10 @@ const Write: React.FC = () => {
         // 핸들러 설정
         handlers: {
           image: imageHandler // 이미지 tool 사용에 대한 핸들러 설정
-        },
-        ImageResize: {
-          parchment: Quill.import('parchment'),
-          modules: ['Resize', 'DisplaySize']
         }
+        // ImageResize: {
+        //   modules: ['Resize']
+        // }
       }
     }),
     []
@@ -203,7 +204,10 @@ const Write: React.FC = () => {
     'video',
     'image',
     'color',
-    'background'
+    'background',
+
+    'height',
+    'width'
   ];
 
   return (
