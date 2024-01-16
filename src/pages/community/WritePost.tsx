@@ -17,7 +17,7 @@ const categoryArray = [
 ];
 Quill.register('modules/imageActions', ImageActions);
 Quill.register('modules/imageFormats', ImageFormats);
-
+const date = new Date();
 const Write: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -93,6 +93,7 @@ const Write: React.FC = () => {
       // FileList를 배열로 변환
       const { data, error } = await supabase.from('community').insert([
         {
+          post_id: `${profile![0].username}/${title}/${date}`,
           title,
           content,
           category,
@@ -351,6 +352,12 @@ const QuillEditor = styled(ReactQuill)`
   }
   .ql-editor em {
     font-style: italic;
+  }
+  .ql-editor ::placeholder {
+    font-style: normal;
+  }
+  .ql-editor p {
+    display: flex;
   }
 `;
 

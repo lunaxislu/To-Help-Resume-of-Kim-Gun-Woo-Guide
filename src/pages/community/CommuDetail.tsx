@@ -96,6 +96,9 @@ const Container = styled.div`
   & em {
     font-style: italic;
   }
+  & p {
+    display: flex;
+  }
 `;
 const ContentsContainer = styled.div`
   width: 80%;
