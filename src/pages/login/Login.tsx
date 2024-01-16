@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { supabase } from '../../api/supabase/supabaseClient';
 
 const Login = () => {
@@ -12,15 +12,22 @@ const Login = () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao'
     });
-    console.log(data);
   };
 
   const facebookLogin = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'facebook'
     });
+  };
+
+  const getUser = async () => {
+    const { data, error } = await supabase.auth.getUser();
     console.log(data);
   };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <div>
@@ -28,7 +35,6 @@ const Login = () => {
       <button onClick={kakaoLogin}>카카오</button>
       <button onClick={googleLogin}>구글</button>
       <button onClick={facebookLogin}>페북</button>
-      <button>애플</button>
     </div>
   );
 };

@@ -11,6 +11,7 @@ import Products from '../pages/products/Products';
 import ProductsPosts from '../pages/products/ProductsPosts';
 import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
+import ProductDetail from '../pages/productsDetail/ProductDetail';
 
 const Router = () => {
   return (
@@ -22,6 +23,7 @@ const Router = () => {
           <Route path="login" element={<Login />} />
           <Route path="mypage" element={<MyPage />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/products/detail/:id" element={<ProductDetail />} />
           <Route path="/productsposts" element={<ProductsPosts />} />
           <Route path="/community" element={<CommunityMain />} />
           <Route path="/community_write" element={<WritePost />} />
