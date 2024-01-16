@@ -6,6 +6,7 @@ export const HeaderContainer = styled.header`
   display: flex;
   flex-direction: column;
   padding: 10px 20px;
+  margin: 0px auto;
 
   background-color: #f2f2f2;
 `;
@@ -17,6 +18,8 @@ export const HeaderSection = styled.section`
 `;
 export const Logo = styled.div`
   font-size: 30px;
+  cursor: pointer;
+  user-select: none;
 `;
 export const ButtonContainer = styled.div`
   display: flex;
@@ -37,9 +40,17 @@ export const NavSection = styled.section`
 `;
 export const NavBar = styled.nav``;
 export const NavButton = styled(Link)`
+  text-decoration: none;
   margin-right: 10px;
+  cursor: pointer;
+  color: black;
+  font-size: 18px;
 `;
-export const SearchBar = styled.input`
-  width: 300px;
+export const SearchBar = styled.div`
+  width: 488px;
+  height: 37px;
+  border-radius: 19px;
+  padding-left: 10px;
+  font-size: 15px;
   /* margin-right: 100px; */
 `;
