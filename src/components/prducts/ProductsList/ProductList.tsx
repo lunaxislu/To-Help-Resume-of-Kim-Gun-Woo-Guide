@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ProductsCard from './ProductsCard'
 import { supabase } from '../../../api/supabase/supabaseClient';
 import { useNavigate } from 'react-router';
@@ -12,6 +12,7 @@ type ProductsPost = {
   contents: string,
   price: number,
   count: number, 
+  category: string[],
   tags: string[], 
   location: string,
   dealType: string,
@@ -32,7 +33,8 @@ const ProductList = () => {
   useEffect(() => {
     getProducts();
   }, [])
-
+  
+  // 나중에 필요한 것만 가져오기 ex. select('id, name')
   const getProducts = async () => {
     try {
       const { data, error } = await supabase
@@ -50,7 +52,7 @@ console.log(products)
 
   return (
     <>
-      <div style={{display: 'flex', flexDirection: 'row', gap: '10px', marginBottom: '10px'}}>
+      <div style={{display: 'flex', flexDirection: 'row', gap: '10px', marginBottom: '10px', flexWrap: 'wrap'}}>
         {products.map((product) => {
           return <ProductsCard product={product}/>
         })}

@@ -1,4 +1,3 @@
-import React from 'react'
 import ProductsImage from '../../components/prducts/ProductsPosts/ProductsImage'
 import ProductsExplanation from '../../components/prducts/ProductsPosts/ProductsExplanation'
 import ProductsPostingButton from '../../components/prducts/ProductsPosts/ProductsPostingButton'
