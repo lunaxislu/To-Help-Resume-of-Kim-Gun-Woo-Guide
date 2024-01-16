@@ -2,18 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
-type Post = {
-  post_id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  category: string;
-  post_user: string;
-  nickname: string;
-  comment: { user_id: string; user_name: string } | null;
-  likes: number | null;
-  like_user: { uid: string }[] | null;
-};
+import { Post } from './model';
 // const categorys = ["전체",'꿀팁', "일상생활", "공구거래"]
 const CommunityMain: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -39,6 +28,13 @@ const CommunityMain: React.FC = () => {
   //   return;
   // });
   const navigate = useNavigate();
+
+  const handleText = (content: string): string => {
+    // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
+    const textOnly = content.replace(/<[^>]*>/g, '');
+
+    return textOnly;
+  };
   return (
     <Container>
       <h1>커뮤니티</h1>
@@ -55,22 +51,25 @@ const CommunityMain: React.FC = () => {
         <button>일상생활</button>
         <button>공구거래</button>
       </div>
-      <p>
-        
-      </p>
+      <p></p>
 
       {posts.map((post: Post) => {
         return (
-          <Post key={post.post_id}>
-            <Post_content>
+          <Posts
+            key={post.post_id}
+            onClick={() => navigate(`/community/${post.post_id}`)}
+          >
+            {/* <img src={post.main_image} /> */}
+
+            <div>
+              {' '}
               <h2>
                 [{post.category}]{post.title}
+                {post.main_image ? '🎞' : ''}
               </h2>
-              {/* <p>{post.content}</p> */}
-              <div dangerouslySetInnerHTML={{ __html: post.content }}></div>
-            </Post_content>
-            <img src="/assets/주황똥.png" />
-          </Post>
+              <Post_content>{handleText(post.content)}</Post_content>
+            </div>
+          </Posts>
         );
       })}
     </Container>
@@ -85,14 +84,16 @@ const Container = styled.div`
   gap: 10px;
 `;
 const Post_content = styled.div``;
-const Post = styled.div`
+const Posts = styled.div`
   border: 2px solid pink;
   display: flex;
-  width: 600px;
+  width: 80%;
+  max-width: 1116px;
   font-size: 20px;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   & img {
     width: 100px;
+    height: 100px;
   }
   & h2 {
     font-weight: 700;
