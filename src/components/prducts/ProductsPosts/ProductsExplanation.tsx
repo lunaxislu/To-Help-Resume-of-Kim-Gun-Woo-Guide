@@ -159,10 +159,11 @@ const ProductsExplanation = () => {
           <label key={i} htmlFor={deal_type}><input type='radio' id={deal_type} name='deal_type' value={deal_type} onChange={handleOnChangeTextRadioValue} />{deal_type}</label>
         )}
       </div>
-      <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
+      {textRadioValue.deal_type === '직거래'}
+      <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px' }}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>직거래 지역</h2>
-        <button>최근 지역</button>
-        <button>주소 검색</button>
+        <button disabled={textRadioValue.deal_type === '택배' || textRadioValue.deal_type === '협의 후 결정'}>최근 지역</button>
+        <button disabled={textRadioValue.deal_type === '택배' || textRadioValue.deal_type === '협의 후 결정'}>주소 검색</button>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>상품상태*</h2>
