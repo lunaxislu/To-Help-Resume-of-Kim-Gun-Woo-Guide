@@ -1,9 +1,10 @@
+import parse from 'html-react-parser';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import styled from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { FilesObject, Post } from './model';
-const CommuDetail = () => {
+const CommuDetail: React.FC = () => {
   const param = useParams();
   const [posts, setPosts] = useState<Post[]>([]);
 
@@ -51,7 +52,7 @@ const CommuDetail = () => {
               </Topper>
               <div>
                 <p>{post.category}</p>
-                <p dangerouslySetInnerHTML={{ __html: post.content }}></p>
+                <Content>{parse(post.content)}</Content>
                 {post.files && post.files.length > 0 && (
                   <div>
                     {post.files.map((file: FilesObject, index) => (
@@ -79,6 +80,11 @@ const CommuDetail = () => {
     </Container>
   );
 };
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;

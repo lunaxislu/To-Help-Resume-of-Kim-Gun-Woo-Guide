@@ -1,12 +1,12 @@
+import { ImageResize } from 'quill-image-resize-module-ts';
 import React, { useEffect, useRef, useState } from 'react';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { ProfileObject } from './model';
-
 const categoryArray = [
   '고민상담',
   '구인공고',
@@ -14,7 +14,7 @@ const categoryArray = [
   '꿀팁공유',
   '일상생활'
 ];
-const Write = () => {
+const Write: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [mainImage, setMainImage] = useState('');
@@ -55,35 +55,6 @@ const Write = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const getCurrentUser = async () => {
-  //     const {
-  //       data: { user }
-  //     } = await supabase.auth.getUser();
-  //     setUserId(user!.id);
-  //   };
-  //   getCurrentUser();
-  //   const getProfile = async () => {
-  //     try {
-  //       let { data: profiles, error } = await supabase
-  //         .from('profiles')
-  //         .select('*')
-  //         .eq('id', userId);
-
-  //       // 추후에 nickname으로 바꾸기
-  //       if (error) {
-  //         console.log(error);
-  //       }
-  //       if (profiles != null) {
-  //         setProfile(profiles);
-  //       }
-  //       console.log(profiles);
-  //     } catch (error: any) {
-  //       console.log(error.message);
-  //     }
-  //   };
-  //   getProfile();
-  // }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -193,7 +164,9 @@ const Write = () => {
       console.log('error', error);
     }
   };
-
+  useEffect(() => {
+    Quill.register('modules/imageResize', ImageResize);
+  }, []);
   // 에디터 설정
   const modules = React.useMemo(
     () => ({
@@ -210,6 +183,10 @@ const Write = () => {
         // 핸들러 설정
         handlers: {
           image: imageHandler // 이미지 tool 사용에 대한 핸들러 설정
+        },
+        ImageResize: {
+          parchment: Quill.import('parchment'),
+          modules: ['Resize', 'DisplaySize']
         }
       }
     }),
