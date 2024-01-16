@@ -8,6 +8,10 @@ type TextValue = {
   count: number, 
   exchange_product: string,
   tags: string[],
+  shipping_cost: string,
+  deal_type: string,
+  quality: string,
+  changable: string
 }
 const producsPostsTextInit: TextValue = {
   title: "",
@@ -16,36 +20,11 @@ const producsPostsTextInit: TextValue = {
   count: 0, 
   exchange_product: "",
   tags: [],
-}
-
-type RadioValue = {
-  shipping_cost: string,
-  deal_type: string,
-  quality: string,
-  changable: string
-}
-
-const producsPostsRadioInit: RadioValue = {
   shipping_cost: "",
   deal_type: "",
   quality: "",
   changable: ""
 }
-
-type ProductsPost = {
-  title: string,
-  contents: string,
-  price: number,
-  count: number, 
-  exchange_product: string,
-  tags: string[],
-  category: string[],
-  shipping_cost: string,
-  deal_type: string,
-  quality: string,
-  changable: string,
-  agreement: boolean
-};
 
 const major = ['회화', '조소', '판화', '금속공예', '도예', '유리공예', '목공예', '섬유공예', '기타']
 const shipping_cost = ['배송비 포함', '배송비 별도']
@@ -76,30 +55,21 @@ const quality = [
 
 const ProductsExplanation = () => {
 
-  // input text value
-  const [textTypeValue, setTextTypeValue] = useState(producsPostsTextInit)
+  // input text, radio value
+  const [textRadioValue, setTextRadioValue] = useState(producsPostsTextInit)
   
-  const handleOnChangeTextTypeValue = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleOnChangeTextRadioValue = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, valueAsNumber } = e.target;
     if (name === 'tags') {
-    setTextTypeValue({ ...textTypeValue, [name]: [...value.split(',')] }); 
+    setTextRadioValue({ ...textRadioValue, [name]: [...value.split(' ')] }); 
     } else if (name === 'price' || name === 'count') {
-      setTextTypeValue({ ...textTypeValue, [name]: valueAsNumber });
+      setTextRadioValue({ ...textRadioValue, [name]: valueAsNumber });
     }
-    //==========================
-      // radio input까지 합쳐보기
-    //==========================  
     else {
-    setTextTypeValue({ ...textTypeValue, [name]: value });
+    setTextRadioValue({ ...textRadioValue, [name]: value });
     }
-  };
-
-  // input radio value
-  const [radioCheckedList, setRadioCheckedList] = useState(producsPostsRadioInit);
-
-  const handleOnChangeRadioTypeValue = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setRadioCheckedList({ ...radioCheckedList, [name]: value });
+    // 디바운싱 적용시켜 input 값 입력마다 렌더링되지 않도록 리팩토링해보기
+    console.log(textRadioValue)
   };
   
   // input checkbox value
@@ -132,11 +102,9 @@ const ProductsExplanation = () => {
   const agreement = agreementCheckedList
 
   // input값이 모두 들어있는 새로운 객체 만들어서 state로 만들어서 업로드
-   const entireProductsPosts = {...textTypeValue, category, ...radioCheckedList, agreement}
+   const entireProductsPosts = {...textRadioValue, category, agreement}
    // console.log(entireProductsPosts)
 
-  const [productsPosts, setProductsPosts] = useState<ProductsPost>(entireProductsPosts);
-  console.log(productsPosts)
   const addPosts = async () => {
     try {
       const {data, error} = await supabase
@@ -160,7 +128,7 @@ const ProductsExplanation = () => {
     <form onSubmit={handleOnSubmit}>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>제목*</h2>
-        <input type='text' name='title' value={textTypeValue.title} onChange={handleOnChangeTextTypeValue} placeholder='상품명이 들어간 제목을 입력해주세요' />
+        <input type='text' name='title' value={textRadioValue.title} onChange={handleOnChangeTextRadioValue} placeholder='상품명이 들어간 제목을 입력해주세요' />
         <p>0/40</p>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
@@ -173,19 +141,19 @@ const ProductsExplanation = () => {
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>가격*</h2>
-        <input type='number' name='price' value={textTypeValue.price} onChange={handleOnChangeTextTypeValue} placeholder='가격을 입력해주세요'/>
+        <input type='number' name='price' value={textRadioValue.price} onChange={handleOnChangeTextRadioValue} placeholder='가격을 입력해주세요'/>
         {shipping_cost.map((shipping_cost, i) => 
-          <label key={i} htmlFor={shipping_cost}><input type='radio' id={shipping_cost} name='shipping_cost' value={shipping_cost} onChange={handleOnChangeRadioTypeValue} />{shipping_cost}</label>
+          <label key={i} htmlFor={shipping_cost}><input type='radio' id={shipping_cost} name='shipping_cost' value={shipping_cost} onChange={handleOnChangeTextRadioValue} />{shipping_cost}</label>
         )}
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>수량*</h2>
-        <input type='number' name='count' value={textTypeValue.count} onChange={handleOnChangeTextTypeValue} placeholder='수량을 입력해주세요'/>
+        <input type='number' name='count' value={textRadioValue.count} onChange={handleOnChangeTextRadioValue} placeholder='수량을 입력해주세요'/>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>거래방식*</h2>
         {deal_type.map((deal_type, i) => 
-          <label key={i} htmlFor={deal_type}><input type='radio' id={deal_type} name='deal_type' value={deal_type} onChange={handleOnChangeRadioTypeValue} />{deal_type}</label>
+          <label key={i} htmlFor={deal_type}><input type='radio' id={deal_type} name='deal_type' value={deal_type} onChange={handleOnChangeTextRadioValue} />{deal_type}</label>
         )}
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
@@ -197,7 +165,7 @@ const ProductsExplanation = () => {
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>상품상태*</h2>
         <div style={{display: 'flex', flexDirection: 'column', gap: '10px', marginRight: '20px'}}>
           {quality.map((quality, i) => 
-            <label key={i} htmlFor={quality.condition}><input type='radio' id={quality.condition} name='quality' value={quality.condition} onChange={handleOnChangeRadioTypeValue} />{quality.condition}</label>
+            <label key={i} htmlFor={quality.condition}><input type='radio' id={quality.condition} name='quality' value={quality.condition} onChange={handleOnChangeTextRadioValue} />{quality.condition}</label>
           )}
         </div>
         <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
@@ -209,19 +177,19 @@ const ProductsExplanation = () => {
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>교환*</h2>
           {changable.map((changable, i) => 
-            <label key={i} htmlFor={changable}><input type='radio' id={changable} name='changable' value={changable} onChange={handleOnChangeRadioTypeValue} />{changable}</label>
+            <label key={i} htmlFor={changable}><input type='radio' id={changable} name='changable' value={changable} onChange={handleOnChangeTextRadioValue} />{changable}</label>
           )}
-        <input type='text' name='exchange_product' value={textTypeValue.exchange_product} onChange={handleOnChangeTextTypeValue} placeholder='교환을 원하는 상품을 입력해주세요.' />
+        <input type='text' name='exchange_product' value={textRadioValue.exchange_product} onChange={handleOnChangeTextRadioValue} placeholder='교환을 원하는 상품을 입력해주세요.' />
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>설명*</h2>
-        <textarea value={textTypeValue.contents} name='contents' onChange={(e: any) => handleOnChangeTextTypeValue(e)} style={{width: '75%', resize: 'none'}} placeholder='설명을 입력해 주세요' />
+        <textarea value={textRadioValue.contents} name='contents' onChange={(e: any) => handleOnChangeTextRadioValue(e)} style={{width: '75%', resize: 'none'}} placeholder='설명을 입력해 주세요' />
         <p>0/2000</p>
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px'}}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>태그</h2>
         <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <input type='text' name='tags' value={textTypeValue.tags} onChange={handleOnChangeTextTypeValue} maxLength={9} placeholder='태그를 입력해주세요.' />
+          <input type='text' name='tags' value={textRadioValue.tags} onChange={handleOnChangeTextRadioValue} maxLength={9} placeholder='태그를 입력해주세요.' />
           <p style={{color: 'darkgray'}}>띄어쓰기로 구분되며 최대 9자까지 입력할 수 있어요.</p>
           <p style={{color: 'darkgray'}}>사람들이 내 상품을 더 잘 찾을 수 있어요.</p>
           <p style={{color: 'darkgray'}}>상품과 관련 없는 태그를 입력할 경우, 판매에 제재를 받을 수 있어요.</p>
