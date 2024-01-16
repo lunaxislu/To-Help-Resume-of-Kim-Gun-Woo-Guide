@@ -185,13 +185,13 @@ export default function ChatRoom() {
   }, []);
 
   // 클릭 된 채팅방 id, 현재 로그인 유저에 따라서
-  // 해당 채팅방에 해당하는 메세지를 가져오고
-  // 유저가 소속된 채팅방을 가져오는 부분
   useEffect(() => {
+    // 해당 채팅방에 해당하는 메세지를 가져오고
     if (clicked) {
       setMessages([]);
       getMessages(clicked);
     }
+    // 유저가 소속된 채팅방을 가져오는 부분
     if (curUser) {
       getRoomsforUser();
       handleRealtime();
