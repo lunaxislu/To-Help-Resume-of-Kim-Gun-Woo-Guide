@@ -11,7 +11,7 @@ type ProductInfo = {
 
 const ProductDetailInfo = ({ labels, productInfo, data }: ProductInfo) => {
   return (
-    <div>
+    <>
       {labels.map((label: string, i: number) => {
         return (
           <StProductRow key={i}>
@@ -20,7 +20,7 @@ const ProductDetailInfo = ({ labels, productInfo, data }: ProductInfo) => {
           </StProductRow>
         );
       })}
-    </div>
+    </>
   );
 };
 

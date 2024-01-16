@@ -25,6 +25,20 @@ export interface UsedItem {
   error: string;
 }
 
-export type Database = {
-  used_item__board: UsedItem[];
-};
+export interface Community {
+  post_id: string;
+  post_user: string;
+  created_at: Date;
+  title: string;
+  content: string;
+  category: string | null;
+  comment: string[];
+  likes: number | null;
+  like_user: string[];
+  image_filename?: string;
+  imageData?: any;
+  image_url: string;
+  image_Url: string;
+  publicURL: string;
+  error: string;
+}

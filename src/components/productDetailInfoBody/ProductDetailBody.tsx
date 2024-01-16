@@ -19,7 +19,7 @@ const ProductDetail = ({ productInfo, data, i }: BodyInfo) => {
     setIsHover(false);
   };
   return (
-    <div>
+    <>
       {productInfo[i] === data.quality ? (
         <StRowValue>
           <p
@@ -45,7 +45,7 @@ const ProductDetail = ({ productInfo, data, i }: BodyInfo) => {
       ) : (
         <StRowValue>{productInfo[i]}</StRowValue>
       )}
-    </div>
+    </>
   );
 };
 
