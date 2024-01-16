@@ -1,13 +1,23 @@
 import React from 'react';
 import * as St from '../styles/headerStyle/HeaderStyle';
+import { useNavigate } from 'react-router';
+import SearchBar from '../components/layout/header/SearchBar';
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+  const handleSellbuttonClick = () => {
+    navigate('/productsposts');
+  };
   return (
     <St.HeaderContainer>
       <St.HeaderSection>
-        <St.Logo>logo</St.Logo>
+        <St.Logo onClick={handleLogoClick}>작업자들</St.Logo>
         <St.ButtonContainer>
-          <St.Button>판매하기</St.Button>
+          <St.Button onClick={handleSellbuttonClick}>판매하기</St.Button>
           <St.Button>찜</St.Button>
           <St.Button>알림</St.Button>
           <St.UserIcon>User</St.UserIcon>
@@ -19,7 +29,9 @@ const Header = () => {
           <St.NavButton to="/products">중고거래</St.NavButton>
           <St.NavButton to="/community">커뮤니티</St.NavButton>
         </St.NavBar>
-        <St.SearchBar placeholder="찾는 내용을 검색해보세요."></St.SearchBar>
+        <St.SearchBar>
+          <SearchBar />
+        </St.SearchBar>
       </St.NavSection>
     </St.HeaderContainer>
   );
