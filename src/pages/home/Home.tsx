@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Community, UsedItem } from '../usedtypes';
+import { Communityy, UsedItem } from '../usedtypes';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
@@ -18,11 +18,11 @@ type UsedItemsCountData = {
 // 중고게시물 및 커뮤니티 게시물 + 사진 받아오는 로직
 export const fetchData = async (): Promise<{
   usedItems: UsedItem[];
-  communityItems: Community[];
+  communityItems: Communityy[];
 }> => {
   try {
     const { data: usedItemsData, error: usedItemsError } = await supabase
-      .from('used_item__board')
+      .from('products')
       .select('*')
       .order('created_at', { ascending: false })
       .limit(5);
@@ -106,7 +106,7 @@ const Home = () => {
     isLoading: usedItemsCountLoading,
     isError: usedItemsCountError
   } = useQuery<UsedItemsCountData>('usedItemsCount', async () => {
-    const count = await supabase.from('used_item__board').select('*');
+    const count = await supabase.from('products').select('*');
     return count;
   });
 
