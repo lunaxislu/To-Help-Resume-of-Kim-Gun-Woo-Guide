@@ -8,16 +8,10 @@ import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { ProfileObject } from './model';
-const categoryArray = [
-  '고민상담',
-  '구인공고',
-  '공동구매',
-  '꿀팁공유',
-  '일상생활'
-];
+export const categoryArray = ['전체', '고민', '꿀팁', '일상', '구인', '공구'];
 Quill.register('modules/imageActions', ImageActions);
 Quill.register('modules/imageFormats', ImageFormats);
-const date = new Date();
+
 const Write: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -35,16 +29,17 @@ const Write: React.FC = () => {
       const filesArray = Array.from(fileList);
       // 각 파일을 개별적으로 처리 (필요한 경우)
       filesArray.forEach((file) => {
+        console.log(file);
         handleFilesUpload(file);
       });
     }
   };
   const handleFilesUpload = async (file: File) => {
     try {
-      // const newFileName = uuid();
+      const newFileName = uuid();
       const { data, error } = await supabase.storage
         .from('files')
-        .upload(`files/${file.name}${uuid()}`, file);
+        .upload(`files/${newFileName}`, file);
       if (error) {
         console.log('파일 안올라감ㅋ', error);
         return;
@@ -93,7 +88,6 @@ const Write: React.FC = () => {
       // FileList를 배열로 변환
       const { data, error } = await supabase.from('community').insert([
         {
-          post_id: `${profile![0].username}/${title}/${date}`,
           title,
           content,
           category,
@@ -186,10 +180,10 @@ const Write: React.FC = () => {
         // 핸들러 설정
         handlers: {
           image: imageHandler // 이미지 tool 사용에 대한 핸들러 설정
+        },
+        ImageResize: {
+          modules: ['Resize']
         }
-        // ImageResize: {
-        //   modules: ['Resize']
-        // }
       }
     }),
     []
@@ -206,7 +200,6 @@ const Write: React.FC = () => {
     'image',
     'color',
     'background',
-
     'height',
     'width'
   ];
@@ -341,7 +334,7 @@ const QuillEditor = styled(ReactQuill)`
   background-color: #f3f3f3;
   border-radius: 5px;
   .ql-container {
-    height: 600px;
+    min-height: 600px;
     border: none;
   }
   .ql-toolbar {
