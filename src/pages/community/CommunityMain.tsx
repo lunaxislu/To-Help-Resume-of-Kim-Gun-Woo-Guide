@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
+import { categoryArray } from './WritePost';
 import { Post } from './model';
-// const categorys = ["전체",'꿀팁', "일상생활", "공구거래"]
 const CommunityMain: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [selectCategory, setSelectCategory] = useState('전체');
   useEffect(() => {
     const getPost = async () => {
       try {
         let { data: community, error } = await supabase
           .from('community')
-          .select('*');
+          .select('*')
+          .order('post_id', { ascending: false });
         if (error) throw error;
         if (community != null) {
           setPosts(community);
@@ -35,43 +37,72 @@ const CommunityMain: React.FC = () => {
 
     return textOnly;
   };
+  console.log(selectCategory);
   return (
     <Container>
-      <h1>커뮤니티</h1>
-      <button
-        onClick={() => {
-          navigate('/community_write');
-        }}
-      >
-        작성데스
-      </button>
-      <div>
-        <button>전체</button>
-        <button>꿀팁</button>
-        <button>일상생활</button>
-        <button>공구거래</button>
-      </div>
-      <p></p>
+      <Post_container>
+        <h2>{`${posts.length}개의 이야기를 확인해보세요`}</h2>
+        <button
+          onClick={() => {
+            navigate('/community_write');
+          }}
+        >
+          글쓰기
+        </button>
+        <FeatureBar>
+          <Categorys>
+            {categoryArray.map((category) => {
+              return (
+                <CategoryBtn
+                  onClick={(event) => {
+                    //event.target의 타입을 HTMLElement로 명시적으로 지정
+                    const target = event.target as HTMLElement;
+                    setSelectCategory(target.textContent || '');
+                  }}
+                  key={category}
+                  $selectCategory={selectCategory}
+                >
+                  {category}
+                </CategoryBtn>
+              );
+            })}
+          </Categorys>
+          <form>
+            <input placeholder="검색어를 입력하세요" />
+          </form>
+        </FeatureBar>
 
-      {posts.map((post: Post) => {
-        return (
-          <Posts
-            key={post.post_id}
-            onClick={() => navigate(`/community/detail/${post.post_id}`)}
-          >
-            {/* <img src={post.main_image} /> */}
+        {posts
+          .filter((post) => {
+            if (selectCategory === '전체') {
+              return posts;
+            } else {
+              return post.category === selectCategory;
+            }
+          })
+          .map((post: Post) => {
+            return (
+              <Posts
+                key={post.post_id}
+                onClick={() => navigate(`/community/detail/${post.post_id}`)}
+              >
+                {post.main_image ? <img src={post.main_image} /> : ''}
 
-            <div>
-              {' '}
-              <h2>
-                [{post.category}]{post.title}
-                {post.main_image ? '🎞' : ''}
-              </h2>
-              <Post_content>{handleText(post.content)}</Post_content>
-            </div>
-          </Posts>
-        );
-      })}
+                <div>
+                  {' '}
+                  <h2>
+                    {post.title}
+                    {/* {post.main_image ? '🎞' : ''} */}
+                  </h2>
+                  <p>{handleText(post.content)}</p>
+                </div>
+                <div>
+                  <p>{post.created_at}</p>
+                </div>
+              </Posts>
+            );
+          })}
+      </Post_container>
     </Container>
   );
 };
@@ -83,21 +114,74 @@ const Container = styled.div`
   justify-content: center;
   gap: 10px;
 `;
-const Post_content = styled.div``;
-const Posts = styled.div`
-  border: 2px solid pink;
-  display: flex;
-  width: 80%;
+const Post_container = styled.div`
   max-width: 1116px;
+  width: 80%;
+  margin-bottom: 50px;
+`;
+
+const Posts = styled.div`
+  display: flex;
   font-size: 20px;
-  /* justify-content: space-between; */
+  padding: 21px;
+  height: 100px;
+  gap: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f3f3f3;
+  margin-bottom: 20px;
   & img {
-    width: 100px;
-    height: 100px;
+    width: 56px;
+    height: 56px;
+    /* background-color: white; */
   }
   & h2 {
     font-weight: 700;
+    margin-bottom: 16px;
+  }
+  & p {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 500px;
   }
 `;
+const FeatureBar = styled.div`
+  display: flex;
+  margin: 10px 0 30px 0;
+  & input {
+    border: 1px solid #bdbdbd;
+    border-radius: 19px;
+    height: 36px;
+    width: 380px;
+    padding-left: 16px;
+  }
+`;
+const Categorys = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 6px;
+`;
+const CategoryBtn = styled.button<{ $selectCategory: string }>`
+  border: none;
+  height: 30px;
+  width: 56px;
+  border-radius: 6px;
 
+  ${(props) => {
+    if (props.$selectCategory === props.children) {
+      console.log(props.$selectCategory);
+      console.log(props.children);
+
+      return css`
+        background-color: #636363;
+        color: white;
+      `;
+    }
+    return css`
+      background-color: #f3f3f3;
+      color: black;
+    `;
+  }}
+`;
 export default CommunityMain;
