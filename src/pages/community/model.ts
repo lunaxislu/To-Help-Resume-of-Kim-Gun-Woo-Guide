@@ -30,3 +30,33 @@ export type ProfileObject =
       board: string[];
       comment: string[];
     }[];
+
+export type UpdateObject = {
+  post_id: number;
+  title: string;
+  content: string;
+  anon: boolean;
+  files: {
+    name: string;
+    url: string;
+  };
+  main_image: string;
+  category: string;
+};
+
+export type InsertObject = {
+  title: string;
+  content: string;
+  category: string;
+  post_user: string;
+  nickname: string;
+  files: {
+    name: string;
+    url: string;
+  };
+  main_image: string;
+  anon: boolean;
+};
+export type CommuListProps = {
+  selectCategory: string;
+};
