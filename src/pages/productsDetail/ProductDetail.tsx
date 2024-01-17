@@ -1,18 +1,29 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { supabase } from '../../api/supabase/supabaseClient';
 import ProductDetailInfo from '../../components/productDetailInfoBody/ProductDetailInfo';
 import * as St from './style';
 import type { CustomUser, Product } from './types';
+import { RoomType } from '../../components/chat/types';
+
+// DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
+// 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const navi = useNavigate();
   const [curUser, setCurUser] = useState<CustomUser | null>(null);
   const [target, setTarget] = useState<CustomUser | null>(null);
   const [product, setProduct] = useState<Product[] | null>(null);
+  const [isExist, setIsExist] = useState<boolean>(false);
 
   const getUserData = async () => {
     const { data: user, error } = await supabase.auth.getUser();
+
+    // DB에 유저 정보 없음 에러
+    if (error) console.log('cannot get User Info');
+
+    // DB에 유저 정보가 있다면 DB에 업로드
     if (user.user) {
       const { data: currentLogined, error } = await supabase
         .from('user')
@@ -23,10 +34,11 @@ const ProductDetail = () => {
       if (currentLogined && currentLogined.length > 0) {
         setCurUser(currentLogined[0]);
       }
+      // 로그이 유저 없음 에러
+      if (error) console.log('logined user not exists');
 
       await findRoom();
     }
-    if (error) console.log('cannot get User Info');
   };
 
   const getProduct = async (id: string) => {
@@ -41,7 +53,7 @@ const ProductDetail = () => {
     }
   };
 
-  const makeChatRoom = async (e: MouseEvent) => {
+  const makeChatRoom = async (e: MouseEvent<HTMLDivElement>) => {
     const targetId = e.currentTarget.id;
 
     // user 테이블에서 채팅 상대 정보 가져오기
@@ -57,13 +69,15 @@ const ProductDetail = () => {
     if (noUser) console.log('user is not exists', noUser);
   };
 
-  // 생성된 채팅방 row에 현재 로그인 유저와 타겟 유저 정보 삽입
+  // 생성된 채팅방 row에 참여자 정보, 채팅방 이름 삽입
   const insertUserIntoChatRoom = async (
     curUser: CustomUser,
     target: CustomUser
   ) => {
-    const participants = [
+    const roomForm = [
       {
+        room_name: `${target.username}`,
+        about: `${id}`,
         participants: [
           { user_id: target.uid, user_name: target.username },
           {
@@ -73,13 +87,17 @@ const ProductDetail = () => {
         ]
       }
     ];
+
     const { data: chatRoom, error } = await supabase
       .from('chat_room')
-      .insert(participants);
+      .insert(roomForm);
 
-    await findRoom();
+    if (error) {
+      console.log('생성 실패');
+      return false;
+    }
 
-    if (error) console.log('생성 실패');
+    await sendFirstMessage();
   };
 
   // 유저가 속한 채팅방 찾기
@@ -93,14 +111,13 @@ const ProductDetail = () => {
       return;
     }
 
-    if (foundRoom && curUser) {
+    if (foundRoom && curUser && target) {
       const filtered = foundRoom.filter((room: any) => {
         // curUser.id와 일치하는 participant를 포함한 방만 필터링
         return room.participants.some(
-          (participant: any) => participant.user_id === curUser.uid
+          (participant: any) => participant.user_id === target.uid
         );
       });
-
       return filtered;
     }
   };
@@ -117,15 +134,21 @@ const ProductDetail = () => {
     }
   };
 
+  // findUser 함수와 이어지는 함수
   // 유저의 chat_rooms 필드값에 방을 업뎃해주자
   const insertRoomintoUser = async (userInfo: CustomUser[]) => {
-    const room = (await findRoom()) as any;
+    const room = (await findRoom()) as RoomType[];
 
+    // DB 초기값이 null 이라서 값이 있어도 배열 메서드가 안 통한 것.. 컬럼 확인 잘하자
     if (room && userInfo) {
-      const room_id = room[0].id;
+      if (userInfo[0].chat_rooms === null) {
+        userInfo[0].chat_rooms = [];
+      }
+      const room_id = room[0]?.id;
+      const updatedData = [...userInfo[0].chat_rooms, room_id];
       const { data, error } = await supabase
         .from('user')
-        .update({ chat_rooms: [room_id] })
+        .update({ chat_rooms: updatedData })
         .eq('uid', userInfo[0].uid)
         .select();
 
@@ -133,38 +156,55 @@ const ProductDetail = () => {
         console.error('Error adding chat room id to user:', error.message);
         return false;
       }
+
+      return true;
     }
   };
 
   // 게시물 관련 데이터를 첫 메세지로 보낸당
   const sendFirstMessage = async () => {
+    const foundRoom = await findRoom();
+
     if (product && curUser) {
-      const room = await findRoom();
-      if (room) {
+      if (foundRoom) {
         const InitMessage = [
           {
             sender_id: curUser.uid,
             content: `제목: ${product[0].title}`,
-            chat_room_id: room[0]?.id
+            chat_room_id: foundRoom[0]?.id
           },
           {
             sender_id: curUser.uid,
             content: `${product[0].price}원`,
-            chat_room_id: room[0]?.id
+            chat_room_id: foundRoom[0]?.id
           },
           {
             sender_id: curUser.uid,
             content: '상품에 관심 있어요!',
-            chat_room_id: room[0]?.id
+            chat_room_id: foundRoom[0]?.id
           }
         ];
         const { data, error } = await supabase
           .from('chat_messages')
-          .insert(InitMessage);
+          .insert(InitMessage)
+          .eq('uid', product[0].uid);
 
         if (error) console.log('Send Messages Failed', error);
+
+        navi('/chat');
       }
     } else console.log('Failed, no data');
+  };
+
+  const isExistsRoom = async () => {
+    const { data: chat_rooms, error } = await supabase
+      .from('chat_room')
+      .select('about')
+      .eq('about', id);
+    if (chat_rooms && chat_rooms.length > 0) {
+      setIsExist(true);
+      console.log('exists!');
+    }
   };
 
   useEffect(() => {
@@ -172,6 +212,7 @@ const ProductDetail = () => {
       getProduct(id);
     }
     getUserData();
+    isExistsRoom();
   }, []);
 
   useEffect(() => {
@@ -179,7 +220,6 @@ const ProductDetail = () => {
       insertUserIntoChatRoom(curUser, target);
       findUser(curUser);
       findUser(target);
-      sendFirstMessage();
     }
   }, [target]);
 
@@ -196,6 +236,7 @@ const ProductDetail = () => {
     data.exchange_product,
     data.shipping_cost
   ];
+  console.log(product);
 
   return (
     <St.StDetailContainer>
@@ -234,9 +275,20 @@ const ProductDetail = () => {
           <St.ButtonWrapper>
             <St.Button $role="like">찜하기</St.Button>
             {/* 작성자 ID 가져오기 */}
-            <St.Button $role="chat" id={product[0].uid} onClick={makeChatRoom}>
-              채팅 보내고 구매하기
-            </St.Button>
+            {isExist ? (
+              <St.Button $role="chat" onClick={() => navi('/chat')}>
+                채팅으로 이동하기
+              </St.Button>
+            ) : (
+              <St.Button
+                $role="chat"
+                id={product[0].uid}
+                data-about={product[0].uid}
+                onClick={makeChatRoom}
+              >
+                채팅 보내고 구매하기
+              </St.Button>
+            )}
           </St.ButtonWrapper>
         </St.StProductInfo>
       </St.StDetailInfoSection>

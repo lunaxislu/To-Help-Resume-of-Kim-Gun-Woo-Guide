@@ -19,8 +19,10 @@ export type Participants = {
 
 export type RoomType = {
   id: string;
+  room_name: string;
   created_at: string;
   participants: Participants[];
+  about: string;
 };
 
 export type RoomStyledProps = {

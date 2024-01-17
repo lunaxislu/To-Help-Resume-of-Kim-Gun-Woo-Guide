@@ -9,7 +9,7 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import { User } from '@supabase/supabase-js';
 import ChatRoomList from '../../components/chat/ChatRoomList';
 import ChatMessages from '../../components/chat/ChatMessages';
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid, v4 } from 'uuid';
 
 import type {
   MessageType,
@@ -76,10 +76,8 @@ export default function ChatRoom() {
       .eq('chat_room_id', room_id);
 
     if (chat_messages) {
-      setMessages((prev: any) => [
-        ...prev,
-        ...(chat_messages as MessageType[])
-      ]);
+      // 기존 메시지를 완전히 대체하는 방식으로 수정
+      setMessages(chat_messages as MessageType[]);
     }
 
     if (error) console.log('failed set message', error);
@@ -123,14 +121,17 @@ export default function ChatRoom() {
   // 이미지 인풋의 파일을 받아 storage에 올리는 함수에 전달
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files;
-    if (file) handleImageUpload(file[0]);
+    if (file) {
+      handleImageUpload(file[0]);
+    }
+    if (!file) console.log('다시 시도');
   };
 
   // 이미지 정보 받아서 storage에 올리는 함수
   const handleImageUpload = async (file: File) => {
     const { data, error } = await supabase.storage
       .from('images')
-      .upload(`messages/${file.name}`, file, {
+      .upload(`messages/${uuid()}`, file, {
         contentType: file.type
       });
 
@@ -157,6 +158,19 @@ export default function ChatRoom() {
         }
       )
       .subscribe();
+    const chatMessages = supabase
+      .channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'chat_messages' },
+        (payload) => {
+          // 변경사항이 발생하면 해당 채팅방의 메시지를 다시 불러옴
+          if (clicked) {
+            getMessages(clicked);
+          }
+        }
+      )
+      .subscribe();
 
     // unmount 시 구독 해제 하기 위해서 반환
     return { chatRooms };
@@ -165,7 +179,7 @@ export default function ChatRoom() {
   // // unmount 시 구독 해제
   useEffect(() => {
     const { chatRooms } = handleRealtime();
-
+    handleRealtime();
     // unmount 시 구독 해제하기
     return () => {
       chatRooms.unsubscribe();
@@ -186,15 +200,15 @@ export default function ChatRoom() {
 
   // 클릭 된 채팅방 id, 현재 로그인 유저에 따라서
   useEffect(() => {
-    // 해당 채팅방에 해당하는 메세지를 가져오고
-    if (clicked) {
-      setMessages([]);
-      getMessages(clicked);
-    }
     // 유저가 소속된 채팅방을 가져오는 부분
     if (curUser) {
       getRoomsforUser();
       handleRealtime();
+    }
+    // 해당 채팅방에 해당하는 메세지를 가져오고
+    if (clicked) {
+      setMessages([]);
+      getMessages(clicked);
     }
   }, [clicked, curUser]);
 
@@ -211,6 +225,14 @@ export default function ChatRoom() {
     }
   }, [rooms]);
 
+  const getUserName = (rooms: RoomType[] | undefined | null) => {
+    if (rooms && clicked) {
+      const room = rooms.find((room: RoomType) => room.id === clicked);
+      return room?.room_name;
+    }
+    return undefined; // 또는 다른 기본값
+  };
+
   return (
     <>
       <St.StChatContainer>
@@ -223,10 +245,18 @@ export default function ChatRoom() {
           />
         </St.StChatList>
         <St.StChatBoard>
-          <St.StChatBoardHeader>
-            <St.StChatBoardHeaderName>사용자 이름</St.StChatBoardHeaderName>
-            점점점
-          </St.StChatBoardHeader>
+          {clicked && (
+            <St.StChatBoardHeader>
+              <St.StChatBoardHeaderName>
+                <p>
+                  {getUserName(rooms) !== undefined &&
+                    String(rooms && getUserName(rooms))}
+                </p>
+              </St.StChatBoardHeaderName>
+              점점점
+            </St.StChatBoardHeader>
+          )}
+
           <St.StChatGround>
             <ChatMessages messages={messages} curUser={curUser} />
           </St.StChatGround>

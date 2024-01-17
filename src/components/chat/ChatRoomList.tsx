@@ -39,7 +39,7 @@ const ChatRoomList: React.FC<Props> = ({
               }}
               style={{ padding: '1rem' }}
             >
-              <p>{room.id}</p>
+              <p>{room.room_name}</p>
               <p style={{ display: 'flex' }}>
                 새 메세지: &nbsp; {unread && unread[i]}
               </p>
