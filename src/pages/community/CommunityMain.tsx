@@ -25,10 +25,7 @@ const CommunityMain: React.FC = () => {
 
     getPost();
   }, []);
-  // 필터 확실해지면 다시.
-  // const filteredPost = posts.filter((post) => {
-  //   return;
-  // });
+
   const navigate = useNavigate();
 
   const handleText = (content: string): string => {
@@ -37,7 +34,7 @@ const CommunityMain: React.FC = () => {
 
     return textOnly;
   };
-  console.log(selectCategory);
+
   return (
     <Container>
       <Post_container>
@@ -67,9 +64,9 @@ const CommunityMain: React.FC = () => {
               );
             })}
           </Categorys>
-          <form>
+          {/* <form>
             <input placeholder="검색어를 입력하세요" />
-          </form>
+          </form> */}
         </FeatureBar>
 
         {posts
@@ -144,6 +141,7 @@ const Posts = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
     max-width: 500px;
+    font-size: 16px;
   }
 `;
 const FeatureBar = styled.div`
@@ -170,9 +168,6 @@ const CategoryBtn = styled.button<{ $selectCategory: string }>`
 
   ${(props) => {
     if (props.$selectCategory === props.children) {
-      console.log(props.$selectCategory);
-      console.log(props.children);
-
       return css`
         background-color: #636363;
         color: white;

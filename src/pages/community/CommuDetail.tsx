@@ -21,12 +21,14 @@ const CommuDetail: React.FC = () => {
   const [editCategory, setEditCategory] = useState('');
   const [editFiles, setEditFiles] = useState<File[]>([]);
   const [editContent, setEditContent] = useState('');
+
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [editAnon, setEditAnon] = useState(false);
   const [mainImage, setMainImage] = useState('');
   const [postId, setPostId] = useState('');
   const navigate = useNavigate();
   // const [comments, setComments] = useState();
+
   const getPost = async () => {
     try {
       let { data: community, error } = await supabase
@@ -38,7 +40,9 @@ const CommuDetail: React.FC = () => {
         setPosts(community);
         setEditTitle(community[0].title);
         setEditFiles(community[0].files);
-        setEditContent(community[0].content);
+        setEditContent(
+          community[0].content.replace(/<p>(.*?)<\/p>/g, '<div>$1</div>')
+        );
         setEditCategory(community[0].category);
         setUploadedFileUrl(community[0].files);
         setEditAnon(community[0].anon);
@@ -51,7 +55,7 @@ const CommuDetail: React.FC = () => {
   useEffect(() => {
     getPost();
   }, []);
-  console.log(editContent);
+
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
     if (fileList) {
@@ -219,6 +223,9 @@ const CommuDetail: React.FC = () => {
     'width'
   ];
 
+  console.log('랜더');
+  console.log(editContent);
+
   return (
     <Container>
       {isEdit ? (
@@ -238,7 +245,7 @@ const CommuDetail: React.FC = () => {
                   <input
                     type="radio"
                     name={editCategory}
-                    value={item}
+                    value={editContent}
                     onChange={(e) => {
                       setEditCategory(e.target.value);
                     }}
@@ -476,6 +483,8 @@ const QuillEditor = styled(ReactQuill)`
   }
   .ql-editor p {
     display: flex;
+    line-height: 30px;
+    font-size: 16px;
   }
 `;
 export default CommuDetail;
