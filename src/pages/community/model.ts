@@ -17,31 +17,32 @@ export type FilesObject = {
   url: string;
   name: string;
 };
-export type ProfileObject =
-  | {
-      id: string;
-      created_at: string;
-      avartar_url: string;
-      username: string;
-      nickname: string;
-      email: string;
-      chat_rooms: string[];
-      likes: string[];
-      board: string[];
-      comment: string[];
-    }[];
+export type ProfileObject = {
+  id: string;
+  created_at: string;
+  avartar_url: string;
+  username: string;
+  nickname: string;
+  email: string;
+  chat_rooms: string[];
+  likes: string[];
+  board: string[];
+  comment: string[];
+};
 
 export type UpdateObject = {
-  post_id: number;
-  title: string;
-  content: string;
-  anon: boolean;
-  files: {
-    name: string;
-    url: string;
+  updateData: {
+    title: string;
+    content: string;
+    anon: boolean;
+    files: {
+      name: string;
+      url: string | null[];
+    }[];
+    main_image: string;
+    category: string;
   };
-  main_image: string;
-  category: string;
+  paramId: string | undefined;
 };
 
 export type InsertObject = {
@@ -52,11 +53,21 @@ export type InsertObject = {
   nickname: string;
   files: {
     name: string;
-    url: string;
-  };
+    url: string | null[];
+  }[];
   main_image: string;
   anon: boolean;
 };
 export type CommuListProps = {
   selectCategory: string;
+};
+export type QuillLayoutProps = {
+  content: string;
+  setContent: (content: string) => void;
+};
+export type WriteLayoutProps = {
+  profile: ProfileObject[] | undefined;
+  isEdit: boolean;
+  paramId: string | undefined;
+  setIsEditState: (isEditState: boolean) => void;
 };

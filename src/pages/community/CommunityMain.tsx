@@ -62,7 +62,7 @@ const Container = styled.div`
   gap: 10px;
 `;
 const Post_container = styled.div`
-  max-width: 1116px;
+  max-width: 906px;
   width: 80%;
   margin-bottom: 50px;
 `;
