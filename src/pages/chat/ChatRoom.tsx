@@ -10,7 +10,7 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import { User } from '@supabase/supabase-js';
 import ChatRoomList from '../../components/chat/ChatRoomList';
 import ChatMessages from '../../components/chat/ChatMessages';
-import { v4 as uuid, v4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 import type {
   MessageType,
@@ -18,6 +18,7 @@ import type {
   RoomType
 } from '../../components/chat/types';
 import * as St from './style';
+import styled, { css } from 'styled-components';
 
 export default function ChatRoom() {
   const [curUser, setCurUser] = useState<User | null>();
@@ -28,6 +29,7 @@ export default function ChatRoom() {
   const [unread, setUnread] = useState<number[] | null>(null);
   const [images, setImages] = useState<string>('');
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [targetUser, setTargetUser] = useState<any[]>();
 
   // 채팅 인풋을 받아 state에 업뎃
   const handleUserInput = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,6 +40,19 @@ export default function ChatRoom() {
   // 클릭 된 채팅방의 아이디를 state에 저장
   const handleCurClicked = (e: MouseEvent<HTMLDivElement>) => {
     setClicked(e.currentTarget.id);
+  };
+
+  const handleTargetUser = async () => {
+    const target = rooms?.find((room: RoomType) => room.id === clicked);
+    const { data, error } = await supabase
+      .from('user')
+      .select('*')
+      .eq('username', target?.room_name);
+    if (error) console.log('상대방 정보 가져오기 실패');
+
+    if (data) {
+      setTargetUser(data);
+    }
   };
 
   // submit 발생 시 인풋 초기화
@@ -211,6 +226,7 @@ export default function ChatRoom() {
     if (clicked) {
       setMessages([]);
       getMessages(clicked);
+      handleTargetUser();
     }
   }, [clicked, curUser]);
 
@@ -258,6 +274,9 @@ export default function ChatRoom() {
           {clicked && (
             <St.StChatBoardHeader>
               <St.StChatBoardHeaderName>
+                <StUserProfile
+                  $url={targetUser && targetUser[0]?.avatar_url}
+                ></StUserProfile>
                 <p>
                   {getUserName(rooms) !== undefined &&
                     String(rooms && getUserName(rooms))}
@@ -284,3 +303,15 @@ export default function ChatRoom() {
     </>
   );
 }
+
+type ChatProfileType = {
+  $url: string;
+};
+
+const StUserProfile = styled.div<ChatProfileType>`
+  width: 28px;
+  height: 28px;
+  border-radius: 50px;
+  background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
+  background-size: cover;
+`;

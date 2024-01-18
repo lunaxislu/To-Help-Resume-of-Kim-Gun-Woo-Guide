@@ -80,10 +80,15 @@ const ProductDetail = () => {
         room_name: `${target.username}`,
         about: `${id}`,
         participants: [
-          { user_id: target.uid, user_name: target.username },
+          {
+            user_id: target.uid,
+            user_name: target.username,
+            avatar_url: target.avatar_url
+          },
           {
             user_id: curUser.uid,
-            user2_name: curUser.username
+            user2_name: curUser.username,
+            avatar_url: curUser.avatar_url
           }
         ]
       }

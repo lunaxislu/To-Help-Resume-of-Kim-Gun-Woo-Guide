@@ -15,6 +15,7 @@ export type MessageType = {
 export type Participants = {
   user_id: string;
   user_name: string;
+  avatar_url: string;
 };
 
 export type RoomType = {

@@ -65,6 +65,9 @@ const StChatBoardHeader = styled.div`
 const StChatBoardHeaderName = styled.h3`
   font-size: 1.25rem;
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 `;
 
 const StChatForm = styled.form`
@@ -91,6 +94,13 @@ const StChatInput = styled.input`
 
 const StListRoom = styled.div<RoomStyledProps>`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 1.25rem;
+  cursor: pointer;
   ${(props) => {
     if (props.$current === props.children) {
       return css`
@@ -98,6 +108,67 @@ const StListRoom = styled.div<RoomStyledProps>`
       `;
     }
   }}
+  &:hover {
+    background-color: #eee;
+  }
+`;
+
+const StListUpper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const StListLower = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 600;
+
+  p {
+    flex: 1;
+  }
+  span {
+    color: #1d1d1d70;
+  }
+`;
+
+type ChatProfileType = {
+  $url: string;
+};
+
+const StListUserProfile = styled.div<ChatProfileType>`
+  width: 28px;
+  height: 28px;
+  border-radius: 50px;
+  background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
+  background-size: cover;
+`;
+
+const StUserInfoBox = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const StUnreadCount = styled.div`
+  width: fit-content;
+  height: fit-content;
+  padding: 0.3rem 0.6rem;
+  text-align: center;
+  border-radius: 50px;
+  line-height: 1;
+  color: white;
+  background-color: var(--primary-color);
+`;
+
+const StListBody = styled.div`
+  display: 'flex';
+  flex-direction: 'column';
+  gap: '0.6rem';
+  height: 'fit-content';
 `;
 
 export {
@@ -110,5 +181,11 @@ export {
   StChatBoardHeaderName,
   StChatForm,
   ImageInput,
-  StChatInput
+  StChatInput,
+  StListUserProfile,
+  StUserInfoBox,
+  StUnreadCount,
+  StListBody,
+  StListUpper,
+  StListLower
 };

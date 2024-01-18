@@ -52,7 +52,7 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
                   있어요 / 많이 사용했어요
                 </p>
                 <p>
-                  <span>고장/파손 상품</span>: &nbsp;기능 이상이나 외관 손상
+                  <span>고장 / 파손 상품</span>: &nbsp;기능 이상이나 외관 손상
                   등으로 수리가 필요해요{' '}
                 </p>
               </StQualityInfoBox>
