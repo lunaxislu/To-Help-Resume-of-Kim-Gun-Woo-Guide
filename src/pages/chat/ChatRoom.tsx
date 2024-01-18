@@ -3,6 +3,7 @@ import React, {
   FormEvent,
   MouseEvent,
   useEffect,
+  useRef,
   useState
 } from 'react';
 import { supabase } from '../../api/supabase/supabaseClient';
@@ -26,6 +27,7 @@ export default function ChatRoom() {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [unread, setUnread] = useState<number[] | null>(null);
   const [images, setImages] = useState<string>('');
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   // 채팅 인풋을 받아 state에 업뎃
   const handleUserInput = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -225,6 +227,14 @@ export default function ChatRoom() {
     }
   }, [rooms]);
 
+  // 채팅방 로드 시 스크롤 최하단으로
+  useEffect(() => {
+    if (scrollRef.current) {
+      const scrollContainer = scrollRef.current;
+      scrollContainer.scrollTop = scrollContainer.scrollHeight;
+    }
+  }, [messages]);
+
   const getUserName = (rooms: RoomType[] | undefined | null) => {
     if (rooms && clicked) {
       const room = rooms.find((room: RoomType) => room.id === clicked);
@@ -257,7 +267,7 @@ export default function ChatRoom() {
             </St.StChatBoardHeader>
           )}
 
-          <St.StChatGround>
+          <St.StChatGround ref={scrollRef}>
             <ChatMessages messages={messages} curUser={curUser} />
           </St.StChatGround>
           <St.StChatForm onSubmit={sendMessage}>

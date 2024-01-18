@@ -7,9 +7,10 @@ type BodyInfo = {
   productInfo: any[];
   data: Product;
   i: number;
+  setShowMap: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ProductDetail = ({ productInfo, data, i }: BodyInfo) => {
+const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const showQuality = () => {
     setIsHover(true);
@@ -18,31 +19,37 @@ const ProductDetail = ({ productInfo, data, i }: BodyInfo) => {
   const hideQuality = () => {
     setIsHover(false);
   };
+
+  const handleShowMap = () => {
+    setShowMap(true);
+  };
+
   return (
     <>
-      {productInfo[i] === data.quality ? (
+      {productInfo[i] === data.quality && (
         <StRowValue>
-          <p
-            style={{
-              padding: '.3rem',
-              backgroundColor: '#f3f3f3',
-              width: 'fit-content'
-            }}
-          >
-            {productInfo[i]}
-          </p>
-          <StQuailityInfo>
+          <StValueParagraph>{productInfo[i]}</StValueParagraph>
+          <StQualityInfo>
             <p onMouseEnter={showQuality} onMouseLeave={hideQuality}>
               i
             </p>
             {isHover && (
-              <StQuilityInfoBox>
+              <StQualityInfoBox>
                 거의 새것 - 대충 깔끔하다는 뜻
-              </StQuilityInfoBox>
+              </StQualityInfoBox>
             )}
-          </StQuailityInfo>
+          </StQualityInfo>
         </StRowValue>
-      ) : (
+      )}
+
+      {productInfo[i] !== data.quality && productInfo[i] === data.location && (
+        <StRowValue>
+          {productInfo[i]}{' '}
+          <StMapButton onClick={handleShowMap}>지도에서 보기</StMapButton>
+        </StRowValue>
+      )}
+
+      {productInfo[i] !== data.quality && productInfo[i] !== data.location && (
         <StRowValue>{productInfo[i]}</StRowValue>
       )}
     </>
@@ -59,7 +66,13 @@ const StRowValue = styled.div`
   justify-content: space-between;
 `;
 
-const StQuailityInfo = styled.div`
+const StValueParagraph = styled.div`
+  width: fit-content;
+  padding: 0.3rem;
+  background-color: #eeeeee;
+`;
+
+const StQualityInfo = styled.div`
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -71,7 +84,7 @@ const StQuailityInfo = styled.div`
   position: relative;
 `;
 
-const StQuilityInfoBox = styled.div`
+const StQualityInfoBox = styled.div`
   width: 220px;
   height: 250px;
   background-color: rgba(0, 0, 0, 0.3);
@@ -81,6 +94,17 @@ const StQuilityInfoBox = styled.div`
   padding: 1rem;
   color: white;
   animation: ${StFadeAni} 0.2s forwards;
+`;
+
+const StMapButton = styled.button.attrs({
+  type: 'button'
+})`
+  width: 100px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
 `;
 
 export default ProductDetail;
