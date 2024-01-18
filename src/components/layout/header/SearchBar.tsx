@@ -24,7 +24,9 @@ const SearchBar: React.FC = () => {
       const { data: usedItemData, error: usedItemError } = await supabase
         .from('products')
         .select('*')
-        .or(`title.ilike.%${searchQuery}%, contents.ilike.%${searchQuery}%`);
+        .or(
+          `title.ilike.%${searchQuery}%, contents.ilike.%${searchQuery}%, tags.cs.{${searchQuery}}`
+        );
 
       const { data: communityData, error: communityError } = await supabase
         .from('community')
@@ -38,6 +40,7 @@ const SearchBar: React.FC = () => {
         );
         return;
       }
+      console.log(usedItemData);
 
       // 중고 게시물 이미지 가져오기
       const usedItemsWithImages = await Promise.all(
