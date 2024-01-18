@@ -5,9 +5,6 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
-import Carousel from '../../components/mainpage/Carousel';
-import { count } from 'console';
-import { NullLiteral } from 'typescript';
 import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
 type UsedItemsCountData = {
   count: number | null;
@@ -75,31 +72,6 @@ export const fetchData = async (): Promise<{
 const Home = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
 
-  useEffect(() => {
-    // 스크롤 이벤트
-    const handleScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
-
-      const isBottom30Percent =
-        scrollY > document.documentElement.clientHeight * 0.7;
-
-      setShowScrollButton(isBottom30Percent);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-  // 상단 스크롤
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-
   // 전체 데이터 개수를 가져오는 쿼리
   const {
     data: usedItemsCountData,
@@ -143,14 +115,14 @@ const Home = () => {
           </div>
           <LinktoProducts to="/products">전체보기</LinktoProducts>
         </div>
-        {showScrollButton && (
+        {/* {showScrollButton && (
           <ScrollToTopButton onClick={scrollToTop}>
             <img
               src={process.env.PUBLIC_URL + '/assets/upbutton.png'}
               alt="상단으로 이동"
             />
           </ScrollToTopButton>
-        )}
+        )} */}
         <SupabaseListContainer>
           {usedItems.map((item) => (
             <TousedItemDetailPage
@@ -208,9 +180,10 @@ export default Home;
 const HomeContainer = styled.section`
   border-top: 1px solid #000;
   display: flex;
+  width: 1440px;
   height: 1870px;
-
   flex-direction: column;
+  margin: 0px auto;
 `;
 
 const CarouselWrapper = styled.div`
@@ -235,25 +208,6 @@ const HomeSection = styled.div`
     text-align: left;
     margin-top: 20px;
     margin-left: 10px;
-  }
-`;
-const ScrollToTopButton = styled.button`
-  position: fixed;
-  bottom: 100px;
-  right: 10px;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  transition: opacity 0.5s;
-  background-color: transparent;
-
-  img {
-    width: 60px;
-    height: 60px;
-  }
-
-  &:hover {
-    opacity: 0.8;
   }
 `;
 

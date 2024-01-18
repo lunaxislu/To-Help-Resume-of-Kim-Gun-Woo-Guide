@@ -20,6 +20,11 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSearch = async () => {
+    // 공란 일 때 실행 안함.
+    if (!searchQuery.trim()) {
+      return;
+    }
+
     try {
       const { data: usedItemData, error: usedItemError } = await supabase
         .from('products')
@@ -40,7 +45,6 @@ const SearchBar: React.FC = () => {
         );
         return;
       }
-      console.log(usedItemData);
 
       // 중고 게시물 이미지 가져오기
       const usedItemsWithImages = await Promise.all(
@@ -92,11 +96,10 @@ const SearchBar: React.FC = () => {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
-      <SearchBtnContainer>
-        <button onClick={handleSearch}>
-          <SearchBtn src={'/assets/searchbtn.png'} alt="searchbutton" />
-        </button>
-      </SearchBtnContainer>
+
+      <SearchBtn onClick={handleSearch}>
+        <SearchBtnImg src={'/assets/searchbtn.png'} alt="searchbutton" />
+      </SearchBtn>
     </SearchInputContainer>
   );
 };
@@ -104,8 +107,9 @@ const SearchBar: React.FC = () => {
 export default SearchBar;
 
 const SearchInputContainer = styled.div`
-  display: flex;
+  /* display: flex; */
   align-items: center;
+  position: relative;
 `;
 
 const SearchInputBar = styled.input`
@@ -116,9 +120,17 @@ const SearchInputBar = styled.input`
   padding-left: 10px;
 `;
 
-const SearchBtnContainer = styled.div``;
+const SearchBtn = styled.button`
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  right: 10px;
+  width: 37px;
+  height: 37px;
+  cursor: pointer;
+`;
 
-const SearchBtn = styled.img`
+const SearchBtnImg = styled.img`
   width: 37px;
   height: 37px;
 `;
