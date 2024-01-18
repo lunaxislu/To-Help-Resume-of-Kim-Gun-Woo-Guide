@@ -35,7 +35,26 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
             </p>
             {isHover && (
               <StQualityInfoBox>
-                거의 새것 - 대충 깔끔하다는 뜻
+                <p>
+                  <span>새 상품</span>: &nbsp;사용하지 않은 새 상품이에요
+                </p>
+                <p>
+                  <span>사용감 없음</span>: &nbsp;사용은 했지만 눈에 띄는
+                  흔적이나 얼룩이 없어요 / 아주 조금 사용했어요
+                </p>
+
+                <p>
+                  <span>사용감 적음</span>: &nbsp;눈에 띄는 흔적이나 얼룩이 약간
+                  있어요 / 절반정도 사용했어요
+                </p>
+                <p>
+                  <span>사용감 많음</span>: &nbsp;눈에 띄는 흔적이나 얼룩이 많이
+                  있어요 / 많이 사용했어요
+                </p>
+                <p>
+                  <span>고장/파손 상품</span>: &nbsp;기능 이상이나 외관 손상
+                  등으로 수리가 필요해요{' '}
+                </p>
               </StQualityInfoBox>
             )}
           </StQualityInfo>
@@ -85,15 +104,25 @@ const StQualityInfo = styled.div`
 `;
 
 const StQualityInfoBox = styled.div`
-  width: 220px;
-  height: 250px;
+  width: fit-content;
+  height: fit-content;
   background-color: rgba(0, 0, 0, 0.3);
   position: absolute;
-  left: -250px;
-  bottom: -150px;
-  padding: 1rem;
+  left: -520px;
+  bottom: -50px;
+  padding: 1.25rem 1rem;
   color: white;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   animation: ${StFadeAni} 0.2s forwards;
+  text-align: left;
+
+  span {
+    font-weight: 500;
+    font-size: 1.05rem;
+  }
 `;
 
 const StMapButton = styled.button.attrs({
