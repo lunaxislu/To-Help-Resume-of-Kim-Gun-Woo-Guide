@@ -1,9 +1,6 @@
-import { ImageActions } from '@xeger/quill-image-actions';
-import { ImageFormats } from '@xeger/quill-image-formats';
 import parse from 'html-react-parser';
 import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
@@ -13,8 +10,8 @@ import parseDate from '../../util/getDate';
 import WriteLayout from './WriteLayout';
 import { deletePostMutation, fetchDetailPost } from './commuQuery';
 import { FilesObject } from './model';
-Quill.register('modules/imageActions', ImageActions);
-Quill.register('modules/imageFormats', ImageFormats);
+// Quill.register('modules/imageActions', ImageActions);
+// Quill.register('modules/imageFormats', ImageFormats);
 
 const CommuDetail: React.FC = () => {
   const param = useParams();
@@ -224,87 +221,5 @@ const Category = styled.p`
   padding: 12px;
   border-radius: 6px;
 `;
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 906px;
-  width: 80%;
-  & select {
-    width: 100px;
-    height: 40px;
-  }
-  & button {
-    width: 100px;
-    height: 40px;
-  }
-  & h1 {
-    font-size: 30px;
-    margin-top: 50px;
-    text-align: center;
-  }
-`;
-const CategoryContainer = styled.div`
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-`;
-const CheckBoxInput = styled.input`
-  height: 20px;
-  width: 20px;
-`;
-const TitleInput = styled.input`
-  height: 54px;
-  width: 100%;
-  background-color: #f3f3f3;
-  border: none;
-  border-radius: 5px;
-  padding-left: 16px;
-  &::placeholder {
-    color: rgba(0, 0, 0, 0.6);
-    font-size: 16px;
-  }
-`;
 
-const FileUploader = styled.label`
-  background-color: #f3f3f3;
-  border-radius: 5px;
-  height: 54px;
-  display: flex;
-  align-items: center;
-  padding-left: 16px;
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 16px;
-  & input {
-    display: none;
-  }
-`;
-const QuillEditor = styled(ReactQuill)`
-  background-color: #f3f3f3;
-  border-radius: 5px;
-
-  .ql-container {
-    min-height: 600px;
-    border: none;
-    display: flex;
-  }
-  .ql-toolbar {
-    border: none;
-  }
-  .ql-editor strong {
-    font-weight: bold;
-  }
-  .ql-editor em {
-    font-style: italic;
-  }
-  .ql-editor ::placeholder {
-    font-style: normal;
-  }
-  .ql-editor p {
-    display: flex;
-    line-height: 30px;
-    font-size: 16px;
-  }
-`;
 export default CommuDetail;

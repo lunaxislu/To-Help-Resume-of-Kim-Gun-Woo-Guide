@@ -3,7 +3,7 @@ import { ImageFormats } from '@xeger/quill-image-formats';
 import React, { useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import ReactQuill, { Quill } from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
@@ -17,7 +17,6 @@ import {
 import { WriteLayoutProps } from './model';
 Quill.register('modules/imageActions', ImageActions);
 Quill.register('modules/imageFormats', ImageFormats);
-
 const WriteLayout: React.FC<WriteLayoutProps> = ({
   profile,
   isEdit,
@@ -29,32 +28,32 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     isLoading,
     isError
   } = useQuery(['posts', paramId], () => fetchDetailPost(paramId));
-
-  const [title, setTitle] = useState(isEdit ? posts![0].title : '');
-  const [category, setCategory] = useState(isEdit ? posts![0].category : '');
-  const [files, setFiles] = useState<File[]>(isEdit ? posts![0].files : []);
-  const [content, setContent] = useState(
-    isEdit ? posts![0].content.replace(/<p>(.*?)<\/p>/g, ' <div>$1</div>') : ''
-  );
-  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null[]>(
-    isEdit ? posts![0].uploadedFileUrl : []
-  );
-  const [anon, setAnon] = useState(isEdit ? posts![0].anon : false);
-  const [mainImage, setMainImage] = useState(isEdit ? posts![0].mainImage : '');
-
+  console.log('render');
   const navigate = useNavigate();
-
   const queryClient = useQueryClient();
+
+  const [formValues, setFormValues] = useState({
+    title: isEdit ? posts![0].title : '',
+    category: isEdit ? posts![0].category : '',
+    files: [],
+    content: isEdit
+      ? posts![0].content.replace(/<p>(.*?)<\/p>/g, ' <div>$1</div>')
+      : '',
+    uploadedFileUrl: isEdit ? posts![0].uploadedFileUrl : [],
+    anon: isEdit ? posts![0].anon : false,
+    mainImage: isEdit ? posts![0].mainImage : ''
+  });
+
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
     if (fileList) {
       const filesArray = Array.from(fileList);
-      // 각 파일을 개별적으로 처리 (필요한 경우)
       filesArray.forEach((file) => {
         handleFilesUpload(file);
       });
     }
   };
+
   const handleFilesUpload = async (file: File) => {
     try {
       const newFileName = uuid();
@@ -66,14 +65,17 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         return;
       }
       const res = supabase.storage.from('files').getPublicUrl(data.path);
-      setFiles((prevFiles) => [...prevFiles, file]);
-      setUploadedFileUrl((prev: any) => [...prev, res.data.publicUrl]);
-      // file 객체를 저장하도록 수정
+      setFormValues((prevValues: any) => ({
+        ...prevValues,
+        files: [...prevValues.files, file],
+        uploadedFileUrl: [...prevValues.uploadedFileUrl, res.data.publicUrl]
+      }));
       console.log(res.data.publicUrl);
     } catch (error) {
       console.error('Error handling file upload:', error);
     }
   };
+
   const addMutation = useMutation(addPostMutation, {
     onSuccess: (data) => {
       console.log(data);
@@ -81,24 +83,26 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       navigate('/community');
     }
   });
+
   const addPost = async () => {
     const insertData = {
-      title,
-      content,
-      category,
+      title: formValues.title,
+      content: formValues.content,
+      category: formValues.category,
       post_user: profile![0].id,
       nickname: profile![0].nickname
         ? profile![0].nickname
         : profile![0].username,
-      files: files.map((file: File) => ({
+      files: formValues.files.map((file: File) => ({
         name: file.name,
-        url: uploadedFileUrl
+        url: formValues.uploadedFileUrl
       })),
-      main_image: mainImage,
-      anon
+      main_image: formValues.mainImage,
+      anon: formValues.anon
     };
     addMutation.mutate(insertData);
   };
+
   const updateMutation = useMutation(updatePostMutation, {
     onSuccess: () => {
       setIsEditState(false);
@@ -107,41 +111,36 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   });
 
   const updatePost = () => {
-    const fileArr = files.map((file: File) => ({
+    const fileArr = formValues.files.map((file: File) => ({
       name: file.name,
-      url: uploadedFileUrl
+      url: formValues.uploadedFileUrl
     }));
     const postData = {
       updateData: {
-        title,
-        content,
-        anon,
+        title: formValues.title,
+        content: formValues.content,
+        anon: formValues.anon,
         files: fileArr,
-        main_image: mainImage,
-        category
+        main_image: formValues.mainImage,
+        category: formValues.category
       },
       paramId
     };
     updateMutation.mutate(postData);
   };
 
-  // 에디터 접근을 위한 ref return
   const quillRef = useRef<ReactQuill | null>(null);
+
   const imageHandler = () => {
     try {
-      // 1. 이미지를 저장할 input type=file DOM을 만든다.
       const input = document.createElement('input');
-      // 속성 써주기
       input.setAttribute('type', 'file');
       input.setAttribute('accept', 'image/*');
-      input.click(); // 에디터 이미지버튼을 클릭하면 이 input이 클릭된다.
+      input.click();
       input.addEventListener('change', async () => {
-        console.log('온체인지');
         const file = input.files![0];
         const fileNewName = uuid();
 
-        // console.log(fileNewName);
-        // file을 서버에 업로드
         const { data, error } = await supabase.storage
           .from('images')
           .upload(`quill_imgs/${fileNewName}.png`, file);
@@ -150,23 +149,20 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         } else {
           console.log('이미지가 성공적으로 업로드되었습니다:', data);
         }
-        // 업로드된 이미지의 URL을 요청
+
         const response = supabase.storage
           .from('images')
           .getPublicUrl(`quill_imgs/${fileNewName}.png`);
         console.log(response);
         if (response.data) {
           const postImageUrl = response.data.publicUrl;
-          console.log(response.data.publicUrl);
-          // const editor = quillRef.current!.getEditor();
           const editor = quillRef.current?.getEditor();
           const range = editor?.getSelection(true);
-
-          //마우스 위치에 이미지를 넣고 다음 으로 커서 옮기기
           editor?.insertEmbed(range?.index || 0, 'image', postImageUrl);
-
-          setMainImage('이미지있음');
-
+          setFormValues((prevValues) => ({
+            ...prevValues,
+            mainImage: '이미지있음'
+          }));
           editor?.setSelection((range?.index || 0) + 1, 0);
           console.log('가져왔다');
         } else {
@@ -178,24 +174,19 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     }
   };
 
-  // 에디터 설정
   const modules = useMemo(
     () => ({
       imageActions: {},
       imageFormats: {},
-      // 툴바 설정
       toolbar: {
         container: [
-          [{ header: [1, 2, 3, 4, 5, 6, false] }], // header 설정
-          ['bold', 'italic', 'underline', 'strike'], // 굵기, 기울기, 밑줄 등 부가 tool 설정
-          ['image', 'video'], // 링크, 이미지, 비디오 업로드 설정
-          [{ color: [] }, { background: [] }] // 정렬, 글자 색, 글자 배경색 설정
-          // ["clean"], // toolbar 설정 초기화 설정
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          ['image', 'video'],
+          [{ color: [] }, { background: [] }]
         ],
-
-        // 핸들러 설정
         handlers: {
-          image: imageHandler // 이미지 tool 사용에 대한 핸들러 설정
+          image: imageHandler
         },
         ImageResize: {
           modules: ['Resize']
@@ -204,31 +195,34 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     }),
     []
   );
+  const formats = useMemo(
+    () => [
+      'header',
+      'bold',
+      'italic',
+      'underline',
+      'strike',
+      'video',
+      'image',
+      'color',
+      'background',
+      'height',
+      'width'
+    ],
+    []
+  );
 
-  // 툴바에 사용되는 툴 포맷
-  const formats = [
-    'header',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'video',
-    'image',
-    'color',
-    'background',
-    'height',
-    'width'
-  ];
   if (isError) {
     return <div>Error loading posts</div>;
   }
+
   return (
     <Container>
       <ContentContainer>
         <TitleInput
-          value={title}
+          value={formValues.title}
           onChange={(e) => {
-            setTitle(e.target.value);
+            setFormValues({ ...formValues, title: e.target.value });
           }}
           placeholder="제목을 입력해주세요"
         />
@@ -238,10 +232,10 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
               <label key={item}>
                 <input
                   type="radio"
-                  name={category}
+                  name={formValues.category}
                   value={item}
                   onChange={(e) => {
-                    setCategory(e.target.value);
+                    setFormValues({ ...formValues, category: e.target.value });
                   }}
                   defaultChecked={isEdit ? posts![0].category === item : false}
                 />
@@ -251,20 +245,21 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
           })}
         </CategoryContainer>
         <FileUploader>
-          {files.length !== 0
-            ? files.map((file: File) => file.name)
+          {formValues.files.length !== 0
+            ? formValues.files.map((file: File) => file.name)
             : '파일을 업로드하려면 클릭하세요'}
-
           <input type="file" onChange={handleFiles} multiple />
         </FileUploader>
         <div>
           <QuillEditor
             ref={quillRef}
-            value={content}
-            onChange={setContent}
+            value={formValues.content}
+            onChange={(value) => {
+              setFormValues({ ...formValues, content: value });
+            }}
             modules={modules}
             formats={formats}
-            theme="snow"
+            theme="bubble"
             placeholder="내용을 입력해주세요"
           />
         </div>
@@ -272,8 +267,10 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
           <label>
             <CheckBoxInput
               type="checkbox"
-              checked={anon}
-              onChange={() => setAnon(!anon)}
+              checked={formValues.anon}
+              onChange={() => {
+                setFormValues({ ...formValues, anon: !formValues.anon });
+              }}
             />{' '}
             익명으로 작성하기
           </label>
@@ -284,11 +281,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
           )}
         </Bottom>
       </ContentContainer>
-
-      {/* <form>
-        <input />
-        <button>댓글 등록하기</button>
-      </form> */}
     </Container>
   );
 };

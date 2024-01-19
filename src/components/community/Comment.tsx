@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
 import {
   fetchDetailPost,
-  updateCommentMutation
+  updatePostMutation
 } from '../../pages/community/commuQuery';
 import {
   CommentProps,
@@ -13,12 +13,8 @@ import {
   ProfileObject
 } from '../../pages/community/model';
 import parseDate from '../../util/getDate';
-const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
-  const [profile, setProfile] = useState<ProfileObject[]>([]);
-  const [comment, setComment] = useState('');
-  const [anon, setAnon] = useState(false);
 
-  const [comments, setComments] = useState<Comments>([]);
+const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
   const queryClient = useQueryClient();
   useEffect(() => {
     const fetchData = async () => {
@@ -40,31 +36,41 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
         console.log(error.message);
       }
     };
-
     fetchData();
   }, []);
+
   const {
     data: posts,
     isLoading,
     isError
   } = useQuery(['post', paramId], () => fetchDetailPost(paramId));
+
+  const [isEdit, setisEdit] = useState(false);
+  const [comments, setComments] = useState<Comments>([]);
+  const [profile, setProfile] = useState<ProfileObject[]>([]);
+  const [comment, setComment] = useState('');
+  const [editComment, setEditComment] = useState('');
+  const [editedCommentIndex, setEditedCommentIndex] = useState<number | null>(
+    null
+  ); // 수정 중인 댓글의 인덱스
+  const [anon, setAnon] = useState(false);
   useEffect(() => {
     if (!isLoading && posts) {
       setComments(posts[0].comment);
       console.log(comment);
     }
   }, [isLoading, posts]);
-  const upsertMutation = useMutation(updateCommentMutation, {
+  const upsertMutation = useMutation(updatePostMutation, {
     onSuccess: () => {
       queryClient.invalidateQueries(['posts', paramId]);
       setAnon(false);
       setComment('');
     }
   });
-  console.log(userId);
   const updateComment = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newComment = {
+      //   comment_id: uuid(),
       comment_user: profile![0].id,
       nickname: profile![0].nickname
         ? profile![0].nickname
@@ -82,6 +88,38 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
     };
     upsertMutation.mutate(commentObject);
   };
+
+  // 댓글 수정 버튼 클릭 시
+  const startEditComment = (index: number) => {
+    setisEdit(true);
+    setEditedCommentIndex(index);
+    setEditComment(comments[index].comment);
+  };
+  const updateCommentDetail = (index: number) => {
+    const newComment = comments[index];
+
+    setComments(() => [...comments, { ...newComment, commment: editComment }]);
+    if (isEdit && editedCommentIndex !== null) {
+      // 수정 중인 댓글을 업데이트
+      const updatedComments = [...comments];
+      updatedComments[editedCommentIndex] = {
+        ...updatedComments[editedCommentIndex],
+        comment: editComment
+      };
+      setComments(updatedComments);
+      setEditedCommentIndex(null);
+      const commentObject = {
+        updateData: {
+          comment: updatedComments
+        },
+        paramId
+      };
+      upsertMutation.mutate(commentObject);
+
+      // 수정이 완료되면 인덱스 초기화
+    }
+  };
+  console.log(comments);
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -89,6 +127,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
   if (isError) {
     return <div>Error loading posts</div>;
   }
+
   return (
     <Container>
       <Form onSubmit={updateComment}>
@@ -106,19 +145,47 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
           익명
         </label>
         <button type="submit">추가</button>
-        {/* <p>{`${comments.length}개의 댓글`}</p> */}
       </Form>
 
-      {comments?.map((comment) => {
+      {comments?.map((comment, index) => {
         const parseTime = parseDate(comment.time);
         return (
-          <CommentContainer>
+          <CommentContainer key={index}>
             <div>
               <LeftSide>
                 <p>{comment.anon ? '익명의 작업자' : comment.nickname}</p>
                 <p>{parseTime}</p>
+                {/* {comment.comment_user === profile![0].id ? (
+                  isEdit && editedCommentIndex === index ? (
+                    <p onClick={() => updateCommentDetail(index)}>수정완료</p>
+                  ) : (
+                    <>
+                      <p onClick={() => startEditComment(index)}>수정</p>
+                      <p>|</p>
+                      <p>삭제 </p>
+                    </>
+                  )
+                ) : (
+                  <></>
+                )} */}
+                {isEdit && editedCommentIndex === index ? (
+                  <p onClick={() => updateCommentDetail(index)}>수정완료</p>
+                ) : (
+                  <>
+                    <p onClick={() => startEditComment(index)}>수정</p>
+                    <p>|</p>
+                    <p>삭제 </p>
+                  </>
+                )}
               </LeftSide>
-              <p>{comment.comment}</p>
+              {isEdit && editedCommentIndex === index ? (
+                <input
+                  value={editComment}
+                  onChange={(e) => setEditComment(e.target.value)}
+                />
+              ) : (
+                <p>{comment.comment}</p>
+              )}
             </div>
             <button>신고</button>
           </CommentContainer>
@@ -172,4 +239,5 @@ const LeftSide = styled.div`
     margin-bottom: 20px;
   }
 `;
-export default Comment;
+
+export default React.memo(Comment);

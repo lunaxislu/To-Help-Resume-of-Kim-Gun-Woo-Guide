@@ -82,6 +82,7 @@ export type CommentUpload = {
   paramId: string | undefined;
 };
 export type Comments = {
+  // comment_id: string;
   comment_user: string;
   nickname: string;
   comment: string;
