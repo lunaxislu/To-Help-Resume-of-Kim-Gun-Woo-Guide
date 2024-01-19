@@ -9,9 +9,9 @@ import Login from '../pages/login/Login';
 import MyPage from '../pages/mypage/MyPage';
 import Products from '../pages/products/Products';
 import ProductsPosts from '../pages/products/ProductsPosts';
+import ProductDetail from '../pages/productsDetail/ProductDetail';
 import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
-import ProductDetail from '../pages/productsDetail/ProductDetail';
 
 const Router = () => {
   return (
@@ -29,7 +29,7 @@ const Router = () => {
           <Route path="/community_write" element={<WritePost />} />
           <Route path="/search-results" element={<SearchResults />} />
           <Route path="/chat" element={<ChatRoom />} />
-          <Route path="/community/:id" element={<CommuDetail />} />
+          <Route path="/community/detail/:id" element={<CommuDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>

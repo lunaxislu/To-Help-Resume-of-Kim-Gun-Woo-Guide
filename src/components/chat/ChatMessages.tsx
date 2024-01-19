@@ -15,7 +15,12 @@ const ChatMessages = ({ messages, curUser }: MessageCompProps) => {
                   style={{
                     width: '200px',
                     display: 'block',
-                    marginLeft: 'auto'
+                    marginLeft: 'auto',
+                    marginRight: '1rem',
+                    padding: '1rem',
+                    background: '#eee',
+                    borderRadius: '12px',
+                    cursor: 'pointer'
                   }}
                   src={msg.image_url}
                   alt=""
@@ -24,13 +29,18 @@ const ChatMessages = ({ messages, curUser }: MessageCompProps) => {
               <StMyChatballoon key={msg.id}>{msg.content}</StMyChatballoon>
             </div>
           ) : (
-            <div key={msg.id}>
+            <div key={msg.id} style={{ cursor: 'pointer' }}>
               {msg.image_url && (
                 <img
                   style={{
                     width: '200px',
                     display: 'block',
-                    marginRight: 'auto'
+                    marginRight: 'auto',
+                    marginLeft: '1rem',
+                    padding: '1rem',
+                    background: '#eee',
+                    borderRadius: '12px',
+                    cursor: 'pointer'
                   }}
                   src={msg.image_url}
                   alt=""
@@ -59,13 +69,15 @@ const StChatballoon = styled.div`
 
 const StMyChatballoon = styled.div`
   width: fit-content;
-  background-color: yellow;
+  background-color: #fff1e5;
   margin-left: auto;
   margin-right: 1rem;
   margin-block: 1rem;
   padding: 0.75rem 1.688rem;
   border-radius: 60px;
   font-weight: 600;
+  line-height: 1.2;
+  white-space: break-spaces;
 `;
 
 export default ChatMessages;

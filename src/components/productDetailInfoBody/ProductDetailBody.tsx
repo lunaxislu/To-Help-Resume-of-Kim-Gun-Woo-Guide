@@ -7,9 +7,10 @@ type BodyInfo = {
   productInfo: any[];
   data: Product;
   i: number;
+  setShowMap: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ProductDetail = ({ productInfo, data, i }: BodyInfo) => {
+const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
   const [isHover, setIsHover] = useState<boolean>(false);
   const showQuality = () => {
     setIsHover(true);
@@ -18,31 +19,56 @@ const ProductDetail = ({ productInfo, data, i }: BodyInfo) => {
   const hideQuality = () => {
     setIsHover(false);
   };
+
+  const handleShowMap = () => {
+    setShowMap(true);
+  };
+
   return (
     <>
-      {productInfo[i] === data.quality ? (
+      {productInfo[i] === data.quality && (
         <StRowValue>
-          <p
-            style={{
-              padding: '.3rem',
-              backgroundColor: '#f3f3f3',
-              width: 'fit-content'
-            }}
-          >
-            {productInfo[i]}
-          </p>
-          <StQuailityInfo>
+          <StValueParagraph>{productInfo[i]}</StValueParagraph>
+          <StQualityInfo>
             <p onMouseEnter={showQuality} onMouseLeave={hideQuality}>
               i
             </p>
             {isHover && (
-              <StQuilityInfoBox>
-                거의 새것 - 대충 깔끔하다는 뜻
-              </StQuilityInfoBox>
+              <StQualityInfoBox>
+                <p>
+                  <span>새 상품</span>: &nbsp;사용하지 않은 새 상품이에요
+                </p>
+                <p>
+                  <span>사용감 없음</span>: &nbsp;사용은 했지만 눈에 띄는
+                  흔적이나 얼룩이 없어요 / 아주 조금 사용했어요
+                </p>
+
+                <p>
+                  <span>사용감 적음</span>: &nbsp;눈에 띄는 흔적이나 얼룩이 약간
+                  있어요 / 절반정도 사용했어요
+                </p>
+                <p>
+                  <span>사용감 많음</span>: &nbsp;눈에 띄는 흔적이나 얼룩이 많이
+                  있어요 / 많이 사용했어요
+                </p>
+                <p>
+                  <span>고장 / 파손 상품</span>: &nbsp;기능 이상이나 외관 손상
+                  등으로 수리가 필요해요{' '}
+                </p>
+              </StQualityInfoBox>
             )}
-          </StQuailityInfo>
+          </StQualityInfo>
         </StRowValue>
-      ) : (
+      )}
+
+      {productInfo[i] !== data.quality && productInfo[i] === data.location && (
+        <StRowValue>
+          {productInfo[i]}{' '}
+          <StMapButton onClick={handleShowMap}>지도에서 보기</StMapButton>
+        </StRowValue>
+      )}
+
+      {productInfo[i] !== data.quality && productInfo[i] !== data.location && (
         <StRowValue>{productInfo[i]}</StRowValue>
       )}
     </>
@@ -59,7 +85,13 @@ const StRowValue = styled.div`
   justify-content: space-between;
 `;
 
-const StQuailityInfo = styled.div`
+const StValueParagraph = styled.div`
+  width: fit-content;
+  padding: 0.3rem;
+  background-color: #eeeeee;
+`;
+
+const StQualityInfo = styled.div`
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -71,16 +103,37 @@ const StQuailityInfo = styled.div`
   position: relative;
 `;
 
-const StQuilityInfoBox = styled.div`
-  width: 220px;
-  height: 250px;
+const StQualityInfoBox = styled.div`
+  width: fit-content;
+  height: fit-content;
   background-color: rgba(0, 0, 0, 0.3);
   position: absolute;
-  left: -250px;
-  bottom: -150px;
-  padding: 1rem;
+  left: -520px;
+  bottom: -50px;
+  padding: 1.25rem 1rem;
   color: white;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
   animation: ${StFadeAni} 0.2s forwards;
+  text-align: left;
+
+  span {
+    font-weight: 500;
+    font-size: 1.05rem;
+  }
+`;
+
+const StMapButton = styled.button.attrs({
+  type: 'button'
+})`
+  width: 100px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
 `;
 
 export default ProductDetail;

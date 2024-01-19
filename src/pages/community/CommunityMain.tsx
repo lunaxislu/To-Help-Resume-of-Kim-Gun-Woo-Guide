@@ -1,77 +1,55 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
-import { supabase } from '../../api/supabase/supabaseClient';
-import { Post } from './model';
-// const categorys = ["전체",'꿀팁', "일상생활", "공구거래"]
+import styled, { css } from 'styled-components';
+import CommuList from '../../components/community/CommuList';
+import { categoryArray } from './WritePost';
+import { fetchPosts } from './commuQuery';
 const CommunityMain: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  useEffect(() => {
-    const getPost = async () => {
-      try {
-        let { data: community, error } = await supabase
-          .from('community')
-          .select('*');
-        if (error) throw error;
-        if (community != null) {
-          setPosts(community);
-        }
-      } catch (error: any) {
-        alert(error.message);
-      }
-    };
-
-    getPost();
-  }, []);
-  // 필터 확실해지면 다시.
-  // const filteredPost = posts.filter((post) => {
-  //   return;
-  // });
+  const [selectCategory, setSelectCategory] = useState('전체');
   const navigate = useNavigate();
+  const { data: posts, isLoading, isError } = useQuery('posts', fetchPosts);
 
-  const handleText = (content: string): string => {
-    // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
-    const textOnly = content.replace(/<[^>]*>/g, '');
+  if (isError) {
+    return <div>Error loading posts</div>;
+  }
 
-    return textOnly;
-  };
   return (
     <Container>
-      <h1>커뮤니티</h1>
-      <button
-        onClick={() => {
-          navigate('/community_write');
-        }}
-      >
-        작성데스
-      </button>
-      <div>
-        <button>전체</button>
-        <button>꿀팁</button>
-        <button>일상생활</button>
-        <button>공구거래</button>
-      </div>
-      <p></p>
-
-      {posts.map((post: Post) => {
-        return (
-          <Posts
-            key={post.post_id}
-            onClick={() => navigate(`/community/${post.post_id}`)}
-          >
-            {/* <img src={post.main_image} /> */}
-
-            <div>
-              {' '}
-              <h2>
-                [{post.category}]{post.title}
-                {post.main_image ? '🎞' : ''}
-              </h2>
-              <Post_content>{handleText(post.content)}</Post_content>
-            </div>
-          </Posts>
-        );
-      })}
+      <Post_container>
+        <h2>
+          {posts
+            ? `${posts?.length}개의 이야기를 확인해보세요`
+            : '0개의 이야기를 확인해보세요'}
+        </h2>
+        <button
+          onClick={() => {
+            navigate('/community_write');
+          }}
+        >
+          글쓰기
+        </button>
+        <FeatureBar>
+          <Categorys>
+            {categoryArray.map((category) => {
+              return (
+                <CategoryBtn
+                  onClick={(event) => {
+                    //event.target의 타입을 HTMLElement로 명시적으로 지정
+                    const target = event.target as HTMLElement;
+                    setSelectCategory(target.textContent || '');
+                  }}
+                  key={category}
+                  $selectCategory={selectCategory}
+                >
+                  {category}
+                </CategoryBtn>
+              );
+            })}
+          </Categorys>
+        </FeatureBar>
+        <CommuList selectCategory={selectCategory} />
+      </Post_container>
     </Container>
   );
 };
@@ -83,21 +61,45 @@ const Container = styled.div`
   justify-content: center;
   gap: 10px;
 `;
-const Post_content = styled.div``;
-const Posts = styled.div`
-  border: 2px solid pink;
-  display: flex;
+const Post_container = styled.div`
+  max-width: 906px;
   width: 80%;
-  max-width: 1116px;
-  font-size: 20px;
-  /* justify-content: space-between; */
-  & img {
-    width: 100px;
-    height: 100px;
-  }
-  & h2 {
-    font-weight: 700;
-  }
+  margin-bottom: 50px;
 `;
 
+const FeatureBar = styled.div`
+  display: flex;
+  margin: 10px 0 30px 0;
+  & input {
+    border: 1px solid #bdbdbd;
+    border-radius: 19px;
+    height: 36px;
+    width: 380px;
+    padding-left: 16px;
+  }
+`;
+const Categorys = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 6px;
+`;
+const CategoryBtn = styled.button<{ $selectCategory: string }>`
+  border: none;
+  height: 30px;
+  width: 56px;
+  border-radius: 6px;
+
+  ${(props) => {
+    if (props.$selectCategory === props.children) {
+      return css`
+        background-color: #636363;
+        color: white;
+      `;
+    }
+    return css`
+      background-color: #f3f3f3;
+      color: black;
+    `;
+  }}
+`;
 export default CommunityMain;

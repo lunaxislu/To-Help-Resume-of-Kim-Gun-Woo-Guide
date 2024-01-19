@@ -1,15 +1,46 @@
+import React, { useEffect, useState } from 'react';
 import * as St from '../styles/headerStyle/HeaderStyle';
 import { useNavigate } from 'react-router';
 import SearchBar from '../components/layout/header/SearchBar';
 import { logOut } from '../api/supabase/auth';
 import { supabase } from '../api/supabase/supabaseClient';
-import { useEffect, useState } from 'react';
+import { error } from 'console';
 import { getUserProfile } from '../api/supabase/profile';
 import { useQuery } from 'react-query';
+
+interface User {
+  username: string;
+}
+
+const getOut = async () => {
+  let { error } = await supabase.auth.signOut();
+  if (error) console.log(error);
+};
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const userId = localStorage.getItem('userId');
+  const [user, setUser] = useState<User | boolean>(false);
+  const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const { data: userData, error: userError } =
+  //         await supabase.auth.getUser();
+  //       if (userError) {
+  //         console.error('유저아이디 정보를 불러오지 못했습니다.', userError);
+  //       }
+  //       setUser(userData);
+  //     } catch (error) {
+  //       console.error(
+  //         '수파베이스에서 로그인 정보를 불러오지 못했습니다.',
+  //         error
+  //       );
+  //     }
+  //   };
+  // }, []);
+
   const navigate = useNavigate();
 
   const handleLogoClick = () => {
@@ -40,7 +71,7 @@ const Header = () => {
     }
   };
 
-  const { data: user } = useQuery({
+  const { data: userData } = useQuery({
     queryKey: ['user'],
     queryFn: () => getUserProfile(userId)
   });
@@ -57,19 +88,12 @@ const Header = () => {
           <St.Button onClick={handleSellbuttonClick}>판매하기</St.Button>
           <St.Button>찜</St.Button>
           <St.Button>알림</St.Button>
-          {isLogin ? (
-            <St.UserIcon
-              onClick={handleProfileClick}
-              src={`${user?.map((img) => img.avatar_url)}`}
-            />
-          ) : (
-            '로그인/회원가입'
-          )}
+          <St.UserIcon>User</St.UserIcon>
         </St.ButtonContainer>
       </St.HeaderSection>
       <St.NavSection>
         <St.NavBar>
-          <St.NavButton to="/introduce">서비스 소개</St.NavButton>
+          {/* <St.NavButton to="/introduce">서비스 소개</St.NavButton> */}
           <St.NavButton to="/products">중고거래</St.NavButton>
           <St.NavButton to="/community">커뮤니티</St.NavButton>
           <button onClick={handleLogOutClick}>로그아웃</button>

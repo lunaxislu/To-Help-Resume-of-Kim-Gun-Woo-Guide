@@ -3,6 +3,7 @@ import React, {
   FormEvent,
   MouseEvent,
   useEffect,
+  useRef,
   useState
 } from 'react';
 import { supabase } from '../../api/supabase/supabaseClient';
@@ -17,6 +18,8 @@ import type {
   RoomType
 } from '../../components/chat/types';
 import * as St from './style';
+import styled, { css } from 'styled-components';
+import { FaImage } from 'react-icons/fa';
 
 export default function ChatRoom() {
   const [curUser, setCurUser] = useState<User | null>();
@@ -26,9 +29,13 @@ export default function ChatRoom() {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [unread, setUnread] = useState<number[] | null>(null);
   const [images, setImages] = useState<string>('');
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const FormRef = useRef<HTMLFormElement>(null);
+  const [targetUser, setTargetUser] = useState<any[]>();
+  const [showFileInput, setShowFileInput] = useState<boolean>(false);
 
   // 채팅 인풋을 받아 state에 업뎃
-  const handleUserInput = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleUserInput = async (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     name === 'chat' && setChatInput(value);
   };
@@ -36,6 +43,19 @@ export default function ChatRoom() {
   // 클릭 된 채팅방의 아이디를 state에 저장
   const handleCurClicked = (e: MouseEvent<HTMLDivElement>) => {
     setClicked(e.currentTarget.id);
+  };
+
+  const handleTargetUser = async () => {
+    const target = rooms?.find((room: RoomType) => room.id === clicked);
+    const { data, error } = await supabase
+      .from('user')
+      .select('*')
+      .eq('username', target?.room_name);
+    if (error) console.log('상대방 정보 가져오기 실패');
+
+    if (data) {
+      setTargetUser(data);
+    }
   };
 
   // submit 발생 시 인풋 초기화
@@ -76,10 +96,8 @@ export default function ChatRoom() {
       .eq('chat_room_id', room_id);
 
     if (chat_messages) {
-      setMessages((prev: any) => [
-        ...prev,
-        ...(chat_messages as MessageType[])
-      ]);
+      // 기존 메시지를 완전히 대체하는 방식으로 수정
+      setMessages(chat_messages as MessageType[]);
     }
 
     if (error) console.log('failed set message', error);
@@ -123,14 +141,17 @@ export default function ChatRoom() {
   // 이미지 인풋의 파일을 받아 storage에 올리는 함수에 전달
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files;
-    if (file) handleImageUpload(file[0]);
+    if (file) {
+      handleImageUpload(file[0]);
+    }
+    if (!file) console.log('다시 시도');
   };
 
   // 이미지 정보 받아서 storage에 올리는 함수
   const handleImageUpload = async (file: File) => {
     const { data, error } = await supabase.storage
       .from('images')
-      .upload(`messages/${file.name}`, file, {
+      .upload(`messages/${uuid()}`, file, {
         contentType: file.type
       });
 
@@ -142,6 +163,29 @@ export default function ChatRoom() {
     // 에러가 아니라면 스토리지에서 방금 올린 이미지의 publicURL을 받아와서 image state에 set
     const res = supabase.storage.from('images').getPublicUrl(data.path);
     setImages(res.data.publicUrl);
+  };
+
+  const getUserName = (rooms: RoomType[] | undefined | null) => {
+    if (rooms && clicked) {
+      const room = rooms.find((room: RoomType) => room.id === clicked);
+      return room?.room_name;
+    }
+    return undefined; // 또는 다른 기본값
+  };
+
+  // 줄바꿈인지 제출인지 판단하는 함수
+  const isPressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter') {
+      if (e.shiftKey) {
+        return;
+      } else {
+        // 폼 제출
+        const formElement = FormRef.current;
+        if (formElement) {
+          sendMessage(e);
+        }
+      }
+    }
   };
 
   // 실시간으로 구독 중인 DB 관리하는 함수
@@ -157,6 +201,19 @@ export default function ChatRoom() {
         }
       )
       .subscribe();
+    const chatMessages = supabase
+      .channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'chat_messages' },
+        (payload) => {
+          // 변경사항이 발생하면 해당 채팅방의 메시지를 다시 불러옴
+          if (clicked) {
+            getMessages(clicked);
+          }
+        }
+      )
+      .subscribe();
 
     // unmount 시 구독 해제 하기 위해서 반환
     return { chatRooms };
@@ -165,7 +222,7 @@ export default function ChatRoom() {
   // // unmount 시 구독 해제
   useEffect(() => {
     const { chatRooms } = handleRealtime();
-
+    handleRealtime();
     // unmount 시 구독 해제하기
     return () => {
       chatRooms.unsubscribe();
@@ -185,16 +242,17 @@ export default function ChatRoom() {
   }, []);
 
   // 클릭 된 채팅방 id, 현재 로그인 유저에 따라서
-  // 해당 채팅방에 해당하는 메세지를 가져오고
-  // 유저가 소속된 채팅방을 가져오는 부분
   useEffect(() => {
-    if (clicked) {
-      setMessages([]);
-      getMessages(clicked);
-    }
+    // 유저가 소속된 채팅방을 가져오는 부분
     if (curUser) {
       getRoomsforUser();
       handleRealtime();
+    }
+    // 해당 채팅방에 해당하는 메세지를 가져오고
+    if (clicked) {
+      setMessages([]);
+      getMessages(clicked);
+      handleTargetUser();
     }
   }, [clicked, curUser]);
 
@@ -211,10 +269,18 @@ export default function ChatRoom() {
     }
   }, [rooms]);
 
+  // 채팅방 로드 시 스크롤 최하단으로
+  useEffect(() => {
+    if (scrollRef.current) {
+      const scrollContainer = scrollRef.current;
+      scrollContainer.scrollTop = scrollContainer.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <>
       <St.StChatContainer>
-        <St.StChatList>
+        <St.StChatList onClick={() => setShowFileInput(false)}>
           <ChatRoomList
             clicked={clicked}
             rooms={rooms}
@@ -223,24 +289,72 @@ export default function ChatRoom() {
           />
         </St.StChatList>
         <St.StChatBoard>
-          <St.StChatBoardHeader>
-            <St.StChatBoardHeaderName>사용자 이름</St.StChatBoardHeaderName>
-            점점점
-          </St.StChatBoardHeader>
-          <St.StChatGround>
+          {clicked && (
+            <St.StChatBoardHeader>
+              <St.StChatBoardHeaderName>
+                <StUserProfile
+                  $url={targetUser && targetUser[0]?.avatar_url}
+                ></StUserProfile>
+                <p>
+                  {getUserName(rooms) !== undefined &&
+                    String(rooms && getUserName(rooms))}
+                </p>
+              </St.StChatBoardHeaderName>
+              점점점
+            </St.StChatBoardHeader>
+          )}
+
+          <St.StChatGround ref={scrollRef}>
             <ChatMessages messages={messages} curUser={curUser} />
           </St.StChatGround>
-          <St.StChatForm onSubmit={sendMessage}>
-            <St.ImageInput onChange={handleImage} placeholder="이미지 보내기" />
-            <St.StChatInput
-              onChange={handleUserInput}
-              type="text"
-              name="chat"
-              value={chatInput}
-            />
+          <St.StChatForm onSubmit={sendMessage} ref={FormRef}>
+            {showFileInput && (
+              <St.ImageInput
+                onChange={handleImage}
+                placeholder="이미지 보내기"
+              />
+            )}
+            <div style={{ display: 'flex' }}>
+              <St.StChatInput
+                onChange={handleUserInput}
+                onKeyDown={isPressEnter}
+                name="chat"
+                value={chatInput}
+              />
+              <div style={{ position: 'relative' }}>
+                <FaImage
+                  onClick={() => setShowFileInput((prev: boolean) => !prev)}
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    right: '10px',
+                    transform: 'translate(0%,-50%)',
+                    background: '#ececec',
+                    color: `var(--primary-color)`,
+                    padding: '.2rem',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '10px',
+                    cursor: 'pointer'
+                  }}
+                />
+              </div>
+            </div>
           </St.StChatForm>
         </St.StChatBoard>
       </St.StChatContainer>
     </>
   );
 }
+
+type ChatProfileType = {
+  $url: string;
+};
+
+const StUserProfile = styled.div<ChatProfileType>`
+  width: 28px;
+  height: 28px;
+  border-radius: 50px;
+  background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
+  background-size: cover;
+`;
