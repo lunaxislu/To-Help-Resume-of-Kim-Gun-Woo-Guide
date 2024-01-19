@@ -2633,6 +2633,21 @@
     "@webassemblyjs/ast" "1.11.6"
     "@xtuc/long" "4.2.2"
 
+"@xeger/quill-image-actions@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@xeger/quill-image-actions/-/quill-image-actions-0.7.2.tgz#4ce923de8514a59f7a6d151ee8313ccffa6c9eaa"
+  integrity sha512-OhaZnYCie9J1ZLx2+Nsznj+qkdHn9Yx7q3iOCCKFs6kAzcZUVBPv2fMjK+nzURySLyCVQOP3Ur2mZx1yYqgppw==
+  dependencies:
+    core-js "^3.0"
+    deepmerge "^4.2"
+
+"@xeger/quill-image-formats@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@xeger/quill-image-formats/-/quill-image-formats-0.7.2.tgz#70008c062c7b9497d2aa95869d3741309d9fb789"
+  integrity sha512-L9beiJKWzjHxBJEZB21I8YjFgOHYROsrfFMvIqP+kjc/u/MecHY1mXzR9VySLr+Qvj55t+vkKKuJ0ZPKvQSaPA==
+  dependencies:
+    core-js "^3.0"
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@xtuc/ieee754/-/ieee754-1.2.0.tgz"
@@ -3617,7 +3632,7 @@ core-js-pure@^3.23.3:
   resolved "https://registry.npmjs.org/core-js-pure/-/core-js-pure-3.35.0.tgz"
   integrity sha512-f+eRYmkou59uh7BPcyJ8MC76DiGhspj1KMxVIcF24tzP8NA9HVa1uC7BTW2tgx7E1QVCzDzsgp7kArrzhlz8Ew==
 
-core-js@^3.19.2, core-js@^3.6.4:
+core-js@^3.0, core-js@^3.19.2, core-js@^3.6.4:
   version "3.35.0"
   resolved "https://registry.npmjs.org/core-js/-/core-js-3.35.0.tgz"
   integrity sha512-ntakECeqg81KqMueeGJ79Q5ZgQNR+6eaE8sxGCx62zMbAIj65q+uYvatToew3m6eAGdU4gNZwpZ34NMe4GYswg==
@@ -3970,7 +3985,7 @@ deep-is@^0.1.3, deep-is@~0.1.3:
   resolved "https://registry.npmjs.org/deep-is/-/deep-is-0.1.4.tgz"
   integrity sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==
 
-deepmerge@^4.2.2:
+deepmerge@^4.2, deepmerge@^4.2.2:
   version "4.3.1"
   resolved "https://registry.npmjs.org/deepmerge/-/deepmerge-4.3.1.tgz"
   integrity sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==
@@ -4851,6 +4866,11 @@ fast-diff@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.1.2.tgz#4b62c42b8e03de3f848460b639079920695d0154"
   integrity sha512-KaJUt+M9t1qaIteSvjc6P3RbMdXsNhK61GRftR6SNxqmhthcd9MGIi4T+o0jD8LUSpSnSKXE20nLtJ3fOHxQig==
+
+fast-diff@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.3.0.tgz#ece407fa550a64d638536cd727e129c61616e0f0"
+  integrity sha512-VxPP4NqbUjj6MaAOafWeUn2cXWLcCtljklUtZf0Ind4XQ+QPtmA0b18zZy0jIQx+ExRVCR/ZQpBmik5lXshNsw==
 
 fast-glob@^3.2.9, fast-glob@^3.3.0:
   version "3.3.2"
@@ -6777,10 +6797,20 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  integrity sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==
+
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.npmjs.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz"
   integrity sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==
+
+lodash.isequal@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+  integrity sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==
 
 lodash.memoize@^4.1.2:
   version "4.1.2"
@@ -8182,6 +8212,13 @@ queue-microtask@^1.2.2:
   resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
+quill-delta-to-html@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/quill-delta-to-html/-/quill-delta-to-html-0.12.1.tgz#48e042c4a14d9ba3eed8b4f28aa77dd9482eea00"
+  integrity sha512-QhpeMk9+5ge3HYbL5A0Ewz3pXCsbemqGvIF/kw5D6D4V68AtcUp7yt9xNUkzOk/0IQz43hKy3IkzBzRhLIE+oA==
+  dependencies:
+    lodash.isequal "^4.5.0"
+
 quill-delta@^3.6.2:
   version "3.6.3"
   resolved "https://registry.yarnpkg.com/quill-delta/-/quill-delta-3.6.3.tgz#b19fd2b89412301c60e1ff213d8d860eac0f1032"
@@ -8191,33 +8228,16 @@ quill-delta@^3.6.2:
     extend "^3.0.2"
     fast-diff "1.1.2"
 
-quill-image-resize-module-react@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/quill-image-resize-module-react/-/quill-image-resize-module-react-3.0.0.tgz#dec32cecd175fcdc52bfd184206174fdd111a864"
-  integrity sha512-3jVChLoXh+fwEELx3OswOEEuF+1KU3r/B9RAqZ//s+d+UMduVZzUepU1g/XoxjKoBJvWD2lJwBIFBRUNb8ebCw==
+quill-delta@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/quill-delta/-/quill-delta-5.1.0.tgz#1c4bc08f7c8e5cc4bdc88a15a1a70c1cc72d2b48"
+  integrity sha512-X74oCeRI4/p0ucjb5Ma8adTXd9Scumz367kkMK5V/IatcX6A0vlgLgKbzXWy5nZmCGeNJm2oQX0d2Eqj+ZIlCA==
   dependencies:
-    lodash "^4.17.4"
-    quill "^1.2.2"
-    raw-loader "^0.5.1"
+    fast-diff "^1.3.0"
+    lodash.clonedeep "^4.5.0"
+    lodash.isequal "^4.5.0"
 
-quill-image-resize-module-ts@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/quill-image-resize-module-ts/-/quill-image-resize-module-ts-3.0.3.tgz#47e6d81214719b7a745c2d4e53cad2cef09ad4dc"
-  integrity sha512-NMWw67zCfGxE0AyPTVLWMTAs71eKerd+jJJqu9ZuPBGZl7vc+Jtb+tmfx33pC3h0deVYqgOMXYzbFBIRmu/WuQ==
-  dependencies:
-    lodash "^4.17.4"
-    quill "^1.3.4"
-
-quill-image-resize@^3.0.9:
-  version "3.0.9"
-  resolved "https://registry.yarnpkg.com/quill-image-resize/-/quill-image-resize-3.0.9.tgz#5677fb6257560bff951153ddbdb836758e49f804"
-  integrity sha512-5Dk0nixhbFsCwSWtPU9qqqtfM2gURfaP+pbBhQvAoMJoF4p99xbAibfAI3gsZJkbWUodoK2iAPf1V5oTSpv9ww==
-  dependencies:
-    lodash "^4.17.4"
-    quill "^1.2.2"
-    raw-loader "^0.5.1"
-
-quill@^1.2.2, quill@^1.3.4, quill@^1.3.7:
+quill@^1.3.7:
   version "1.3.7"
   resolved "https://registry.yarnpkg.com/quill/-/quill-1.3.7.tgz#da5b2f3a2c470e932340cdbf3668c9f21f9286e8"
   integrity sha512-hG/DVzh/TiknWtE6QmWAF/pxoZKYxfe3J/d/+ShUWkDvvkZQVTPeVmUJVu1uE6DDooC4fWTiCLh84ul89oNz5g==
@@ -8257,11 +8277,6 @@ raw-body@2.5.1:
     http-errors "2.0.0"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
-
-raw-loader@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/raw-loader/-/raw-loader-0.5.1.tgz#0c3d0beaed8a01c966d9787bf778281252a979aa"
-  integrity sha512-sf7oGoLuaYAScB4VGr0tzetsYlS8EJH6qnTCfQ/WVEa89hALQ4RQfCKt5xCyPQKPDUbVUAIP1QsxAwfAjlDp7Q==
 
 react-app-polyfill@^3.0.0:
   version "3.0.0"
@@ -8327,6 +8342,11 @@ react-icons@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-5.0.1.tgz#1694e11bfa2a2888cab47dcc30154ce90485feee"
   integrity sha512-WqLZJ4bLzlhmsvme6iFdgO8gfZP17rfjYEJ2m9RsZjZ+cc4k1hTzknEz63YS1MeT50kVzoa1Nz36f4BEx+Wigw==
+
+react-hook-form@^7.49.3:
+  version "7.49.3"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.49.3.tgz#576a4567f8a774830812f4855e89f5da5830435c"
+  integrity sha512-foD6r3juidAT1cOZzpmD/gOKt7fRsDhXXZ0y28+Al1CHgX+AY1qIN9VSIIItXRq1dN68QrRwl1ORFlwjBaAqeQ==
 
 react-is@^16.13.1:
   version "16.13.1"
