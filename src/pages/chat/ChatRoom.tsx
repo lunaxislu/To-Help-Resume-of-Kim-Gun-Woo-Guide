@@ -19,6 +19,7 @@ import type {
 } from '../../components/chat/types';
 import * as St from './style';
 import styled, { css } from 'styled-components';
+import { FaImage } from 'react-icons/fa';
 
 export default function ChatRoom() {
   const [curUser, setCurUser] = useState<User | null>();
@@ -29,10 +30,12 @@ export default function ChatRoom() {
   const [unread, setUnread] = useState<number[] | null>(null);
   const [images, setImages] = useState<string>('');
   const scrollRef = useRef<HTMLDivElement>(null);
+  const FormRef = useRef<HTMLFormElement>(null);
   const [targetUser, setTargetUser] = useState<any[]>();
+  const [showFileInput, setShowFileInput] = useState<boolean>(false);
 
   // 채팅 인풋을 받아 state에 업뎃
-  const handleUserInput = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleUserInput = async (e: ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     name === 'chat' && setChatInput(value);
   };
@@ -162,6 +165,29 @@ export default function ChatRoom() {
     setImages(res.data.publicUrl);
   };
 
+  const getUserName = (rooms: RoomType[] | undefined | null) => {
+    if (rooms && clicked) {
+      const room = rooms.find((room: RoomType) => room.id === clicked);
+      return room?.room_name;
+    }
+    return undefined; // 또는 다른 기본값
+  };
+
+  // 줄바꿈인지 제출인지 판단하는 함수
+  const isPressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter') {
+      if (e.shiftKey) {
+        return;
+      } else {
+        // 폼 제출
+        const formElement = FormRef.current;
+        if (formElement) {
+          sendMessage(e);
+        }
+      }
+    }
+  };
+
   // 실시간으로 구독 중인 DB 관리하는 함수
   const handleRealtime = () => {
     // 채팅방 테이블 구독
@@ -251,18 +277,10 @@ export default function ChatRoom() {
     }
   }, [messages]);
 
-  const getUserName = (rooms: RoomType[] | undefined | null) => {
-    if (rooms && clicked) {
-      const room = rooms.find((room: RoomType) => room.id === clicked);
-      return room?.room_name;
-    }
-    return undefined; // 또는 다른 기본값
-  };
-
   return (
     <>
       <St.StChatContainer>
-        <St.StChatList>
+        <St.StChatList onClick={() => setShowFileInput(false)}>
           <ChatRoomList
             clicked={clicked}
             rooms={rooms}
@@ -289,14 +307,39 @@ export default function ChatRoom() {
           <St.StChatGround ref={scrollRef}>
             <ChatMessages messages={messages} curUser={curUser} />
           </St.StChatGround>
-          <St.StChatForm onSubmit={sendMessage}>
-            <St.ImageInput onChange={handleImage} placeholder="이미지 보내기" />
-            <St.StChatInput
-              onChange={handleUserInput}
-              type="text"
-              name="chat"
-              value={chatInput}
-            />
+          <St.StChatForm onSubmit={sendMessage} ref={FormRef}>
+            {showFileInput && (
+              <St.ImageInput
+                onChange={handleImage}
+                placeholder="이미지 보내기"
+              />
+            )}
+            <div style={{ display: 'flex' }}>
+              <St.StChatInput
+                onChange={handleUserInput}
+                onKeyDown={isPressEnter}
+                name="chat"
+                value={chatInput}
+              />
+              <div style={{ position: 'relative' }}>
+                <FaImage
+                  onClick={() => setShowFileInput((prev: boolean) => !prev)}
+                  style={{
+                    position: 'absolute',
+                    top: '50%',
+                    right: '10px',
+                    transform: 'translate(0%,-50%)',
+                    background: '#ececec',
+                    color: `var(--primary-color)`,
+                    padding: '.2rem',
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '10px',
+                    cursor: 'pointer'
+                  }}
+                />
+              </div>
+            </div>
           </St.StChatForm>
         </St.StChatBoard>
       </St.StChatContainer>

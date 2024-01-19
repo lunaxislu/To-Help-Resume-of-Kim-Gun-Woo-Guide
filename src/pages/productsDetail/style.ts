@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const StDetailContainer = styled.div`
   width: 100%;
@@ -120,17 +120,40 @@ const ButtonWrapper = styled.div`
   margin-block: 2rem;
 `;
 
+const PopAni = keyframes`
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(4);
+  }
+
+  50% {
+    transform: scale(9);
+  }
+
+  75% {
+    transform: scale(9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+`;
+
 type ButtonProps = {
   $role: string;
 };
 
 const Button = styled.div<ButtonProps>`
-  width: ${(props) => (props.$role === 'like' ? '40%' : '60%')};
+  width: ${(props) => (props.$role === 'like' ? '50%' : '50%')};
   padding: ${(props) =>
     props.$role === 'like' ? '1.063rem 7.188rem' : '1.063rem 5.813rem'};
   font-size: 1.125rem;
   border-radius: 5px;
   background-color: #eee;
+  text-align: center;
   cursor: pointer;
 
   &:hover {

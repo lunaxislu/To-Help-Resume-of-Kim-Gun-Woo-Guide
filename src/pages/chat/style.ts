@@ -4,10 +4,12 @@ import { RoomStyledProps } from '../../components/chat/types';
 export const StFadeAni = keyframes`
   from{
     opacity: 0;
+    transform: translateX(5%);
   }
 
   to {
     opacity: 1;
+    transform: translateX(0%);
   }
 `;
 
@@ -19,7 +21,7 @@ const StChatContainer = styled.div`
   border: 1px solid black;
   height: fit-content;
   margin: auto;
-  animation: ${StFadeAni} 1s forwards;
+  animation: ${StFadeAni} 0.6s forwards;
   font-family: 'Pretendard-Regular';
 `;
 
@@ -40,14 +42,13 @@ const StChatBoard = styled.div`
   border: 1px solid black;
   overflow-y: hidden;
   position: relative;
-  animation: ${StFadeAni} 1s forwards;
 `;
 
 const StChatGround = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  padding: 1rem 0 7rem 0;
+  padding: 1rem 0 9rem 0;
 `;
 
 const StChatBoardHeader = styled.div`
@@ -82,7 +83,7 @@ const ImageInput = styled.input.attrs({ type: 'file' })`
   background-color: rgba(0, 0, 0, 0.3);
 `;
 
-const StChatInput = styled.input`
+const StChatInput = styled.textarea`
   width: 100%;
   padding: 1rem;
   position: sticky;
@@ -90,6 +91,7 @@ const StChatInput = styled.input`
   border: none;
   outline: none;
   background-color: #eee;
+  resize: none;
 `;
 
 const StListRoom = styled.div<RoomStyledProps>`

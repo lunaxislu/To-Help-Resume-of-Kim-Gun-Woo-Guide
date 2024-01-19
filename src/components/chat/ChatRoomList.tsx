@@ -18,6 +18,7 @@ const ChatRoomList: React.FC<Props> = ({
   unread
 }: Props) => {
   const [newMsg, setNewMsg] = useState<any | null>(null);
+  const [allMessage, setAllMessage] = useState<MessageType[] | null>(null);
 
   const updateToRead = async (room_id: string) => {
     await supabase
@@ -49,8 +50,6 @@ const ChatRoomList: React.FC<Props> = ({
       )
       .subscribe();
   };
-
-  const [allMessage, setAllMessage] = useState<MessageType[] | null>(null);
 
   // 메세지를 다 가져오고, 현재 로그인 된 유저가 속한 채팅방의 메세지라면 allMessage에 set 하고 밑에서 map을 돌면서
   // 이 div의 id와 같은 채팅방 메세지만 출력
@@ -114,8 +113,8 @@ const ChatRoomList: React.FC<Props> = ({
             </St.StListUpper>
 
             <St.StListLower>
-              <p>{findMatchMessage(room.id).content}</p>
-              <span>{parseDate(findMatchMessage(room.id).created_at)}</span>
+              <p>{findMatchMessage(room.id)?.content}</p>
+              <span>{parseDate(findMatchMessage(room.id)?.created_at)}</span>
             </St.StListLower>
           </St.StListRoom>
         );

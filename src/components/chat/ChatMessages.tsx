@@ -76,6 +76,8 @@ const StMyChatballoon = styled.div`
   padding: 0.75rem 1.688rem;
   border-radius: 60px;
   font-weight: 600;
+  line-height: 1.2;
+  white-space: break-spaces;
 `;
 
 export default ChatMessages;
