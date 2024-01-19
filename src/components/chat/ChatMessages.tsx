@@ -6,7 +6,7 @@ const ChatMessages = ({ messages, curUser }: MessageCompProps) => {
   return (
     <>
       {messages
-        ?.sort((a: any, b: any) => b.created_at - a.created_at)
+        ?.sort((a: any, b: any) => a.created_at - b.created_at)
         .map((msg: any) => {
           return msg.sender_id === curUser?.id ? (
             <div key={msg.id}>
@@ -24,7 +24,7 @@ const ChatMessages = ({ messages, curUser }: MessageCompProps) => {
                   }}
                   src={msg.image_url}
                   alt=""
-                ></img>
+                />
               )}
               <StMyChatballoon key={msg.id}>{msg.content}</StMyChatballoon>
             </div>
