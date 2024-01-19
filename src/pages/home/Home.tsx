@@ -75,6 +75,19 @@ export const fetchData = async (): Promise<{
 const Home = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
 
+  // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 //
+  const getUserId = async () => {
+    const { data, error } = await supabase.auth.getUser();
+    if (data && data.user) {
+      localStorage.setItem('userId', data.user.id);
+    }
+  };
+
+  useEffect(() => {
+    getUserId();
+  }, []);
+  // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 끝 //
+
   useEffect(() => {
     // 스크롤 이벤트
     const handleScroll = () => {
