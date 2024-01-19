@@ -24,7 +24,7 @@ const ChatMessages = ({ messages, curUser }: MessageCompProps) => {
                   }}
                   src={msg.image_url}
                   alt=""
-                ></img>
+                />
               )}
               <StMyChatballoon key={msg.id}>{msg.content}</StMyChatballoon>
             </div>
