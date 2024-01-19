@@ -89,16 +89,15 @@ const ChatRoomList: React.FC<Props> = ({
       {rooms?.map((room, i) => {
         return (
           <St.StListRoom
-            onClick={handleCurClicked}
+            onClick={(e) => {
+              updateToRead(room.id);
+              handleCurClicked(e);
+            }}
             $current={clicked}
             id={room.id}
             key={room.id}
           >
-            <St.StListUpper
-              onClick={() => {
-                updateToRead(room.id);
-              }}
-            >
+            <St.StListUpper>
               <St.StUserInfoBox>
                 <St.StListUserProfile
                   $url={
