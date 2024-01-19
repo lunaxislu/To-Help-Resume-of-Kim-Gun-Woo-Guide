@@ -16,27 +16,21 @@ const ProductsImage = () => {
             height: '200px',
             backgroundColor: 'skyblue'
           }}
-        >
-          <image></image>
-        </div>
+        ></div>
         <div
           style={{
             width: '200px',
             height: '200px',
             backgroundColor: 'skyblue'
           }}
-        >
-          <image></image>
-        </div>
+        ></div>
         <div
           style={{
             width: '200px',
             height: '200px',
             backgroundColor: 'skyblue'
           }}
-        >
-          <image></image>
-        </div>
+        ></div>
       </div>
     </div>
   );

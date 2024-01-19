@@ -72,6 +72,19 @@ export const fetchData = async (): Promise<{
 const Home = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
 
+  // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 //
+  const getUserId = async () => {
+    const { data, error } = await supabase.auth.getUser();
+    if (data && data.user) {
+      localStorage.setItem('userId', data.user.id);
+    }
+  };
+
+  useEffect(() => {
+    getUserId();
+  }, []);
+  // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 끝 //
+
   // 중고게시물 전체 데이터 개수를 가져오는 쿼리
   const {
     data: usedItemsCountData,
