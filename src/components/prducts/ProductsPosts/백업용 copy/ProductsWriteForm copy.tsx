@@ -1,8 +1,8 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
-import { supabase } from '../../../api/supabase/supabaseClient';
-import AddressBtn from './AddressBtn';
-import { TextRadioValueType } from '../ProductsType';
-import ProductsImage from './ProductsImage';
+import { supabase } from '../../../../api/supabase/supabaseClient';
+import AddressBtn from '../AddressBtn';
+import { TextRadioValueType } from '../../ProductsType';
+import ProductsImage from '../ProductsImage';
 import { useNavigate } from 'react-router';
 
 const productsPostsTextInit: TextRadioValueType = {

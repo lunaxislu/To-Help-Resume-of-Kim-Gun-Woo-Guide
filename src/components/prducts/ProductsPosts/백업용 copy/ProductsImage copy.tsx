@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { supabase } from '../../../api/supabase/supabaseClient';
+import { supabase } from '../../../../api/supabase/supabaseClient';
 import { v4 as uuid } from 'uuid';
 
 interface Props {

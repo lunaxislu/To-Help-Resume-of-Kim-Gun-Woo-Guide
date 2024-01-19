@@ -1,5 +1,5 @@
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-import { TextRadioValueType } from '../ProductsType';
+import { TextRadioValueType } from '../../ProductsType';
 
 interface Props {
   scriptUrl?: string,
