@@ -8,8 +8,8 @@ export const HeaderContainer = styled.header`
   flex-direction: column;
   padding: 10px 20px;
   margin: 0px auto;
-
-  background-color: #f2f2f2;
+  background-color: #131313;
+  border: 3px solid #d9d9d9;
 `;
 
 export const HeaderSection = styled.section`
@@ -48,7 +48,7 @@ export const NavButton = styled(Link)`
   text-decoration: none;
   margin-right: 10px;
   cursor: pointer;
-  color: black;
+  color: #f8f8f8;
   font-size: 18px;
 `;
 export const SearchBar = styled.div``;

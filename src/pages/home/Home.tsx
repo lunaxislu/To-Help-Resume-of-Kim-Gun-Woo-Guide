@@ -72,7 +72,7 @@ export const fetchData = async (): Promise<{
 const Home = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
 
-  // 전체 데이터 개수를 가져오는 쿼리
+  // 중고게시물 전체 데이터 개수를 가져오는 쿼리
   const {
     data: usedItemsCountData,
     isLoading: usedItemsCountLoading,
@@ -178,7 +178,6 @@ const Home = () => {
 export default Home;
 
 const HomeContainer = styled.section`
-  border-top: 1px solid #000;
   display: flex;
   width: 1440px;
   height: 1870px;
@@ -220,7 +219,7 @@ const LinktoProducts = styled(Link)`
 
 const SupabaseListContainer = styled.ul`
   width: 100%;
-  height: 325px;
+  height: 315px;
   display: flex;
   flex-wrap: nowrap;
   margin-top: 20px;
@@ -228,7 +227,7 @@ const SupabaseListContainer = styled.ul`
 const SupabaseList = styled.li`
   flex: 1 0 calc(20% - 20px);
   width: 100%;
-  height: 325px;
+  height: 315px;
   padding: 10px;
   display: flex;
   flex-direction: column;

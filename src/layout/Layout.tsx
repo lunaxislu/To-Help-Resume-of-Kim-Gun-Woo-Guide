@@ -20,10 +20,10 @@ const Layout = () => {
           location.pathname
         ) &&
           scrollPercentage >= 60) ||
-        (['/mypage', '/products', '/communitymain', '/searchresults'].includes(
+        (['/mypage', '/products', '/communitymain', '/search-results'].includes(
           location.pathname
         ) &&
-          scrollY >= 100)
+          scrollY >= 300)
       ) {
         setShowTopButton(true);
       } else {

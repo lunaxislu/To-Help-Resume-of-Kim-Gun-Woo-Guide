@@ -47,7 +47,9 @@ const Header = () => {
   return (
     <St.HeaderContainer>
       <St.HeaderSection>
-        <St.Logo onClick={handleLogoClick}>작업자들</St.Logo>
+        <St.Logo onClick={handleLogoClick}>
+          <img src="assets/logo.png" alt="로고" />
+        </St.Logo>
 
         {user ? (
           <St.ButtonContainer>
