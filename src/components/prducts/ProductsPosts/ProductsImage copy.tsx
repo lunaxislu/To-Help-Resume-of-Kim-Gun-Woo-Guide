@@ -72,7 +72,7 @@ const ProductsImage = ({uploadedFileUrl, setUploadedFileUrl}: Props) => {
         </label>}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProductsImage;
+export default ProductsImage
