@@ -9,9 +9,9 @@ import Login from '../pages/login/Login';
 import MyPage from '../pages/mypage/MyPage';
 import Products from '../pages/products/Products';
 import ProductsPosts from '../pages/products/ProductsPosts';
+import ProductDetail from '../pages/productsDetail/ProductDetail';
 import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
-import ProductDetail from '../pages/productsDetail/ProductDetail';
 
 const Router = () => {
   return (

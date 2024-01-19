@@ -15,12 +15,15 @@ export type MessageType = {
 export type Participants = {
   user_id: string;
   user_name: string;
+  avatar_url: string;
 };
 
 export type RoomType = {
   id: string;
+  room_name: string;
   created_at: string;
   participants: Participants[];
+  about: string;
 };
 
 export type RoomStyledProps = {
