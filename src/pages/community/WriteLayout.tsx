@@ -17,6 +17,7 @@ import {
 import { WriteLayoutProps } from './model';
 Quill.register('modules/imageActions', ImageActions);
 Quill.register('modules/imageFormats', ImageFormats);
+
 const WriteLayout: React.FC<WriteLayoutProps> = ({
   profile,
   isEdit,
@@ -27,7 +28,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     data: posts,
     isLoading,
     isError
-  } = useQuery(['post', paramId], () => fetchDetailPost(paramId));
+  } = useQuery(['posts', paramId], () => fetchDetailPost(paramId));
 
   const [title, setTitle] = useState(isEdit ? posts![0].title : '');
   const [category, setCategory] = useState(isEdit ? posts![0].category : '');
@@ -44,7 +45,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
-  console.log('layout이에요');
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
     if (fileList) {
@@ -87,7 +87,9 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       content,
       category,
       post_user: profile![0].id,
-      nickname: profile![0].username,
+      nickname: profile![0].nickname
+        ? profile![0].nickname
+        : profile![0].username,
       files: files.map((file: File) => ({
         name: file.name,
         url: uploadedFileUrl
@@ -100,7 +102,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   const updateMutation = useMutation(updatePostMutation, {
     onSuccess: () => {
       setIsEditState(false);
-      queryClient.invalidateQueries(['post', paramId]);
+      queryClient.invalidateQueries(['posts', paramId]);
     }
   });
 
@@ -125,7 +127,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
 
   // 에디터 접근을 위한 ref return
   const quillRef = useRef<ReactQuill | null>(null);
-  console.log('quill이에요');
   const imageHandler = () => {
     try {
       // 1. 이미지를 저장할 input type=file DOM을 만든다.

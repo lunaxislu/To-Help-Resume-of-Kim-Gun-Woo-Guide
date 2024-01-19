@@ -3,13 +3,12 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { fetchPosts } from '../../pages/community/commuQuery';
 import { CommuListProps, Post } from '../../pages/community/model';
+import parseDate from '../../util/getDate';
 const CommuList: React.FC<CommuListProps> = ({
   selectCategory
 }: {
   selectCategory: string;
 }) => {
-  // const [posts, setPosts] = useState<Post[]>([]);
-
   const navigate = useNavigate();
   const { data: posts, isLoading, isError } = useQuery('posts', fetchPosts);
 
@@ -55,8 +54,14 @@ const CommuList: React.FC<CommuListProps> = ({
                 </div>
               </div>
               <RightSide>
-                <p>{post.created_at}</p>
-                <img src="/assets/comment.png" />
+                <div>
+                  <p>{parseDate(post.created_at)}</p>
+                </div>
+
+                <CommentArea>
+                  <img src="/assets/comment.png" />
+                  <p>{post.comment?.length}</p>
+                </CommentArea>
               </RightSide>
             </Posts>
           );
@@ -97,6 +102,14 @@ const RightSide = styled.div`
   display: flex;
   flex-direction: column;
   align-items: end;
+`;
+const CommentArea = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  & img {
+    margin-top: 3px;
+  }
 `;
 
 export default CommuList;

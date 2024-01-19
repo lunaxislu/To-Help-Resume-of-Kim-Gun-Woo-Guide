@@ -6,9 +6,9 @@ export type Post = {
   category: string;
   post_user: string;
   nickname: string;
-  comment: { user_id: string; user_name: string } | null;
+  comment: Comments | null;
   likes: number | null;
-  like_user: { uid: string }[] | null;
+  like_user: { uid: string }[];
   files: [];
   main_image: string;
   anon: boolean;
@@ -71,3 +71,20 @@ export type WriteLayoutProps = {
   paramId: string | undefined;
   setIsEditState: (isEditState: boolean) => void;
 };
+export type CommentProps = {
+  userId: string;
+  paramId: string | undefined;
+};
+export type CommentUpload = {
+  updateData: {
+    comment: Comments;
+  };
+  paramId: string | undefined;
+};
+export type Comments = {
+  comment_user: string;
+  nickname: string;
+  comment: string;
+  time: string;
+  anon: boolean;
+}[];

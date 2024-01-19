@@ -1,5 +1,5 @@
 import { supabase } from '../../api/supabase/supabaseClient';
-import { InsertObject, UpdateObject } from './model';
+import { CommentUpload, InsertObject, UpdateObject } from './model';
 export const fetchPosts = async () => {
   const { data, error } = await supabase
     .from('community')
@@ -32,16 +32,39 @@ export const addPostMutation = async (insertData: InsertObject) => {
   }
 };
 
-export const updatePostMutation = async (postData: UpdateObject) => {
-  const { data, error } = await supabase
-    .from('community')
-    .update(postData.updateData)
-    .eq('post_id', postData.paramId);
+export const updatePostMutation = async (
+  postData: UpdateObject | CommentUpload
+) => {
+  try {
+    const { data, error } = await supabase
+      .from('community')
+      .update(postData.updateData)
+      .eq('post_id', postData.paramId);
 
-  if (error) {
-    throw error;
+    if (error) {
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.error('Error update post:', error);
   }
-  return data;
+};
+export const updateCommentMutation = async (
+  postData: UpdateObject | CommentUpload
+) => {
+  try {
+    const { data, error } = await supabase
+      .from('community')
+      .update(postData.updateData)
+      .eq('post_id', postData.paramId);
+
+    if (error) {
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.error('Error update post:', error);
+  }
 };
 export const deletePostMutation = async (postId: string | undefined) => {
   const { data, error } = await supabase

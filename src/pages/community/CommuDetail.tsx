@@ -8,6 +8,8 @@ import 'react-quill/dist/quill.snow.css';
 import { useNavigate, useParams } from 'react-router';
 import styled from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
+import Comment from '../../components/community/Comment';
+import parseDate from '../../util/getDate';
 import WriteLayout from './WriteLayout';
 import { deletePostMutation, fetchDetailPost } from './commuQuery';
 import { FilesObject } from './model';
@@ -44,9 +46,9 @@ const CommuDetail: React.FC = () => {
     data: posts,
     isLoading,
     isError
-  } = useQuery(['post', param.id], () => fetchDetailPost(param.id));
+  } = useQuery(['posts', param.id], () => fetchDetailPost(param.id));
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
 
   if (isError) {
@@ -74,66 +76,67 @@ const CommuDetail: React.FC = () => {
         </WriteWrap>
       ) : (
         <ContentsContainer>
-          {posts![0].post_user === userId ? (
-            <>
-              <button
-                onClick={() => {
-                  setIsEditState(true);
-                }}
-              >
-                수정
-              </button>
-              <button onClick={deletePost}>삭제</button>
-            </>
-          ) : (
-            ''
-          )}
+          <div>
+            {posts?.map((post) => {
+              return (
+                <div key={post.post_id}>
+                  <Topper>
+                    <TopperLeft>
+                      <h1>{post.title}</h1>
+                      <p>{!!post.anon ? '익명의 작업자' : post.nickname}</p>
+                    </TopperLeft>
 
-          {posts?.map((post) => {
-            return (
-              <div key={post.post_id}>
-                <Topper>
-                  <TopperLeft>
-                    <h1>{post.title}</h1>
-                    <p>{!!post.anon ? '익명의 작업자' : post.nickname}</p>
-                  </TopperLeft>
-
-                  <TopperRight>
-                    <p>{post.created_at}</p>
+                    <TopperRight>
+                      <p>{parseDate(post.created_at)}</p>
+                    </TopperRight>
+                  </Topper>{' '}
+                  <Category>{post.category}</Category>
+                  <Content>{parse(post.content)}</Content>
+                  {post.files && post.files.length > 0 && (
+                    <div>
+                      {post.files.map((file: FilesObject, index: number) => (
+                        <a
+                          key={index}
+                          href={file.url[index]}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {file.name}
+                        </a>
+                      ))}
+                    </div>
+                  )}{' '}
+                  <FeatureArea>
+                    {posts![0].post_user === userId ? (
+                      <div>
+                        <button
+                          onClick={() => {
+                            setIsEditState(true);
+                          }}
+                        >
+                          수정
+                        </button>
+                        <button onClick={deletePost}>삭제</button>
+                      </div>
+                    ) : (
+                      ''
+                    )}
                     <IconContainer>
-                      <Icon src="/assets/comment.png" />
-                      <p>0</p>
                       <Icon src="/assets/heart.png" />
                       <p>0</p>
                     </IconContainer>
-                  </TopperRight>
-                </Topper>{' '}
-                <Category>{post.category}</Category>
-                <Content>{parse(post.content)}</Content>
-                {post.files && post.files.length > 0 && (
-                  <div>
-                    {post.files.map((file: FilesObject, index: number) => (
-                      <a
-                        key={index}
-                        href={file.url[index]}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {file.name}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          })}
+                  </FeatureArea>
+                  <p>{`${post.comment.length}개의 댓글`}</p>
+                </div>
+              );
+            })}{' '}
+          </div>
+
+          <div>
+            <Comment userId={userId} paramId={param.id} />
+          </div>
         </ContentsContainer>
       )}
-
-      <form>
-        <input />
-        <button>댓글 등록하기</button>
-      </form>
     </Container>
   );
 };
@@ -142,6 +145,7 @@ const Content = styled.div`
   flex-direction: column;
   margin-top: 24px;
   line-height: 30px;
+  min-height: 600px;
 `;
 const Container = styled.div`
   display: flex;
@@ -158,10 +162,18 @@ const Container = styled.div`
     display: flex;
   }
 `;
+const FeatureArea = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
 const ContentsContainer = styled.div`
   width: 80%;
   max-width: 1116px;
   min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 const WriteWrap = styled.div`
   width: 80%;
@@ -202,6 +214,8 @@ const TopperLeft = styled.div`
 const IconContainer = styled.div`
   display: flex;
   justify-content: end;
+  font-size: 14px;
+  align-items: center;
 `;
 const Category = styled.p`
   background-color: #636363;
