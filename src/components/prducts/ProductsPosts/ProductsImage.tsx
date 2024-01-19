@@ -16,27 +16,39 @@ const ProductsImage = () => {
             height: '200px',
             backgroundColor: 'skyblue'
           }}
+<<<<<<< HEAD
         >
           <image />
         </div>
+=======
+        ></div>
+>>>>>>> a2db81b52fc59ff7b2e39f324743f235e6dcfaf2
         <div
           style={{
             width: '200px',
             height: '200px',
             backgroundColor: 'skyblue'
           }}
+<<<<<<< HEAD
         >
           <image />
         </div>
+=======
+        ></div>
+>>>>>>> a2db81b52fc59ff7b2e39f324743f235e6dcfaf2
         <div
           style={{
             width: '200px',
             height: '200px',
             backgroundColor: 'skyblue'
           }}
+<<<<<<< HEAD
         >
           <image />
         </div>
+=======
+        ></div>
+>>>>>>> a2db81b52fc59ff7b2e39f324743f235e6dcfaf2
       </div>
     </div>
   );

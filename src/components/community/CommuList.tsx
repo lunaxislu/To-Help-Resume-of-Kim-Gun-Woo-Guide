@@ -47,11 +47,7 @@ const CommuList: React.FC<CommuListProps> = ({
                 {' '}
                 <h2>
                   {post.title}
-                  {post.main_image ? (
-                    <img src="/assets/imageIcon.png" alt="" />
-                  ) : (
-                    ''
-                  )}
+                  {post.main_image ? <img src="/assets/imageIcon.png" /> : ''}
                 </h2>
                 <div>
                   <p>{handleText(post.content)}</p>
@@ -63,7 +59,7 @@ const CommuList: React.FC<CommuListProps> = ({
                 </div>
 
                 <CommentArea>
-                  <img src="/assets/comment.png" alt="" />
+                  <img src="/assets/comment.png" />
                   <p>{post.comment?.length}</p>
                 </CommentArea>
               </RightSide>

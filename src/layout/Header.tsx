@@ -88,7 +88,7 @@ const Header = () => {
           <St.Button onClick={handleSellbuttonClick}>판매하기</St.Button>
           <St.Button>찜</St.Button>
           <St.Button>알림</St.Button>
-          <St.UserIcon>User</St.UserIcon>
+          <St.UserIcon src="/assets/gonext.png" />
         </St.ButtonContainer>
       </St.HeaderSection>
       <St.NavSection>
