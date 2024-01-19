@@ -113,11 +113,15 @@ const SearchResults: React.FC = () => {
                 to={`/community/detail/${item.post_id}`}
               >
                 <PostList>
-                  {item.image_Url && (
-                    <img src={item.image_Url} alt="Community Post" />
-                  )}
-                  <div>{item.title}</div>
-                  <p>{item.content}</p>
+                  <Content>
+                    <div>{item.title}</div>
+                    <span>
+                      {item.image_Url && (
+                        <img src={item.image_Url} alt="Community Post" />
+                      )}
+                      <p>{item.content}</p>
+                    </span>
+                  </Content>
                 </PostList>
               </ToCommunityPage>
             ))}
@@ -265,8 +269,40 @@ const ToCommunityPage = styled(Link)`
   color: #f8f8f8;
 `;
 const PostList = styled.li`
+  display: flex;
   flex: 0 0 calc(50% - 20px);
   width: 546px;
   height: 225px;
   background-color: #1f1f1f;
+`;
+const Content = styled.div`
+  margin: 24px 30px;
+  div {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  img {
+    width: 66px;
+    height: 66px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #d9d9d9;
+  }
+  p {
+    margin-top: 10px;
+    display: flex;
+    align-items: flex-start;
+    font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-height: 1.6;
+  }
+  span {
+    display: flex;
+    justify-content: space-between;
+  }
 `;
