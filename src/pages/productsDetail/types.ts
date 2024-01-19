@@ -32,4 +32,5 @@ export type CustomUser = {
   likes: {}[];
   board: {}[];
   comment: {}[];
+  avatar_url: string;
 };

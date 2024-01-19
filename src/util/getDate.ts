@@ -13,22 +13,22 @@ export default function parseDate(tdate: string) {
     return '30초 전';
   }
   if (diff < 60) {
-    return '1분 미만';
+    return '1 분 미만';
   }
   if (diff <= 90) {
-    return '1분 전';
+    return '1 분 전';
   }
   if (diff <= 3540) {
     return Math.round(diff / 60) + '분 전 ';
   }
   if (diff <= 5400) {
-    return '1 hour ago';
+    return '1 시간 전';
   }
   if (diff <= 86400) {
     return Math.round(diff / 3600) + '시간 전';
   }
   if (diff <= 129600) {
-    return '1 day ago';
+    return '1일 전';
   }
   if (diff < 604800) {
     return Math.round(diff / 86400) + '일 전';
@@ -37,5 +37,5 @@ export default function parseDate(tdate: string) {
     return '1 주 전';
   }
   const month = created.toLocaleDateString('default', { month: 'long' });
-  return `on ${month} ${created.getDate()}`;
+  return `${month} ${created.getDate()} 달 전`;
 }

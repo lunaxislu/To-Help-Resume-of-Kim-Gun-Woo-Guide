@@ -9,6 +9,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
+    "types": ["kakao.maps.d.ts"],
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
