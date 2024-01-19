@@ -30,8 +30,11 @@ export const ButtonContainer = styled.div`
 export const Button = styled.button`
   border-radius: 5px;
 `;
-export const UserIcon = styled.button`
-  border-radius: 5px;
+export const UserIcon = styled.img`
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
 `;
 
 export const NavSection = styled.section`
