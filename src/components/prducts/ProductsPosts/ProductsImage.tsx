@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { MouseEvent, useEffect, useState } from 'react'
 import { supabase } from '../../../api/supabase/supabaseClient';
 import { v4 as uuid } from 'uuid';
 
@@ -10,6 +10,18 @@ interface Props {
 const ProductsImage = ({uploadedFileUrl, setUploadedFileUrl}: Props) => {
 
   const [files, setFiles] = useState<File[]>([]);
+
+  // 이미지 클릭 시 순서 맨 앞으로
+  const handleImageOrder = (e: MouseEvent<HTMLElement>) => {
+    const url = e.currentTarget.id;
+
+    // 클릭된 아이템 인덱스 번호
+    const clickedItem = uploadedFileUrl.indexOf(url);
+    // 클릭 된 아이템을 제외한 배열
+    const updatedArr = uploadedFileUrl.filter(item => item !== uploadedFileUrl[clickedItem])
+    // 클릭 된 아이템을 맨 앞으로 해서 state를 변경하는 부분
+    setUploadedFileUrl([uploadedFileUrl[clickedItem], ...updatedArr])
+  }
   
   // 웹 페이지에서 파일 등록하기
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +74,7 @@ const ProductsImage = ({uploadedFileUrl, setUploadedFileUrl}: Props) => {
       </div>
       <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px'}}>
         {uploadedFileUrl.map((img:string, idx:number) => 
-          <div key={idx} style={{ width: '200px', height: '200px', border: '2px solid darkgray', position: 'relative' }}>
+          <div onClick={handleImageOrder} id={img} key={idx} style={{ width: '200px', height: '200px', border: '2px solid darkgray', position: 'relative' }}>
             <img src={img} alt={`${img}-${idx}`} style={{objectPosition: 'center', objectFit: 'cover', width: '100%', height: '100%'}} />
             <button onClick={() => handleDeleteImage(idx)} style={{position: 'absolute'}}>X</button>
           </div>
