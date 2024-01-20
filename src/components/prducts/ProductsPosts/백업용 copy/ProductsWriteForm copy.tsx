@@ -180,7 +180,7 @@ const ProductsWriteForm = () => {
       </div>
       <div style={{display: 'flex', flexDirection: 'row', marginBottom: '20px' }}>
         <h2 style={{fontSize: '20px', fontWeight: 'bold', width: '200px'}}>직거래 지역</h2>
-        <AddressBtn textRadioValue={textRadioValue} setTextRadioValue={setTextRadioValue} />
+        {/* <AddressBtn textRadioValue={textRadioValue} setTextRadioValue={setTextRadioValue} /> */}
         <input readOnly type='text' name='address' value={textRadioValue.address} disabled={textRadioValue.deal_type === '택배' || textRadioValue.deal_type === '협의 후 결정'} onChange={handleOnChangeTextRadioValue} placeholder='주소검색을 이용해주세요.' />
         <input type='text' name='detailAddress' value={textRadioValue.detailAddress} disabled={textRadioValue.deal_type === '택배' || textRadioValue.deal_type === '협의 후 결정'} onChange={handleOnChangeTextRadioValue} placeholder='상세주소를 입력해주세요.' />
       </div>

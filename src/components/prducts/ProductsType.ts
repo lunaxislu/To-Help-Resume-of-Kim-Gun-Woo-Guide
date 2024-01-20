@@ -50,7 +50,7 @@ export type ProductsInputType = {
   changable: string,
   exchange_product: string,
   contents: string,
-  tags: string[], 
+  tags: string, 
   agreement: boolean,
   image_url: string
 };
