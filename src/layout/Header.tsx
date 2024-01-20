@@ -1,28 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as St from '../styles/headerStyle/HeaderStyle';
 import { useNavigate } from 'react-router';
 import SearchBar from '../components/layout/header/SearchBar';
-import { logOut } from '../api/supabase/auth';
 import { supabase } from '../api/supabase/supabaseClient';
-import { error } from 'console';
-import { getUserProfile } from '../api/supabase/profile';
-import { useQuery } from 'react-query';
+import { useAppDispatch, useAppSelector } from '../redux/reduxHooks/reduxBase';
+import { setSuccessLogin, setSuccessLogout } from '../redux/modules/authSlice';
 
 interface User {
   username: string;
 }
 
-const getOut = async () => {
-  let { error } = await supabase.auth.signOut();
-  if (error) console.log(error);
-};
-
 const Header = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
-  const userId = localStorage.getItem('userId');
   const [user, setUser] = useState<User | boolean>(false);
   const [loading, setLoading] = useState(true);
+  const [avatarUrl, setAvatarUrl] = useState<string>();
 
+  const loginStatus = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
+  console.log(loginStatus);
   // useEffect(() => {
   //   const fetchUserData = async () => {
   //     try {
@@ -46,38 +42,46 @@ const Header = () => {
   const handleLogoClick = () => {
     navigate('/');
   };
+
   const handleSellbuttonClick = () => {
     navigate('/productsposts');
   };
 
-  const handleProfileClick = async () => {
+  const handleMyPageButtonClick = () => {
     navigate('/mypage');
   };
 
   // 로그아웃 버튼
-  const handleLogOutClick = () => {
-    logOut();
+  const handleLogOutButtonClick = async () => {
+    let { error } = await supabase.auth.signOut();
     navigate('/login');
+    if (error) console.log(error);
   };
 
-  // TODO: 여기서부터 현재 유저의 로그인 상태여부를 확인하는 함수인데 이거 나중에 전역 상태관리로 리팩토링해야 합니다.
+  // 로그인 상태여부 확인
   const getSession = async () => {
     const { data, error } = await supabase.auth.getSession();
-
     if (data.session) {
-      setIsLogin(true);
+      dispatch(setSuccessLogin());
     } else {
-      setIsLogin(false);
+      dispatch(setSuccessLogout());
     }
   };
 
-  const { data: userData } = useQuery({
-    queryKey: ['user'],
-    queryFn: () => getUserProfile(userId)
-  });
+  // 현재 사용자 정보 가져오기
+  const getAuth = async () => {
+    const { data, error } = await supabase.auth.getUser();
+    if (data.user) {
+      setAvatarUrl(data.user.user_metadata.avatar_url);
+    }
+  };
 
   useEffect(() => {
     getSession();
+  }, []);
+
+  useEffect(() => {
+    getAuth();
   }, []);
 
   return (
@@ -88,7 +92,7 @@ const Header = () => {
           <St.Button onClick={handleSellbuttonClick}>판매하기</St.Button>
           <St.Button>찜</St.Button>
           <St.Button>알림</St.Button>
-          <St.UserIcon src="/assets/gonext.png" />
+          <St.UserIcon src={`${avatarUrl}`} onClick={handleMyPageButtonClick} />
         </St.ButtonContainer>
       </St.HeaderSection>
       <St.NavSection>
@@ -96,7 +100,7 @@ const Header = () => {
           {/* <St.NavButton to="/introduce">서비스 소개</St.NavButton> */}
           <St.NavButton to="/products">중고거래</St.NavButton>
           <St.NavButton to="/community">커뮤니티</St.NavButton>
-          <button onClick={handleLogOutClick}>로그아웃</button>
+          <button onClick={handleLogOutButtonClick}>로그아웃</button>
         </St.NavBar>
         <St.SearchBar>
           <SearchBar />

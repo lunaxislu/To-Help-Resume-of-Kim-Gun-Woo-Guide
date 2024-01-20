@@ -12,10 +12,10 @@ import {
 } from '../../styles/mypageStyle/CommunityCardStyle';
 
 import 'react-loading-skeleton/dist/skeleton.css';
-import { userId } from '../../api/supabase/auth';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { debounce } from 'lodash';
 import SkeletonCommunityCard from '../card/SkeletonCommunityCard';
+import { userId } from '../../util/getUserId';
 
 export interface Community {
   id: number;

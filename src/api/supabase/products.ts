@@ -1,11 +1,10 @@
-import { supabase } from './supabaseClient';
-
 export interface Product {
   id: number;
   quality: string;
   title: string;
   price: number;
   user: string;
+  image_url: string;
 }
 
 export interface ProductCardProps {

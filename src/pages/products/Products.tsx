@@ -4,6 +4,7 @@ import ProductList from '../../components/prducts/ProductsList/ProductList';
 import ProductsSearchBar from '../../components/prducts/ProductsList/ProductsSearchBar';
 import ProductsSortBtn from '../../components/prducts/ProductsList/ProductsSortBtn';
 import ProductsTags from '../../components/prducts/ProductsList/ProductsTags';
+
 import { ProductsPostType } from '../../components/prducts/ProductsType';
 
 const Products = () => {
