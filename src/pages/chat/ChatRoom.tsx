@@ -259,16 +259,20 @@ export default function ChatRoom() {
     }
   }, [clicked, curUser]);
 
+  console.log(curUser);
+
   useEffect(() => {
     getMessages(clicked, setMessages);
   }, []);
 
   // 각 채팅방이 업데이트 시 안 읽은 메세지 수를 가져오고 상태에 저장
   useEffect(() => {
-    if (rooms) {
-      Promise.all(rooms.map((room) => unreadCount(room.id))).then((counts) => {
-        setUnread(counts as number[]);
-      });
+    if (rooms && curUser) {
+      Promise.all(rooms.map((room) => unreadCount(room.id, curUser))).then(
+        (counts) => {
+          setUnread(counts as number[]);
+        }
+      );
     }
   }, [rooms]);
 
@@ -332,21 +336,7 @@ export default function ChatRoom() {
               setClickedImages={setClickedImages}
             />
           </St.StChatGround>
-          <St.StChatForm
-            onSubmit={(e) =>
-              sendMessage(
-                e,
-                curUser,
-                clicked,
-                chatInput,
-                images,
-                setChatInput,
-                setImages,
-                setShowFileInput
-              )
-            }
-            ref={FormRef}
-          >
+          <St.StChatForm ref={FormRef}>
             {showFileInput && (
               <St.ImageInput
                 onChange={(e) => handleImage(e, setImages)}
