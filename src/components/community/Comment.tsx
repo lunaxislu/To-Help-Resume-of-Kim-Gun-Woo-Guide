@@ -130,6 +130,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
 
   return (
     <Container>
+      <CountDiv>{`${comments.length}개의 댓글`}</CountDiv>
       <Form onSubmit={updateComment}>
         <CommentInput
           value={comment}
@@ -153,7 +154,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
           <CommentContainer key={index}>
             <div>
               <LeftSide>
-                <p>{comment.anon ? '익명의 작업자' : comment.nickname}</p>
+                <p>{comment.anon ? '익명 작업자' : comment.nickname}</p>
                 <p>{parseTime}</p>
                 {/* {comment.comment_user === profile![0].id ? (
                   isEdit && editedCommentIndex === index ? (
@@ -194,6 +195,9 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
     </Container>
   );
 };
+const CountDiv = styled.div`
+  width: 100%;
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;

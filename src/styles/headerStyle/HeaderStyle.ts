@@ -15,12 +15,15 @@ export const HeaderContainer = styled.header`
 export const HeaderSection = styled.section`
   display: flex;
   justify-content: space-between;
-  margin: 30px 100px;
+  margin: 0px 100px;
+  margin-top: 30px;
 `;
-export const Logo = styled.div`
-  font-size: 30px;
+export const Logo = styled.img`
+  width: 101px;
+  height: 26px;
   cursor: pointer;
   user-select: none;
+  margin: auto 0px;
 `;
 export const ButtonContainer = styled.div`
   display: flex;
@@ -32,8 +35,8 @@ export const Button = styled.button`
 `;
 export const UserIcon = styled.img`
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   cursor: pointer;
 `;
 
@@ -41,6 +44,7 @@ export const NavSection = styled.section`
   display: flex;
   justify-content: space-between;
   margin: 0px 100px;
+  margin-top: 19px;
 `;
 export const NavBar = styled.nav`
   display: flex;
