@@ -146,6 +146,7 @@ export const handleRealtime = (
       }
     )
     .subscribe();
+
   const chatMessages = supabase
     .channel('custom-all-channel')
     .on(
