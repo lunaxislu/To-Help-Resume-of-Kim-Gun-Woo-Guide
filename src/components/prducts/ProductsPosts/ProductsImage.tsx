@@ -40,14 +40,14 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
     try {
       const newFileName = uuid();
       const { data, error } = await supabase.storage
-        .from('Image')
+        .from('images')
         .upload(`products/${newFileName}`, file);
 
       if (error) {
         console.log('파일이 업로드 되지 않습니다.', error);
         return;
       }
-      const res = supabase.storage.from('Image').getPublicUrl(data.path);
+      const res = supabase.storage.from('images').getPublicUrl(data.path);
       setFiles((prevFiles) => [file, ...prevFiles]);
       setUploadedFileUrl((prev: any) => [...prev, res.data.publicUrl]);
     } catch (error) {
