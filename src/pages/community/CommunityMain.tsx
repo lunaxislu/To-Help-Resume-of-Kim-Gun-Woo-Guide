@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BiEdit } from 'react-icons/bi';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
 import styled, { css } from 'styled-components';
@@ -17,18 +18,12 @@ const CommunityMain: React.FC = () => {
   return (
     <Container>
       <Post_container>
-        <h2>
+        <Title>
           {posts
             ? `${posts?.length}개의 이야기를 확인해보세요`
             : '0개의 이야기를 확인해보세요'}
-        </h2>
-        <button
-          onClick={() => {
-            navigate('/community_write');
-          }}
-        >
-          글쓰기
-        </button>
+        </Title>
+
         <FeatureBar>
           <Categorys>
             {categoryArray.map((category) => {
@@ -47,6 +42,13 @@ const CommunityMain: React.FC = () => {
               );
             })}
           </Categorys>
+          <WriteBtn
+            onClick={() => {
+              navigate('/community_write');
+            }}
+          >
+            <WriteIcon /> 글쓰기
+          </WriteBtn>
         </FeatureBar>
         <CommuList selectCategory={selectCategory} />
       </Post_container>
@@ -54,15 +56,16 @@ const CommunityMain: React.FC = () => {
   );
 };
 const Container = styled.div`
-  margin-top: 30px;
+  /* margin-top: 30px; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  background-color: #191919;
 `;
 const Post_container = styled.div`
-  max-width: 906px;
+  max-width: 1116px;
   width: 80%;
   margin-bottom: 50px;
 `;
@@ -83,6 +86,29 @@ const Categorys = styled.div`
   width: 100%;
   gap: 6px;
 `;
+const WriteBtn = styled.button`
+  width: 90px;
+  height: 31px;
+  color: white;
+  background-color: rgb(219, 255, 0, 0.1);
+  border: none;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+`;
+const WriteIcon = styled(BiEdit)`
+  color: #dbff00;
+  width: 15px;
+  height: 15px;
+`;
+const Title = styled.h2`
+  color: white;
+  font-size: 24px;
+  margin-bottom: 24px;
+  margin: 24px 0px;
+`;
 const CategoryBtn = styled.button<{ $selectCategory: string }>`
   border: none;
   height: 30px;
@@ -92,13 +118,20 @@ const CategoryBtn = styled.button<{ $selectCategory: string }>`
   ${(props) => {
     if (props.$selectCategory === props.children) {
       return css`
-        background-color: #636363;
+        background-color: #dbff00;
+      `;
+    }
+    if (props.children === '전체') {
+      return css`
+        background-color: rgb(219, 255, 0, 0.1);
+        border: 1px solid #dbff00;
         color: white;
       `;
     }
+
     return css`
-      background-color: #f3f3f3;
-      color: black;
+      background-color: rgb(219, 255, 0, 0.1);
+      color: white;
     `;
   }}
 `;

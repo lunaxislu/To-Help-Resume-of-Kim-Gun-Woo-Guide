@@ -124,7 +124,7 @@ const CommuDetail: React.FC = () => {
                       <p>0</p>
                     </IconContainer>
                   </FeatureArea>
-                  <p>{`${post.comment.length}개의 댓글`}</p>
+                  {/* <p>{`${post.comment.length}개의 댓글`}</p> */}
                 </div>
               );
             })}{' '}
@@ -149,7 +149,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  background-color: black;
+  color: #f8f8f8;
   & strong {
     font-weight: bold;
   }
