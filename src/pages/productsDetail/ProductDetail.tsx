@@ -9,6 +9,7 @@ import type { CustomUser, Product } from './types';
 import { RoomType } from '../../components/chat/types';
 import parseDate from '../../util/getDate';
 import { FaHeart } from 'react-icons/fa';
+import { v4 } from 'uuid';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
@@ -64,6 +65,7 @@ const ProductDetail = () => {
       .from('user')
       .select('*')
       .eq('uid', targetId);
+    console.log('targetUser', targetUser);
 
     if (targetUser && targetUser.length > 0) {
       setTarget(targetUser[0]);
@@ -79,6 +81,7 @@ const ProductDetail = () => {
   ) => {
     const roomForm = [
       {
+        id: v4(),
         room_name: `${target.username}`,
         about: `${id}`,
         participants: [
@@ -487,8 +490,8 @@ const ProductDetail = () => {
   const productInfo = [
     data.count,
     data.quality,
-    data.dealType,
-    data.location,
+    data.deal_type,
+    data.address,
     data.exchange_product,
     data.shipping_cost
   ];

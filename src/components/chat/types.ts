@@ -1,5 +1,5 @@
 import { User } from '@supabase/supabase-js';
-import { ReactNode } from 'react';
+import { ReactNode, SetStateAction } from 'react';
 
 export type MessageType = {
   id: string;
@@ -34,4 +34,5 @@ export type RoomStyledProps = {
 export type MessageCompProps = {
   messages: MessageType[];
   curUser: User | null | undefined;
+  setShowImage: React.Dispatch<SetStateAction<boolean>>;
 };

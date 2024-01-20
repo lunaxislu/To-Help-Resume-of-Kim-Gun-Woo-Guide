@@ -3,8 +3,14 @@ import Header from './Header';
 import Footer from './Footer';
 import { Outlet, useLocation } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
+import { useQueryClient } from 'react-query';
 
 const Layout = () => {
+  //  실시간 관련
+  const realTimeQuery = useQueryClient();
+
+  //
+
   const location = useLocation();
   const [showTopbutton, setShowTopButton] = useState(false);
   useEffect(() => {
