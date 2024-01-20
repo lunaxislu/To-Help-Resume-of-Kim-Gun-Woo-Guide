@@ -1,28 +1,103 @@
 import React, {
   ChangeEvent,
-  FormEvent,
   MouseEvent,
   useEffect,
   useRef,
   useState
 } from 'react';
-import { supabase } from '../../api/supabase/supabaseClient';
 import { User } from '@supabase/supabase-js';
 import ChatRoomList from '../../components/chat/ChatRoomList';
 import ChatMessages from '../../components/chat/ChatMessages';
-import { v4 as uuid } from 'uuid';
-
-import type {
-  MessageType,
-  Participants,
-  RoomType
-} from '../../components/chat/types';
+import type { MessageType, RoomType } from '../../components/chat/types';
 import * as St from './style';
 import styled, { css } from 'styled-components';
 import { FaImage } from 'react-icons/fa';
+import { BsThreeDots } from 'react-icons/bs';
+
+import {
+  getMessages,
+  getRoomsforUser,
+  getUserData,
+  getUserName,
+  handleImage,
+  handleRealtime,
+  handleTargetUser,
+  sendMessage,
+  unreadCount
+} from './HelperFunctions';
+import { supabase } from '../../api/supabase/supabaseClient';
+
+const StImageViewerBg = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #1d1d1d90;
+  z-index: 3;
+`;
+
+const StImageViewer = styled.div`
+  width: 1200px;
+  height: 70%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  background-color: #1d1d1d;
+  margin: auto;
+  text-align: center;
+
+  &::before {
+    content: 'X';
+    position: absolute;
+    top: 3%;
+    right: 2%;
+    color: var(--primary-color);
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 3;
+  }
+`;
+
+const StViewerImg = styled.img`
+  max-width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+`;
+
+const StMenuBox = styled.div`
+  width: 200px;
+  height: fit-content;
+  position: absolute;
+  top: 50%;
+  right: 8%;
+  z-index: 5;
+  background-color: #1d1d1d95;
+`;
+
+const StMenu = styled.div`
+  width: 100%;
+  padding: 1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--primary-color);
+    background-color: white;
+  }
+`;
 
 export default function ChatRoom() {
-  const [curUser, setCurUser] = useState<User | null>();
+  const [showImage, setShowImage] = useState<boolean>(false);
+  const [showMene, setShowMenu] = useState<boolean>(false);
+
+  const [curUser, setCurUser] = useState<User | null | undefined>();
   const [chatInput, setChatInput] = useState<string>('');
   const [rooms, setRooms] = useState<RoomType[] | null>();
   const [clicked, setClicked] = useState<string | undefined>('');
@@ -33,6 +108,14 @@ export default function ChatRoom() {
   const FormRef = useRef<HTMLFormElement>(null);
   const [targetUser, setTargetUser] = useState<any[]>();
   const [showFileInput, setShowFileInput] = useState<boolean>(false);
+
+  const handleShowMenuToggle = () => {
+    setShowMenu((prev) => !prev);
+  };
+
+  const handleHideImage = () => {
+    setShowImage(false);
+  };
 
   // 채팅 인풋을 받아 state에 업뎃
   const handleUserInput = async (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -45,134 +128,6 @@ export default function ChatRoom() {
     setClicked(e.currentTarget.id);
   };
 
-  const handleTargetUser = async () => {
-    const target = rooms?.find((room: RoomType) => room.id === clicked);
-    const { data, error } = await supabase
-      .from('user')
-      .select('*')
-      .eq('username', target?.room_name);
-    if (error) console.log('상대방 정보 가져오기 실패');
-
-    if (data) {
-      setTargetUser(data);
-    }
-  };
-
-  // submit 발생 시 인풋 초기화
-  const resetInput = () => {
-    setChatInput('');
-    setImages('');
-  };
-
-  // 메세지 전송 - 메세지 테이블에 insert
-  const sendMessage = async (e: FormEvent) => {
-    e.preventDefault();
-
-    if (!curUser) return;
-
-    const messageTemp = {
-      id: uuid(),
-      sender_id: curUser?.id,
-      chat_room_id: clicked,
-      content: chatInput,
-      image_url: images
-    };
-
-    if (curUser) {
-      const { error } = await supabase
-        .from('chat_messages')
-        .insert([messageTemp]);
-
-      resetInput();
-
-      if (error) console.log('전송 실패', error);
-    }
-  };
-  // 어느 채팅방을 클릭 시 해당 채팅방과 연결 된 메세지 가져오는 함수
-  const getMessages = async (room_id: string | undefined) => {
-    let { data: chat_messages, error } = await supabase
-      .from('chat_messages')
-      .select('*')
-      .eq('chat_room_id', room_id);
-
-    if (chat_messages) {
-      // 기존 메시지를 완전히 대체하는 방식으로 수정
-      setMessages(chat_messages as MessageType[]);
-    }
-
-    if (error) console.log('failed set message', error);
-  };
-
-  // 안 읽은 메세지를 count 해주는 함수
-  const unreadCount = async (room_id: string) => {
-    let { data: chat_messages, error } = await supabase
-      .from('chat_messages')
-      .select()
-      .eq('chat_room_id', room_id)
-      .eq('isNew', false);
-
-    if (error) console.log('count error', error);
-
-    return chat_messages?.length;
-  };
-
-  // mount 시 유저 정보를 확인하여 유저가 속한 채팅방 가져오는 함수
-  const getRoomsforUser = async () => {
-    const { data: chat_room, error } = await supabase
-      .from('chat_room')
-      .select('*');
-
-    // curUser.id와 일치하는 participant를 포함한 방만 필터링
-    if (chat_room && curUser) {
-      const filtered = chat_room.filter((room: RoomType) => {
-        return room.participants.some(
-          (participant: Participants) => participant.user_id === curUser.id
-        );
-      });
-      setRooms(filtered);
-    }
-
-    if (error) {
-      console.error('채팅방 가져오기 오류', error);
-      return;
-    }
-  };
-
-  // 이미지 인풋의 파일을 받아 storage에 올리는 함수에 전달
-  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files;
-    if (file) {
-      handleImageUpload(file[0]);
-    }
-    if (!file) console.log('다시 시도');
-  };
-
-  // 이미지 정보 받아서 storage에 올리는 함수
-  const handleImageUpload = async (file: File) => {
-    const { data, error } = await supabase.storage
-      .from('images')
-      .upload(`messages/${uuid()}`, file, {
-        contentType: file.type
-      });
-
-    if (error) {
-      console.error('파일 업로드 실패:', error);
-      return;
-    }
-
-    // 에러가 아니라면 스토리지에서 방금 올린 이미지의 publicURL을 받아와서 image state에 set
-    const res = supabase.storage.from('images').getPublicUrl(data.path);
-    setImages(res.data.publicUrl);
-  };
-
-  const getUserName = (rooms: RoomType[] | undefined | null) => {
-    if (rooms && clicked) {
-      const room = rooms.find((room: RoomType) => room.id === clicked);
-      return room?.room_name;
-    }
-    return undefined; // 또는 다른 기본값
-  };
-
   // 줄바꿈인지 제출인지 판단하는 함수
   const isPressEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter') {
@@ -182,47 +137,94 @@ export default function ChatRoom() {
         // 폼 제출
         const formElement = FormRef.current;
         if (formElement) {
-          sendMessage(e);
+          sendMessage(
+            e,
+            curUser,
+            clicked,
+            chatInput,
+            images,
+            setChatInput,
+            setShowFileInput
+          );
         }
       }
     }
   };
 
-  // 실시간으로 구독 중인 DB 관리하는 함수
-  const handleRealtime = () => {
-    // 채팅방 테이블 구독
-    const chatRooms = supabase
-      .channel('custom-all-channel')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'chat_room' },
-        (payload) => {
-          getRoomsforUser();
+  const handleOutChatRoom = async () => {
+    if (window.confirm('정말 삭제하시겠습니까?') === true) {
+      const { error: messageDelete } = await supabase
+        .from('chat_messages')
+        .delete()
+        .eq('chat_room_id', clicked);
+
+      const { error: roomDelete } = await supabase
+        .from('chat_room')
+        .delete()
+        .eq('id', clicked);
+
+      if (messageDelete || roomDelete) {
+        alert('삭제 실패 다시 시도해주세요');
+      }
+
+      const { data: chatRoomList, error: roomLoadingFailed } = await supabase
+        .from('user')
+        .select('chat_rooms')
+        .eq('id', curUser?.id);
+
+      if (chatRoomList) {
+        const filtered = chatRoomList[0].chat_rooms.filter(
+          (roomId: string) => roomId !== clicked
+        );
+
+        const { error: deleteRoomError } = await supabase
+          .from('user')
+          .update({ chat_rooms: filtered })
+          .eq('id', curUser?.id);
+
+        getRoomsforUser(curUser, setRooms, clicked, setMessages);
+
+        if (deleteRoomError) {
+          console.log('채팅방 나가기 실패');
         }
-      )
-      .subscribe();
-    const chatMessages = supabase
-      .channel('custom-all-channel')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'chat_messages' },
-        (payload) => {
-          // 변경사항이 발생하면 해당 채팅방의 메시지를 다시 불러옴
-          if (clicked) {
-            getMessages(clicked);
+        if (targetUser) {
+          const { data: TargetchatRoomList, error: targetRoomLoadingFailed } =
+            await supabase
+              .from('user')
+              .select('chat_rooms')
+              .eq('id', targetUser[0]?.id);
+
+          if (TargetchatRoomList) {
+            const filtered = TargetchatRoomList[0].chat_rooms.filter(
+              (roomId: string) => roomId !== clicked
+            );
+
+            const { error: deleteRoomError } = await supabase
+              .from('user')
+              .update({ chat_rooms: filtered })
+              .eq('id', targetUser[0]?.id);
+
+            getRoomsforUser(curUser, setRooms, clicked, setMessages);
+
+            if (deleteRoomError) {
+              console.log('채팅방 나가기 실패');
+            }
+            setClicked('');
           }
         }
-      )
-      .subscribe();
-
-    // unmount 시 구독 해제 하기 위해서 반환
-    return { chatRooms };
+      }
+    }
   };
 
   // // unmount 시 구독 해제
   useEffect(() => {
-    const { chatRooms } = handleRealtime();
-    handleRealtime();
+    const { chatRooms } = handleRealtime(
+      clicked,
+      setMessages,
+      curUser,
+      setRooms
+    );
+    handleRealtime(clicked, setMessages, curUser, setRooms);
     // unmount 시 구독 해제하기
     return () => {
       chatRooms.unsubscribe();
@@ -231,33 +233,26 @@ export default function ChatRoom() {
 
   // mount시 로그인한 유저의 데이터를 가져와 state에 set
   useEffect(() => {
-    const getUserData = async () => {
-      const { data, error } = await supabase.auth.getUser();
-
-      if (data) setCurUser(data.user);
-      if (error) console.log('user data fetch failed', error);
-    };
-
-    getUserData();
+    getUserData(setCurUser);
   }, []);
 
   // 클릭 된 채팅방 id, 현재 로그인 유저에 따라서
   useEffect(() => {
     // 유저가 소속된 채팅방을 가져오는 부분
     if (curUser) {
-      getRoomsforUser();
-      handleRealtime();
+      getRoomsforUser(curUser, setRooms, clicked, setMessages);
+      handleRealtime(clicked, setMessages, curUser, setRooms);
     }
     // 해당 채팅방에 해당하는 메세지를 가져오고
     if (clicked) {
       setMessages([]);
-      getMessages(clicked);
-      handleTargetUser();
+      getMessages(clicked, setMessages);
+      handleTargetUser(rooms, clicked, setTargetUser);
     }
   }, [clicked, curUser]);
 
   useEffect(() => {
-    getRoomsforUser();
+    getMessages(clicked, setMessages);
   }, []);
 
   // 각 채팅방이 업데이트 시 안 읽은 메세지 수를 가져오고 상태에 저장
@@ -278,7 +273,17 @@ export default function ChatRoom() {
   }, [messages]);
 
   return (
-    <>
+    <div style={{ padding: '2rem 0 2rem 0' }}>
+      {showImage && (
+        <StImageViewerBg>
+          <StImageViewer onClick={handleHideImage}>
+            {messages.map((msg: MessageType) => {
+              return <StViewerImg key={msg.id} src={msg.image_url} />;
+            })}
+          </StImageViewer>
+        </StImageViewerBg>
+      )}
+
       <St.StChatContainer>
         <St.StChatList onClick={() => setShowFileInput(false)}>
           <ChatRoomList
@@ -291,26 +296,52 @@ export default function ChatRoom() {
         <St.StChatBoard>
           {clicked && (
             <St.StChatBoardHeader>
+              {showMene && (
+                <StMenuBox>
+                  <StMenu onClick={handleOutChatRoom}>채팅방 나가기</StMenu>
+                  <StMenu>신고하기</StMenu>
+                </StMenuBox>
+              )}
               <St.StChatBoardHeaderName>
                 <StUserProfile
                   $url={targetUser && targetUser[0]?.avatar_url}
                 ></StUserProfile>
                 <p>
-                  {getUserName(rooms) !== undefined &&
-                    String(rooms && getUserName(rooms))}
+                  {getUserName(rooms, clicked) !== undefined &&
+                    String(rooms && getUserName(rooms, clicked))}
                 </p>
               </St.StChatBoardHeaderName>
-              점점점
+              <BsThreeDots
+                style={{ cursor: 'pointer', fontSize: '1.5rem' }}
+                onClick={handleShowMenuToggle}
+              />
             </St.StChatBoardHeader>
           )}
 
           <St.StChatGround ref={scrollRef}>
-            <ChatMessages messages={messages} curUser={curUser} />
+            <ChatMessages
+              messages={messages}
+              curUser={curUser}
+              setShowImage={setShowImage}
+            />
           </St.StChatGround>
-          <St.StChatForm onSubmit={sendMessage} ref={FormRef}>
+          <St.StChatForm
+            onSubmit={(e) =>
+              sendMessage(
+                e,
+                curUser,
+                clicked,
+                chatInput,
+                images,
+                setChatInput,
+                setShowFileInput
+              )
+            }
+            ref={FormRef}
+          >
             {showFileInput && (
               <St.ImageInput
-                onChange={handleImage}
+                onChange={(e) => handleImage(e, setImages)}
                 placeholder="이미지 보내기"
               />
             )}
@@ -343,7 +374,7 @@ export default function ChatRoom() {
           </St.StChatForm>
         </St.StChatBoard>
       </St.StChatContainer>
-    </>
+    </div>
   );
 }
 

@@ -1,6 +1,6 @@
 export interface Product {
   id: string;
-  uid: string;
+  post_user_uid: string;
   created_at: string;
   post_user: string;
   nickname: string;
@@ -9,7 +9,7 @@ export interface Product {
   price: number;
   tags: string[];
   location: string;
-  dealType: string;
+  deal_type: string;
   like_user: { user_id: string; user_name: string }[];
   likes: number;
   quality: string;
@@ -19,6 +19,7 @@ export interface Product {
   exchange_product: string;
   count: number;
   category: string[];
+  address: string;
 }
 
 export type CustomUser = {

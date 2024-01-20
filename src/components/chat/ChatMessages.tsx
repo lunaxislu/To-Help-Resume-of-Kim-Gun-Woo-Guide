@@ -2,16 +2,25 @@ import React from 'react';
 import styled from 'styled-components';
 import type { MessageCompProps } from './types';
 
-const ChatMessages = ({ messages, curUser }: MessageCompProps) => {
+const ChatMessages = ({
+  messages,
+  curUser,
+  setShowImage
+}: MessageCompProps) => {
+  const handleShowImage = () => {
+    setShowImage(true);
+  };
+
   return (
     <>
       {messages
-        ?.sort((a: any, b: any) => b.created_at - a.created_at)
+        ?.sort((a: any, b: any) => a.created_at - b.created_at)
         .map((msg: any) => {
           return msg.sender_id === curUser?.id ? (
             <div key={msg.id}>
               {msg.image_url && (
                 <img
+                  onClick={handleShowImage}
                   style={{
                     width: '200px',
                     display: 'block',
@@ -24,7 +33,7 @@ const ChatMessages = ({ messages, curUser }: MessageCompProps) => {
                   }}
                   src={msg.image_url}
                   alt=""
-                ></img>
+                />
               )}
               <StMyChatballoon key={msg.id}>{msg.content}</StMyChatballoon>
             </div>
