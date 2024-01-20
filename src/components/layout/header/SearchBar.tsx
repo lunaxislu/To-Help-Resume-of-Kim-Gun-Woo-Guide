@@ -115,7 +115,6 @@ const SearchInputContainer = styled.div`
 const SearchInputBar = styled.input`
   width: 488px;
   height: 37px;
-  margin-right: 8px;
   border-radius: 15px;
   padding-left: 10px;
 `;
