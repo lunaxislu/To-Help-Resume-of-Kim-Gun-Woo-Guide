@@ -1,6 +1,6 @@
 export interface Product {
   id: string;
-  uid: string;
+  post_user_uid: string;
   created_at: string;
   post_user: string;
   nickname: string;
