@@ -58,8 +58,10 @@ export const unreadCount = async (room_id: string) => {
 
 // mount 시 유저 정보를 확인하여 유저가 속한 채팅방 가져오는 함수
 export const getRoomsforUser = async (
-  curUser: User | null,
-  setRooms: React.Dispatch<SetStateAction<RoomType[] | null | undefined>>
+  curUser: User | null | undefined,
+  setRooms: React.Dispatch<SetStateAction<RoomType[] | null | undefined>>,
+  clicked: string | undefined,
+  setMessages: React.Dispatch<SetStateAction<MessageType[]>>
 ) => {
   const { data: chat_room, error } = await supabase
     .from('chat_room')
@@ -128,7 +130,9 @@ const handleImageUpload = async (
 // 실시간으로 구독 중인 DB 관리하는 함수
 export const handleRealtime = (
   clicked: string | undefined,
-  setMessages: React.Dispatch<SetStateAction<MessageType[]>>
+  setMessages: React.Dispatch<SetStateAction<MessageType[]>>,
+  curUser: User | null | undefined,
+  setRooms: React.Dispatch<SetStateAction<RoomType[] | null | undefined>>
 ) => {
   // 채팅방 테이블 구독
   const chatRooms = supabase
@@ -138,9 +142,11 @@ export const handleRealtime = (
       { event: '*', schema: 'public', table: 'chat_room' },
       (payload) => {
         getMessages(clicked, setMessages);
+        getRoomsforUser(curUser, setRooms, clicked, setMessages);
       }
     )
     .subscribe();
+
   const chatMessages = supabase
     .channel('custom-all-channel')
     .on(
@@ -171,10 +177,10 @@ export const getUserData = async (
 // submit 발생 시 인풋 초기화
 export const resetInput = (
   setChatInput: React.Dispatch<SetStateAction<string>>,
-  setImages: React.Dispatch<SetStateAction<string>>
+  setShowFileInput: React.Dispatch<SetStateAction<boolean>>
 ) => {
   setChatInput('');
-  setImages('');
+  setShowFileInput(false);
 };
 
 // 메세지 전송 - 메세지 테이블에 insert
@@ -185,7 +191,7 @@ export const sendMessage = async (
   chatInput: string,
   images: string,
   setChatInput: React.Dispatch<SetStateAction<string>>,
-  setImages: React.Dispatch<SetStateAction<string>>
+  setShowFileInput: React.Dispatch<SetStateAction<boolean>>
 ) => {
   e.preventDefault();
 
@@ -204,7 +210,7 @@ export const sendMessage = async (
       .from('chat_messages')
       .insert([messageTemp]);
 
-    resetInput(setChatInput, setImages);
+    resetInput(setChatInput, setShowFileInput);
     if (error) console.log('전송 실패', error);
   }
 };

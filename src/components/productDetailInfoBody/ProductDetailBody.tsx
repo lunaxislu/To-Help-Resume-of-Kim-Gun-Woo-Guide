@@ -60,15 +60,14 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
           </StQualityInfo>
         </StRowValue>
       )}
-
-      {productInfo[i] !== data.quality && productInfo[i] === data.location && (
+      {productInfo[i] !== data.quality && productInfo[i] === data.address && (
         <StRowValue>
-          {productInfo[i]}{' '}
+          {productInfo[i]}
           <StMapButton onClick={handleShowMap}>지도에서 보기</StMapButton>
         </StRowValue>
       )}
 
-      {productInfo[i] !== data.quality && productInfo[i] !== data.location && (
+      {productInfo[i] !== data.quality && productInfo[i] !== data.address && (
         <StRowValue>{productInfo[i]}</StRowValue>
       )}
     </>

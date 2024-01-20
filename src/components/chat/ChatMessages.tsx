@@ -2,7 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import type { MessageCompProps } from './types';
 
-const ChatMessages = ({ messages, curUser }: MessageCompProps) => {
+const ChatMessages = ({
+  messages,
+  curUser,
+  setShowImage
+}: MessageCompProps) => {
+  const handleShowImage = () => {
+    setShowImage(true);
+  };
+
   return (
     <>
       {messages
@@ -12,6 +20,7 @@ const ChatMessages = ({ messages, curUser }: MessageCompProps) => {
             <div key={msg.id}>
               {msg.image_url && (
                 <img
+                  onClick={handleShowImage}
                   style={{
                     width: '200px',
                     display: 'block',
