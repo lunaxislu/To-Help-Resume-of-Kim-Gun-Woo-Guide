@@ -217,6 +217,7 @@ const ProductDetail = () => {
       console.log('exists!');
     }
   };
+  console.log(isLiked);
 
   const isLikedProduct = async () => {
     const { data: likeProduct, error } = await supabase
@@ -224,7 +225,13 @@ const ProductDetail = () => {
       .select('likes')
       .eq('uid', curUser?.uid);
 
-    if (likeProduct && likeProduct[0].likes?.length > 0) {
+    console.log(likeProduct);
+
+    if (
+      likeProduct &&
+      likeProduct[0].likes?.length > 0 &&
+      likeProduct[0].likes.includes(id)
+    ) {
       setIsLiked(true);
     } else {
       setIsLiked(false);
