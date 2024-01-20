@@ -79,12 +79,17 @@ const Profile = () => {
   };
 
   const getUrl = async () => {
-    const { data } = await supabase.storage
-      .from('profiles')
-      .getPublicUrl(imagePath!);
-
-    setProfileImage(data.publicUrl);
+    if (imagePath !== undefined) {
+      const { data } = await supabase.storage
+        .from('profiles')
+        .getPublicUrl(imagePath);
+      setProfileImage(data.publicUrl);
+    }
   };
+
+  useEffect(() => {
+    getUrl();
+  }, [imagePath]);
 
   const uploadProfileImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -94,8 +99,6 @@ const Profile = () => {
         .upload(userId + '/' + uuidv4(), file, {
           upsert: true
         });
-
-      await getUrl();
 
       if (data) {
         setImagePath(data?.path);
