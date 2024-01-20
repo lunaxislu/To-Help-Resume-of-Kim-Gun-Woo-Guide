@@ -198,7 +198,7 @@ const ProductDetail = () => {
         const { data, error } = await supabase
           .from('chat_messages')
           .insert(InitMessage)
-          .eq('uid', product[0].uid);
+          .eq('uid', product[0].post_user_uid);
 
         if (error) console.log('Send Messages Failed', error);
 
@@ -570,8 +570,8 @@ const ProductDetail = () => {
               ) : (
                 <St.Button
                   $role="chat"
-                  id={product[0].uid}
-                  data-about={product[0].uid}
+                  id={product[0].post_user_uid}
+                  data-about={product[0].post_user_uid}
                   onClick={makeChatRoom}
                 >
                   채팅 보내고 구매하기
