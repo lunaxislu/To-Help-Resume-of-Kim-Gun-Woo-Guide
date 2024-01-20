@@ -115,6 +115,11 @@ const Home = () => {
     process.env.PUBLIC_URL + '/assets/carousel2.png',
     process.env.PUBLIC_URL + '/assets/carousel3.png'
   ];
+  const handleText = (content: string): string => {
+    // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
+    const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
+    return textOnly;
+  };
 
   return (
     <HomeContainer>
@@ -145,7 +150,9 @@ const Home = () => {
               to={`/products/detail/${item.id}`}
             >
               <SupabaseList>
-                {item.image_url && <img src={item.image_url[0]} alt="Item" />}
+                <div>
+                  {item.image_url && <img src={item.image_url[0]} alt="Item" />}
+                </div>
 
                 <h1>{item.quality}</h1>
                 <h3>{item.title}</h3>
@@ -180,7 +187,7 @@ const Home = () => {
                 </div>
                 <div className="commucontent">
                   <h3>{item.title}</h3>
-                  <p>{item.content}</p>
+                  <p>{handleText(item.content)}</p>
                 </div>
               </ComunityList>
             </ToCommunityDetailPage>
@@ -246,7 +253,10 @@ const SupabaseList = styled.li`
   padding: 10px;
   display: flex;
   flex-direction: column;
-
+  div {
+    object-fit: cover;
+    justify-content: center;
+  }
   img {
     width: 100%;
     height: 208px;
