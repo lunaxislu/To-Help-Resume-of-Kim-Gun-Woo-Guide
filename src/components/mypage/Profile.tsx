@@ -25,6 +25,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [userNickname, setUserNickname] = useState<string | undefined>();
   const [profileImage, setProfileImage] = useState<string | null>();
+  const [imagePath, setImagePath] = useState<string>();
 
   const queryClient = useQueryClient();
 
@@ -33,7 +34,6 @@ const Profile = () => {
     queryFn: () => getUserProfile(userId)
   });
 
-  console.log(user);
   // profile 수정 버튼
   const editProfileHandler = () => {
     setIsEditing(true);
@@ -78,9 +78,15 @@ const Profile = () => {
     setIsEditing(false);
   };
 
+  const getUrl = async () => {
+    const { data } = await supabase.storage
+      .from('profiles')
+      .getPublicUrl(imagePath!);
+
+    setProfileImage(data.publicUrl);
+  };
+
   const uploadProfileImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const baseUrl =
-      'https://kbfbecvacokagdljwtnh.supabase.co/storage/v1/object/public/profiles/';
     if (e.target.files && e.target.files.length > 0) {
       let file = e.target.files[0];
       const { data, error } = await supabase.storage
@@ -89,8 +95,10 @@ const Profile = () => {
           upsert: true
         });
 
+      await getUrl();
+
       if (data) {
-        setProfileImage(baseUrl + data?.path);
+        setImagePath(data?.path);
       } else {
         console.log(error);
       }
