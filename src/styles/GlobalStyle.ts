@@ -97,5 +97,7 @@ table {
     box-sizing: border-box;
     font-family: 'Pretendard';
     font-weight: var(--fontWeight-medium);
+    //background-color: black;
+    //color: white;
 }
 `;
