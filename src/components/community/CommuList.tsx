@@ -1,3 +1,4 @@
+import { BsChatRightFill } from 'react-icons/bs';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
@@ -13,7 +14,7 @@ const CommuList: React.FC<CommuListProps> = ({
   const { data: posts, isLoading, isError } = useQuery('posts', fetchPosts);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Title>Loading...</Title>;
   }
 
   if (isError) {
@@ -28,7 +29,7 @@ const CommuList: React.FC<CommuListProps> = ({
   };
 
   return (
-    <div>
+    <Container>
       {posts
         ?.filter((post) => {
           if (selectCategory === '전체') {
@@ -50,58 +51,65 @@ const CommuList: React.FC<CommuListProps> = ({
                   {post.main_image ? <img src="/assets/imageIcon.png" /> : ''}
                 </h2>
                 <div>
-                  <p>{handleText(post.content)}</p>
+                  <ContentArea>{handleText(post.content)}</ContentArea>
                 </div>
               </div>
               <RightSide>
+                {' '}
+                <CommentArea>
+                  <CommentIcon />
+
+                  <p>{post.comment?.length}</p>
+                </CommentArea>
                 <div>
                   <p>{parseDate(post.created_at)}</p>
                 </div>
-
-                <CommentArea>
-                  <img src="/assets/comment.png" />
-                  <p>{post.comment?.length}</p>
-                </CommentArea>
               </RightSide>
             </Posts>
           );
         })}
-    </div>
+    </Container>
   );
 };
-
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+`;
 const Posts = styled.div`
   display: flex;
+  flex-direction: column;
   font-size: 20px;
-  padding: 21px;
-  height: 100px;
+  padding: 30px;
+  width: 546px;
+  height: 195px;
   gap: 16px;
   border: none;
   border-radius: 5px;
-  background-color: #f3f3f3;
-  margin-bottom: 20px;
+  background-color: #1f1f1f;
   justify-content: space-between;
-  & img {
-    width: 15px;
-    height: 15px;
-  }
+  color: #d9d9d9;
+
   & h2 {
     font-weight: 700;
     margin-bottom: 16px;
-  }
-  & p {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    max-width: 500px;
-    font-size: 16px;
-    line-height: 30px;
+    max-width: 400px;
   }
+`;
+const ContentArea = styled.p`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 486px;
+  height: 66px;
+  font-size: 14px;
+  line-height: 22px;
 `;
 const RightSide = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: end;
+  justify-content: space-between;
 `;
 const CommentArea = styled.div`
   display: flex;
@@ -111,5 +119,12 @@ const CommentArea = styled.div`
     margin-top: 3px;
   }
 `;
-
+const CommentIcon = styled(BsChatRightFill)`
+  color: #dbff00;
+  opacity: 50%;
+`;
+const Title = styled.h2`
+  color: white;
+  font-size: 24px;
+`;
 export default CommuList;

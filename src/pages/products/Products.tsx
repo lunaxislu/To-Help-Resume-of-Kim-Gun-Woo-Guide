@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import ProductsTags from '../../components/prducts/ProductsList/ProductsTags';
+import { supabase } from '../../api/supabase/supabaseClient';
 import ProductList from '../../components/prducts/ProductsList/ProductList';
 import ProductsSearchBar from '../../components/prducts/ProductsList/ProductsSearchBar';
 import ProductsSortBtn from '../../components/prducts/ProductsList/ProductsSortBtn';
-import { supabase } from '../../api/supabase/supabaseClient';
+import ProductsTags from '../../components/prducts/ProductsList/ProductsTags';
+
 import { ProductsPostType } from '../../components/prducts/ProductsType';
 
 const Products = () => {
