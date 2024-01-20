@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/store';
 import { Communityy, UsedItem } from '../usedtypes';
 import styled from 'styled-components';
+import parseDate from '../../util/getDate';
 
 const SearchResults: React.FC = () => {
   const { usedItemResults, communityResults } = useSelector(
@@ -27,9 +28,9 @@ const SearchResults: React.FC = () => {
         // 중고 게시물 이미지 URL 가져오기
         const usedItemsImages = await Promise.all(
           usedItemResults.map(async (item) => {
-            const pathToImage = `pictures/${item.image_Url}.png`;
+            const pathToImage = `products/${item.image_Url}.png`;
             const { data } = await supabase.storage
-              .from('picture')
+              .from('images')
               .getPublicUrl(pathToImage);
             return { ...item, data };
           })
@@ -38,9 +39,9 @@ const SearchResults: React.FC = () => {
         // 커뮤니티 게시물 이미지 URL 가져오기
         const communityItemsImages = await Promise.all(
           communityResults.map(async (item) => {
-            const pathToImage = `pictures/${item.image_Url}.png`;
+            const pathToImage = `quill_imgs/${item.image_url}.png`;
             const { data } = await supabase.storage
-              .from('community_picture')
+              .from('images')
               .getPublicUrl(pathToImage);
             return { ...item, data };
           })
@@ -116,11 +117,21 @@ const SearchResults: React.FC = () => {
                   <Content>
                     <div>{item.title}</div>
                     <span>
-                      {item.image_Url && (
-                        <img src={item.image_Url} alt="Community Post" />
-                      )}
+                      <img src={item.main_image[0]} alt="Community Post" />
                       <p>{item.content}</p>
                     </span>
+                    <LikesComments>
+                      <Likes>
+                        <img src="/assets/likes.png" alt="좋아요" />
+                        <p>{item.likes}</p>
+                      </Likes>
+                      <Comments>
+                        <img src="/assets/comments.png" alt="댓글" />
+                        <p>{parseDate(item.created_at)}</p>
+                      </Comments>
+                    </LikesComments>
+
+                    <CreatedTime />
                   </Content>
                 </PostList>
               </ToCommunityPage>
@@ -306,3 +317,44 @@ const Content = styled.div`
     justify-content: space-between;
   }
 `;
+const LikesComments = styled.div`
+  margin-top: 15px;
+  display: flex;
+  width: 90px;
+  height: 40px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+`;
+const Likes = styled.div`
+  width: 45px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  img {
+    width: 14px;
+    height: 12px;
+    object-fit: cover;
+  }
+  p {
+    margin-left: 5px;
+  }
+`;
+const Comments = styled.div`
+  width: 45px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  img {
+    justify-content: center;
+    width: 14px;
+    height: 12px;
+    object-fit: cover;
+  }
+  p {
+    margin-left: 5px;
+  }
+`;
+const CreatedTime = styled.div``;

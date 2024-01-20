@@ -83,7 +83,11 @@ const Header = () => {
   return (
     <St.HeaderContainer>
       <St.HeaderSection>
-        <St.Logo onClick={handleLogoClick}>작업자들</St.Logo>
+        <St.Logo
+          src="/assets/logo.png"
+          alt="작업자들"
+          onClick={handleLogoClick}
+        />
         <St.ButtonContainer>
           <St.Button onClick={handleSellbuttonClick}>판매하기</St.Button>
           <St.Button>찜</St.Button>

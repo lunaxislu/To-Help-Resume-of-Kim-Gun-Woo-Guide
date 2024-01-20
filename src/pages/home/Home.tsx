@@ -143,7 +143,7 @@ const Home = () => {
               to={`/products/detail/${item.id}`}
             >
               <SupabaseList>
-                {item.image_Url && <img src={item.image_Url} alt="Item" />}
+                {item.image_url && <img src={item.image_url[0]} alt="Item" />}
 
                 <h1>{item.quality}</h1>
                 <h3>{item.title}</h3>
