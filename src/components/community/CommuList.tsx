@@ -48,7 +48,7 @@ const CommuList: React.FC<CommuListProps> = ({
                 {' '}
                 <h2>
                   {post.title}
-                  {post.main_image ? <img src="/assets/imageIcon.png" /> : ''}
+                  {/* {post.main_image ? <img src="/assets/imageIcon.png" /> : ''} */}
                 </h2>
                 <div>
                   <ContentArea>{handleText(post.content)}</ContentArea>

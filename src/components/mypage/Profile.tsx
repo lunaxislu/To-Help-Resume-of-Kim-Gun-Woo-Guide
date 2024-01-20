@@ -19,13 +19,13 @@ import {
   updateUserImage,
   updateUserNickname
 } from '../../api/supabase/profile';
+import { userId } from '../../util/getUserId';
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [userNickname, setUserNickname] = useState<string | undefined>();
   const [profileImage, setProfileImage] = useState<string | null>();
-
-  const userId = localStorage.getItem('userId');
+  const [imagePath, setImagePath] = useState<string>();
 
   const queryClient = useQueryClient();
 
@@ -78,9 +78,20 @@ const Profile = () => {
     setIsEditing(false);
   };
 
+  const getUrl = async () => {
+    if (imagePath !== undefined) {
+      const { data } = await supabase.storage
+        .from('profiles')
+        .getPublicUrl(imagePath);
+      setProfileImage(data.publicUrl);
+    }
+  };
+
+  useEffect(() => {
+    getUrl();
+  }, [imagePath]);
+
   const uploadProfileImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const baseUrl =
-      'https://kbfbecvacokagdljwtnh.supabase.co/storage/v1/object/public/profiles/';
     if (e.target.files && e.target.files.length > 0) {
       let file = e.target.files[0];
       const { data, error } = await supabase.storage
@@ -90,7 +101,7 @@ const Profile = () => {
         });
 
       if (data) {
-        setProfileImage(baseUrl + data?.path);
+        setImagePath(data?.path);
       } else {
         console.log(error);
       }
