@@ -259,8 +259,6 @@ export default function ChatRoom() {
     }
   }, [clicked, curUser]);
 
-  console.log(curUser);
-
   useEffect(() => {
     getMessages(clicked, setMessages);
   }, []);
