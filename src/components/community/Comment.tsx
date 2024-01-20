@@ -154,7 +154,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
           <CommentContainer key={index}>
             <div>
               <LeftSide>
-                <p>{comment.anon ? '익명의 작업자' : comment.nickname}</p>
+                <p>{comment.anon ? '익명 작업자' : comment.nickname}</p>
                 <p>{parseTime}</p>
                 {/* {comment.comment_user === profile![0].id ? (
                   isEdit && editedCommentIndex === index ? (
