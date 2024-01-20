@@ -1,22 +1,12 @@
 import { ChangeEvent, useState } from 'react'
 import { supabase } from '../../../api/supabase/supabaseClient';
 import AddressBtn from './AddressBtn';
-import { ProductsInputType, TextRadioValueType } from '../ProductsType';
+import { ProductsInputType, AddressValueType } from '../ProductsType';
 import ProductsImage from './ProductsImage';
 import { useNavigate } from 'react-router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-const productsPostsTextInit: TextRadioValueType = {
-  title: "",
-  contents: "",
-  price: 0,
-  count: 0, 
-  exchange_product: "",
-  tags: [],
-  shipping_cost: "",
-  deal_type: "",
-  quality: "",
-  changable: "",
+const productsPostsTextInit: AddressValueType = {
   address: "",
   detailAddress: ""
 }
