@@ -190,6 +190,7 @@ export const sendMessage = async (
   clicked: string | undefined,
   chatInput: string,
   images: string,
+  setImages: React.Dispatch<SetStateAction<string>>,
   setChatInput: React.Dispatch<SetStateAction<string>>,
   setShowFileInput: React.Dispatch<SetStateAction<boolean>>
 ) => {
@@ -210,6 +211,7 @@ export const sendMessage = async (
       .from('chat_messages')
       .insert([messageTemp]);
 
+    setImages('');
     resetInput(setChatInput, setShowFileInput);
     if (error) console.log('전송 실패', error);
   }
