@@ -110,7 +110,10 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
-    font-family: 'Pretendard-Regular';
+    font-size: 1.6rem;
+    background-color: #131313;
+    font-family: 'Pretendard-Medium';
+    color: #F8F8F8;
 }
 ol, ul {
 	list-style: none;
@@ -136,10 +139,5 @@ html {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: 'Pretendard';
-    font-weight: var(--fontWeight-medium);
-    background-color: #131313;
-    color: #F8F8F8;
-    font-size: 1.6rem;
 }
 `;
