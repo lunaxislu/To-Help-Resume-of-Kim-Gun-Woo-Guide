@@ -35,4 +35,5 @@ export type MessageCompProps = {
   messages: MessageType[];
   curUser: User | null | undefined;
   setShowImage: React.Dispatch<SetStateAction<boolean>>;
+  setClickedImages: React.Dispatch<SetStateAction<string>>;
 };

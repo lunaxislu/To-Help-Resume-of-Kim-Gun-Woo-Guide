@@ -22,20 +22,18 @@ const Write: React.FC = () => {
           data: { user }
         } = await supabase.auth.getUser();
         setUserId(user!.id);
-        console.log(userId);
 
         const { data: profiles, error } = await supabase
           .from('user')
           .select('*')
           .eq('id', user!.id);
-        console.log(profiles);
+
         if (error) {
           console.log(error);
         }
 
         if (profiles != null) {
           setProfile(profiles);
-          console.log(profiles);
         }
       } catch (error: any) {
         console.log(error.message);
@@ -64,6 +62,8 @@ const Write: React.FC = () => {
 const Container = styled.div`
   display: flex;
   justify-content: center;
+  background-color: #191919;
+  color: #f3f3f3;
 `;
 const ContentContainer = styled.div`
   display: flex;

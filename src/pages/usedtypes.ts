@@ -26,19 +26,22 @@ export interface UsedItem {
 }
 
 export interface Communityy {
-  post_id: string;
-  post_user: string;
-  created_at: Date;
+  post_id: number;
   title: string;
   content: string;
-  category: string | null;
-  comment: string[];
-  likes: number | null;
-  like_user: string[];
+  category: string;
+  post_user: string;
+  nickname: string;
+  likes: number;
+  files: Array<Record<string, any>>;
+  main_image: string;
+  anon: boolean;
+  created_at: string;
+  comment: Array<Record<string, any>>;
+  likes_user: Array<Record<string, any>>;
   image_filename?: string;
   imageData?: any;
   image_url: string;
   image_Url: string;
   publicURL: string;
-  error: string;
 }

@@ -30,6 +30,9 @@ import { supabase } from '../../api/supabase/supabaseClient';
 const StImageViewerBg = styled.div`
   width: 100vw;
   height: 100vh;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   position: absolute;
   top: 0;
   left: 0;
@@ -39,7 +42,8 @@ const StImageViewerBg = styled.div`
 
 const StImageViewer = styled.div`
   width: 1200px;
-  height: 70%;
+  height: 80%;
+
   position: absolute;
   top: 50%;
   left: 50%;
@@ -63,6 +67,7 @@ const StImageViewer = styled.div`
 
 const StViewerImg = styled.img`
   max-width: 100%;
+  max-height: 100%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -96,6 +101,7 @@ const StMenu = styled.div`
 export default function ChatRoom() {
   const [showImage, setShowImage] = useState<boolean>(false);
   const [showMene, setShowMenu] = useState<boolean>(false);
+  const [clickedImage, setClickedImages] = useState<string>('');
 
   const [curUser, setCurUser] = useState<User | null | undefined>();
   const [chatInput, setChatInput] = useState<string>('');
@@ -113,8 +119,9 @@ export default function ChatRoom() {
     setShowMenu((prev) => !prev);
   };
 
-  const handleHideImage = () => {
+  const handleHideImage = (e: MouseEvent<HTMLElement>) => {
     setShowImage(false);
+    e.stopPropagation();
   };
 
   // 채팅 인풋을 받아 state에 업뎃
@@ -144,6 +151,7 @@ export default function ChatRoom() {
             chatInput,
             images,
             setChatInput,
+            setImages,
             setShowFileInput
           );
         }
@@ -257,10 +265,12 @@ export default function ChatRoom() {
 
   // 각 채팅방이 업데이트 시 안 읽은 메세지 수를 가져오고 상태에 저장
   useEffect(() => {
-    if (rooms) {
-      Promise.all(rooms.map((room) => unreadCount(room.id))).then((counts) => {
-        setUnread(counts as number[]);
-      });
+    if (rooms && curUser) {
+      Promise.all(rooms.map((room) => unreadCount(room.id, curUser))).then(
+        (counts) => {
+          setUnread(counts as number[]);
+        }
+      );
     }
   }, [rooms]);
 
@@ -275,11 +285,9 @@ export default function ChatRoom() {
   return (
     <div style={{ padding: '2rem 0 2rem 0' }}>
       {showImage && (
-        <StImageViewerBg>
-          <StImageViewer onClick={handleHideImage}>
-            {messages.map((msg: MessageType) => {
-              return <StViewerImg key={msg.id} src={msg.image_url} />;
-            })}
+        <StImageViewerBg onClick={handleHideImage}>
+          <StImageViewer>
+            <StViewerImg src={clickedImage} />;
           </StImageViewer>
         </StImageViewerBg>
       )}
@@ -323,22 +331,10 @@ export default function ChatRoom() {
               messages={messages}
               curUser={curUser}
               setShowImage={setShowImage}
+              setClickedImages={setClickedImages}
             />
           </St.StChatGround>
-          <St.StChatForm
-            onSubmit={(e) =>
-              sendMessage(
-                e,
-                curUser,
-                clicked,
-                chatInput,
-                images,
-                setChatInput,
-                setShowFileInput
-              )
-            }
-            ref={FormRef}
-          >
+          <St.StChatForm ref={FormRef}>
             {showFileInput && (
               <St.ImageInput
                 onChange={(e) => handleImage(e, setImages)}

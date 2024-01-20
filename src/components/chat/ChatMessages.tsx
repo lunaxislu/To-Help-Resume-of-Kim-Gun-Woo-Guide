@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
 import type { MessageCompProps } from './types';
 
 const ChatMessages = ({
   messages,
   curUser,
-  setShowImage
+  setShowImage,
+  setClickedImages
 }: MessageCompProps) => {
-  const handleShowImage = () => {
+  const handleShowImage = (e: MouseEvent<HTMLImageElement>) => {
     setShowImage(true);
+    setClickedImages(e.currentTarget.src);
   };
 
   return (

@@ -44,7 +44,7 @@ export const getMessages = async (
 };
 
 // 안 읽은 메세지를 count 해주는 함수
-export const unreadCount = async (room_id: string) => {
+export const unreadCount = async (room_id: string, curUser: User) => {
   let { data: chat_messages, error } = await supabase
     .from('chat_messages')
     .select()
@@ -53,7 +53,9 @@ export const unreadCount = async (room_id: string) => {
 
   if (error) console.log('count error', error);
 
-  return chat_messages?.length;
+  return chat_messages?.filter(
+    (msg: MessageType) => msg.sender_id !== curUser.id
+  ).length;
 };
 
 // mount 시 유저 정보를 확인하여 유저가 속한 채팅방 가져오는 함수
@@ -190,6 +192,7 @@ export const sendMessage = async (
   clicked: string | undefined,
   chatInput: string,
   images: string,
+  setImages: React.Dispatch<SetStateAction<string>>,
   setChatInput: React.Dispatch<SetStateAction<string>>,
   setShowFileInput: React.Dispatch<SetStateAction<boolean>>
 ) => {
@@ -210,6 +213,7 @@ export const sendMessage = async (
       .from('chat_messages')
       .insert([messageTemp]);
 
+    setImages('');
     resetInput(setChatInput, setShowFileInput);
     if (error) console.log('전송 실패', error);
   }

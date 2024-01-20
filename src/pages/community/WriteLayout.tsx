@@ -230,8 +230,8 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
           {categoryArray.map((item, index) => {
             return index !== 0 ? (
               <label key={item}>
-                <input
-                  type="radio"
+                <CheckBoxs
+                  type="checkbox"
                   name={formValues.category}
                   value={item}
                   onChange={(e) => {
@@ -244,6 +244,29 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             ) : null;
           })}
         </CategoryContainer>
+        {/* <CategoryContainer>
+          {categoryArray.map((item, index) => {
+            return index !== 0 ? (
+              <label key={item} className="radio-label">
+                <input
+                  className="radio-input"
+                  type="radio"
+                  name="category"
+                  value={item}
+                  onChange={(event) =>
+                    setFormValues({
+                      ...formValues,
+                      category: event.target.value
+                    })
+                  }
+                  checked={formValues.category === item}
+                />
+                <span className="radio-checkmark" />
+                <span className="radio-text">{item}</span>
+              </label>
+            ) : null;
+          })}
+        </CategoryContainer> */}
         <FileUploader>
           {formValues.files.length !== 0
             ? formValues.files.map((file: File) => file.name)
@@ -329,6 +352,7 @@ const CategoryContainer = styled.div`
   align-items: center;
   justify-content: space-around;
 `;
+
 const CheckBoxInput = styled.input`
   height: 20px;
   width: 20px;
@@ -360,10 +384,11 @@ const FileUploader = styled.label`
   }
 `;
 const QuillEditor = styled(ReactQuill)`
-  background-color: #f3f3f3;
+  background-color: #1f1f1f;
   border-radius: 5px;
   width: 100%;
   max-width: 1116px;
+
   .ql-container {
     min-height: 600px;
     border: none;
@@ -379,7 +404,7 @@ const QuillEditor = styled(ReactQuill)`
     font-style: italic;
   }
   .ql-editor ::placeholder {
-    font-style: normal;
+    color: white;
   }
   .ql-editor p {
     display: flex;
@@ -387,5 +412,27 @@ const QuillEditor = styled(ReactQuill)`
     font-size: 16px;
   }
 `;
+const CheckBoxs = styled.input`
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: #636363; /* 선택되지 않은 상태의 배경 색상 */
+  border: none;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  margin-right: 5px; /* 여백을 조절할 수 있습니다. */
 
+  /* 체크 표시 스타일 */
+  &:checked:before {
+    content: '✔';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    color: #dbff00;
+  }
+`;
 export default React.memo(WriteLayout);
