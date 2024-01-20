@@ -1,21 +1,28 @@
-import ProductsCard from './ProductsCard'
+import ProductsCard from './ProductsCard';
 import { ProductsPostType } from '../ProductsType';
 
 interface Props {
-  products: ProductsPostType[],
+  products: ProductsPostType[];
 }
 
-const ProductList = ({products}: Props) => {
-
+const ProductList = ({ products }: Props) => {
   return (
     <>
-      <div style={{display: 'flex', flexDirection: 'row', gap: '10px', marginBottom: '10px', flexWrap: 'wrap'}}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '10px',
+          marginBottom: '10px',
+          flexWrap: 'wrap'
+        }}
+      >
         {products.map((product) => {
-          return <ProductsCard product={product}/>
+          return <ProductsCard product={product} />;
         })}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ProductList
+export default ProductList;

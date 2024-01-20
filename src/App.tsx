@@ -7,8 +7,8 @@ const queryclient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryclient}>
-      <ReactQueryDevtools initialIsOpen={false} />
       <Router />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
