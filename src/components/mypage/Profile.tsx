@@ -19,13 +19,12 @@ import {
   updateUserImage,
   updateUserNickname
 } from '../../api/supabase/profile';
+import { userId } from '../../util/getUserId';
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [userNickname, setUserNickname] = useState<string | undefined>();
   const [profileImage, setProfileImage] = useState<string | null>();
-
-  const userId = localStorage.getItem('userId');
 
   const queryClient = useQueryClient();
 
@@ -34,6 +33,7 @@ const Profile = () => {
     queryFn: () => getUserProfile(userId)
   });
 
+  console.log(user);
   // profile 수정 버튼
   const editProfileHandler = () => {
     setIsEditing(true);
