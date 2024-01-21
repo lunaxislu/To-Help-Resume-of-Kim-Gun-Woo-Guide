@@ -367,7 +367,7 @@ type ChatProfileType = {
 
 const StImageButton = styled(FaPlus)`
   position: absolute;
-  right: 4.5rem;
+  right: 4rem;
   top: 50%;
   color: var(--opc-100);
   transform: translateY(-50%);
