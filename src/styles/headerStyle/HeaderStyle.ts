@@ -144,7 +144,8 @@ export const LogOut = styled.button`
   display: flex;
   width: 8rem;
   height: 2.7rem;
-  border: 0;
+  border: none;
+  margin-top: 0.3rem;
   background: transparent;
   color: var(--11-gray);
   font-weight: var(--fontWeight-medium);
