@@ -123,6 +123,7 @@ const CommuDetail: React.FC = () => {
                       ''
                     )}
                   </FeatureArea>
+                  <p>{`${post.comment.length}개의 댓글`}</p>
                 </div>
               );
             })}{' '}

@@ -1,3 +1,7 @@
+export interface LikeUser {
+  userNickname: string;
+  user_uid: string;
+}
 export interface Product {
   id: number;
   quality: string;
@@ -5,6 +9,7 @@ export interface Product {
   price: number;
   user: string;
   image_url: string;
+  like_user: LikeUser[];
 }
 
 export interface ProductCardProps {

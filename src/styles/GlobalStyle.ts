@@ -103,6 +103,7 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
     
+    
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
@@ -133,8 +134,9 @@ table {
 }
 
 html {
+
     font-size: 62.5%;
-}
+  }
 
 * {
     padding: 0;
