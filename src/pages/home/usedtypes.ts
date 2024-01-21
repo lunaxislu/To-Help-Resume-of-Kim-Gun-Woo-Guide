@@ -44,4 +44,5 @@ export interface Communityy {
   image_url: string;
   image_Url: string;
   publicURL: string;
+  images: string;
 }
