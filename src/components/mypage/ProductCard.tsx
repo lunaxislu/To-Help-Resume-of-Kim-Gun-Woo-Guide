@@ -10,7 +10,7 @@ import { debounce } from 'lodash';
 import { supabase } from '../../api/supabase/supabaseClient';
 import SkeletonProductCard from '../card/SkeletonProductCard';
 import { Product, ProductCardProps } from '../../api/supabase/products';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
@@ -24,6 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
   const [offset, setOffset] = useState(1);
   const [isInView, setIsInView] = useState(false);
   const userId = localStorage.getItem('userId');
+  const navigate = useNavigate();
 
   const getCurrentUserProducts = async () => {
     let { data: products, error } = await supabase
@@ -138,24 +139,24 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
       {activeTab === 1 &&
         loadedProducts.map((product) => {
           return (
-            <Link to={`/products/detail/${product.id}`}>
-              <StCardWrapper key={product.id}>
-                <StProductImage
-                  src={
-                    product.image_url !== null &&
-                    product.image_url !== undefined
-                      ? product.image_url[0]
-                      : ''
-                  }
-                  alt=""
-                />
-                <StProductQuality>{product.quality}</StProductQuality>
-                <p>{product.user}</p>
-                <p>{product.title}</p>
+            <StCardWrapper
+              key={product.id}
+              to={`/products/detail/${product.id}`}
+            >
+              <StProductImage
+                src={
+                  product.image_url !== null && product.image_url !== undefined
+                    ? product.image_url[0]
+                    : ''
+                }
+                alt=""
+              />
+              <StProductQuality>{product.quality}</StProductQuality>
+              <p>{product.user}</p>
+              <p>{product.title}</p>
 
-                <StProductPrice>{product.price}원</StProductPrice>
-              </StCardWrapper>
-            </Link>
+              <StProductPrice>{product.price}원</StProductPrice>
+            </StCardWrapper>
           );
         })}
 
@@ -165,7 +166,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
         loadedPurchasedProducts.map((product) => {
           return (
             <>
-              <StCardWrapper key={product.id}>
+              <StCardWrapper
+                key={product.id}
+                to={`/products/detail/${product.id}`}
+              >
                 <StProductImage
                   src={
                     'https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?q=80&w=1911&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
@@ -187,7 +191,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
         loadedPurchasedProducts.map((product) => {
           return (
             <>
-              <StCardWrapper key={product.id}>
+              <StCardWrapper
+                key={product.id}
+                to={`/products/detail/${product.id}`}
+              >
                 <StProductImage
                   src={
                     'https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?q=80&w=1911&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'

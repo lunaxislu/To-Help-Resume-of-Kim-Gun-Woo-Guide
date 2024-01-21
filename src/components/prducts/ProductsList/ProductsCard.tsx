@@ -1,10 +1,13 @@
+import { useNavigate } from 'react-router';
 import { ProductsPostType } from '../ProductsType';
 
 const ProductsCard = ({ product }: { product: ProductsPostType }) => {
-  const { title, price, quality, image_url } = product;
+  const navi = useNavigate();
+  const { title, price, quality, image_url, id } = product;
 
   return (
     <div
+      onClick={() => navi(`/products/detail/${id}`)}
       style={{
         padding: '10px',
         width: '250px',

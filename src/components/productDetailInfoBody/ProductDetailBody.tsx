@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Product } from '../../pages/productsDetail/types';
 import styled from 'styled-components';
 import { StFadeAni } from '../../pages/chat/style';
+import { GoInfo } from 'react-icons/go';
 
 type BodyInfo = {
   productInfo: any[];
@@ -30,9 +31,12 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
         <StRowValue>
           <StValueParagraph>{productInfo[i]}</StValueParagraph>
           <StQualityInfo>
-            <p onMouseEnter={showQuality} onMouseLeave={hideQuality}>
-              i
-            </p>
+            <div style={{ width: '100%', height: '100%' }}>
+              <p onMouseEnter={showQuality} onMouseLeave={hideQuality}>
+                {<GoInfo />}
+              </p>
+            </div>
+
             {isHover && (
               <StQualityInfoBox>
                 <p>
@@ -63,7 +67,7 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
       {productInfo[i] !== data.quality && productInfo[i] === data.address && (
         <StRowValue>
           {productInfo[i]}
-          <StMapButton onClick={handleShowMap}>지도에서 보기</StMapButton>
+          <StMapButton onClick={handleShowMap}>지도로 확인하기</StMapButton>
         </StRowValue>
       )}
 
@@ -76,8 +80,8 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
 
 const StRowValue = styled.div`
   width: 100%;
+  font-size: 1.4rem;
   font-family: 'Pretendard-Medium';
-  font-size: 0.875rem;
   text-align: left;
   display: flex;
   align-items: center;
@@ -86,8 +90,11 @@ const StRowValue = styled.div`
 
 const StValueParagraph = styled.div`
   width: fit-content;
-  padding: 0.3rem;
-  background-color: #eeeeee;
+  font-size: 1.2rem;
+  padding: 0.6rem;
+  border-radius: 0.3rem;
+  color: var(--11-gray);
+  background-color: var(--4-gray);
 `;
 
 const StQualityInfo = styled.div`
@@ -95,9 +102,10 @@ const StQualityInfo = styled.div`
   height: 18px;
   border-radius: 50%;
   text-align: center;
-  background-color: var(--primary-color);
-  color: white;
-  line-height: 1.4;
+  background-color: transparent;
+  color: var(--opc-60);
+  line-height: 1.2;
+  font-size: 2rem;
   cursor: pointer;
   position: relative;
 `;
@@ -105,22 +113,22 @@ const StQualityInfo = styled.div`
 const StQualityInfoBox = styled.div`
   width: fit-content;
   height: fit-content;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 1);
   position: absolute;
-  left: -520px;
-  bottom: -50px;
-  padding: 1.25rem 1rem;
+  left: -600px;
+  bottom: -100px;
   color: white;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
+  padding: 2rem;
   animation: ${StFadeAni} 0.2s forwards;
   text-align: left;
 
   span {
+    color: var(--opc-100);
     font-weight: 500;
-    font-size: 1.05rem;
   }
 `;
 
@@ -131,6 +139,7 @@ const StMapButton = styled.button.attrs({
   height: 30px;
   background: transparent;
   border: none;
+  color: var(--8-gray);
   text-decoration: underline;
   cursor: pointer;
 `;
