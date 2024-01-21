@@ -21,6 +21,10 @@ const ProductDetail = () => {
   const [product, setProduct] = useState<Product[] | null>(null);
   const [isExist, setIsExist] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [createdChatList, setCreatedChatList] = useState<RoomType[]>([]);
+  const [buyerChatId, setBuyerChatId] = useState<string>('');
+  const [showChatList, setShowChatList] = useState<boolean>(false);
+  const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
 
   const getUserData = async () => {
     const { data: user, error } = await supabase.auth.getUser();
@@ -210,8 +214,10 @@ const ProductDetail = () => {
   const isExistsRoom = async () => {
     const { data: chat_rooms, error } = await supabase
       .from('chat_room')
-      .select('about')
+      .select('*')
       .eq('about', id);
+    console.log(chat_rooms);
+
     if (chat_rooms && chat_rooms.length > 0) {
       setIsExist(true);
       console.log('exists!');
@@ -233,6 +239,16 @@ const ProductDetail = () => {
     } else {
       setIsLiked(false);
     }
+  };
+
+  const handleCheckIsSoldOut = async () => {
+    const { data: checkRes, error: checkErr } = await supabase
+      .from('products')
+      .select('isSell')
+      .eq('id', id);
+
+    if (checkRes && checkRes[0].isSell === true) setIsSoldOut(true);
+    if (checkErr) console.log('sold out check err');
   };
 
   const handleLike = async () => {
@@ -470,6 +486,7 @@ const ProductDetail = () => {
     }
     getUserData();
     isExistsRoom();
+    handleCheckIsSoldOut();
   }, []);
 
   useEffect(() => {
@@ -486,6 +503,10 @@ const ProductDetail = () => {
     }
   }, [target]);
 
+  useEffect(() => {
+    console.log(buyerChatId);
+  }, []);
+
   if (product === null) return <div>로딩 중</div>;
 
   const labels = ['수량', '상태', '거래 방식', '직거래 장소', '교환', '배송비'];
@@ -500,17 +521,158 @@ const ProductDetail = () => {
     data.shipping_cost
   ];
 
+  const handleLoadChatRooms = async () => {
+    const { data: roomList, error } = await supabase
+      .from('chat_room')
+      .select('*')
+      .eq('about', id);
+    if (roomList) {
+      setCreatedChatList(roomList);
+    }
+    if (error) {
+      console.log('no exists created Room');
+    }
+  };
+
+  const handleSetBuyer = (e: MouseEvent<HTMLDivElement>) => {
+    const buyerChatroomId = e.currentTarget.id;
+    setBuyerChatId(buyerChatroomId);
+    console.log(buyerChatId);
+  };
+
+  const handleSellComplete = async () => {
+    const { data: sellRes, error: sellErr } = await supabase
+      .from('products')
+      .update({ isSell: true })
+      .eq('id', id);
+
+    const { data: buyUser, error } = await supabase
+      .from('user')
+      .select('*')
+      .eq('id', buyerChatId);
+
+    if (buyUser) {
+      const currentBuyProducts = buyUser;
+      const newList = [...currentBuyProducts, id];
+      const { data: res, error: sellError } = await supabase
+        .from('user')
+        .update({ buyProduct: newList })
+        .eq('uid', buyerChatId);
+
+      if (sellError) {
+        console.log('list update fail at user table');
+      }
+
+      alert('판매가 완료되었습니다');
+    }
+  };
+
+  const handleShowChatList = () => {
+    setShowChatList(true);
+  };
+
+  if (isSoldOut === true) {
+    return (
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: '1'
+        }}
+      >
+        <div
+          style={{
+            width: 'fit-content',
+            padding: '2rem',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: '2'
+          }}
+        >
+          <h1>판매가 완료 상품입니다!</h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
+      {showChatList && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '25rem',
+            height: '25rem',
+            background: '#eee',
+            color: 'black',
+            padding: '1rem',
+            zIndex: '2'
+          }}
+        >
+          <h1
+            style={{
+              textAlign: 'center',
+              fontWeight: '600',
+              marginBlock: '1rem'
+            }}
+          >
+            구매한 사용자를 선택해주세요
+          </h1>
+          {createdChatList &&
+            createdChatList.map((room: RoomType) => {
+              return (
+                <div
+                  key={room.id}
+                  style={{ padding: '1rem', cursor: 'pointer' }}
+                  id={room.participants[0].user_id}
+                  onClick={handleSetBuyer}
+                >
+                  <div>{room.participants[0].user_name}</div>
+                </div>
+              );
+            })}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '2%',
+              left: '50%',
+              transform: 'translateX(-50%)'
+            }}
+          >
+            <button onClick={handleSellComplete}>판매 완료하기</button>
+          </div>
+        </div>
+      )}
+
       <ToastContainer />
       <St.StDetailContainer>
         <St.StDetailInfoSection>
           <St.StImageWrapper>
             <St.StCarouselBox>
               <St.StImageList>
-                <div>a</div>
-                <div style={{ backgroundColor: 'gray' }}>a</div>
-                <div style={{ backgroundColor: 'black' }}>a</div>
+                {product[0].image_url !== null &&
+                  product[0]?.image_url.map((url: string, i: number) => {
+                    return (
+                      <div
+                        key={i}
+                        style={{
+                          background: `url(${url})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          backgroundRepeat: 'no-repeat'
+                        }}
+                      ></div>
+                    );
+                  })}
               </St.StImageList>
             </St.StCarouselBox>
           </St.StImageWrapper>
@@ -538,46 +700,70 @@ const ProductDetail = () => {
                 productInfo={productInfo}
                 data={data}
               />
+              {/* 판매자에게 보여지는 버튼 */}
             </St.StProductInfoBody>
-            <St.ButtonWrapper>
-              {isLiked === false ? (
-                <St.Button $role="like" onClick={handleLike}>
-                  <p>
-                    <St.FaHeartIcon />
-                    {product[0].likes}
-                  </p>
-                </St.Button>
-              ) : (
-                // 실시간 좋아요 개수 반영
-                <St.Button $role="like" onClick={handleCancleLike}>
-                  <p style={{ color: 'red' }}>
-                    <FaHeart
-                      style={{
-                        marginBlock: '0.4rem',
-                        fontSize: '2.2rem'
-                      }}
-                    />
-                    {product[0].likes}
-                  </p>
-                </St.Button>
-              )}
-
-              {/* 작성자 ID 가져오기 */}
-              {isExist ? (
+            {id === curUser?.id ? (
+              <St.ButtonWrapper>
                 <St.Button $role="chat" onClick={() => navi('/chat')}>
-                  <h3>채팅으로 이동하기</h3>
+                  <h3>게시물 삭제</h3>
                 </St.Button>
-              ) : (
+                <St.Button $role="chat" onClick={() => navi('/chat')}>
+                  <h3>수정하기</h3>
+                </St.Button>
                 <St.Button
                   $role="chat"
-                  id={product[0].post_user_uid}
-                  data-about={product[0].post_user_uid}
-                  onClick={makeChatRoom}
+                  onClick={() => {
+                    handleLoadChatRooms();
+                    handleShowChatList();
+                  }}
                 >
-                  <h3>채팅 보내고 구매하기</h3>
+                  <h3>판매 완료</h3>
                 </St.Button>
-              )}
-            </St.ButtonWrapper>
+              </St.ButtonWrapper>
+            ) : (
+              <St.ButtonWrapper>
+                {isLiked === false ? (
+                  <St.Button $role="like" onClick={handleLike}>
+                    <p>
+                      <St.FaHeartIcon />
+                      {product[0].likes}
+                    </p>
+                  </St.Button>
+                ) : (
+                  // ////////////////////
+                  // 실시간 좋아요 개수 반영
+                  /////////////////////////
+                  <St.Button $role="like" onClick={handleCancleLike}>
+                    <p style={{ color: 'red' }}>
+                      <FaHeart
+                        style={{
+                          marginBlock: '0.4rem',
+                          fontSize: '2.2rem'
+                        }}
+                      />
+                      {product[0].likes}
+                    </p>
+                  </St.Button>
+                )}
+
+                {/* 게시물 아닌 사람이 보이는 버튼 */}
+                {/* 작성자 ID 가져오기 */}
+                {isExist ? (
+                  <St.Button $role="chat" onClick={() => navi('/chat')}>
+                    <h3>채팅으로 이동하기</h3>
+                  </St.Button>
+                ) : (
+                  <St.Button
+                    $role="chat"
+                    id={product[0]?.post_user_uid}
+                    data-about={product[0]?.post_user_uid}
+                    onClick={makeChatRoom}
+                  >
+                    <h3>채팅 보내고 구매하기</h3>
+                  </St.Button>
+                )}
+              </St.ButtonWrapper>
+            )}
           </St.StProductInfo>
         </St.StDetailInfoSection>
         <St.StProductIntroSection>
