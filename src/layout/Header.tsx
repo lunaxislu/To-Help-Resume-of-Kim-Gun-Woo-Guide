@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import * as St from '../styles/headerStyle/HeaderStyle';
 import { useLocation, useNavigate } from 'react-router';
-import SearchBar from '../components/layout/header/SearchBar';
 import { supabase } from '../api/supabase/supabaseClient';
-import { useAppDispatch, useAppSelector } from '../redux/reduxHooks/reduxBase';
+import SearchBar from '../components/layout/header/SearchBar';
 import { setSuccessLogin, setSuccessLogout } from '../redux/modules/authSlice';
 import { setSearchQuery, setSearchResults } from '../redux/modules/searchSlice';
+import { useAppDispatch, useAppSelector } from '../redux/reduxHooks/reduxBase';
+import * as St from '../styles/headerStyle/HeaderStyle';
 
 interface User {
   username: string;
@@ -106,7 +106,7 @@ const Header = () => {
     <St.HeaderContainer>
       <St.HeaderSection>
         <St.Logo
-          src="/assets/logo.png"
+          src="/assets/logo2.png"
           alt="작업자들"
           onClick={handleLogoClick}
         />
