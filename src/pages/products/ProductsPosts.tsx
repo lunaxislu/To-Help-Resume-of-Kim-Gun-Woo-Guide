@@ -1,16 +1,23 @@
+import { useNavigate } from 'react-router';
 import ProductsWriteForm from '../../components/prducts/ProductsPosts/ProductsWriteForm'
+import * as St from '../../styles/products/ProductsPosts'
+import { ProfileObject } from '../community/model';
+import { useEffect, useState } from 'react';
+import { supabase } from '../../api/supabase/supabaseClient';
 
 const ProductsPosts = () => {
+
   return (
-    <div style={{padding: '20px'}}>
-      <div style={{display: 'flex', flexDirection: 'row', lineHeight: '200%', marginBottom: '20px'}}>
-        <h1 style={{fontSize: '30px', fontWeight: 'bold'}}>기본 정보</h1>
-        <p style={{marginLeft: '10px'}}>*필수항목</p>
-      </div>
-      <div style={{marginBottom: '50px'}}>
-        <ProductsWriteForm />
-      </div>
-    </div>
+    <St.EntireContainer>
+      <St.ContentsContainer>
+        <St.TitleContainer>
+          <St.Title>판매하기</St.Title>
+          <St.TetleRequired>*필수항목</St.TetleRequired>
+        </St.TitleContainer>
+        <St.Hr/>
+          <ProductsWriteForm />
+      </St.ContentsContainer>
+    </St.EntireContainer>
   )
 }
 

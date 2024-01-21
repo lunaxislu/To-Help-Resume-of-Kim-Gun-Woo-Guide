@@ -4,10 +4,14 @@ import ProductList from '../../components/prducts/ProductsList/ProductList';
 import ProductsSearchBar from '../../components/prducts/ProductsList/ProductsSearchBar';
 import ProductsSortBtn from '../../components/prducts/ProductsList/ProductsSortBtn';
 import ProductsTags from '../../components/prducts/ProductsList/ProductsTags';
-
+import * as St from '../../styles/products/ProductsList'
 import { ProductsPostType } from '../../components/prducts/ProductsType';
+import { useNavigate } from 'react-router';
 
-const Products = () => {
+const ProductsList = () => {
+
+  const navigate = useNavigate();
+
   const [products, setProducts] = useState<ProductsPostType[]>([]);
 
   useEffect(() => {
@@ -33,20 +37,27 @@ const Products = () => {
   // console.log(products)
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2
-        style={{ marginBottom: '20px', fontSize: '30px', fontWeight: 'bold' }}
-      >
-        {products.length}개의 상품이 거래되고 있어요
-      </h2>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <ProductsTags />
-        <ProductsSearchBar />
-        <ProductsSortBtn />
-      </div>
+    <St.EntireContainer>
+      <St.ContentsContainer>
+        <St.Title>
+          {products.length}개의 물품이 거래되고 있어요
+        </St.Title>
+      <St.BarContainer>
+        <St.TagsContainer>
+          <ProductsTags />
+          <St.WriteBtn onClick={() => navigate('/productsposts')}>
+            <St.WriteIcon/> 글쓰기
+          </St.WriteBtn>
+        </St.TagsContainer>
+        <St.SearchBarContainer>
+          <ProductsSearchBar />
+          {/* <ProductsSortBtn /> */}
+        </St.SearchBarContainer>
+      </St.BarContainer>
       <ProductList products={products} />
-    </div>
+      </St.ContentsContainer>
+    </St.EntireContainer>
   );
 };
 
-export default Products;
+export default ProductsList;

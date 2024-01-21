@@ -1,6 +1,7 @@
 import React, { MouseEvent, useEffect, useState } from 'react'
 import { supabase } from '../../../api/supabase/supabaseClient';
 import { v4 as uuid } from 'uuid';
+import * as St from '../../../styles/products/ProductsPosts'
 
 interface Props {
   uploadedFileUrl: string[];
@@ -69,34 +70,23 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
   // },[files])
 
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'row', marginBottom: '20px' }}
-    >
-      <div style={{ display: 'flex', flexDirection: 'row', width: '200px' }}>
-        <h2 style={{ fontSize: '20px', fontWeight: 'bold' }}>상품이미지*</h2>
-        <p>{files.length}/12</p>
-      </div>
-      <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '10px'}}>
+    <St.UpLoadImageContainer>
+      <St.SemiTitle>사진
+        <St.Required>*</St.Required>
+        <St.CountText>{files.length}/12</St.CountText>
+      </St.SemiTitle>
+      <St.ImageWrapper>
         {uploadedFileUrl.map((img:string, idx:number) => 
-          <div onClick={handleImageOrder} id={img} key={idx} style={{ width: '200px', height: '200px', border: '2px solid darkgray', position: 'relative' }}>
-            <img src={img} alt={`${img}-${idx}`} style={{objectPosition: 'center', objectFit: 'cover', width: '100%', height: '100%'}} />
-            <button onClick={() => handleDeleteImage(idx)} style={{position: 'absolute'}}>X</button>
+          <St.ImageCard onClick={handleImageOrder} id={img} key={idx}>
+            <St.Image src={img} alt={`${img}-${idx}`} />
+            <St.ImageDeleteBtn onClick={() => handleDeleteImage(idx)}>X</St.ImageDeleteBtn>
 
-          </div>
+          </St.ImageCard>
         )}
         {uploadedFileUrl.length >= 12 ? (
           <></>
-        ) : (
-          <label
-            htmlFor="file"
-            style={{
-              textAlign: 'center',
-              lineHeight: '1200%',
-              width: '200px',
-              height: '200px',
-              backgroundColor: 'lightgray'
-            }}
-          >
+          ) : (
+          <St.UpLoadBox htmlFor="file">
             <input
               type="file"
               id="file"
@@ -104,12 +94,12 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
               onChange={handleFiles}
               multiple
               hidden
-            />
+              />
             +
-          </label>
+          </St.UpLoadBox>
         )}
-      </div>
-    </div>
+      </St.ImageWrapper>
+    </St.UpLoadImageContainer>
   );
 };
 

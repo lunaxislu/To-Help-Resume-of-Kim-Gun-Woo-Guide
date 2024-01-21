@@ -1,5 +1,6 @@
 import ProductsCard from './ProductsCard';
 import { ProductsPostType } from '../ProductsType';
+import * as St from '../../../styles/products/ProductsList'
 
 interface Props {
   products: ProductsPostType[];
@@ -7,21 +8,11 @@ interface Props {
 
 const ProductList = ({ products }: Props) => {
   return (
-    <>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          gap: '10px',
-          marginBottom: '10px',
-          flexWrap: 'wrap'
-        }}
-      >
+      <St.ProductsListContainer>
         {products.map((product) => {
           return <ProductsCard product={product} />;
         })}
-      </div>
-    </>
+      </St.ProductsListContainer>
   );
 };
 
