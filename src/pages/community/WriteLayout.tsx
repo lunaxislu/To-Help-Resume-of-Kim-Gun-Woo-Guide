@@ -248,11 +248,11 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
           </St.LayoutValueText>
           <input
             value={formValues.title}
-            maxLength={40}
+            maxLength={30}
             onChange={(e) => {
               setFormValues({ ...formValues, title: e.target.value });
             }}
-            placeholder="제목을 입력해주세요"
+            placeholder="제목을 입력해주세요(30자)"
           />
         </St.LayoutTitleContainer>
 
