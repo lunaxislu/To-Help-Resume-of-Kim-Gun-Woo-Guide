@@ -31,13 +31,19 @@ const ChatMessages = ({
                     padding: '1rem',
                     background: '#eee',
                     borderRadius: '12px',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    marginBlock: '2rem'
                   }}
                   src={msg.image_url}
                   alt=""
                 />
               )}
-              <StMyChatballoon key={msg.id}>{msg.content}</StMyChatballoon>
+              {msg.content === null && null}
+              {msg.content !== null && (
+                <StMyChatballoon key={msg.id}>
+                  {msg.content === null ? null : msg.content}
+                </StMyChatballoon>
+              )}
             </div>
           ) : (
             <div key={msg.id} style={{ cursor: 'pointer' }}>
@@ -51,12 +57,14 @@ const ChatMessages = ({
                     padding: '1rem',
                     background: '#eee',
                     borderRadius: '12px',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    marginBlock: '2rem'
                   }}
                   src={msg.image_url}
                   alt=""
                 />
               )}
+              {msg.content === null && null}
               <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
                 {msg.content}
               </StChatballoon>

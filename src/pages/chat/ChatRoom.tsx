@@ -11,7 +11,7 @@ import ChatMessages from '../../components/chat/ChatMessages';
 import type { MessageType, RoomType } from '../../components/chat/types';
 import * as St from './style';
 import styled, { css } from 'styled-components';
-import { FaImage, FaPlus } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 import { BsThreeDots } from 'react-icons/bs';
 
 import {
