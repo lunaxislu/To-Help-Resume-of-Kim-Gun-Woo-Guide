@@ -1,60 +1,54 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '../../api/supabase/supabaseClient';
-import ProductList from '../../components/prducts/ProductsList/ProductList';
+import { useQuery } from 'react-query'
+import { useState } from 'react';
+import ProductList from '../../components/prducts/ProductsList/ProductsList';
 import ProductsSearchBar from '../../components/prducts/ProductsList/ProductsSearchBar';
 import ProductsSortBtn from '../../components/prducts/ProductsList/ProductsSortBtn';
-import ProductsTags from '../../components/prducts/ProductsList/ProductsTags';
-import * as St from '../../styles/products/ProductsList'
-import { ProductsPostType } from '../../components/prducts/ProductsType';
+import * as St from '../../styles/products/ProductsListStyle'
 import { useNavigate } from 'react-router';
+import { getProductsPosts } from '../../components/prducts/productsQuery';
+
+const major = ['전체', '회화', '조소', '판화', '금속공예', '도예', '유리공예', '목공예', '섬유공예', '기타']
 
 const ProductsList = () => {
-
   const navigate = useNavigate();
+  const {data: productsPosts, isLoading, isError} = useQuery('productsPosts', getProductsPosts);
+  const [selectCategory, setSelectCategory] = useState<string>('전체');
 
-  const [products, setProducts] = useState<ProductsPostType[]>([]);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  useEffect(() => {
-    getProducts();
-  }, []);
-
-  // 나중에 필요한 것만 가져오기 ex. select('id, name')
-  const getProducts = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .order('created_at', { ascending: false });
-      //.eq('category', ['조소'])
-      if (error) throw error;
-      if (data != null) {
-        setProducts(data);
-      }
-    } catch (error) {
-      alert('예상치 못한 문제가 발생하였습니다. 다시 시도하여 주십시오.');
-    }
-  };
-  // console.log(products)
+  if (isError) {
+    return <div>정보를 가져올 수 없습니다. 다시 시도해주세요.</div>
+  }
 
   return (
     <St.EntireContainer>
       <St.ContentsContainer>
         <St.Title>
-          {products.length}개의 물품이 거래되고 있어요
+          {productsPosts?`${productsPosts?.length}개의 물품이 거래되고 있어요` : `0개의 물품이 거래되고 있어요`}
         </St.Title>
       <St.BarContainer>
         <St.TagsContainer>
-          <ProductsTags />
-          <St.WriteBtn onClick={() => navigate('/productsposts')}>
+          <St.TagsWrapper>
+            {major.map(major => 
+              <li>
+                <St.Tags key={major} onClick={() => setSelectCategory(major)}
+                  $selectCategory={selectCategory}
+                  >{major}</St.Tags>
+              </li>
+            )}
+          </St.TagsWrapper>
+          <St.PostsWriteBtn onClick={() => navigate('/productsposts')}>
             <St.WriteIcon/> 글쓰기
-          </St.WriteBtn>
+          </St.PostsWriteBtn>
         </St.TagsContainer>
         <St.SearchBarContainer>
-          <ProductsSearchBar />
+          {/* <ProductsSearchBar /> */}
           {/* <ProductsSortBtn /> */}
         </St.SearchBarContainer>
       </St.BarContainer>
-      <ProductList products={products} />
+      <ProductList selectCategory={selectCategory} />
       </St.ContentsContainer>
     </St.EntireContainer>
   );
