@@ -78,11 +78,11 @@ export default InfiniteCarousel;
 
 const CarouselContainer = styled.div`
   position: relative;
-  width: 1440px;
-  height: 401px;
+  width: 144rem;
+  height: 40.1rem;
   justify-content: center;
   align-items: center;
-  margin: 0px auto;
+  margin: 0 auto;
   overflow: hidden;
   .dots_custom {
     display: inline-block;
@@ -95,7 +95,7 @@ const CarouselContainer = styled.div`
     list-style: none;
     cursor: pointer;
     display: inline-block;
-    margin: 0 6px;
+    margin: 0 0.6rem;
     padding: 0;
   }
 
@@ -105,8 +105,8 @@ const CarouselContainer = styled.div`
     color: transparent;
     cursor: pointer;
     display: block;
-    height: 8px;
-    width: 8px;
+    height: 0.8rem;
+    width: 0.8rem;
     border-radius: 100%;
     padding: 0;
   }
@@ -118,7 +118,7 @@ const CarouselContainer = styled.div`
 
 const CarouselImage = styled.img`
   width: 100%;
-  max-height: 400px;
+  max-height: 40.1rem;
   object-fit: cover;
   box-sizing: border-box;
 `;
@@ -129,16 +129,16 @@ const CarouselButtons = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 0 20px;
+  padding: 0 2rem;
   box-sizing: border-box;
 `;
 
 const ArrowButton = styled.div`
   img {
-    width: 50px;
-    height: 50px;
+    width: 5rem;
+    height: 5rem;
     cursor: pointer;
     user-select: none;
-    margin-right: 15px;
+    margin-right: 1.5rem;
   }
 `;
