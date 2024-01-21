@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   StContent,
   StFileUploadInput,
   StNicknameInput,
+  StProfileButton,
   StProfileButtonContainer,
   StProfileButtonWrapper,
   StProfileButtons,
   StProfileContainer,
-  StProfileContentWrapper,
   StProfileContentsContainer,
   StProfileImage,
   StProfileImageWrapper,
@@ -29,6 +29,7 @@ const Profile = () => {
   const [userNickname, setUserNickname] = useState<string | undefined>();
   const [profileImage, setProfileImage] = useState<string | null>();
   const [imagePath, setImagePath] = useState<string>();
+  const fileInput = useRef<HTMLInputElement>(null);
 
   const queryClient = useQueryClient();
 
@@ -50,6 +51,13 @@ const Profile = () => {
   // nickname input onChange
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserNickname(e.target.value);
+  };
+
+  // 사진 업로드 버튼 클릭
+  const clickUploadProfileImage = () => {
+    if (fileInput.current) {
+      fileInput.current.click();
+    }
   };
 
   const { mutate: updateNickname } = useMutation(updateUserNickname, {
@@ -139,38 +147,36 @@ const Profile = () => {
                 src={!profileImage ? user.avatar_url : profileImage}
                 alt=""
               />
+              <StFileUploadInput
+                type="file"
+                ref={fileInput}
+                onChange={(e) => uploadProfileImage(e)}
+              />
               {isEditing ? (
-                <StFileUploadInput
-                  type="file"
-                  onChange={(e) => uploadProfileImage(e)}
-                />
+                <StProfileButton onClick={clickUploadProfileImage}>
+                  사진업로드
+                </StProfileButton>
               ) : (
                 ''
               )}
             </StProfileImageWrapper>
 
             <StProfileContentsContainer key={user.id}>
-              <StProfileContentWrapper>
-                <StContent>닉네임</StContent>
-                {isEditing ? (
-                  <StNicknameInput
-                    defaultValue={user.nickname}
-                    onChange={onChangeNickname}
-                  />
-                ) : (
-                  <StContent>{user.nickname}</StContent>
-                )}
-              </StProfileContentWrapper>
+              <StContent>닉네임</StContent>
+              {isEditing ? (
+                <StNicknameInput
+                  defaultValue={user.nickname}
+                  onChange={onChangeNickname}
+                />
+              ) : (
+                <StContent>{user.nickname}</StContent>
+              )}
 
-              <StProfileContentWrapper>
-                <StContent>이름</StContent>
-                <StContent>{user.username}</StContent>
-              </StProfileContentWrapper>
+              <StContent>이름</StContent>
+              <StContent>{user.username}</StContent>
 
-              <StProfileContentWrapper>
-                <StContent>이메일</StContent>
-                <StContent>{user.email}</StContent>
-              </StProfileContentWrapper>
+              <StContent>이메일</StContent>
+              <StContent>{user.email}</StContent>
             </StProfileContentsContainer>
           </StProfileContainer>
         );

@@ -41,12 +41,16 @@ export const StProfileContainer = styled.div`
   align-items: center;
   margin: 2rem 0;
   gap: 5rem;
-  border-radius: 1rem;
+  padding-bottom: 5rem;
+  border-bottom: 1px solid var(--5-gray);
 `;
 
 export const StProfileImageWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
 `;
 
 export const StProfileImage = styled.img`
@@ -57,21 +61,23 @@ export const StProfileImage = styled.img`
 
 export const StFileUploadInput = styled.input`
   width: 9rem;
+  display: none;
+`;
+
+export const StProfileButton = styled.button`
+  width: 10rem;
+  background: var(--opc-100);
+  border: none;
+  padding: 0.7rem 2rem;
+  border-radius: 0.5rem;
 `;
 
 // 유저 정보 부분 스타일
 export const StProfileContentsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-`;
-
-export const StProfileContentWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
-  justify-content: start;
-  gap: 8rem;
+  gap: 2rem;
 `;
 
 export const StContent = styled.p`
