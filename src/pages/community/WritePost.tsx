@@ -46,7 +46,7 @@ const Write: React.FC = () => {
   return (
     <Container>
       <ContentContainer>
-        <h1>커뮤니티 글 작성란데스</h1>
+        <h1>커뮤니티 글 작성</h1>
 
         <WriteLayout
           profile={profile}
@@ -62,14 +62,14 @@ const Write: React.FC = () => {
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  background-color: #191919;
+  margin-bottom: 5rem;
   color: #f3f3f3;
 `;
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  max-width: 906px;
+  max-width: 1066px;
   width: 80%;
   & select {
     width: 100px;
@@ -82,7 +82,8 @@ const ContentContainer = styled.div`
   & h1 {
     font-size: 30px;
     margin-top: 50px;
-    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--4-gray);
   }
 `;
 

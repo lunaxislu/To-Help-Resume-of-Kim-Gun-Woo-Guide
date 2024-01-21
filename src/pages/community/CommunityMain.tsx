@@ -61,77 +61,77 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  background-color: #191919;
+  gap: 0.1rem;
 `;
 const Post_container = styled.div`
-  max-width: 1116px;
+  max-width: 111.6rem;
   width: 80%;
-  margin-bottom: 50px;
+  margin-bottom: 5rem;
 `;
 
 const FeatureBar = styled.div`
   display: flex;
-  margin: 10px 0 30px 0;
+  margin: 1rem 0 3rem 0;
   & input {
-    border: 1px solid #bdbdbd;
-    border-radius: 19px;
-    height: 36px;
-    width: 380px;
-    padding-left: 16px;
+    border: 0.1rem solid #bdbdbd;
+    border-radius: 1.9rem;
+    height: 3.6rem;
+    width: 3.8rem;
+    padding-left: 1.6rem;
   }
 `;
 const Categorys = styled.div`
   display: flex;
   width: 100%;
-  gap: 6px;
+  gap: 0.6rem;
 `;
 const WriteBtn = styled.button`
-  width: 90px;
-  height: 31px;
-  color: white;
-  background-color: rgb(219, 255, 0, 0.1);
+  width: 9rem;
+  height: 3.1rem;
+  color: var(--12-gray);
+  background-color: var(--opc-10);
   border: none;
-  font-size: 14px;
+  font-size: var(--fontSize-H5);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 24px;
+  border-radius: 2.4rem;
 `;
 const WriteIcon = styled(BiEdit)`
-  color: #dbff00;
-  width: 15px;
-  height: 15px;
+  color: var(--opc-100);
+  width: 1.5rem;
+  height: 1.5rem;
 `;
 const Title = styled.h2`
   color: white;
-  font-size: 24px;
-  margin-bottom: 24px;
-  margin: 24px 0px;
+  font-size: var(--fontSize-H3);
+  margin-bottom: 2.4rem;
+  margin: 2.4rem 0rem;
 `;
 const CategoryBtn = styled.button<{ $selectCategory: string }>`
   border: none;
-  height: 30px;
-  width: 56px;
-  border-radius: 6px;
+  height: 3rem;
+  width: 5.6rem;
+  border-radius: 5.6rem;
 
   ${(props) => {
     if (props.$selectCategory === props.children) {
       return css`
-        background-color: #dbff00;
+        background-color: var(--opc-100);
+        font-weight: var(--fontWeight-bold);
       `;
     }
     if (props.children === '전체') {
       return css`
-        background-color: rgb(219, 255, 0, 0.1);
-        border: 1px solid #dbff00;
-        color: white;
+        background-color: var(--opc-10);
+        border: 0.1rem solid #dbff00;
+        color: var(--12-gray);
       `;
     }
 
     return css`
-      background-color: rgb(219, 255, 0, 0.1);
-      color: white;
+      background-color: var(--opc-10);
+      color: var(--6-gray);
     `;
   }}
 `;
