@@ -27,7 +27,7 @@ const ChatMessages = ({
                     width: '200px',
                     display: 'block',
                     marginLeft: 'auto',
-                    marginRight: '1rem',
+                    marginRight: '2.7rem',
                     padding: '1rem',
                     background: '#eee',
                     borderRadius: '12px',
@@ -69,23 +69,28 @@ const ChatMessages = ({
 
 const StChatballoon = styled.div`
   width: fit-content;
-  background-color: #eee;
+  color: var(--11-gray);
+  background-color: var(--3-gray);
   margin-right: auto;
-  margin-left: 1rem;
+  margin-left: 2.7rem;
   margin-block: 1rem;
-  padding: 0.75rem 1.688rem;
+  padding: 1.2rem 2.7rem;
   border-radius: 40px;
   font-weight: 600;
+  line-height: 1.2;
+  font-size: 1.4rem;
 `;
 
 const StMyChatballoon = styled.div`
   width: fit-content;
-  background-color: #fff1e5;
+  color: var(--2-gray);
+  background-color: var(--opc-100);
   margin-left: auto;
-  margin-right: 1rem;
-  margin-block: 1rem;
-  padding: 0.75rem 1.688rem;
+  margin-right: 2.7rem;
+  margin-block: 1.6rem;
+  padding: 0.9rem 3.1rem;
   border-radius: 60px;
+  font-size: 1.4rem;
   font-weight: 600;
   line-height: 1.2;
   white-space: break-spaces;

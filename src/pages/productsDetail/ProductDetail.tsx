@@ -217,15 +217,12 @@ const ProductDetail = () => {
       console.log('exists!');
     }
   };
-  console.log(isLiked);
 
   const isLikedProduct = async () => {
     const { data: likeProduct, error } = await supabase
       .from('user')
       .select('likes')
       .eq('uid', curUser?.uid);
-
-    console.log(likeProduct);
 
     if (
       likeProduct &&
@@ -525,7 +522,10 @@ const ProductDetail = () => {
                 </St.StUserImage>
                 <St.StUserNickname>{data.nickname}</St.StUserNickname>
               </St.StUserTitlebox>
-              <St.StAlertButton>신고하기</St.StAlertButton>
+              <St.StAlertButton>
+                <St.StAlertIcon />
+                신고하기
+              </St.StAlertButton>
             </St.StProductInfoHeader>
             <St.StHeaderTitle>{data.title}</St.StHeaderTitle>
             <St.StHeaderPriceWrapper>
@@ -540,39 +540,32 @@ const ProductDetail = () => {
               />
             </St.StProductInfoBody>
             <St.ButtonWrapper>
-              {isLiked ? (
-                <St.Button $role="like" onClick={handleCancleLike}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '1rem'
-                    }}
-                  >
-                    <FaHeart color="red" />
-                    찜이 되어있어요!
-                  </div>
+              {isLiked === false ? (
+                <St.Button $role="like" onClick={handleLike}>
+                  <p>
+                    <St.FaHeartIcon />
+                    {product[0].likes}
+                  </p>
                 </St.Button>
               ) : (
-                <St.Button $role="like" onClick={handleLike}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '1rem',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    <FaHeart color="black" />
-                    찜하기
-                  </div>
+                // 실시간 좋아요 개수 반영
+                <St.Button $role="like" onClick={handleCancleLike}>
+                  <p style={{ color: 'red' }}>
+                    <FaHeart
+                      style={{
+                        marginBlock: '0.4rem',
+                        fontSize: '2.2rem'
+                      }}
+                    />
+                    {product[0].likes}
+                  </p>
                 </St.Button>
               )}
 
               {/* 작성자 ID 가져오기 */}
               {isExist ? (
                 <St.Button $role="chat" onClick={() => navi('/chat')}>
-                  채팅으로 이동하기
+                  <h3>채팅으로 이동하기</h3>
                 </St.Button>
               ) : (
                 <St.Button
@@ -581,7 +574,7 @@ const ProductDetail = () => {
                   data-about={product[0].post_user_uid}
                   onClick={makeChatRoom}
                 >
-                  채팅 보내고 구매하기
+                  <h3>채팅 보내고 구매하기</h3>
                 </St.Button>
               )}
             </St.ButtonWrapper>

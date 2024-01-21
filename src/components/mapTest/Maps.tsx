@@ -120,7 +120,7 @@ const Maps = ({ searchAddress }: AddressValue) => {
         <StButtonBox>
           <a
             target="_blank"
-            href={`https://map.kakao.com/link/to/집,${coord.lat},${coord.lng}`}
+            href={`https://map.kakao.com/link/to/희망 거래지역,${coord.lat},${coord.lng}`}
             rel="noreferrer"
           >
             <Buttons>길 찾기</Buttons>

@@ -11,7 +11,7 @@ import ChatMessages from '../../components/chat/ChatMessages';
 import type { MessageType, RoomType } from '../../components/chat/types';
 import * as St from './style';
 import styled, { css } from 'styled-components';
-import { FaImage } from 'react-icons/fa';
+import { FaImage, FaPlus } from 'react-icons/fa';
 import { BsThreeDots } from 'react-icons/bs';
 
 import {
@@ -283,7 +283,7 @@ export default function ChatRoom() {
   }, [messages]);
 
   return (
-    <div style={{ padding: '2rem 0 2rem 0' }}>
+    <StChatContainer>
       {showImage && (
         <StImageViewerBg onClick={handleHideImage}>
           <StImageViewer>
@@ -349,34 +349,37 @@ export default function ChatRoom() {
                 value={chatInput}
               />
               <div style={{ position: 'relative' }}>
-                <FaImage
+                <StImageButton
                   onClick={() => setShowFileInput((prev: boolean) => !prev)}
-                  style={{
-                    position: 'absolute',
-                    top: '50%',
-                    right: '10px',
-                    transform: 'translate(0%,-50%)',
-                    background: '#ececec',
-                    color: `var(--primary-color)`,
-                    padding: '.2rem',
-                    width: '40px',
-                    height: '40px',
-                    borderRadius: '10px',
-                    cursor: 'pointer'
-                  }}
                 />
               </div>
             </div>
           </St.StChatForm>
         </St.StChatBoard>
       </St.StChatContainer>
-    </div>
+    </StChatContainer>
   );
 }
 
 type ChatProfileType = {
   $url: string;
 };
+
+const StImageButton = styled(FaPlus)`
+  position: absolute;
+  right: 4.5rem;
+  top: 50%;
+  color: var(--opc-100);
+  transform: translateY(-50%);
+  cursor: pointer;
+`;
+
+const StChatContainer = styled.div`
+  width: 100%;
+  max-width: 1114px;
+  padding: 4.2rem 1.6rem;
+  margin: auto;
+`;
 
 const StUserProfile = styled.div<ChatProfileType>`
   width: 28px;
