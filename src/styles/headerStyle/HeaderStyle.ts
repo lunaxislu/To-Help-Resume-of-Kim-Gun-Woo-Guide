@@ -132,7 +132,7 @@ export const NavBar = styled.nav`
 `;
 export const NavButton = styled(Link)`
   text-decoration: none;
-
+  align-items: center;
   cursor: pointer;
   color: var(--11-gray);
   font-size: var(--fontSize-H4);

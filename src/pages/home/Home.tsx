@@ -1,76 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Communityy, UsedItem } from '../usedtypes';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
-import { useNavigate } from 'react-router';
+import { fetchData } from '../../components/main/DataFetch';
 import { Link } from 'react-router-dom';
 import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
+import parseDate from '../../util/getDate';
 type UsedItemsCountData = {
   count: number | null;
   data: {
     length: number;
   } | null;
 };
-// 중고게시물 및 커뮤니티 게시물 + 사진 받아오는 로직
-export const fetchData = async (): Promise<{
-  usedItems: UsedItem[];
-  communityItems: Communityy[];
-}> => {
-  try {
-    const { data: usedItemsData, error: usedItemsError } = await supabase
-      .from('products')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(5);
-
-    const { data: communityItemsData, error: communityItemsError } =
-      await supabase
-        .from('community')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(6);
-
-    if (usedItemsError || communityItemsError) {
-      console.error(
-        '데이터 베이스에 요청을 실패하였습니다:',
-        usedItemsError || communityItemsError
-      );
-      return { usedItems: [], communityItems: [] };
-    }
-
-    const usedItemsWithImages = await Promise.all(
-      usedItemsData.map(async (item) => {
-        const pathToImage = `pictures/${item.image_Url}.png`;
-        const { data } = supabase.storage
-          .from('picture')
-          .getPublicUrl(pathToImage);
-        return { ...item, data };
-      })
-    );
-
-    const communityItemsWithImages = await Promise.all(
-      communityItemsData.map(async (item) => {
-        const pathToImage = `pictures/${item.image_Url}.png`;
-        const { data } = supabase.storage
-          .from('community_picture')
-          .getPublicUrl(pathToImage);
-        return { ...item, data };
-      })
-    );
-
-    return {
-      usedItems: usedItemsWithImages || [],
-      communityItems: communityItemsWithImages || []
-    };
-  } catch (error) {
-    console.error('수파베이스에 요청 중 실패:', error);
-    throw error;
-  }
-};
 
 const Home = () => {
-  const [showScrollButton, setShowScrollButton] = useState(false);
+  const carouselImages: string[] = [
+    process.env.PUBLIC_URL + '/assets/carousel0.png',
+    process.env.PUBLIC_URL + '/assets/carousel1.png',
+    process.env.PUBLIC_URL + '/assets/carousel2.png',
+    process.env.PUBLIC_URL + '/assets/carousel3.png'
+  ];
 
   // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 //
   const getUserId = async () => {
@@ -110,12 +59,6 @@ const Home = () => {
     return <div>데이터 불러오기를 실패했습니다.</div>;
   }
 
-  const carouselImages: string[] = [
-    process.env.PUBLIC_URL + '/assets/carousel0.png',
-    process.env.PUBLIC_URL + '/assets/carousel1.png',
-    process.env.PUBLIC_URL + '/assets/carousel2.png',
-    process.env.PUBLIC_URL + '/assets/carousel3.png'
-  ];
   const handleText = (content: string): string => {
     // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
@@ -131,10 +74,12 @@ const Home = () => {
       <HomeSection>
         <div className="one">
           <div>
-            {<span>{usedItemsCountData?.data?.length}개</span>}의 상품이
-            거래되고 있어요!
+            {usedItemsCountData?.data?.length}개의 상품이 거래되고 있어요!
           </div>
-          <LinktoProducts to="/products">전체보기</LinktoProducts>
+          <LinktoProducts to="/products">
+            <p>전체보기</p>
+            <img src="/assets/nav.png" alt="전체보기" />
+          </LinktoProducts>
         </div>
 
         <SupabaseListContainer>
@@ -145,7 +90,19 @@ const Home = () => {
             >
               <SupabaseList>
                 <div>
-                  {item.image_url && <img src={item.image_url[0]} alt="Item" />}
+                  {item.image_url ? (
+                    <img src={item.image_url[0]} alt="Item" />
+                  ) : (
+                    <svg
+                      width="208"
+                      height="208"
+                      viewBox="0 0 208 208"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect width="208" height="208" rx="15" fill="#F8F8F8" />
+                    </svg>
+                  )}
                 </div>
 
                 <h1>{item.quality}</h1>
@@ -160,7 +117,10 @@ const Home = () => {
       <ComunityContainer>
         <Communitytitle>
           <h2>작업자들의 커뮤니티에 함께해볼까요?</h2>
-          <CommunityLink to="/community">전체보기</CommunityLink>
+          <CommunityLink to="/community">
+            <p>전체보기</p>
+            <img src="/assets/nav.png" alt="전체보기" />
+          </CommunityLink>
         </Communitytitle>
         <ComunityWrapper>
           {communityItems.map((item) => (
@@ -171,17 +131,53 @@ const Home = () => {
               <ComunityList>
                 <div className="commupic">
                   {item.image_Url ? (
-                    <img src={item.image_Url} alt="Community Post" />
+                    <img
+                      className="community-pic"
+                      src={item.image_Url}
+                      alt="Community Post"
+                    />
                   ) : (
                     <img
-                      src={process.env.PUBLIC_URL + '/assets/defaultuser.png'}
+                      className="nopicture"
+                      src={process.env.PUBLIC_URL + '/assets/commudefault.png'}
                       alt="Default User"
                     />
                   )}
+                  <div className="commucontent">
+                    <h3>{item.title}</h3>
+                    <p>{handleText(item.content)}</p>{' '}
+                  </div>
                 </div>
-                <div className="commucontent">
-                  <h3>{item.title}</h3>
-                  <p>{handleText(item.content)}</p>
+                <div>
+                  <svg
+                    className="thumbs"
+                    width="13"
+                    height="13"
+                    viewBox="0 0 13 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M0.00242571 5.92305C-0.00533256 5.83585 0.00556749 5.74802 0.0344343 5.66515C0.0633011 5.58227 0.109504 5.50616 0.170112 5.44164C0.23072 5.37711 0.304409 5.32559 0.386503 5.29034C0.468598 5.25508 0.557305 5.23686 0.646996 5.23684H1.88275C2.05438 5.23684 2.21899 5.30338 2.34036 5.42183C2.46172 5.54027 2.5299 5.70092 2.5299 5.86842V11.8684C2.5299 12.0359 2.46172 12.1966 2.34036 12.315C2.21899 12.4335 2.05438 12.5 1.88275 12.5H1.18187C1.0199 12.5 0.863797 12.4408 0.7444 12.334C0.625002 12.2272 0.55099 12.0805 0.536979 11.9231L0.00242571 5.92305ZM4.47138 5.67105C4.47138 5.40705 4.63964 5.17084 4.88394 5.05842C5.41753 4.81274 6.32646 4.31916 6.73643 3.65189C7.26484 2.79168 7.3645 1.23768 7.38068 0.881788C7.38295 0.831893 7.38165 0.781998 7.38845 0.732735C7.47614 0.115998 8.69571 0.836314 9.16328 1.598C9.41729 2.01105 9.44965 2.55389 9.42311 2.978C9.39432 3.43147 9.25809 3.86947 9.12445 4.30463L8.8397 5.23211H12.3528C12.4528 5.2321 12.5514 5.2547 12.641 5.29815C12.7305 5.34159 12.8085 5.40469 12.8688 5.48249C12.9292 5.56029 12.9702 5.65069 12.9888 5.74658C13.0073 5.84246 13.0028 5.94124 12.9757 6.03516L11.2381 12.0402C11.1997 12.1727 11.1181 12.2892 11.0056 12.3722C10.8931 12.4552 10.7559 12.5001 10.6149 12.5H5.11854C4.9469 12.5 4.78229 12.4335 4.66093 12.315C4.53956 12.1966 4.47138 12.0359 4.47138 11.8684V5.67105Z"
+                      fill="#DBFF00"
+                      fill-opacity="0.7"
+                    />
+                  </svg>
+                  <svg
+                    className="commentss"
+                    width="12"
+                    height="13"
+                    viewBox="0 0 12 13"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M4.8 0.5H7.2C8.47304 0.5 9.69394 1.01868 10.5941 1.94194C11.4943 2.86519 12 4.1174 12 5.42308C12 6.72876 11.4943 7.98096 10.5941 8.90422C9.81235 9.70602 8.7887 10.2027 7.69908 10.3195C7.42451 10.3489 7.2 10.57 7.2 10.8462V11.7544C7.2 12.11 6.8397 12.3527 6.51214 12.2142C3.59783 10.9824 0 9.12524 0 5.42308C0 4.1174 0.505713 2.86519 1.40589 1.94194C2.30606 1.01868 3.52696 0.5 4.8 0.5Z"
+                      fill="#DBFF00"
+                      fill-opacity="0.7"
+                    />
+                  </svg>
+                  <h4>{parseDate(item.created_at)}</h4>
                 </div>
               </ComunityList>
             </ToCommunityDetailPage>
@@ -195,8 +191,8 @@ export default Home;
 
 const HomeContainer = styled.section`
   display: flex;
-  width: 1440px;
-  height: 1870px;
+  width: 144rem;
+  height: 189rem;
   flex-direction: column;
   margin: 0px auto;
   background-color: var(--1, #0b0b0b);
@@ -207,45 +203,62 @@ const CarouselWrapper = styled.div`
   cursor: pointer;
 `;
 const HomeSection = styled.div`
-  width: 1116px;
+  width: 111.6rem;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 4rem;
 
-  span {
-    font-weight: bold;
-  }
   .one {
     display: flex;
     justify-content: space-between;
-    margin: 0 10px;
+    align-items: center;
+    margin: 0 auto;
+    font-size: var(--fontSize-H3);
   }
 
   h2 {
     text-align: left;
-    margin-top: 20px;
-    margin-left: 10px;
+    margin-top: 2rem;
+    margin-left: 1rem;
   }
 `;
 
 const LinktoProducts = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
   text-decoration: none;
-  color: #000;
   cursor: pointer;
-  font-weight: bold;
+  width: 8.3rem;
+  height: 3.2rem;
+  background: var(--opc-20);
+  border-radius: 4.5rem;
+  font-size: var(--fontSize-H6);
+  font-weight: var(--fontWeight-medium);
+  color: var(--11-gray);
+  &:hover {
+    background-color: #83ad2e;
+    color: #101d1c;
+  }
+  img {
+    width: 0.9rem;
+    height: 0.8rem;
+  }
 `;
 
 const SupabaseListContainer = styled.ul`
-  width: 100%;
-  height: 315px;
+  width: 111.6rem;
+  height: 32rem;
   display: flex;
-  flex-wrap: nowrap;
-  margin-top: 20px;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+  margin-top: 2rem;
+  gap: 1.5rem;
 `;
 const SupabaseList = styled.li`
-  flex: 1 0 calc(20% - 20px);
-  width: 100%;
-  height: 315px;
-  padding: 10px;
+  display: inline-block;
+  width: 20.8rem;
+  height: 31.5rem;
   display: flex;
   flex-direction: column;
   div {
@@ -253,30 +266,34 @@ const SupabaseList = styled.li`
     justify-content: center;
   }
   img {
-    width: 100%;
-    height: 208px;
+    width: 20.8rem;
+    height: 20.8rem;
     object-fit: cover;
     border-style: none;
+    border-radius: 0.6rem;
   }
   h1 {
-    width: 90px;
-    padding: 8px;
-    color: #656464;
+    width: 9rem;
+    padding: 0.8rem;
+    color: var(--9-gray);
     text-align: center;
-    background-color: rgba(255, 122, 0, 0.1);
-    border-radius: 3px;
-    margin-top: 10px;
-    font-weight: bold;
+    background-color: var(--opc-20);
+    border-radius: 0.3rem;
+    margin-top: 1rem;
+    font-size: var(--fontSize-H6);
+    font-weight: var(--fontWeight-bold);
   }
   h3 {
-    font-size: 16px;
-    margin-top: 30px;
+    font-size: var(--fontSize-body);
+    color: var(--11-gray);
+    margin-top: 1rem;
   }
 
   p {
-    font-size: 16px;
-    font-weight: bold;
-    margin-top: 10px;
+    font-size: var(--fontSize-body);
+    font-weight: var(--fontWeight-bold);
+    color: var(--11-gray);
+    margin-top: 1rem;
     text-align: left;
   }
 `;
@@ -287,72 +304,127 @@ const TousedItemDetailPage = styled(Link)`
 `;
 
 const ComunityContainer = styled.div`
-  width: 1116px;
+  width: 111.6rem;
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 8rem;
 `;
 
 const Communitytitle = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
-  margin-top: 80px;
+  align-items: center;
+  h2 {
+    font-size: var(--fontSize-H3);
+  }
 `;
 const CommunityLink = styled(Link)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 8.3rem;
+  height: 3.2rem;
   text-decoration: none;
-  color: #000;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: var(--fontWeight-bold);
+  gap: 0.8rem;
+  background: var(--opc-20);
+  border-radius: 4.5rem;
+  font-size: var(--fontSize-H6);
+  font-weight: var(--fontWeight-medium);
+  color: var(--11-gray);
+  &:hover {
+    background-color: #83ad2e;
+    color: #101d1c;
+  }
+  img {
+    width: 0.9rem;
+    height: 0.8rem;
+  }
 `;
 
 const ComunityWrapper = styled.ul`
-  width: 100%;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
+  width: 111.6rem;
+  margin-top: 2.2rem;
   background-color: transparent;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
 `;
 
 const ToCommunityDetailPage = styled(Link)`
   text-decoration: none;
-  color: #000;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: var(--fontWeight-bold);
 `;
 
 const ComunityList = styled.li`
-  display: flex;
-  /* justify-content: space-between; */
+  width: 54.6rem;
+  height: 19.5rem;
+  display: inline-block;
+  position: relative;
+  height: 19.5rem;
   align-items: center;
-  /* width: 100%; */
-  height: 120px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  margin-top: 20px;
-  /* margin-bottom: 20px; */
-  background-color: #d9d9d9;
-  /* .commupic {
-    width: 100px;
-  } */
-  img {
-    width: 80px;
-    height: 80px;
+  border-radius: 1rem;
+  background-color: #1f1f1f;
+  padding: 2rem;
+
+  .nopicture {
+    width: 6.6rem;
+    height: 6.6rem;
     object-fit: cover;
-    border-radius: 50%;
-    margin-left: 30px;
+  }
+  .commupic {
+    display: flex;
   }
   .commucontent {
-    margin-left: 15px;
+    margin-left: 1.5rem;
+    /* margin-bottom: 3rem; */
+    /* gap: 10px; */
   }
   h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
+    color: var(--11-gray);
+    font-size: var(--fontSize-H4);
+    margin-bottom: 1.6rem;
+    font-weight: var(--fontWeight-bold);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 48rem;
   }
 
   p {
-    font-size: 16px;
-    color: #555;
+    overflow: hidden;
+    font-size: var(--fontSize-H5);
+    font-weight: var(--fontWeight-medium);
+    color: var(--8-gray);
+    max-width: 48.6rem;
+    height: 6.6rem;
+    line-height: 2.2rem;
+  }
+
+  h4 {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    color: var(--6, #717171);
+    font-size: var(--fontSize-H6);
+  }
+  .thumbs {
+    position: absolute;
+    bottom: 1.4rem;
+    left: 2rem;
+    width: 2rem;
+    height: 2rem;
+  }
+  .commentss {
+    position: absolute;
+    bottom: 1.4rem;
+    left: 7rem;
+    width: 2rem;
+    height: 2rem;
   }
 `;

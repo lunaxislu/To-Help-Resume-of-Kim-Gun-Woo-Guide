@@ -8,7 +8,7 @@ import {
   setSearchResults
 } from '../../../redux/modules/searchSlice';
 import { supabase } from '../../../api/supabase/supabaseClient';
-import { Communityy, UsedItem } from '../../../pages/usedtypes';
+import { Communityy, UsedItem } from '../../../pages/home/usedtypes';
 
 const SearchBar: React.FC = () => {
   const { searchQuery } = useSelector((state: RootState) => state.search);
@@ -127,6 +127,7 @@ const SearchInputBar = styled.input`
   font-size: var(--fontSize-H5);
   font-weight: var(--fontWeight-medium);
   line-height: 2.4856rem;
+  outline: none;
 `;
 
 const SearchBtn = styled.button`
