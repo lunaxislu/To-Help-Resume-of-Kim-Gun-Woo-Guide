@@ -111,6 +111,7 @@ const Home = () => {
   }
 
   const carouselImages: string[] = [
+    process.env.PUBLIC_URL + '/assets/carousel0.png',
     process.env.PUBLIC_URL + '/assets/carousel1.png',
     process.env.PUBLIC_URL + '/assets/carousel2.png',
     process.env.PUBLIC_URL + '/assets/carousel3.png'
@@ -135,14 +136,7 @@ const Home = () => {
           </div>
           <LinktoProducts to="/products">전체보기</LinktoProducts>
         </div>
-        {/* {showScrollButton && (
-          <ScrollToTopButton onClick={scrollToTop}>
-            <img
-              src={process.env.PUBLIC_URL + '/assets/upbutton.png'}
-              alt="상단으로 이동"
-            />
-          </ScrollToTopButton>
-        )} */}
+
         <SupabaseListContainer>
           {usedItems.map((item) => (
             <TousedItemDetailPage
@@ -205,6 +199,7 @@ const HomeContainer = styled.section`
   height: 1870px;
   flex-direction: column;
   margin: 0px auto;
+  background-color: var(--1, #0b0b0b);
 `;
 
 const CarouselWrapper = styled.div`

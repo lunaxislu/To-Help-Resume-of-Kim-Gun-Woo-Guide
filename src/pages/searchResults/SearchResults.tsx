@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { supabase } from '../../api/supabase/supabaseClient';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/store';
 import { Communityy, UsedItem } from '../usedtypes';
 import styled from 'styled-components';
@@ -25,43 +25,87 @@ const SearchResults: React.FC = () => {
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        // 중고 게시물 이미지 URL 가져오기
-        const usedItemsImages = await Promise.all(
-          usedItemResults.map(async (item) => {
-            const pathToImage = `products/${item.image_Url}.png`;
-            const { data } = await supabase.storage
-              .from('images')
-              .getPublicUrl(pathToImage);
-            return { ...item, data };
-          })
+        // 세션 스토리지에서 이전에 저장한 데이터 가져오기
+        const storedUsedItems = JSON.parse(
+          sessionStorage.getItem('usedItems') || '[]'
         );
-
-        // 커뮤니티 게시물 이미지 URL 가져오기
-        const communityItemsImages = await Promise.all(
-          communityResults.map(async (item) => {
-            const pathToImage = `quill_imgs/${item.image_url}.png`;
-            const { data } = await supabase.storage
-              .from('images')
-              .getPublicUrl(pathToImage);
-            return { ...item, data };
-          })
+        const storedCommunityItems = JSON.parse(
+          sessionStorage.getItem('communityItems') || '[]'
         );
+        if (window.performance.navigation.type === 1) {
+          if (storedUsedItems.length > 0 || storedCommunityItems.length > 0) {
+            setUsedItemsWithImages(storedUsedItems);
+            setCommunityItemsWithImages(storedCommunityItems);
+            return; // 데이터를 가져왔다면 여기서 중단
+          }
+        }
+        // 세션 스토리지에 저장된 데이터가 있으면 사용
+        if (storedUsedItems.length > 0 || storedCommunityItems.length > 0) {
+          setUsedItemsWithImages(storedUsedItems);
+          setCommunityItemsWithImages(storedCommunityItems);
+        } else {
+          // 세션 스토리지에 저장된 데이터가 없으면 Supabase에서 데이터 가져오기
+          const usedItemsImages = await Promise.all(
+            usedItemResults.map(async (item) => {
+              const pathToImage = `products/${item.image_Url}.png`;
+              const { data } = await supabase.storage
+                .from('images')
+                .getPublicUrl(pathToImage);
+              return { ...item, data };
+            })
+          );
 
-        setUsedItemsWithImages(usedItemsImages);
-        setCommunityItemsWithImages(communityItemsImages);
+          const communityItemsImages = await Promise.all(
+            communityResults.map(async (item) => {
+              const pathToImage = `quill_imgs/${item.image_url}.png`;
+              const { data } = await supabase.storage
+                .from('images')
+                .getPublicUrl(pathToImage);
+              return { ...item, data };
+            })
+          );
+
+          // Supabase에서 가져온 데이터를 세션 스토리지에 저장
+          sessionStorage.setItem('usedItems', JSON.stringify(usedItemsImages));
+          sessionStorage.setItem(
+            'communityItems',
+            JSON.stringify(communityItemsImages)
+          );
+
+          setUsedItemsWithImages(usedItemsImages);
+          setCommunityItemsWithImages(communityItemsImages);
+        }
       } catch (error) {
         console.error('수파베이스에 요청 중 실패:', error);
         throw error;
       }
     };
 
-    if (searchQuery) {
+    // 검색어가 있으면 또는 페이지가 처음 로딩되었을 때 데이터 가져오기
+    if (
+      searchQuery ||
+      (!searchQuery &&
+        usedItemResults.length === 0 &&
+        communityResults.length === 0)
+    ) {
       fetchSearchResults();
     }
   }, [searchQuery, usedItemResults, communityResults]);
 
-  const usedItemCount = usedItemResults.length;
-  const communityCount = communityResults.length;
+  useEffect(() => {
+    // 검색어가 있으면 세션 스토리지에 저장
+    if (searchQuery) {
+      sessionStorage.setItem('searchQuery', searchQuery);
+    }
+  }, [searchQuery]);
+
+  const usedItemCount = usedItemsWithImages.length;
+  const communityCount = communityItemsWithImages.length;
+
+  const handleText = (content: string): string => {
+    const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
+    return textOnly;
+  };
 
   return (
     <SearchResultsContainer>
@@ -87,7 +131,10 @@ const SearchResults: React.FC = () => {
             {usedItemsWithImages.slice(0, 5).map((item) => (
               <ToProductsPage key={item.id} to={`/products/detail/${item.id}`}>
                 <ProductList>
-                  {item.image_Url && <img src={item.image_Url} alt="Item" />}
+                  {/* {item.main_image&& (
+                    <img src={item.main_image} alt="Item" />
+                  )} */}
+
                   <h1>{item.quality}</h1>
                   <h3>{item.title}</h3>
                   <p>{item.price}원</p>
@@ -118,7 +165,7 @@ const SearchResults: React.FC = () => {
                     <div>{item.title}</div>
                     <span>
                       <img src={item.main_image[0]} alt="Community Post" />
-                      <p>{item.content}</p>
+                      <p>{handleText(item.content)}</p>
                     </span>
                     <LikesComments>
                       <Likes>
