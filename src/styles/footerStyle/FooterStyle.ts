@@ -10,6 +10,7 @@ export const FooterContainer = styled.div`
   color: var(--9-gray);
   background-color: var(--2-gray);
   line-height: 2.24rem;
+  margin: auto;
 `;
 export const FooterArea = styled.div`
   margin-left: 16.2rem;
@@ -17,7 +18,12 @@ export const FooterArea = styled.div`
   gap: 2.3rem;
 `;
 export const Logo = styled.div`
-  /* margin-bottom: 2.3rem; */
+  img {
+    width: 10.1rem;
+    height: 2.6rem;
+    cursor: pointer;
+    user-select: none;
+  }
 `;
 export const TextArea = styled.div`
   margin-top: 2.3rem;

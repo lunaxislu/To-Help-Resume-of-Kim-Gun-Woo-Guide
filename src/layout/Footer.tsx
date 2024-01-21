@@ -25,14 +25,14 @@ const Footer: React.FC = () => {
     <St.FooterContainer>
       <St.FooterArea>
         <St.Logo>
-          <img src="/assets/logo.png" alt="로고" />
+          <img src="/assets/logo2.png" alt="로고" />
         </St.Logo>
         <St.TextArea>
           <h1>개발팀: 2기능은 2제 제 겁니다. 제 맘대로 할 수 있는 것입니다.</h1>
           <h2>
             깃헙:&nbsp;
             <span onClick={() => redirectToGitHub('이하빈')}>
-              이하빈 |&nbsp;
+              | 이하빈 |&nbsp;
             </span>
             <span onClick={() => redirectToGitHub('이락균')}>
               이락균 |&nbsp;
@@ -43,9 +43,7 @@ const Footer: React.FC = () => {
             <span onClick={() => redirectToGitHub('김건우')}>
               김건우 |&nbsp;
             </span>
-            <span onClick={() => redirectToGitHub('정혜원')}>
-              정혜원 &nbsp;
-            </span>
+            <span onClick={() => redirectToGitHub('정혜원')}>정혜원 |</span>
           </h2>
           <p>Copyright 2024. All Rights Reserved.</p>
         </St.TextArea>
