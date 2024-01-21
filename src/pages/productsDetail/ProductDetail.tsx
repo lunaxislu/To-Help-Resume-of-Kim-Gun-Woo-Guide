@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductDetailInfo from '../../components/productDetailInfoBody/ProductDetailInfo';
 import * as St from './style';
 import type { CustomUser, Product } from './types';
-import { RoomType } from '../../components/chat/types';
+import { Participants, RoomType } from '../../components/chat/types';
 import parseDate from '../../util/getDate';
 import { FaHeart } from 'react-icons/fa';
 import { v4 } from 'uuid';
@@ -218,11 +218,15 @@ const ProductDetail = () => {
       .from('chat_room')
       .select('*')
       .eq('about', id);
-    console.log(chat_rooms);
 
-    if (chat_rooms && chat_rooms.length > 0) {
-      setIsExist(true);
-      console.log('exists!');
+    if (chat_rooms && chat_rooms.length > 0 && curUser) {
+      const connectedRoom = chat_rooms.filter((room: RoomType) => {
+        return room.participants[1].user_id === curUser?.uid;
+      });
+      if (connectedRoom && connectedRoom.length > 0) {
+        setIsExist(true);
+        console.log('exists!');
+      }
     }
   };
 
@@ -494,6 +498,7 @@ const ProductDetail = () => {
   useEffect(() => {
     if (curUser) {
       isLikedProduct();
+      isExistsRoom();
     }
   }, [curUser]);
 
@@ -505,9 +510,7 @@ const ProductDetail = () => {
     }
   }, [target]);
 
-  useEffect(() => {
-    console.log(buyerChatId);
-  }, []);
+  useEffect(() => {}, []);
 
   if (product === null) return <div>로딩 중</div>;
 
@@ -765,10 +768,16 @@ const ProductDetail = () => {
             </St.StProductInfoBody>
             {id === curUser?.id ? (
               <St.ButtonWrapper>
-                <St.Button $role="chat" onClick={() => navi('/chat')}>
+                <St.Button
+                  $role="chat"
+                  onClick={() => alert('개발 중인 기능입니다!')}
+                >
                   <h3>게시물 삭제</h3>
                 </St.Button>
-                <St.Button $role="chat" onClick={() => navi('/chat')}>
+                <St.Button
+                  $role="chat"
+                  onClick={() => alert('개발 중인 기능입니다!')}
+                >
                   <h3>수정하기</h3>
                 </St.Button>
                 <St.Button
@@ -791,7 +800,7 @@ const ProductDetail = () => {
                     </p>
                   </St.Button>
                 ) : (
-                  // ////////////////////
+                  // //////////////////////
                   // 실시간 좋아요 개수 반영
                   /////////////////////////
                   <St.Button $role="like" onClick={handleCancleLike}>
