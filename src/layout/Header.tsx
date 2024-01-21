@@ -38,6 +38,11 @@ const Header = () => {
     } else {
       navigate('/login');
     }
+    if (isLogin) {
+      navigate('/productsposts');
+    } else {
+      navigate('/login');
+    }
   };
 
   const handleMyPageButtonClick = () => {
@@ -47,9 +52,19 @@ const Header = () => {
   const handleNavigateToLogin = () => {
     navigate('/login');
   };
+
   // 로그아웃 버튼
   const handleLogOutButtonClick = async () => {
     let { error } = await supabase.auth.signOut();
+    if (error) {
+      console.log(error);
+    } else {
+      // 로그아웃이 성공 시 로그아웃 상태로 업데이트하기
+      dispatch(setSuccessLogout());
+      // 사용자 정보 초기화
+      setUser(false);
+      setAvatarUrl(undefined);
+    }
     if (error) {
       console.log(error);
     } else {

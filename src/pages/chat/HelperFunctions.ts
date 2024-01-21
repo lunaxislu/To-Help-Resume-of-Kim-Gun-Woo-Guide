@@ -204,7 +204,7 @@ export const sendMessage = async (
     id: uuid(),
     sender_id: curUser?.id,
     chat_room_id: clicked,
-    content: chatInput,
+    content: chatInput === '' ? null : chatInput,
     image_url: images
   };
 

@@ -6,10 +6,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductDetailInfo from '../../components/productDetailInfoBody/ProductDetailInfo';
 import * as St from './style';
 import type { CustomUser, Product } from './types';
-import { RoomType } from '../../components/chat/types';
+import { Participants, RoomType } from '../../components/chat/types';
 import parseDate from '../../util/getDate';
 import { FaHeart } from 'react-icons/fa';
 import { v4 } from 'uuid';
+import styled from 'styled-components';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
@@ -21,6 +22,11 @@ const ProductDetail = () => {
   const [product, setProduct] = useState<Product[] | null>(null);
   const [isExist, setIsExist] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [createdChatList, setCreatedChatList] = useState<RoomType[]>([]);
+  const [buyerChatId, setBuyerChatId] = useState<string>('');
+  const [showChatList, setShowChatList] = useState<boolean>(false);
+  const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
+  const [selectedUser, setSelectedUser] = useState<string>('');
 
   const getUserData = async () => {
     const { data: user, error } = await supabase.auth.getUser();
@@ -210,22 +216,25 @@ const ProductDetail = () => {
   const isExistsRoom = async () => {
     const { data: chat_rooms, error } = await supabase
       .from('chat_room')
-      .select('about')
+      .select('*')
       .eq('about', id);
-    if (chat_rooms && chat_rooms.length > 0) {
-      setIsExist(true);
-      console.log('exists!');
+
+    if (chat_rooms && chat_rooms.length > 0 && curUser) {
+      const connectedRoom = chat_rooms.filter((room: RoomType) => {
+        return room.participants[1].user_id === curUser?.uid;
+      });
+      if (connectedRoom && connectedRoom.length > 0) {
+        setIsExist(true);
+        console.log('exists!');
+      }
     }
   };
-  console.log(isLiked);
 
   const isLikedProduct = async () => {
     const { data: likeProduct, error } = await supabase
       .from('user')
       .select('likes')
       .eq('uid', curUser?.uid);
-
-    console.log(likeProduct);
 
     if (
       likeProduct &&
@@ -236,6 +245,16 @@ const ProductDetail = () => {
     } else {
       setIsLiked(false);
     }
+  };
+
+  const handleCheckIsSoldOut = async () => {
+    const { data: checkRes, error: checkErr } = await supabase
+      .from('products')
+      .select('isSell')
+      .eq('id', id);
+
+    if (checkRes && checkRes[0].isSell === true) setIsSoldOut(true);
+    if (checkErr) console.log('sold out check err');
   };
 
   const handleLike = async () => {
@@ -473,11 +492,13 @@ const ProductDetail = () => {
     }
     getUserData();
     isExistsRoom();
+    handleCheckIsSoldOut();
   }, []);
 
   useEffect(() => {
     if (curUser) {
       isLikedProduct();
+      isExistsRoom();
     }
   }, [curUser]);
 
@@ -488,6 +509,8 @@ const ProductDetail = () => {
       findUser(target);
     }
   }, [target]);
+
+  useEffect(() => {}, []);
 
   if (product === null) return <div>로딩 중</div>;
 
@@ -503,17 +526,217 @@ const ProductDetail = () => {
     data.shipping_cost
   ];
 
+  const handleLoadChatRooms = async () => {
+    const { data: roomList, error } = await supabase
+      .from('chat_room')
+      .select('*')
+      .eq('about', id);
+    if (roomList) {
+      setCreatedChatList(roomList);
+    }
+    if (error) {
+      console.log('no exists created Room');
+    }
+  };
+
+  const handleSetBuyer = (e: MouseEvent<HTMLDivElement>) => {
+    const buyerChatroomId = e.currentTarget.id;
+    setBuyerChatId(buyerChatroomId);
+    console.log(buyerChatId);
+  };
+
+  const handleSellComplete = async () => {
+    if (
+      window.confirm(`${selectedUser}님 에게 물품 판매를 완료하시겠습니까?`) ===
+      true
+    ) {
+      const { data: sellRes, error: sellErr } = await supabase
+        .from('products')
+        .update({ isSell: true })
+        .eq('id', id);
+
+      const { data: buyUser, error } = await supabase
+        .from('user')
+        .select('*')
+        .eq('id', buyerChatId);
+
+      if (buyUser) {
+        const currentBuyProducts = buyUser;
+        const newList = [...currentBuyProducts, id];
+        const { data: res, error: sellError } = await supabase
+          .from('user')
+          .update({ buyProduct: newList })
+          .eq('uid', buyerChatId);
+
+        if (sellError) {
+          console.log('list update fail at user table');
+        }
+
+        alert('판매가 완료되었습니다');
+      }
+    } else {
+      return;
+    }
+  };
+
+  const handleShowChatList = () => {
+    setShowChatList(true);
+  };
+
+  const handleSelectedUser = (e: MouseEvent<HTMLDivElement>) => {
+    const selected = e.currentTarget.innerText;
+    setSelectedUser(selected);
+  };
+
+  if (isSoldOut === true) {
+    return (
+      <div style={{ height: '100vh', background: `var(--1-gray)` }}>
+        <div
+          style={{
+            width: '100vw',
+            height: '100vh',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: '1'
+          }}
+        >
+          <div
+            style={{
+              width: 'fit-content',
+              padding: '2rem',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: '2'
+            }}
+          >
+            <h1>판매 완료 된 상품입니다!</h1>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const StSelectChatBg = styled.div`
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #1d1d1d90;
+    z-index: 2;
+  `;
+
+  const StChatList = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36rem;
+    height: 25rem;
+    background: var(--3-gray);
+    color: var(--opc-100);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  `;
+
+  const StChatListItem = styled.div`
+    padding: 2rem 1rem;
+    height: 100%;
+
+    cursor: pointer;
+
+    &:hover {
+      color: var(--3-gray);
+      background-color: var(--opc-100);
+    }
+  `;
+
+  const StConfirmSellBtn = styled.button`
+    padding: 1rem;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    background-color: var(--opc-80);
+    border-radius: 0.8rem;
+    margin-block: 1rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--opc-100);
+      color: var(--3-gray);
+    }
+
+    span {
+      font-size: 2rem;
+      font-weight: 600;
+    }
+  `;
   return (
     <>
+      {showChatList && (
+        <StSelectChatBg>
+          <StChatList>
+            <h1
+              style={{
+                textAlign: 'center',
+                fontWeight: '600',
+                marginBlock: '1rem',
+                color: 'white',
+                letterSpacing: '.1rem'
+              }}
+            >
+              구매한 사용자를 선택해주세요
+            </h1>
+            {createdChatList &&
+              createdChatList.map((room: RoomType) => {
+                return (
+                  <StChatListItem
+                    key={room.id}
+                    id={room.participants[0].user_id}
+                    onClick={(e) => {
+                      handleSetBuyer(e);
+                      handleSelectedUser(e);
+                    }}
+                  >
+                    <div>{room.participants[0].user_name}</div>
+                  </StChatListItem>
+                );
+              })}
+
+            <StConfirmSellBtn onClick={handleSellComplete}>
+              <span>{selectedUser}</span> 님에게 판매 완료하기
+            </StConfirmSellBtn>
+          </StChatList>
+        </StSelectChatBg>
+      )}
+
       <ToastContainer />
       <St.StDetailContainer>
         <St.StDetailInfoSection>
           <St.StImageWrapper>
             <St.StCarouselBox>
               <St.StImageList>
-                <div>a</div>
-                <div style={{ backgroundColor: 'gray' }}>a</div>
-                <div style={{ backgroundColor: 'black' }}>a</div>
+                {product[0].image_url !== null &&
+                  product[0]?.image_url.map((url: string, i: number) => {
+                    return (
+                      <div
+                        key={i}
+                        style={{
+                          background: `url(${url})`,
+                          backgroundSize: 'cover',
+                          backgroundPosition: 'center',
+                          backgroundRepeat: 'no-repeat'
+                        }}
+                      ></div>
+                    );
+                  })}
               </St.StImageList>
             </St.StCarouselBox>
           </St.StImageWrapper>
@@ -525,7 +748,10 @@ const ProductDetail = () => {
                 </St.StUserImage>
                 <St.StUserNickname>{data.nickname}</St.StUserNickname>
               </St.StUserTitlebox>
-              <St.StAlertButton>신고하기</St.StAlertButton>
+              <St.StAlertButton>
+                <St.StAlertIcon />
+                신고하기
+              </St.StAlertButton>
             </St.StProductInfoHeader>
             <St.StHeaderTitle>{data.title}</St.StHeaderTitle>
             <St.StHeaderPriceWrapper>
@@ -538,53 +764,76 @@ const ProductDetail = () => {
                 productInfo={productInfo}
                 data={data}
               />
+              {/* 판매자에게 보여지는 버튼 */}
             </St.StProductInfoBody>
-            <St.ButtonWrapper>
-              {isLiked ? (
-                <St.Button $role="like" onClick={handleCancleLike}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '1rem'
-                    }}
-                  >
-                    <FaHeart color="red" />
-                    찜이 되어있어요!
-                  </div>
-                </St.Button>
-              ) : (
-                <St.Button $role="like" onClick={handleLike}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '1rem',
-                      justifyContent: 'center'
-                    }}
-                  >
-                    <FaHeart color="black" />
-                    찜하기
-                  </div>
-                </St.Button>
-              )}
-
-              {/* 작성자 ID 가져오기 */}
-              {isExist ? (
-                <St.Button $role="chat" onClick={() => navi('/chat')}>
-                  채팅으로 이동하기
-                </St.Button>
-              ) : (
+            {id === curUser?.id ? (
+              <St.ButtonWrapper>
                 <St.Button
                   $role="chat"
-                  id={product[0].post_user_uid}
-                  data-about={product[0].post_user_uid}
-                  onClick={makeChatRoom}
+                  onClick={() => alert('개발 중인 기능입니다!')}
                 >
-                  채팅 보내고 구매하기
+                  <h3>게시물 삭제</h3>
                 </St.Button>
-              )}
-            </St.ButtonWrapper>
+                <St.Button
+                  $role="chat"
+                  onClick={() => alert('개발 중인 기능입니다!')}
+                >
+                  <h3>수정하기</h3>
+                </St.Button>
+                <St.Button
+                  $role="chat"
+                  onClick={() => {
+                    handleLoadChatRooms();
+                    handleShowChatList();
+                  }}
+                >
+                  <h3>판매 완료</h3>
+                </St.Button>
+              </St.ButtonWrapper>
+            ) : (
+              <St.ButtonWrapper>
+                {isLiked === false ? (
+                  <St.Button $role="like" onClick={handleLike}>
+                    <p>
+                      <St.FaHeartIcon />
+                      {product[0].likes}
+                    </p>
+                  </St.Button>
+                ) : (
+                  // //////////////////////
+                  // 실시간 좋아요 개수 반영
+                  /////////////////////////
+                  <St.Button $role="like" onClick={handleCancleLike}>
+                    <p style={{ color: 'red' }}>
+                      <FaHeart
+                        style={{
+                          marginBlock: '0.4rem',
+                          fontSize: '2.2rem'
+                        }}
+                      />
+                      {product[0].likes}
+                    </p>
+                  </St.Button>
+                )}
+
+                {/* 게시물 아닌 사람이 보이는 버튼 */}
+                {/* 작성자 ID 가져오기 */}
+                {isExist ? (
+                  <St.Button $role="chat" onClick={() => navi('/chat')}>
+                    <h3>채팅으로 이동하기</h3>
+                  </St.Button>
+                ) : (
+                  <St.Button
+                    $role="chat"
+                    id={product[0]?.post_user_uid}
+                    data-about={product[0]?.post_user_uid}
+                    onClick={makeChatRoom}
+                  >
+                    <h3>채팅 보내고 구매하기</h3>
+                  </St.Button>
+                )}
+              </St.ButtonWrapper>
+            )}
           </St.StProductInfo>
         </St.StDetailInfoSection>
         <St.StProductIntroSection>

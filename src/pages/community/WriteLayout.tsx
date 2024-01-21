@@ -1,9 +1,7 @@
-import { ImageActions } from '@xeger/quill-image-actions';
-import { ImageFormats } from '@xeger/quill-image-formats';
 import React, { useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import ReactQuill, { Quill } from 'react-quill';
-import 'react-quill/dist/quill.bubble.css';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
@@ -15,8 +13,9 @@ import {
   updatePostMutation
 } from './commuQuery';
 import { WriteLayoutProps } from './model';
-Quill.register('modules/imageActions', ImageActions);
-Quill.register('modules/imageFormats', ImageFormats);
+// Quill.register('modules/imageActions', ImageActions);
+// Quill.register('modules/imageFormats', ImageFormats);
+
 const WriteLayout: React.FC<WriteLayoutProps> = ({
   profile,
   isEdit,
@@ -28,7 +27,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     isLoading,
     isError
   } = useQuery(['posts', paramId], () => fetchDetailPost(paramId));
-  console.log('render');
+
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -46,6 +45,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
 
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
+    console.log(fileList);
     if (fileList) {
       const filesArray = Array.from(fileList);
       filesArray.forEach((file) => {
@@ -55,13 +55,18 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   };
 
   const handleFilesUpload = async (file: File) => {
+    setFormValues((prevValues: any) => ({
+      ...prevValues,
+      files: [],
+      uploadedFileUrl: []
+    }));
     try {
       const newFileName = uuid();
       const { data, error } = await supabase.storage
         .from('files')
         .upload(`files/${newFileName}`, file);
       if (error) {
-        console.log('파일 안올라감ㅋ', error);
+        console.log('파일 업로드 중 오류가 발생했습니다', error);
         return;
       }
       const res = supabase.storage.from('files').getPublicUrl(data.path);
@@ -72,7 +77,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       }));
       console.log(res.data.publicUrl);
     } catch (error) {
-      console.error('Error handling file upload:', error);
+      console.error('파일을 업로드하지 못했습니다:', error);
     }
   };
 
@@ -83,6 +88,10 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       navigate('/community');
     }
   });
+  const fileArr = formValues.files.map((file: File) => ({
+    name: file.name,
+    url: formValues.uploadedFileUrl
+  }));
 
   const addPost = async () => {
     const insertData = {
@@ -93,10 +102,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       nickname: profile![0].nickname
         ? profile![0].nickname
         : profile![0].username,
-      files: formValues.files.map((file: File) => ({
-        name: file.name,
-        url: formValues.uploadedFileUrl
-      })),
+      files: fileArr,
       main_image: formValues.mainImage,
       anon: formValues.anon
     };
@@ -111,10 +117,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   });
 
   const updatePost = () => {
-    const fileArr = formValues.files.map((file: File) => ({
-      name: file.name,
-      url: formValues.uploadedFileUrl
-    }));
     const postData = {
       updateData: {
         title: formValues.title,
@@ -180,7 +182,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       imageFormats: {},
       toolbar: {
         container: [
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          // [{ header: [1, 2, 3, 4, 5, 6, false] }],
           ['bold', 'italic', 'underline', 'strike'],
           ['image', 'video'],
           [{ color: [] }, { background: [] }]
@@ -219,14 +221,10 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   return (
     <Container>
       <ContentContainer>
-        <TitleInput
-          value={formValues.title}
-          onChange={(e) => {
-            setFormValues({ ...formValues, title: e.target.value });
-          }}
-          placeholder="제목을 입력해주세요"
-        />
         <CategoryContainer>
+          <ValueText>
+            분류<span>*</span>
+          </ValueText>
           {categoryArray.map((item, index) => {
             return index !== 0 ? (
               <label key={item}>
@@ -244,6 +242,19 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             ) : null;
           })}
         </CategoryContainer>
+        <TitleContainer>
+          <ValueText>
+            제목<span>*</span>
+          </ValueText>
+          <input
+            value={formValues.title}
+            onChange={(e) => {
+              setFormValues({ ...formValues, title: e.target.value });
+            }}
+            placeholder="제목을 입력해주세요"
+          />
+        </TitleContainer>
+
         {/* <CategoryContainer>
           {categoryArray.map((item, index) => {
             return index !== 0 ? (
@@ -267,13 +278,11 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             ) : null;
           })}
         </CategoryContainer> */}
-        <FileUploader>
-          {formValues.files.length !== 0
-            ? formValues.files.map((file: File) => file.name)
-            : '파일을 업로드하려면 클릭하세요'}
-          <input type="file" onChange={handleFiles} multiple />
-        </FileUploader>
-        <div>
+
+        <ContentArea>
+          <ValueText>
+            내용<span>*</span>
+          </ValueText>
           <QuillEditor
             ref={quillRef}
             value={formValues.content}
@@ -282,32 +291,82 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             }}
             modules={modules}
             formats={formats}
-            theme="bubble"
+            theme="snow"
             placeholder="내용을 입력해주세요"
           />
-        </div>
-        <Bottom>
-          <label>
-            <CheckBoxInput
-              type="checkbox"
-              checked={formValues.anon}
-              onChange={() => {
-                setFormValues({ ...formValues, anon: !formValues.anon });
-              }}
-            />{' '}
-            익명으로 작성하기
-          </label>
-          {isEdit ? (
-            <button onClick={updatePost}>수정완료</button>
-          ) : (
-            <button onClick={addPost}>등록하기</button>
-          )}
-        </Bottom>
+        </ContentArea>
+        <FileArea>
+          <ValueText>파일</ValueText>
+          <FileUploader>
+            {formValues.files.length !== 0
+              ? formValues.files.map((file: File) => file.name)
+              : '파일을 업로드하려면 클릭하세요'}
+            <input type="file" onChange={handleFiles} multiple />
+          </FileUploader>
+        </FileArea>
+        <AnonArea>
+          <ValueText></ValueText>
+          <Bottom>
+            <label>
+              <CheckBoxs
+                type="checkbox"
+                checked={formValues.anon}
+                onChange={() => {
+                  setFormValues({ ...formValues, anon: !formValues.anon });
+                }}
+              />{' '}
+              익명으로 작성하기
+            </label>
+            {isEdit ? (
+              <button onClick={updatePost}>수정완료</button>
+            ) : (
+              <button onClick={addPost}>등록하기</button>
+            )}
+          </Bottom>
+        </AnonArea>
       </ContentContainer>
     </Container>
   );
 };
+const ContentArea = styled.div`
+  display: flex;
+`;
 
+const FileArea = styled.div`
+  display: flex;
+`;
+const AnonArea = styled.div`
+  display: flex;
+`;
+
+const ValueText = styled.div`
+  width: 16rem;
+  font-size: var(--fontSize-H4);
+  display: flex;
+  align-items: center;
+  & span {
+    color: var(--opc-100);
+  }
+`;
+const TitleContainer = styled.div`
+  display: flex;
+
+  & input {
+    height: 54px;
+    width: 100%;
+    max-width: 90.6rem;
+    background-color: #1f1f1f;
+    border: none;
+    border-radius: 5px;
+    padding-left: 16px;
+    color: var(--12-gray);
+
+    &::placeholder {
+      color: var(--5-gray);
+      font-size: var(--fontSize-H5);
+    }
+  }
+`;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -324,7 +383,24 @@ const Container = styled.div`
 `;
 const Bottom = styled.div`
   display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 90.6rem;
   justify-content: space-between;
+  & button {
+    border: none;
+    border-radius: 1rem;
+    width: 10.3rem;
+    height: 4.8rem;
+    background-color: var(--opc-100);
+    font-size: var(--fontSize-H5);
+    font-weight: var(--fontWeight-bold);
+  }
+  & label {
+    display: flex;
+    align-items: center;
+    font-size: var(--fontSize-H5);
+  }
 `;
 const ContentContainer = styled.div`
   display: flex;
@@ -350,35 +426,28 @@ const CategoryContainer = styled.div`
   height: 30px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-`;
 
-const CheckBoxInput = styled.input`
-  height: 20px;
-  width: 20px;
-`;
-const TitleInput = styled.input`
-  height: 54px;
-  width: 100%;
-  background-color: #f3f3f3;
-  border: none;
-  border-radius: 5px;
-  padding-left: 16px;
-  &::placeholder {
-    color: rgba(0, 0, 0, 0.6);
-    font-size: 16px;
+  font-size: var(--fontSize-H5);
+  & label {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-right: 3rem;
   }
 `;
 
 const FileUploader = styled.label`
-  background-color: #f3f3f3;
+  background-color: #1f1f1f;
   border-radius: 5px;
   height: 54px;
   display: flex;
   align-items: center;
   padding-left: 16px;
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 16px;
+  font-size: var(--fontSize-H5);
+  width: 100%;
+  max-width: 90.6rem;
+  color: var(--5-gray);
+
   & input {
     display: none;
   }
@@ -387,15 +456,22 @@ const QuillEditor = styled(ReactQuill)`
   background-color: #1f1f1f;
   border-radius: 5px;
   width: 100%;
-  max-width: 1116px;
+  max-width: 906px;
 
   .ql-container {
-    min-height: 600px;
+    height: 70rem;
+    overflow: scroll;
     border: none;
     display: flex;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   .ql-toolbar {
     border: none;
+    border-bottom: 1px solid var(--4-gray);
   }
   .ql-editor strong {
     font-weight: bold;

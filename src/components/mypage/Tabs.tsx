@@ -19,7 +19,7 @@ const Tabs = () => {
         <Tab active={toggle} tabIndex={2} onClick={() => clickToggleTab(2)}>
           구매 상품
         </Tab>
-        <Tab active={toggle} tabIndex={4}>
+        <Tab active={toggle} tabIndex={4} onClick={() => clickToggleTab(4)}>
           찜목록
         </Tab>
         <Tab active={toggle} tabIndex={3} onClick={() => clickToggleTab(3)}>
@@ -29,6 +29,7 @@ const Tabs = () => {
 
       {toggle === 1 ? <ProductCard activeTab={toggle} /> : null}
       {toggle === 2 ? <ProductCard activeTab={toggle} /> : null}
+      {toggle === 4 ? <ProductCard activeTab={toggle} /> : null}
       {toggle === 3 ? <CommunityPost activeTab={toggle} /> : null}
     </>
   );

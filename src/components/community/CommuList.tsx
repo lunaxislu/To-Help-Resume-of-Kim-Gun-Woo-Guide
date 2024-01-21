@@ -74,49 +74,56 @@ const CommuList: React.FC<CommuListProps> = ({
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 2.4rem;
 `;
 const Posts = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 20px;
-  padding: 30px;
-  width: 546px;
-  height: 195px;
-  gap: 16px;
+  font-size: 2rem;
+  padding: 3rem;
+  width: 54.6rem;
+  height: 19.5rem;
+  gap: 1.6rem;
   border: none;
-  border-radius: 5px;
+  border-radius: 1rem;
   background-color: #1f1f1f;
   justify-content: space-between;
   color: #d9d9d9;
 
   & h2 {
-    font-weight: 700;
-    margin-bottom: 16px;
+    font-size: var(--fontSize-H4);
+    font-weight: var(--fontWeight-semiBold);
+    margin-bottom: 1.6rem;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    max-width: 400px;
+    max-width: 40rem;
+    color: var(--12-gray);
   }
 `;
 const ContentArea = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 486px;
-  height: 66px;
-  font-size: 14px;
-  line-height: 22px;
+  max-width: 48.6rem;
+  height: 6.6rem;
+  font-size: var(--fontSize-H5);
+  font-weight: var(--fontWeight-medium);
+  line-height: 2.2rem;
+  color: var(--9-gray);
 `;
 const RightSide = styled.div`
   display: flex;
   justify-content: space-between;
+  font-size: var(--fontSize-H6);
+  color: var(--6-gray);
 `;
 const CommentArea = styled.div`
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.6rem;
+  color: var(--8-gray);
   & img {
-    margin-top: 3px;
+    margin-top: 0.3rem;
   }
 `;
 const CommentIcon = styled(BsChatRightFill)`
@@ -125,6 +132,6 @@ const CommentIcon = styled(BsChatRightFill)`
 `;
 const Title = styled.h2`
   color: white;
-  font-size: 24px;
+  font-size: 2.4rem;
 `;
 export default CommuList;
