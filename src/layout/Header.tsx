@@ -61,8 +61,15 @@ const Header = () => {
   // 로그아웃 버튼
   const handleLogOutButtonClick = async () => {
     let { error } = await supabase.auth.signOut();
-    navigate('/login');
-    if (error) console.log(error);
+    if (error) {
+      console.log(error);
+    } else {
+      // 로그아웃이 성공 시 로그아웃 상태로 업데이트하기
+      dispatch(setSuccessLogout());
+      // 사용자 정보 초기화
+      setUser(false);
+      setAvatarUrl(undefined);
+    }
   };
 
   // 로그인 상태여부 확인

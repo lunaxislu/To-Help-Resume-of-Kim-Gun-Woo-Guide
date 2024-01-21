@@ -124,7 +124,7 @@ const CommuDetail: React.FC = () => {
                       <p>0</p>
                     </IconContainer>
                   </FeatureArea>
-                  {/* <p>{`${post.comment.length}개의 댓글`}</p> */}
+                  <p>{`${post.comment.length}개의 댓글`}</p>
                 </div>
               );
             })}{' '}

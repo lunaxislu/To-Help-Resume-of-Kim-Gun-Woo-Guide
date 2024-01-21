@@ -29,6 +29,7 @@ const Tabs = () => {
 
       {toggle === 1 ? <ProductCard activeTab={toggle} /> : null}
       {toggle === 2 ? <ProductCard activeTab={toggle} /> : null}
+      {toggle === 4 ? <ProductCard activeTab={toggle} /> : null}
       {toggle === 3 ? <CommunityPost activeTab={toggle} /> : null}
     </>
   );

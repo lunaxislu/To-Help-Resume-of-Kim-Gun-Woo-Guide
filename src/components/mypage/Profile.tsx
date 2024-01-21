@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
-  StButtonWrapper,
-  StEditProfileButton,
-  StEmail,
-  StNickname,
+  StContent,
+  StFileUploadInput,
   StNicknameInput,
+  StProfileButtonContainer,
+  StProfileButtonWrapper,
+  StProfileButtons,
   StProfileContainer,
+  StProfileContentWrapper,
+  StProfileContentsContainer,
   StProfileImage,
-  StProfileWrapper,
-  StUsername
+  StProfileImageWrapper,
+  StProfileSaveButton
 } from '../../styles/mypageStyle/ProfileStyle';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { v4 as uuidv4 } from 'uuid';
@@ -110,41 +113,65 @@ const Profile = () => {
 
   return (
     <>
+      <StProfileButtonContainer>
+        {isEditing ? (
+          <StProfileButtonWrapper>
+            <StProfileButtons onClick={cancelEditHandler}>
+              취소
+            </StProfileButtons>
+            <StProfileSaveButton onClick={clickUpdateProfile}>
+              저장
+            </StProfileSaveButton>
+          </StProfileButtonWrapper>
+        ) : (
+          <StProfileButtons onClick={editProfileHandler}>
+            <img src="/assets/pen.svg" alt="" />
+            프로필 수정하기
+          </StProfileButtons>
+        )}
+      </StProfileButtonContainer>
+
       {user?.map((user) => {
         return (
           <StProfileContainer key={user.id}>
-            <StProfileImage
-              src={!profileImage ? user.avatar_url : profileImage}
-              alt=""
-            />
-            <input type="file" onChange={(e) => uploadProfileImage(e)} />
+            <StProfileImageWrapper>
+              <StProfileImage
+                src={!profileImage ? user.avatar_url : profileImage}
+                alt=""
+              />
+              {isEditing ? (
+                <StFileUploadInput
+                  type="file"
+                  onChange={(e) => uploadProfileImage(e)}
+                />
+              ) : (
+                ''
+              )}
+            </StProfileImageWrapper>
 
-            <StProfileWrapper key={user.id}>
-              <StButtonWrapper>
+            <StProfileContentsContainer key={user.id}>
+              <StProfileContentWrapper>
+                <StContent>닉네임</StContent>
                 {isEditing ? (
                   <StNicknameInput
                     defaultValue={user.nickname}
                     onChange={onChangeNickname}
                   />
                 ) : (
-                  <StNickname>{user.nickname}</StNickname>
+                  <StContent>{user.nickname}</StContent>
                 )}
+              </StProfileContentWrapper>
 
-                {isEditing ? (
-                  <>
-                    <button onClick={cancelEditHandler}>취소</button>
-                    <button onClick={clickUpdateProfile}>저장</button>
-                  </>
-                ) : (
-                  <StEditProfileButton onClick={editProfileHandler}>
-                    프로필 수정
-                  </StEditProfileButton>
-                )}
-              </StButtonWrapper>
+              <StProfileContentWrapper>
+                <StContent>이름</StContent>
+                <StContent>{user.username}</StContent>
+              </StProfileContentWrapper>
 
-              <StUsername>{user.username}</StUsername>
-              <StEmail>{user.email}</StEmail>
-            </StProfileWrapper>
+              <StProfileContentWrapper>
+                <StContent>이메일</StContent>
+                <StContent>{user.email}</StContent>
+              </StProfileContentWrapper>
+            </StProfileContentsContainer>
           </StProfileContainer>
         );
       })}

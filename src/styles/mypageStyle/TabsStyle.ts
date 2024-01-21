@@ -4,7 +4,7 @@ export const TabsContainer = styled.ul`
   background-color: bagie;
   display: flex;
   cursor: pointer;
-  background: #ff9843;
+
   padding: 2rem;
   border-radius: 0.8rem;
   margin: 2rem 0;
@@ -14,4 +14,6 @@ export const TabsContainer = styled.ul`
 export const Tab = styled.li<{ active: number }>`
   font-weight: ${(props) =>
     props.active === props.tabIndex ? 'bold' : 'normal'};
+  color: ${(props) =>
+    props.active === props.tabIndex ? 'var(--opc-100)' : 'var(--10-gray)'};
 `;
