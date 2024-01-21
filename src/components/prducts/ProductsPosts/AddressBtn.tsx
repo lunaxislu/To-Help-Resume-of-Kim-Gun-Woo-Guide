@@ -1,17 +1,14 @@
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-import { ProductsInputType, AddressValueType } from '../ProductsType';
-import { UseFormGetValues, UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import * as St from '../../../styles/products/ProductsPostsStyle'
+import { AddressValueType } from '../ProductsType';
 
 interface Props {
   scriptUrl?: string,
-  register?: UseFormRegister<ProductsInputType>
-  setValue?: UseFormSetValue<ProductsInputType>
-  getValues?: UseFormGetValues<ProductsInputType>
   addressValue: AddressValueType,
   setAddressValue: React.Dispatch<React.SetStateAction<AddressValueType>>
 }
 
-const AddressBtn = ({scriptUrl, register, setValue, getValues, addressValue, setAddressValue}: Props) => {
+const AddressBtn = ({scriptUrl, addressValue, setAddressValue}: Props) => {
 
   const open = useDaumPostcodePopup(scriptUrl);
 
@@ -41,7 +38,7 @@ const AddressBtn = ({scriptUrl, register, setValue, getValues, addressValue, set
   /* 최근검색 필요없이 전에 쓴 검색이 그대로 유지되는 방향은? */
   return (
     <div className="adress_find">
-      <button onClick={handleOnClickAddressBtn}>주소 검색</button>
+      <St.AddressBtn type='button' onClick={handleOnClickAddressBtn}>주소 검색</St.AddressBtn>
     </div>
   );
 }
