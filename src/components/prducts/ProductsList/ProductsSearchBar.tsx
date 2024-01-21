@@ -1,4 +1,4 @@
-import * as St from '../../../styles/products/ProductsList'
+import * as St from '../../../styles/products/ProductsListStyle'
 
 const ProductsSearchBar = () => {
   return (

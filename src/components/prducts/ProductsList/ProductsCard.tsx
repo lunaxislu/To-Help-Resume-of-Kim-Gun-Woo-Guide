@@ -1,5 +1,5 @@
 import { ProductsPostType } from '../ProductsType';
-import * as St from '../../../styles/products/ProductsList'
+import * as St from '../../../styles/products/ProductsListStyle'
 import { useNavigate } from 'react-router';
 
 const ProductsCard = ({ product }: { product: ProductsPostType }) => {

@@ -1,7 +1,7 @@
 import React, { MouseEvent, useEffect, useState } from 'react'
 import { supabase } from '../../../api/supabase/supabaseClient';
 import { v4 as uuid } from 'uuid';
-import * as St from '../../../styles/products/ProductsPosts'
+import * as St from '../../../styles/products/ProductsPostsStyle'
 
 interface Props {
   uploadedFileUrl: string[];
@@ -34,6 +34,7 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
     }
   };
 
+  // 업로드된 파일이 12개가 초과되면 그 뒤에 들어오는 파일은 없앰
   if (uploadedFileUrl.length > 12 && files.length > 12)
     uploadedFileUrl.pop() && files.pop();
 
@@ -79,22 +80,14 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
         {uploadedFileUrl.map((img:string, idx:number) => 
           <St.ImageCard onClick={handleImageOrder} id={img} key={idx}>
             <St.Image src={img} alt={`${img}-${idx}`} />
-            <St.ImageDeleteBtn onClick={() => handleDeleteImage(idx)}>X</St.ImageDeleteBtn>
-
+            {/* <St.ImageDeleteBtn type='button' onClick={() => handleDeleteImage(idx)}>X</St.ImageDeleteBtn> */}
           </St.ImageCard>
         )}
         {uploadedFileUrl.length >= 12 ? (
           <></>
           ) : (
           <St.UpLoadBox htmlFor="file">
-            <input
-              type="file"
-              id="file"
-              name="file"
-              onChange={handleFiles}
-              multiple
-              hidden
-              />
+            <input type="file" id="file" name="file" onChange={handleFiles} multiple hidden />
             +
           </St.UpLoadBox>
         )}
