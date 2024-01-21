@@ -18,7 +18,12 @@ export const FooterArea = styled.div`
   gap: 2.3rem;
 `;
 export const Logo = styled.div`
-  /* margin-bottom: 2.3rem; */
+  img {
+    width: 10.1rem;
+    height: 2.6rem;
+    cursor: pointer;
+    user-select: none;
+  }
 `;
 export const TextArea = styled.div`
   margin-top: 2.3rem;
