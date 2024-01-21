@@ -22,7 +22,6 @@ export const fetchDetailPost = async (postId: string | undefined) => {
 };
 export const addPostMutation = async (insertData: InsertObject) => {
   try {
-    // FileList를 배열로 변환
     const { data, error } = await supabase
       .from('community')
       .insert([insertData]);
@@ -49,23 +48,7 @@ export const updatePostMutation = async (
     console.error('Error update post:', error);
   }
 };
-export const updateCommentMutation = async (
-  postData: UpdateObject | CommentUpload
-) => {
-  try {
-    const { data, error } = await supabase
-      .from('community')
-      .update(postData.updateData)
-      .eq('post_id', postData.paramId);
 
-    if (error) {
-      throw error;
-    }
-    return data;
-  } catch (error) {
-    console.error('Error update post:', error);
-  }
-};
 export const deletePostMutation = async (postId: string | undefined) => {
   const { data, error } = await supabase
     .from('community')

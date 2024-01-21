@@ -129,7 +129,10 @@ table {
 }
 
 html {
-    font-size: 62.5%;
+    font-size: 62.5%; 
+    background-color: #131313;
+    /* font-size: 1.6rem; */
+    color: #F8F8F8;
   }
 
 * {
@@ -138,8 +141,6 @@ html {
     box-sizing: border-box;
     font-family: 'Pretendard';
     font-weight: var(--fontWeight-medium);
-    background-color: #131313;
-    color: #F8F8F8;
-    font-size: 1.6rem;
+
 }
 `;
