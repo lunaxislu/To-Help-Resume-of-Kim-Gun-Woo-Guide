@@ -15,10 +15,9 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
   const [avatarUrl, setAvatarUrl] = useState<string>();
 
-  const loginStatus = useAppSelector((state) => state.auth);
+  const { isLogin } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  console.log(loginStatus);
   // useEffect(() => {
   //   const fetchUserData = async () => {
   //     try {
@@ -44,11 +43,19 @@ const Header = () => {
   };
 
   const handleSellbuttonClick = () => {
-    navigate('/productsposts');
+    if (isLogin) {
+      navigate('/productsposts');
+    } else {
+      navigate('/login');
+    }
   };
 
   const handleMyPageButtonClick = () => {
     navigate('/mypage');
+  };
+
+  const handleNavigateToLogin = () => {
+    navigate('/login');
   };
 
   // 로그아웃 버튼
@@ -94,9 +101,18 @@ const Header = () => {
         />
         <St.ButtonContainer>
           <St.Button onClick={handleSellbuttonClick}>판매하기</St.Button>
-          <St.Button>찜</St.Button>
-          <St.Button>알림</St.Button>
-          <St.UserIcon src={`${avatarUrl}`} onClick={handleMyPageButtonClick} />
+          {isLogin ? <St.Button>찜</St.Button> : ''}
+          {isLogin ? <St.Button>알림</St.Button> : ''}
+          {isLogin ? (
+            <St.UserIcon
+              src={`${avatarUrl}`}
+              onClick={handleMyPageButtonClick}
+            />
+          ) : (
+            <St.Button onClick={handleNavigateToLogin}>
+              로그인/회원가임
+            </St.Button>
+          )}
         </St.ButtonContainer>
       </St.HeaderSection>
       <St.NavSection>
@@ -104,7 +120,11 @@ const Header = () => {
           {/* <St.NavButton to="/introduce">서비스 소개</St.NavButton> */}
           <St.NavButton to="/products">중고거래</St.NavButton>
           <St.NavButton to="/community">커뮤니티</St.NavButton>
-          <button onClick={handleLogOutButtonClick}>로그아웃</button>
+          {isLogin ? (
+            <button onClick={handleLogOutButtonClick}>로그아웃</button>
+          ) : (
+            ''
+          )}
         </St.NavBar>
         <St.SearchBar>
           <SearchBar />
