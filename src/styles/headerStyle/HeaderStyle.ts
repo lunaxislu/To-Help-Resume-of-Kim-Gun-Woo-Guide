@@ -2,60 +2,154 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const HeaderContainer = styled.header`
-  width: 1440px;
-  height: 148px;
+  width: 144rem;
+  height: 14.8rem;
   display: flex;
+  flex-shrink: 0;
   flex-direction: column;
-  padding: 10px 20px;
-  margin: 0px auto;
-  background-color: #131313;
-  border: 3px solid #d9d9d9;
+  margin: 0 auto;
+  background-color: {
+    color: var(--bgColor);
+  }
+  /* border: 3px solid #d9d9d9; */
 `;
 
 export const HeaderSection = styled.section`
   display: flex;
   justify-content: space-between;
-  margin: 0px 100px;
-  margin-top: 30px;
+  align-items: center;
+  margin: 0 10rem;
+  margin-top: 3.4rem;
 `;
 export const Logo = styled.img`
-  width: 101px;
-  height: 26px;
+  width: 10.1rem;
+  height: 2.6rem;
   cursor: pointer;
   user-select: none;
-  margin: auto 0px;
+  margin: auto 0;
 `;
 export const ButtonContainer = styled.div`
   display: flex;
+  width: 24rem;
+  height: 3.5rem;
   align-items: center;
-  gap: 10px;
+  gap: 1rem;
+  user-select: none;
+  margin: auto 0;
+`;
+export const Sell = styled.button`
+  align-items: center;
+  display: flex;
+  width: 7.3rem;
+  height: 2.7rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  gap: 0.6rem;
+  img {
+    width: 1.8rem;
+    height: 1.5rem;
+  }
+  p {
+    color: var(--11-gray);
+    font-weight: var(--fontWeight-medium);
+    font-size: var(--fontSize-H5);
+    line-height: 2.6768rem;
+  }
+`;
+export const Likes = styled.button`
+  align-items: center;
+  display: flex;
+  width: 3.8rem;
+  height: 2.7rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  gap: 1rem;
+  img {
+    width: 1.5rem;
+    height: 1.3rem;
+  }
+  p {
+    color: var(--11-gray);
+    font-weight: var(--fontWeight-medium);
+    font-size: var(--fontSize-H5);
+    line-height: 2.6768rem;
+  }
+`;
+export const Alert = styled.button`
+  align-items: center;
+  display: flex;
+  width: 6rem;
+  height: 2.7rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  gap: 1rem;
+  img {
+    width: 1.7rem;
+    height: 1.7rem;
+  }
+  p {
+    color: var(--11-gray);
+    font-weight: var(--fontWeight-medium);
+    font-size: var(--fontSize-H5);
+    line-height: 2.6768rem;
+  }
 `;
 export const Button = styled.button`
-  border-radius: 5px;
+  align-items: center;
+  display: flex;
+  width: 9rem;
+  height: 2.7rem;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--11-gray);
+  font-weight: var(--fontWeight-medium);
+  font-size: var(--fontSize-H5);
+  line-height: 2.6768rem;
+  margin-left: 2rem;
 `;
 export const UserIcon = styled.img`
   border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  width: 3.5rem;
+  height: 3.5rem;
   cursor: pointer;
 `;
 
 export const NavSection = styled.section`
   display: flex;
   justify-content: space-between;
-  margin: 0px 100px;
-  margin-top: 19px;
+  margin: 0 10rem;
+  margin-top: 2.3rem;
 `;
 export const NavBar = styled.nav`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 3.6rem;
 `;
 export const NavButton = styled(Link)`
   text-decoration: none;
-  margin-right: 10px;
+  align-items: center;
   cursor: pointer;
-  color: #f8f8f8;
-  font-size: 18px;
+  color: var(--11-gray);
+  font-size: var(--fontSize-H4);
+  font-weight: var(--fontWeight-semiBold);
 `;
-export const SearchBar = styled.div``;
+export const LogOut = styled.button`
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  width: 8rem;
+  height: 2.7rem;
+  border: none;
+  margin-top: 0.3rem;
+  background: transparent;
+  color: var(--11-gray);
+  font-weight: var(--fontWeight-medium);
+  font-size: var(--fontSize-H5);
+  line-height: 2.6768rem;
+  cursor: pointer;
+`;

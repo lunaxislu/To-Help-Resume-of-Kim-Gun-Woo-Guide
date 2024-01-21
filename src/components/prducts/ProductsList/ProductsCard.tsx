@@ -1,62 +1,30 @@
 import { useNavigate } from 'react-router';
 import { ProductsPostType } from '../ProductsType';
+import * as St from '../../../styles/products/ProductsListStyle'
 
 const ProductsCard = ({ product }: { product: ProductsPostType }) => {
-  const navi = useNavigate();
-  const { title, price, quality, image_url, id } = product;
 
+  const navigate = useNavigate();
+
+  const { title, price, quality, image_url, id } = product;
+  
   return (
-    <div
-      onClick={() => navi(`/products/detail/${id}`)}
-      style={{
-        padding: '10px',
-        width: '250px',
-        listStyle: 'none',
-        border: '2px solid darkgray'
-      }}
-    >
-      <div style={{ marginBottom: '10px', width: '230px', height: '230px' }}>
+    <St.ProductsCardContainer onClick={() => navigate(`/products/detail/${id}`)}>
+      <St.CardImageWrapper>
         {image_url !== null && image_url !== undefined ? (
-          <img
-            src={image_url[0]}
-            alt=""
-            style={{
-              objectPosition: 'center',
-              objectFit: 'cover',
-              width: '100%',
-              height: '100%'
-            }}
-          />
+          <St.CardImage src={image_url[0]} alt="상품 이미지" />
         ) : (
-          <h1></h1>
+          <div></div>
         )}
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          gap: '10px',
-          marginBottom: '10px'
-        }}
-      >
+      </St.CardImageWrapper>
         {[quality].map((condition) => (
-          <li
-            key={condition}
-            style={{
-              width: '120px',
-              backgroundColor: 'lightblue',
-              textAlign: 'center',
-              border: '1px solid skyblue'
-            }}
-          >
+          <St.CardQuality>
             {condition}
-          </li>
+          </St.CardQuality>
         ))}
-      </div>
-      <h2 style={{ marginBottom: '10px' }}>{title}</h2>
-      <h3>{price}원</h3>
-    </div>
+      <St.CardTitle>{title}</St.CardTitle>
+      <St.CardPrice>{price}원</St.CardPrice>
+    </St.ProductsCardContainer>
   );
 };
 

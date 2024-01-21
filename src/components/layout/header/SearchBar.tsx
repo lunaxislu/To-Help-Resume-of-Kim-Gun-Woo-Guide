@@ -8,7 +8,7 @@ import {
   setSearchResults
 } from '../../../redux/modules/searchSlice';
 import { supabase } from '../../../api/supabase/supabaseClient';
-import { Communityy, UsedItem } from '../../../pages/usedtypes';
+import { Communityy, UsedItem } from '../../../pages/home/usedtypes';
 
 const SearchBar: React.FC = () => {
   const { searchQuery } = useSelector((state: RootState) => state.search);
@@ -20,6 +20,10 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSearch = async () => {
+    // 세션 스토리지 지우는 로직(엔터키, 검색버튼 눌렀을 때 모두 지워지도록)
+    sessionStorage.removeItem('usedItems');
+    sessionStorage.removeItem('communityItems');
+
     // 공란 일 때 실행 안함.
     if (!searchQuery.trim()) {
       return;
@@ -91,7 +95,7 @@ const SearchBar: React.FC = () => {
     <SearchInputContainer>
       <SearchInputBar
         type="text"
-        placeholder="찾으시는 내용을 검색해보세요"
+        placeholder="검색어를 입력하세요."
         value={searchQuery}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
@@ -113,10 +117,17 @@ const SearchInputContainer = styled.div`
 `;
 
 const SearchInputBar = styled.input`
-  width: 488px;
-  height: 37px;
-  border-radius: 15px;
-  padding-left: 10px;
+  width: 48.8rem;
+  height: 3.7rem;
+  border-radius: 1.9rem;
+  padding-left: 20px;
+  background: var(--3-gray, #2c2c2c);
+  border: none;
+  color: var(--6-gray, #717171);
+  font-size: var(--fontSize-H5);
+  font-weight: var(--fontWeight-medium);
+  line-height: 2.4856rem;
+  outline: none;
 `;
 
 const SearchBtn = styled.button`
@@ -130,6 +141,6 @@ const SearchBtn = styled.button`
 `;
 
 const SearchBtnImg = styled.img`
-  width: 37px;
-  height: 37px;
+  width: 3.7rem;
+  height: 3.7rem;
 `;

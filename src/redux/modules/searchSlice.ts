@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Communityy, UsedItem } from '../../pages/usedtypes';
+import { Communityy, UsedItem } from '../../pages/home/usedtypes';
 
 interface SearchState {
   searchQuery: string;

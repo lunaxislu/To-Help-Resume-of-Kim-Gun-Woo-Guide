@@ -3,8 +3,9 @@ import { ImageFormats } from '@xeger/quill-image-formats';
 import React, { useEffect, useState } from 'react';
 import { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import styled from 'styled-components';
+
 import { supabase } from '../../api/supabase/supabaseClient';
+import * as St from '../../styles/community/CommunityWriteStyle';
 import WriteLayout from './WriteLayout';
 import { ProfileObject } from './model';
 export const categoryArray = ['전체', '고민', '꿀팁', '일상', '구인', '공구'];
@@ -44,8 +45,8 @@ const Write: React.FC = () => {
   }, []);
 
   return (
-    <Container>
-      <ContentContainer>
+    <St.Container>
+      <St.ContentContainer>
         <h1>커뮤니티 글 작성</h1>
 
         <WriteLayout
@@ -54,37 +55,9 @@ const Write: React.FC = () => {
           paramId=""
           setIsEditState={() => {}}
         />
-      </ContentContainer>
-    </Container>
+      </St.ContentContainer>
+    </St.Container>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-bottom: 5rem;
-  color: #f3f3f3;
-`;
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 1066px;
-  width: 80%;
-  & select {
-    width: 100px;
-    height: 40px;
-  }
-  & button {
-    width: 100px;
-    height: 40px;
-  }
-  & h1 {
-    font-size: 30px;
-    margin-top: 50px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--4-gray);
-  }
-`;
 
 export default Write;
