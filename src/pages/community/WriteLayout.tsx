@@ -1,13 +1,11 @@
-import { ImageActions } from '@xeger/quill-image-actions';
-import { ImageFormats } from '@xeger/quill-image-formats';
 import React, { useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import ReactQuill, { Quill } from 'react-quill';
-import 'react-quill/dist/quill.bubble.css';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import { supabase } from '../../api/supabase/supabaseClient';
+import * as St from '../../styles/community/CommunityWriteStyle';
 import { categoryArray } from './WritePost';
 import {
   addPostMutation,
@@ -15,8 +13,9 @@ import {
   updatePostMutation
 } from './commuQuery';
 import { WriteLayoutProps } from './model';
-Quill.register('modules/imageActions', ImageActions);
-Quill.register('modules/imageFormats', ImageFormats);
+// Quill.register('modules/imageActions', ImageActions);
+// Quill.register('modules/imageFormats', ImageFormats);
+
 const WriteLayout: React.FC<WriteLayoutProps> = ({
   profile,
   isEdit,
@@ -28,7 +27,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     isLoading,
     isError
   } = useQuery(['posts', paramId], () => fetchDetailPost(paramId));
-  console.log('render');
+
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -46,6 +45,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
 
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
+    console.log(fileList);
     if (fileList) {
       const filesArray = Array.from(fileList);
       filesArray.forEach((file) => {
@@ -55,13 +55,18 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   };
 
   const handleFilesUpload = async (file: File) => {
+    setFormValues((prevValues: any) => ({
+      ...prevValues,
+      files: [],
+      uploadedFileUrl: []
+    }));
     try {
       const newFileName = uuid();
       const { data, error } = await supabase.storage
         .from('files')
         .upload(`files/${newFileName}`, file);
       if (error) {
-        console.log('파일 안올라감ㅋ', error);
+        console.log('파일 업로드 중 오류가 발생했습니다', error);
         return;
       }
       const res = supabase.storage.from('files').getPublicUrl(data.path);
@@ -72,7 +77,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       }));
       console.log(res.data.publicUrl);
     } catch (error) {
-      console.error('Error handling file upload:', error);
+      console.error('파일을 업로드하지 못했습니다:', error);
     }
   };
 
@@ -83,6 +88,10 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       navigate('/community');
     }
   });
+  const fileArr = formValues.files.map((file: File) => ({
+    name: file.name,
+    url: formValues.uploadedFileUrl
+  }));
 
   const addPost = async () => {
     const insertData = {
@@ -93,10 +102,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       nickname: profile![0].nickname
         ? profile![0].nickname
         : profile![0].username,
-      files: formValues.files.map((file: File) => ({
-        name: file.name,
-        url: formValues.uploadedFileUrl
-      })),
+      files: fileArr,
       main_image: formValues.mainImage,
       anon: formValues.anon
     };
@@ -111,10 +117,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   });
 
   const updatePost = () => {
-    const fileArr = formValues.files.map((file: File) => ({
-      name: file.name,
-      url: formValues.uploadedFileUrl
-    }));
     const postData = {
       updateData: {
         title: formValues.title,
@@ -180,7 +182,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       imageFormats: {},
       toolbar: {
         container: [
-          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          // [{ header: [1, 2, 3, 4, 5, 6, false] }],
           ['bold', 'italic', 'underline', 'strike'],
           ['image', 'video'],
           [{ color: [] }, { background: [] }]
@@ -217,20 +219,16 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   }
 
   return (
-    <Container>
-      <ContentContainer>
-        <TitleInput
-          value={formValues.title}
-          onChange={(e) => {
-            setFormValues({ ...formValues, title: e.target.value });
-          }}
-          placeholder="제목을 입력해주세요"
-        />
-        <CategoryContainer>
+    <St.LayoutContainer>
+      <St.LayoutContentContainer>
+        <St.LayoutCategoryContainer>
+          <St.LayoutValueText>
+            분류<span>*</span>
+          </St.LayoutValueText>
           {categoryArray.map((item, index) => {
             return index !== 0 ? (
               <label key={item}>
-                <CheckBoxs
+                <St.CheckBoxs
                   type="checkbox"
                   name={formValues.category}
                   value={item}
@@ -243,7 +241,21 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
               </label>
             ) : null;
           })}
-        </CategoryContainer>
+        </St.LayoutCategoryContainer>
+        <St.LayoutTitleContainer>
+          <St.LayoutValueText>
+            제목<span>*</span>
+          </St.LayoutValueText>
+          <input
+            value={formValues.title}
+            maxLength={30}
+            onChange={(e) => {
+              setFormValues({ ...formValues, title: e.target.value });
+            }}
+            placeholder="제목을 입력해주세요(30자)"
+          />
+        </St.LayoutTitleContainer>
+
         {/* <CategoryContainer>
           {categoryArray.map((item, index) => {
             return index !== 0 ? (
@@ -267,14 +279,12 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             ) : null;
           })}
         </CategoryContainer> */}
-        <FileUploader>
-          {formValues.files.length !== 0
-            ? formValues.files.map((file: File) => file.name)
-            : '파일을 업로드하려면 클릭하세요'}
-          <input type="file" onChange={handleFiles} multiple />
-        </FileUploader>
-        <div>
-          <QuillEditor
+
+        <St.LayoutContentArea>
+          <St.LayoutValueText>
+            내용<span>*</span>
+          </St.LayoutValueText>
+          <St.LayoutQuillEditor
             ref={quillRef}
             value={formValues.content}
             onChange={(value) => {
@@ -282,157 +292,42 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             }}
             modules={modules}
             formats={formats}
-            theme="bubble"
+            theme="snow"
             placeholder="내용을 입력해주세요"
           />
-        </div>
-        <Bottom>
-          <label>
-            <CheckBoxInput
-              type="checkbox"
-              checked={formValues.anon}
-              onChange={() => {
-                setFormValues({ ...formValues, anon: !formValues.anon });
-              }}
-            />{' '}
-            익명으로 작성하기
-          </label>
-          {isEdit ? (
-            <button onClick={updatePost}>수정완료</button>
-          ) : (
-            <button onClick={addPost}>등록하기</button>
-          )}
-        </Bottom>
-      </ContentContainer>
-    </Container>
+        </St.LayoutContentArea>
+        <St.LayoutFileArea>
+          <St.LayoutValueText>파일</St.LayoutValueText>
+          <St.LayoutFileUploader>
+            {formValues.files.length !== 0
+              ? formValues.files.map((file: File) => file.name)
+              : '파일을 업로드하려면 클릭하세요'}
+            <input type="file" onChange={handleFiles} multiple />
+          </St.LayoutFileUploader>
+        </St.LayoutFileArea>
+        <St.LayoutAnonArea>
+          <St.LayoutValueText></St.LayoutValueText>
+          <St.LayoutBottom>
+            <label>
+              <St.CheckBoxs
+                type="checkbox"
+                checked={formValues.anon}
+                onChange={() => {
+                  setFormValues({ ...formValues, anon: !formValues.anon });
+                }}
+              />{' '}
+              익명으로 작성하기
+            </label>
+            {isEdit ? (
+              <button onClick={updatePost}>수정완료</button>
+            ) : (
+              <button onClick={addPost}>등록하기</button>
+            )}
+          </St.LayoutBottom>
+        </St.LayoutAnonArea>
+      </St.LayoutContentContainer>
+    </St.LayoutContainer>
   );
 };
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  & strong {
-    font-weight: bold;
-  }
-  & em {
-    font-style: italic;
-  }
-  & p {
-    display: flex;
-  }
-`;
-const Bottom = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-
-  & select {
-    width: 100px;
-    height: 40px;
-  }
-  & button {
-    width: 100px;
-    height: 40px;
-  }
-  & h1 {
-    font-size: 30px;
-    margin-top: 50px;
-    text-align: center;
-  }
-`;
-const CategoryContainer = styled.div`
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-`;
-
-const CheckBoxInput = styled.input`
-  height: 20px;
-  width: 20px;
-`;
-const TitleInput = styled.input`
-  height: 54px;
-  width: 100%;
-  background-color: #f3f3f3;
-  border: none;
-  border-radius: 5px;
-  padding-left: 16px;
-  &::placeholder {
-    color: rgba(0, 0, 0, 0.6);
-    font-size: 16px;
-  }
-`;
-
-const FileUploader = styled.label`
-  background-color: #f3f3f3;
-  border-radius: 5px;
-  height: 54px;
-  display: flex;
-  align-items: center;
-  padding-left: 16px;
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 16px;
-  & input {
-    display: none;
-  }
-`;
-const QuillEditor = styled(ReactQuill)`
-  background-color: #1f1f1f;
-  border-radius: 5px;
-  width: 100%;
-  max-width: 1116px;
-
-  .ql-container {
-    min-height: 600px;
-    border: none;
-    display: flex;
-  }
-  .ql-toolbar {
-    border: none;
-  }
-  .ql-editor strong {
-    font-weight: bold;
-  }
-  .ql-editor em {
-    font-style: italic;
-  }
-  .ql-editor ::placeholder {
-    color: white;
-  }
-  .ql-editor p {
-    display: flex;
-    line-height: 30px;
-    font-size: 16px;
-  }
-`;
-const CheckBoxs = styled.input`
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  background-color: #636363; /* 선택되지 않은 상태의 배경 색상 */
-  border: none;
-  border-radius: 4px;
-  position: relative;
-  cursor: pointer;
-  outline: none;
-  margin-right: 5px; /* 여백을 조절할 수 있습니다. */
-
-  /* 체크 표시 스타일 */
-  &:checked:before {
-    content: '✔';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 14px;
-    color: #dbff00;
-  }
-`;
 export default React.memo(WriteLayout);

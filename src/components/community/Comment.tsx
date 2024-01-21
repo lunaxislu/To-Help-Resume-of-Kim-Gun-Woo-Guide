@@ -1,8 +1,9 @@
 import React, { FormEvent, useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import 'react-quill/dist/quill.snow.css';
-import styled from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
+import * as St from '../../styles/community/CommentStyle';
+
 import {
   fetchDetailPost,
   updatePostMutation
@@ -13,7 +14,6 @@ import {
   ProfileObject
 } from '../../pages/community/model';
 import parseDate from '../../util/getDate';
-
 const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
   const queryClient = useQueryClient();
   useEffect(() => {
@@ -95,19 +95,19 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
     setEditedCommentIndex(index);
     setEditComment(comments[index].comment);
   };
-  const updateCommentDetail = (index: number) => {
-    const newComment = comments[index];
 
-    setComments(() => [...comments, { ...newComment, commment: editComment }]);
+  const updateCommentDetail = (index: number) => {
     if (isEdit && editedCommentIndex !== null) {
       // 수정 중인 댓글을 업데이트
-      const updatedComments = [...comments];
-      updatedComments[editedCommentIndex] = {
-        ...updatedComments[editedCommentIndex],
-        comment: editComment
-      };
+      const updatedComments = comments.map((comment, index) =>
+        index === editedCommentIndex
+          ? { ...comment, comment: editComment }
+          : comment
+      );
+
       setComments(updatedComments);
       setEditedCommentIndex(null);
+
       const commentObject = {
         updateData: {
           comment: updatedComments
@@ -115,11 +115,25 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
         paramId
       };
       upsertMutation.mutate(commentObject);
-
-      // 수정이 완료되면 인덱스 초기화
     }
   };
-  console.log(comments);
+
+  const deleteComment = (index: number) => {
+    if (window.confirm('댓글을 삭제하시겠습니까?')) {
+      const updatedComments = comments.filter((_, idx) => idx !== index);
+
+      setComments(updatedComments);
+
+      // 삭제된 댓글을 서버로 업데이트
+      const commentObject = {
+        updateData: {
+          comment: updatedComments
+        },
+        paramId
+      };
+      upsertMutation.mutate(commentObject);
+    }
+  };
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -129,119 +143,71 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
   }
 
   return (
-    <Container>
-      <CountDiv>{`${comments.length}개의 댓글`}</CountDiv>
-      <Form onSubmit={updateComment}>
-        <CommentInput
+    <St.Container>
+      <St.CountDivTop>
+        {' '}
+        <St.CommentIcon />
+        {`${comments.length}`}
+      </St.CountDivTop>
+
+      <St.Form onSubmit={updateComment}>
+        <St.CommentInput
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="댓글을 입력하세요"
         />
-        <label>
-          <AnonInput
+        <St.AnonLabel>
+          <St.CheckBoxs
             type="checkbox"
             checked={anon}
             onChange={() => setAnon(!anon)}
           />
           익명
-        </label>
+        </St.AnonLabel>
         <button type="submit">추가</button>
-      </Form>
-
+      </St.Form>
+      <St.CountDiv>{`${comments.length}개의 댓글`}</St.CountDiv>
       {comments?.map((comment, index) => {
         const parseTime = parseDate(comment.time);
         return (
-          <CommentContainer key={index}>
+          <St.CommentContainer key={index}>
             <div>
-              <LeftSide>
-                <p>{comment.anon ? '익명 작업자' : comment.nickname}</p>
+              <St.LeftSide>
+                <St.Name>
+                  {comment.anon ? '익명의 작업자' : comment.nickname}
+                </St.Name>
                 <p>{parseTime}</p>
-                {/* {comment.comment_user === profile![0].id ? (
-                  isEdit && editedCommentIndex === index ? (
-                    <p onClick={() => updateCommentDetail(index)}>수정완료</p>
-                  ) : (
-                    <>
-                      <p onClick={() => startEditComment(index)}>수정</p>
-                      <p>|</p>
-                      <p>삭제 </p>
-                    </>
-                  )
-                ) : (
-                  <></>
-                )} */}
-                {isEdit && editedCommentIndex === index ? (
-                  <p onClick={() => updateCommentDetail(index)}>수정완료</p>
-                ) : (
-                  <>
-                    <p onClick={() => startEditComment(index)}>수정</p>
-                    <p>|</p>
-                    <p>삭제 </p>
-                  </>
-                )}
-              </LeftSide>
+              </St.LeftSide>
               {isEdit && editedCommentIndex === index ? (
                 <input
                   value={editComment}
                   onChange={(e) => setEditComment(e.target.value)}
                 />
               ) : (
-                <p>{comment.comment}</p>
+                <St.CommentContent>{comment.comment}</St.CommentContent>
               )}
-            </div>
-            <button>신고</button>
-          </CommentContainer>
+            </div>{' '}
+            <St.UpdateBtnContainer>
+              {profile.length > 0 && comment.comment_user === profile[0].id ? (
+                isEdit && editedCommentIndex === index ? (
+                  <p onClick={() => updateCommentDetail(index)}>수정완료</p>
+                ) : (
+                  <>
+                    <p onClick={() => startEditComment(index)}>수정</p>
+                    <p>|</p>
+                    <p onClick={() => deleteComment(index)}>삭제</p>
+                  </>
+                )
+              ) : (
+                <></>
+              )}
+            </St.UpdateBtnContainer>
+            {/* <button>신고</button> */}
+          </St.CommentContainer>
         );
       })}
-    </Container>
+    </St.Container>
   );
 };
-const CountDiv = styled.div`
-  width: 100%;
-`;
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 50px;
-`;
-const Form = styled.form`
-  width: 100%;
-  max-width: 1116px;
-  margin-top: 6px;
-  margin-bottom: 6px;
-`;
-const CommentInput = styled.input`
-  width: 80%;
-  height: 38px;
-`;
-const AnonInput = styled.input`
-  height: 28px;
-`;
-const CommentContainer = styled.div`
-  margin-top: 10px;
-
-  width: 100%;
-  height: 94px;
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-
-  border-radius: 5px;
-  align-items: center;
-  & button {
-    padding: 10px;
-    border-radius: 20px;
-    border: none;
-    background-color: #f3f3f3;
-  }
-`;
-const LeftSide = styled.div`
-  display: flex;
-  gap: 20px;
-  & p {
-    margin-bottom: 20px;
-  }
-`;
 
 export default React.memo(Comment);

@@ -12,8 +12,12 @@ import ProductsPosts from '../pages/products/ProductsPosts';
 import ProductDetail from '../pages/productsDetail/ProductDetail';
 import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
+import { useAppSelector } from '../redux/reduxHooks/reduxBase';
 
 const Router = () => {
+  const { isLogin } = useAppSelector((state) => state.auth);
+
+  console.log(isLogin);
   return (
     <BrowserRouter>
       <GlobalStyles />

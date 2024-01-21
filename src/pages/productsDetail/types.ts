@@ -20,6 +20,9 @@ export interface Product {
   count: number;
   category: string[];
   address: string;
+  image_url: string[];
+  isSell: boolean;
+  buyer: string;
 }
 
 export type CustomUser = {

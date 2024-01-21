@@ -4,7 +4,7 @@ import { RoomStyledProps } from '../../components/chat/types';
 export const StFadeAni = keyframes`
   from{
     opacity: 0;
-    transform: translateX(5%);
+    transform: translateX(-5%);
   }
 
   to {
@@ -15,31 +15,31 @@ export const StFadeAni = keyframes`
 
 const StChatContainer = styled.div`
   width: 100%;
+  height: 100%;
   max-width: 1114px;
-  max-height: 597px;
+  max-height: 958px;
   display: flex;
-  border: 1px solid black;
-  height: fit-content;
+  border-top: 0.3rem solid var(--3-gray);
+  border-bottom: 0.3rem solid var(--3-gray);
   margin: auto;
   animation: ${StFadeAni} 0.6s forwards;
   font-family: 'Pretendard-Regular';
 `;
 
 const StChatList = styled.div`
-  width: 724.9px;
+  width: 100%;
   height: 597px;
-  max-width: 384px;
+  max-width: 372px;
   max-height: 597px;
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
   overflow-y: scroll;
+  border-right: 0.3rem solid var(--3-gray);
 `;
 
 const StChatBoard = styled.div`
   width: 70%;
   height: 597px;
-  border: 1px solid black;
   overflow-y: hidden;
   position: relative;
 `;
@@ -48,7 +48,7 @@ const StChatGround = styled.div`
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  padding: 1rem 0 9rem 0;
+  padding: 1rem 0 15rem 0;
 `;
 
 const StChatBoardHeader = styled.div`
@@ -59,46 +59,62 @@ const StChatBoardHeader = styled.div`
   position: sticky;
   top: 0;
   left: 0;
-  padding: 1.375rem 1.25rem;
-  background-color: #eee;
+  padding: 2.7rem;
+  background-color: transparent;
+  border-bottom: 0.3rem solid var(--3-gray);
 `;
 
 const StChatBoardHeaderName = styled.h3`
-  font-size: 1.25rem;
+  font-size: 2rem;
   font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 1rem;
 `;
 
 const StChatForm = styled.form`
   width: 100%;
+  background-color: var(--bgColor);
   position: sticky;
   bottom: 0;
+  padding-bottom: 1rem;
 `;
 
 const ImageInput = styled.input.attrs({ type: 'file' })`
   width: fit-content;
   padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.3);
+  margin-left: 2.5rem;
+  margin-bottom: 1rem;
+  background-color: var(--3-gray);
+  border-radius: 0.6rem;
 `;
 
-const StChatInput = styled.textarea`
+const StChatInput = styled.textarea.attrs({
+  placeholder: '채팅을 입력하세요'
+})`
   width: 100%;
-  padding: 1rem;
+  max-width: 688px;
+  max-height: 53px;
+  margin: auto;
+  color: var(--11-gray);
+  padding: 1.8rem 1rem 1rem 1.5rem;
   position: sticky;
   bottom: 0;
   border: none;
+  font-weight: 600;
   outline: none;
-  background-color: #eee;
+  border-radius: 0.8rem;
+  background-color: var(--3-gray);
   resize: none;
+  &::placeholder {
+    font-weight: 500;
+  }
 `;
 
 const StListRoom = styled.div<RoomStyledProps>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
   padding: 1.25rem;
@@ -111,14 +127,18 @@ const StListRoom = styled.div<RoomStyledProps>`
     }
   }}
   &:hover {
-    background-color: #eee;
+    background-color: var(--3-gray);
   }
 `;
 
 const StListUpper = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 `;
 
 const StListLower = styled.div`
@@ -129,10 +149,13 @@ const StListLower = styled.div`
   font-weight: 600;
 
   p {
-    flex: 1;
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-left: 3rem;
   }
   span {
-    color: #1d1d1d70;
+    color: var(--6-gray);
+    font-size: 1.2rem;
   }
 `;
 
@@ -141,8 +164,8 @@ type ChatProfileType = {
 };
 
 const StListUserProfile = styled.div<ChatProfileType>`
-  width: 28px;
-  height: 28px;
+  width: 21px;
+  height: 21px;
   border-radius: 50px;
   background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
   background-size: cover;
@@ -158,12 +181,11 @@ const StUserInfoBox = styled.div`
 const StUnreadCount = styled.div`
   width: fit-content;
   height: fit-content;
-  padding: 0.3rem 0.6rem;
   text-align: center;
+  padding: 0.3rem 0.6rem;
   border-radius: 50px;
-  line-height: 1;
-  color: white;
-  background-color: var(--primary-color);
+  color: var(--2-gray);
+  background-color: var(--opc-100);
 `;
 
 const StListBody = styled.div`

@@ -16,6 +16,7 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import { debounce } from 'lodash';
 import SkeletonCommunityCard from '../card/SkeletonCommunityCard';
 import { userId } from '../../util/getUserId';
+import parseDate from '../../util/getDate';
 
 export interface Community {
   id: number;
@@ -42,7 +43,7 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
     let { data: communityPosts, error } = await supabase
       .from('community')
       .select('*')
-      .eq('author_uid', userId)
+      .eq('post_user', userId)
       .limit(10);
 
     if (communityPosts && communityPosts.length > 0) {
@@ -76,7 +77,7 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
       .from('community')
       .select('*')
       .range(from, to)
-      .eq('author_uid', userId);
+      .eq('post_user', userId);
 
     return data;
   };
@@ -128,7 +129,7 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
                   <span>15</span>
                 </StIconContainer>
 
-                <StPostDate>{post.created_at}</StPostDate>
+                <StPostDate>{parseDate(post.created_at)}</StPostDate>
               </StIconAndDateWrapper>
             </StPostWrapper>
           );

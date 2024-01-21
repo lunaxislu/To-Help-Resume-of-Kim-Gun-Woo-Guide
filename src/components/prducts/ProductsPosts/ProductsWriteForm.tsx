@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState } from 'react';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import AddressBtn from './AddressBtn';
 import { ProductsInputType, AddressValueType } from '../ProductsType';
@@ -12,10 +12,20 @@ const AddressInit: AddressValueType = {
   detailAddress: ""
 }
 
-const major = ['회화', '조소', '판화', '금속공예', '도예', '유리공예', '목공예', '섬유공예', '기타']
-const shipping_cost = ['배송비 포함', '배송비 별도']
-const deal_type = ['택배', '직거래', '협의 후 결정']
-const changable = ['가능', '불가능']
+const major = [
+  '회화',
+  '조소',
+  '판화',
+  '금속공예',
+  '도예',
+  '유리공예',
+  '목공예',
+  '섬유공예',
+  '기타'
+];
+const shipping_cost = ['배송비 포함', '배송비 별도'];
+const deal_type = ['택배', '직거래', '협의 후 결정'];
+const changable = ['가능', '불가능'];
 const quality = [
   {
     condition: '새상품(미사용)',
@@ -23,7 +33,8 @@ const quality = [
   },
   {
     condition: '사용감 없음',
-    shape: '사용은 했지만 눈에 띄는 흔적이나 얼룩이 없어요 / 아주 조금 사용했어요'
+    shape:
+      '사용은 했지만 눈에 띄는 흔적이나 얼룩이 없어요 / 아주 조금 사용했어요'
   },
   {
     condition: '사용감 적음',
@@ -36,8 +47,8 @@ const quality = [
   {
     condition: '고장/파손 상품',
     shape: '기능 이상이나 외관 손상 등으로 수리가 필요해요'
-  },
-]
+  }
+];
 const caveat = `
   불순한 의도는 처벌을 피할 수 없습니다.
   불순한 의도는 처벌을 피할 수 없습니다.
@@ -49,10 +60,9 @@ const caveat = `
   불순한 의도는 처벌을 피할 수 없습니다.
   불순한 의도는 처벌을 피할 수 없습니다.
   불순한 의도는 처벌을 피할 수 없습니다.
-  불순한 의도는 처벌을 피할 수 없습니다.`
+  불순한 의도는 처벌을 피할 수 없습니다.`;
 
 const ProductsWriteForm = () => {
-
   const navigate = useNavigate();
 
   // react-hook-form
@@ -64,20 +74,20 @@ const ProductsWriteForm = () => {
     formState: {errors, isSubmitting}} = useForm<ProductsInputType>({
       mode: 'onSubmit',
     defaultValues: {
-      title: "",
+      title: '',
       category: [],
-      shipping_cost: "",
-      deal_type: "",
-      address: "",
-      detailAddress: "",
-      quality: "",
-      changable: "",
-      exchange_product: "",
-      contents: "",
-      tags: "", 
-      image_url: "",
+      shipping_cost: '',
+      deal_type: '',
+      address: '',
+      detailAddress: '',
+      quality: '',
+      changable: '',
+      exchange_product: '',
+      contents: '',
+      tags: '',
+      image_url: ''
     }
-  })
+  });
 
   const onSubmit: SubmitHandler<ProductsInputType> = async (data) => {
     await new Promise((r: any) => setTimeout(r, 1000));
@@ -86,28 +96,32 @@ const ProductsWriteForm = () => {
     const detailAddress = {detailAddress: addressValue.detailAddress}
     const imgUrl = {image_url: uploadedFileUrl}
 
-    const EntireData = {...data, tags:tagsArray, address: address.address, detailAddress: detailAddress.detailAddress, image_url: imgUrl.image_url}
+    const EntireData = {
+      ...data,
+      tags: tagsArray,
+      address: address.address,
+      detailAddress: detailAddress.detailAddress,
+      image_url: imgUrl.image_url
+    };
     console.log(EntireData);
-    
+
     const addPosts = async () => {
       try {
-        const {data, error} = await supabase
-        .from('products')
-        .insert([
-          EntireData,
-        ])
-        
+        const { data, error } = await supabase
+          .from('products')
+          .insert([EntireData]);
+
         if (data) {
-          console.log(data)
+          console.log(data);
         }
-        
+
         if (error) throw error;
-        alert('중고거래 판매글이 등록되었습니다.')
-        navigate('/products')
+        alert('중고거래 판매글이 등록되었습니다.');
+        navigate('/products');
       } catch (error) {
-        alert('예상치 못한 문제가 발생하였습니다. 다시 시도하여 주십시오.')
+        alert('예상치 못한 문제가 발생하였습니다. 다시 시도하여 주십시오.');
       }
-    }
+    };
 
     addPosts();
   };
@@ -305,7 +319,6 @@ const ProductsWriteForm = () => {
           <p style={{color: 'red'}}>{errors.tags?.message}</p>
         </div>
       </St.WrapperStyle> */}
-
       <St.CaveatBox>
         <St.CaveatText>{caveat}</St.CaveatText>
         <label htmlFor='agreement'>
@@ -318,12 +331,11 @@ const ProductsWriteForm = () => {
           <p style={{color: 'red'}}>{errors.agreement?.message}</p>
         </div>
       </St.WrapperStyle> */}
-
       <St.BtnWrapper>
         <St.WriteBtn type='submit' disabled={isSubmitting}>등록하기</St.WriteBtn>
       </St.BtnWrapper>
     </form>
-  )
-}
+  );
+};
 
-export default ProductsWriteForm
+export default ProductsWriteForm;
