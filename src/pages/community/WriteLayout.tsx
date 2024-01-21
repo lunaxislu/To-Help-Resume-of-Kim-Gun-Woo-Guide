@@ -3,9 +3,9 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 import { v4 as uuid } from 'uuid';
 import { supabase } from '../../api/supabase/supabaseClient';
+import * as St from '../../styles/community/CommunityWriteStyle';
 import { categoryArray } from './WritePost';
 import {
   addPostMutation,
@@ -219,16 +219,16 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   }
 
   return (
-    <Container>
-      <ContentContainer>
-        <CategoryContainer>
-          <ValueText>
+    <St.LayoutContainer>
+      <St.LayoutContentContainer>
+        <St.LayoutCategoryContainer>
+          <St.LayoutValueText>
             분류<span>*</span>
-          </ValueText>
+          </St.LayoutValueText>
           {categoryArray.map((item, index) => {
             return index !== 0 ? (
               <label key={item}>
-                <CheckBoxs
+                <St.CheckBoxs
                   type="checkbox"
                   name={formValues.category}
                   value={item}
@@ -241,19 +241,20 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
               </label>
             ) : null;
           })}
-        </CategoryContainer>
-        <TitleContainer>
-          <ValueText>
+        </St.LayoutCategoryContainer>
+        <St.LayoutTitleContainer>
+          <St.LayoutValueText>
             제목<span>*</span>
-          </ValueText>
+          </St.LayoutValueText>
           <input
             value={formValues.title}
+            maxLength={40}
             onChange={(e) => {
               setFormValues({ ...formValues, title: e.target.value });
             }}
             placeholder="제목을 입력해주세요"
           />
-        </TitleContainer>
+        </St.LayoutTitleContainer>
 
         {/* <CategoryContainer>
           {categoryArray.map((item, index) => {
@@ -279,11 +280,11 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
           })}
         </CategoryContainer> */}
 
-        <ContentArea>
-          <ValueText>
+        <St.LayoutContentArea>
+          <St.LayoutValueText>
             내용<span>*</span>
-          </ValueText>
-          <QuillEditor
+          </St.LayoutValueText>
+          <St.LayoutQuillEditor
             ref={quillRef}
             value={formValues.content}
             onChange={(value) => {
@@ -294,21 +295,21 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             theme="snow"
             placeholder="내용을 입력해주세요"
           />
-        </ContentArea>
-        <FileArea>
-          <ValueText>파일</ValueText>
-          <FileUploader>
+        </St.LayoutContentArea>
+        <St.LayoutFileArea>
+          <St.LayoutValueText>파일</St.LayoutValueText>
+          <St.LayoutFileUploader>
             {formValues.files.length !== 0
               ? formValues.files.map((file: File) => file.name)
               : '파일을 업로드하려면 클릭하세요'}
             <input type="file" onChange={handleFiles} multiple />
-          </FileUploader>
-        </FileArea>
-        <AnonArea>
-          <ValueText></ValueText>
-          <Bottom>
+          </St.LayoutFileUploader>
+        </St.LayoutFileArea>
+        <St.LayoutAnonArea>
+          <St.LayoutValueText></St.LayoutValueText>
+          <St.LayoutBottom>
             <label>
-              <CheckBoxs
+              <St.CheckBoxs
                 type="checkbox"
                 checked={formValues.anon}
                 onChange={() => {
@@ -322,193 +323,11 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             ) : (
               <button onClick={addPost}>등록하기</button>
             )}
-          </Bottom>
-        </AnonArea>
-      </ContentContainer>
-    </Container>
+          </St.LayoutBottom>
+        </St.LayoutAnonArea>
+      </St.LayoutContentContainer>
+    </St.LayoutContainer>
   );
 };
-const ContentArea = styled.div`
-  display: flex;
-`;
 
-const FileArea = styled.div`
-  display: flex;
-`;
-const AnonArea = styled.div`
-  display: flex;
-`;
-
-const ValueText = styled.div`
-  width: 16rem;
-  font-size: var(--fontSize-H4);
-  display: flex;
-  align-items: center;
-  & span {
-    color: var(--opc-100);
-  }
-`;
-const TitleContainer = styled.div`
-  display: flex;
-
-  & input {
-    height: 54px;
-    width: 100%;
-    max-width: 90.6rem;
-    background-color: #1f1f1f;
-    border: none;
-    border-radius: 5px;
-    padding-left: 16px;
-    color: var(--12-gray);
-
-    &::placeholder {
-      color: var(--5-gray);
-      font-size: var(--fontSize-H5);
-    }
-  }
-`;
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  & strong {
-    font-weight: bold;
-  }
-  & em {
-    font-style: italic;
-  }
-  & p {
-    display: flex;
-  }
-`;
-const Bottom = styled.div`
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  max-width: 90.6rem;
-  justify-content: space-between;
-  & button {
-    border: none;
-    border-radius: 1rem;
-    width: 10.3rem;
-    height: 4.8rem;
-    background-color: var(--opc-100);
-    font-size: var(--fontSize-H5);
-    font-weight: var(--fontWeight-bold);
-  }
-  & label {
-    display: flex;
-    align-items: center;
-    font-size: var(--fontSize-H5);
-  }
-`;
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-
-  & select {
-    width: 100px;
-    height: 40px;
-  }
-  & button {
-    width: 100px;
-    height: 40px;
-  }
-  & h1 {
-    font-size: 30px;
-    margin-top: 50px;
-    text-align: center;
-  }
-`;
-const CategoryContainer = styled.div`
-  height: 30px;
-  display: flex;
-  align-items: center;
-
-  font-size: var(--fontSize-H5);
-  & label {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    margin-right: 3rem;
-  }
-`;
-
-const FileUploader = styled.label`
-  background-color: #1f1f1f;
-  border-radius: 5px;
-  height: 54px;
-  display: flex;
-  align-items: center;
-  padding-left: 16px;
-  font-size: var(--fontSize-H5);
-  width: 100%;
-  max-width: 90.6rem;
-  color: var(--5-gray);
-
-  & input {
-    display: none;
-  }
-`;
-const QuillEditor = styled(ReactQuill)`
-  background-color: #1f1f1f;
-  border-radius: 5px;
-  width: 100%;
-  max-width: 906px;
-
-  .ql-container {
-    height: 70rem;
-    overflow: scroll;
-    border: none;
-    display: flex;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-  .ql-toolbar {
-    border: none;
-    border-bottom: 1px solid var(--4-gray);
-  }
-  .ql-editor strong {
-    font-weight: bold;
-  }
-  .ql-editor em {
-    font-style: italic;
-  }
-  .ql-editor ::placeholder {
-    color: white;
-  }
-  .ql-editor p {
-    display: flex;
-    line-height: 30px;
-    font-size: 16px;
-  }
-`;
-const CheckBoxs = styled.input`
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  background-color: #636363; /* 선택되지 않은 상태의 배경 색상 */
-  border: none;
-  border-radius: 4px;
-  position: relative;
-  cursor: pointer;
-  outline: none;
-  margin-right: 5px; /* 여백을 조절할 수 있습니다. */
-
-  /* 체크 표시 스타일 */
-  &:checked:before {
-    content: '✔';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 14px;
-    color: #dbff00;
-  }
-`;
 export default React.memo(WriteLayout);
