@@ -1,6 +1,7 @@
 import { BiEdit } from "react-icons/bi";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
+// ProductsList(page)
 export const EntireContainer = styled.div`
   width: 144rem;
   display: flex;
@@ -28,7 +29,50 @@ export const TagsContainer = styled.div`
   justify-content: space-between;
   margin-bottom: 3rem;
 `
-export const WriteBtn = styled.div`
+
+export const TagsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  gap: 0.9rem;
+`
+
+interface TagsProps {
+  $selectCategory: string
+}
+
+export const Tags = styled.p<TagsProps>`
+  width: fit-content;
+  padding: 0 1.5rem;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 175%;
+  border-radius: 5.6rem;
+  color: var(--6-gray);
+  background-color: var(--opc-10);
+  &:hover {
+    cursor: pointer;
+  }
+  // 배경색 조건부 렌더링
+  ${(props) => {
+    if (props.$selectCategory === props.children) {
+      return css`
+        background-color: var(--opc-100);
+        font-weight: var(--fontWeight-bold);
+        color: var(--1-gray);
+      `;
+    }
+    if (props.children === '전체') {
+      return css`
+        background-color: transparent;
+        border: 0.1rem solid var(--opc-100);
+        color: var(--12-gray);
+      `;
+    }
+  }}
+`
+
+export const PostsWriteBtn = styled.div`
   width: 8.5rem;
   height: 3.1rem;
   display: flex;
@@ -49,26 +93,6 @@ export const WriteIcon = styled(BiEdit)`
   height: 1.5rem;
 `;
 
-export const TagsWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  list-style: none;
-  gap: 0.9rem;
-`
-
-export const Tags = styled.li`
-  width: fit-content;
-  padding: 0 1.5rem;
-  text-align: center;
-  line-height: 2;
-  border-radius: 5.6rem;
-  background-color: var(--opc-10);
-  &:hover {
-    cursor: pointer;
-  }
-  // 배경색 조건부 렌더링
-`
-
 export const SearchBarContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -76,6 +100,7 @@ export const SearchBarContainer = styled.div`
   margin-bottom: 2.4rem;
 `
 
+// ProductsSearchBar
 export const SearchBarInput = styled.input`
   width: 31.6rem;
   height: 3.4rem;
@@ -90,8 +115,10 @@ export const SearchBarInput = styled.input`
   }
 `
 
-// 목록 정렬바 스타일링
+// ProductsSortBtn
+// 목록 정렬바 스타일링 해야함
 
+// ProductsList(components)
 export const ProductsListContainer = styled.div`
   display: flex;
   flex-direction: row;

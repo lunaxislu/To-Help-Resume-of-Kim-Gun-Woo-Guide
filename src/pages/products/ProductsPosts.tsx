@@ -1,9 +1,5 @@
-import { useNavigate } from 'react-router';
 import ProductsWriteForm from '../../components/prducts/ProductsPosts/ProductsWriteForm'
-import * as St from '../../styles/products/ProductsPosts'
-import { ProfileObject } from '../community/model';
-import { useEffect, useState } from 'react';
-import { supabase } from '../../api/supabase/supabaseClient';
+import * as St from '../../styles/products/ProductsPostsStyle'
 
 const ProductsPosts = () => {
 
