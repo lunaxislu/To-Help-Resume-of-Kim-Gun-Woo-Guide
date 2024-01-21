@@ -13,9 +13,7 @@ type ProductInfo = {
 const ProductDetailInfo = ({ labels, productInfo, data }: ProductInfo) => {
   const [showMap, setShowMap] = useState<boolean>(false);
   // 게시물에서 주소 받아오고
-  const [searchAddress, setSearchAddress] = useState<string>(
-    '가좌로 16-14, 어쩌구 짱 엄청나게 긴 주소다아아아아아ㅏ아아아아'
-  );
+  const [searchAddress, setSearchAddress] = useState<string>(data.address);
 
   return (
     <>
@@ -58,7 +56,6 @@ const StProductRow = styled.div`
 const StRowLabel = styled.div`
   width: 150px;
   font-family: 'Pretendard-Medium';
-  font-size: 0.875rem;
   color: #878787;
 `;
 

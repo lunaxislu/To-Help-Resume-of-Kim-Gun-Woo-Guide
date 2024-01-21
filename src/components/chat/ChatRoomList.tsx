@@ -3,6 +3,7 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import * as St from '../../pages/chat/style';
 import { MessageType, RoomType } from './types';
 import parseDate from '../../util/getDate';
+import styled from 'styled-components';
 
 type Props = {
   rooms: RoomType[] | null | undefined;
@@ -10,6 +11,11 @@ type Props = {
   clicked: string | undefined;
   unread: any[] | null;
 };
+
+const StChatListItem = styled.div`
+  width: 100%;
+  max-width: 372px;
+`;
 
 const ChatRoomList: React.FC<Props> = ({
   rooms,
@@ -85,7 +91,7 @@ const ChatRoomList: React.FC<Props> = ({
   };
 
   return (
-    <>
+    <StChatListItem>
       {rooms?.map((room, i) => {
         return (
           <St.StListRoom
@@ -118,7 +124,7 @@ const ChatRoomList: React.FC<Props> = ({
           </St.StListRoom>
         );
       })}
-    </>
+    </StChatListItem>
   );
 };
 
