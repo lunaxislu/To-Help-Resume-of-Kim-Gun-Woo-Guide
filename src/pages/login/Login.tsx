@@ -17,6 +17,7 @@ const Login = () => {
         supabaseClient={supabase}
         appearance={{ theme: ThemeSupa }}
         providers={['google', 'facebook', 'kakao']}
+        redirectTo="https://palette-market-sooty.vercel.app/"
         onlyThirdPartyProviders={true}
       />
     </StLoginContainer>

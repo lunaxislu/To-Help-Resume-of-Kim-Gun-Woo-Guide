@@ -29,31 +29,6 @@
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c987c3119310aa85dbf70cbb8e61a23a&libraries=services,clusterer"
     ></script>
-
-    <script>
-      window.fbAsyncInit = function () {
-        FB.init({
-          appId: '1365376541015363',
-          cookie: true,
-          xfbml: true,
-          version: 'develop'
-        });
-
-        FB.AppEvents.logPageView();
-      };
-
-      (function (d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = 'https://connect.facebook.net/en_US/sdk.js';
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, 'script', 'facebook-jssdk');
-    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
