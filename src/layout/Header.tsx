@@ -64,6 +64,8 @@ const Header = () => {
       // 사용자 정보 초기화
       setUser(false);
       setAvatarUrl(undefined);
+      // 이락균이 추가함 //
+      navigate('/');
     }
     if (error) {
       console.log(error);

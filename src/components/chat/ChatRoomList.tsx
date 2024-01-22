@@ -83,7 +83,10 @@ const ChatRoomList: React.FC<Props> = ({
         .map((msg) => {
           return msg.chat_room_id === room && msg;
         })
-        .sort((a: any, b: any) => a.created_at - b.created_at)
+        .sort(
+          (a: any, b: any) =>
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        )
         .filter((msg) => msg !== false);
 
       return Matched[Matched.length - 1];
@@ -96,7 +99,9 @@ const ChatRoomList: React.FC<Props> = ({
         return (
           <St.StListRoom
             onClick={(e) => {
-              updateToRead(room.id);
+              if (findMatchMessage(room.id) > 0) {
+                updateToRead(room.id);
+              }
               handleCurClicked(e);
             }}
             $current={clicked}

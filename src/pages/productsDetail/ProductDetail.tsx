@@ -9,7 +9,7 @@ import type { CustomUser, Product } from './types';
 import { Participants, RoomType } from '../../components/chat/types';
 import parseDate from '../../util/getDate';
 import { FaHeart } from 'react-icons/fa';
-import { v4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
@@ -88,7 +88,7 @@ const ProductDetail = () => {
   ) => {
     const roomForm = [
       {
-        id: v4(),
+        id: uuid(),
         room_name: `${target.username}`,
         about: `${id}`,
         participants: [
@@ -204,8 +204,7 @@ const ProductDetail = () => {
         ];
         const { data, error } = await supabase
           .from('chat_messages')
-          .insert(InitMessage)
-          .eq('uid', product[0].post_user_uid);
+          .insert(InitMessage);
 
         if (error) console.log('Send Messages Failed', error);
 

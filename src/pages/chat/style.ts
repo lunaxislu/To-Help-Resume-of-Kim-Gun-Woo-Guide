@@ -195,6 +195,87 @@ const StListBody = styled.div`
   height: 'fit-content';
 `;
 
+const StImageViewerBg = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #1d1d1d90;
+  z-index: 3;
+`;
+
+const StImageViewer = styled.div`
+  width: 1200px;
+  height: 80%;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  background-color: #1d1d1d;
+  margin: auto;
+  text-align: center;
+
+  &::before {
+    content: 'X';
+    position: absolute;
+    top: 3%;
+    right: 2%;
+    color: var(--primary-color);
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 3;
+  }
+`;
+
+const StViewerImg = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+`;
+
+const StMenuBox = styled.div`
+  width: 200px;
+  height: fit-content;
+  position: absolute;
+  top: 50%;
+  right: 8%;
+  z-index: 5;
+  background-color: #1d1d1d;
+`;
+
+const StMenu = styled.div`
+  width: 100%;
+  padding: 1.25rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--opc-100);
+    background-color: var(--1-gray);
+  }
+`;
+
+//////////////////////////////////
+
+const StUserProfile = styled.div<ChatProfileType>`
+  width: 28px;
+  height: 28px;
+  border-radius: 50px;
+  background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
+  background-size: cover;
+`;
+
 export {
   StChatContainer,
   StChatList,
@@ -211,5 +292,11 @@ export {
   StUnreadCount,
   StListBody,
   StListUpper,
-  StListLower
+  StListLower,
+  StImageViewerBg,
+  StImageViewer,
+  StViewerImg,
+  StMenuBox,
+  StMenu,
+  StUserProfile
 };
