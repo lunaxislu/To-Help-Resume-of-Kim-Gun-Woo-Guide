@@ -27,6 +27,7 @@ const ProductDetail = () => {
   const [showChatList, setShowChatList] = useState<boolean>(false);
   const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<string>('');
+  const [likesCount, setLikesCount] = useState<number | null>(null);
 
   const getUserData = async () => {
     const { data: user, error } = await supabase.auth.getUser();
@@ -368,7 +369,7 @@ const ProductDetail = () => {
         transition: Bounce
       });
     }
-
+    setLikesCount((prev: number | null) => prev && prev + 1);
     isLikedProduct();
   };
 
@@ -482,49 +483,9 @@ const ProductDetail = () => {
         transition: Bounce
       });
     }
-
     isLikedProduct();
+    setLikesCount((prev: number | null) => prev && prev - 1);
   };
-
-  useEffect(() => {
-    if (id) {
-      getProduct(id);
-    }
-    getUserData();
-    isExistsRoom();
-    handleCheckIsSoldOut();
-  }, []);
-
-  useEffect(() => {
-    if (curUser) {
-      isLikedProduct();
-      isExistsRoom();
-    }
-  }, [curUser]);
-
-  useEffect(() => {
-    if (curUser && target) {
-      insertUserIntoChatRoom(curUser, target);
-      findUser(curUser);
-      findUser(target);
-    }
-  }, [target]);
-
-  useEffect(() => {}, []);
-
-  if (product === null) return <div>로딩 중</div>;
-
-  const labels = ['수량', '상태', '거래 방식', '직거래 장소', '교환', '배송비'];
-
-  const data = product[0];
-  const productInfo = [
-    data.count,
-    data.quality,
-    data.deal_type,
-    data.address,
-    data.exchange_product,
-    data.shipping_cost
-  ];
 
   const handleLoadChatRooms = async () => {
     const { data: roomList, error } = await supabase
@@ -542,7 +503,6 @@ const ProductDetail = () => {
   const handleSetBuyer = (e: MouseEvent<HTMLDivElement>) => {
     const buyerChatroomId = e.currentTarget.id;
     setBuyerChatId(buyerChatroomId);
-    console.log(buyerChatId);
   };
 
   const handleSellComplete = async () => {
@@ -587,6 +547,59 @@ const ProductDetail = () => {
     const selected = e.currentTarget.innerText;
     setSelectedUser(selected);
   };
+
+  const handleGetLikeCount = async () => {
+    const { data: likes, error } = await supabase
+      .from('products')
+      .select('likes')
+      .eq('id', id);
+
+    if (likes && likes.length > 0) {
+      setLikesCount(likes[0].likes);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      getProduct(id);
+    }
+    getUserData();
+    isExistsRoom();
+    handleCheckIsSoldOut();
+  }, []);
+
+  useEffect(() => {
+    if (curUser) {
+      isLikedProduct();
+      isExistsRoom();
+    }
+  }, [curUser]);
+
+  useEffect(() => {
+    if (curUser && target) {
+      insertUserIntoChatRoom(curUser, target);
+      findUser(curUser);
+      findUser(target);
+    }
+  }, [target]);
+
+  useEffect(() => {
+    handleGetLikeCount();
+  }, []);
+
+  if (product === null) return <div>로딩 중</div>;
+
+  const labels = ['수량', '상태', '거래 방식', '직거래 장소', '교환', '배송비'];
+
+  const data = product[0];
+  const productInfo = [
+    data.count,
+    data.quality,
+    data.deal_type,
+    data.address,
+    data.exchange_product,
+    data.shipping_cost
+  ];
 
   if (isSoldOut === true) {
     return (
@@ -795,7 +808,7 @@ const ProductDetail = () => {
                   <St.Button $role="like" onClick={handleLike}>
                     <p>
                       <St.FaHeartIcon />
-                      {product[0].likes}
+                      {likesCount}
                     </p>
                   </St.Button>
                 ) : (
@@ -810,7 +823,7 @@ const ProductDetail = () => {
                           fontSize: '2.2rem'
                         }}
                       />
-                      {product[0].likes}
+                      {likesCount}
                     </p>
                   </St.Button>
                 )}
