@@ -20,7 +20,7 @@ const Layout = () => {
           location.pathname
         ) &&
           scrollPercentage >= 60) ||
-        (['/mypage', '/products', '/communitymain', '/search-results'].includes(
+        (['/mypage', '/products', '/community', '/search-results'].includes(
           location.pathname
         ) &&
           scrollY >= 300)
