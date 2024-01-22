@@ -593,18 +593,17 @@ const ProductDetail = () => {
       <div style={{ height: '100vh', background: `var(--1-gray)` }}>
         <div
           style={{
-            width: '100vw',
-            height: '100vh',
             position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            zIndex: '1'
+            zIndex: '0'
           }}
         >
           <div
             style={{
-              width: 'fit-content',
+              width: '100vw',
+              textAlign: 'center',
               padding: '2rem',
               position: 'absolute',
               top: '50%',
