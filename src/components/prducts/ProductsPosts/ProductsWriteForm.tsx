@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import AddressBtn from './AddressBtn';
 import { ProductsInputType, AddressValueType } from '../ProductsType';
@@ -6,6 +6,7 @@ import ProductsImage from './ProductsImage';
 import { useNavigate } from 'react-router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as St from '../../../styles/products/ProductsPostsStyle'
+import { ProfileObject } from '../../../pages/community/model';
 
 const AddressInit: AddressValueType = {
   address: "",
@@ -89,6 +90,37 @@ const ProductsWriteForm = () => {
     }
   });
 
+  const [profile, setProfile] = useState<ProfileObject[]>();
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const {
+          data: { user }
+        } = await supabase.auth.getUser();
+        setUserId(user!.id);
+
+        const { data: profiles, error } = await supabase
+          .from('user')
+          .select('*')
+          .eq('id', user!.id);
+
+        if (error) {
+          console.log(error);
+        }
+
+        if (profiles != null) {
+          setProfile(profiles);
+        }
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const onSubmit: SubmitHandler<ProductsInputType> = async (data) => {
     await new Promise((r: any) => setTimeout(r, 1000));
     const tagsArray = data.tags.split(',', 9).map((tag) => tag.trim());
@@ -101,7 +133,8 @@ const ProductsWriteForm = () => {
       tags: tagsArray,
       address: address.address,
       detailAddress: detailAddress.detailAddress,
-      image_url: imgUrl.image_url
+      image_url: imgUrl.image_url,
+      post_user_uid: userId
     };
     console.log(EntireData);
 
