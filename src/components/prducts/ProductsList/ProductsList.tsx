@@ -35,7 +35,7 @@ const ProductList = ({selectCategory}: Props) => {
           const product = productsPosts?.find(p => p.id === productId)
           if (product) {
             return (
-              <St.ProductsCardContainer key={productId.id} onClick={() => navigate(`/products/detail/${productId.id}`)}>
+              <St.ProductsCardContainer key={productId.id} onClick={() => navigate(`/products/detail/${productId}`)}>
                 <St.CardImageWrapper>
                   {product.image_url !== null && product.image_url !== undefined ? (
                     <St.CardImage src={product.image_url[0]} alt="상품 이미지" />
