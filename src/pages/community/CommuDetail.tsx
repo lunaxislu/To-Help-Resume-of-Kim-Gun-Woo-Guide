@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate, useParams } from 'react-router';
-import styled from 'styled-components';
+import * as St from '../../styles/community/CommunityDetailStyle';
+
 import { supabase } from '../../api/supabase/supabaseClient';
 import Comment from '../../components/community/Comment';
 import parseDate from '../../util/getDate';
@@ -60,9 +61,9 @@ const CommuDetail: React.FC = () => {
   }
 
   return (
-    <Container>
+    <St.Container>
       {isEditState ? (
-        <WriteWrap>
+        <St.WriteWrap>
           <h1>게시글 수정</h1>
           <WriteLayout
             profile={undefined}
@@ -70,25 +71,25 @@ const CommuDetail: React.FC = () => {
             paramId={param.id}
             setIsEditState={setIsEditState}
           />
-        </WriteWrap>
+        </St.WriteWrap>
       ) : (
-        <ContentsContainer>
+        <St.ContentsContainer>
           <div>
             {posts?.map((post) => {
               return (
                 <div key={post.post_id}>
-                  <Topper>
-                    <TopperLeft>
+                  <St.Topper>
+                    <St.TopperLeft>
                       <h1>{post.title}</h1>
                       <p>{!!post.anon ? '익명의 작업자' : post.nickname}</p>
-                    </TopperLeft>
+                    </St.TopperLeft>
 
-                    <TopperRight>
+                    <St.TopperRight>
                       <p>{parseDate(post.created_at)}</p>
-                    </TopperRight>
-                  </Topper>{' '}
-                  <Category>{post.category}</Category>
-                  <Content>{parse(post.content)}</Content>
+                    </St.TopperRight>
+                  </St.Topper>{' '}
+                  <St.Category>{post.category}</St.Category>
+                  <St.Content>{parse(post.content)}</St.Content>
                   {post.files && post.files.length > 0 && (
                     <div>
                       {post.files.map((file: FilesObject, index: number) => (
@@ -107,22 +108,23 @@ const CommuDetail: React.FC = () => {
                       ))}
                     </div>
                   )}{' '}
-                  <FeatureArea>
+                  <St.FeatureArea>
                     {posts![0].post_user === userId ? (
                       <div>
-                        <BtnStyle
+                        <St.BtnStyle
                           onClick={() => {
                             setIsEditState(true);
                           }}
                         >
                           수정
-                        </BtnStyle>
-                        <BtnStyle onClick={deletePost}>삭제</BtnStyle>
+                        </St.BtnStyle>
+                        <St.BtnStyle onClick={deletePost}>삭제</St.BtnStyle>
                       </div>
                     ) : (
                       ''
                     )}
-                  </FeatureArea>
+                  </St.FeatureArea>
+                  <p>{`${post.comment.length}개의 댓글`}</p>
                 </div>
               );
             })}{' '}
@@ -131,112 +133,10 @@ const CommuDetail: React.FC = () => {
           <div>
             <Comment userId={userId} paramId={param.id} />
           </div>
-        </ContentsContainer>
+        </St.ContentsContainer>
       )}
-    </Container>
+    </St.Container>
   );
 };
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 2.4rem;
-  line-height: 3rem;
-  min-height: 60rem;
-  color: var(--8-gray);
-  font-size: var(--fontSize-H4);
-`;
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: var(--12-gray);
-  margin-bottom: 5rem;
-  & strong {
-    font-weight: bold;
-  }
-  & em {
-    font-style: italic;
-  }
-  & p {
-    display: flex;
-  }
-`;
-const FeatureArea = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 2rem;
-`;
-const ContentsContainer = styled.div`
-  width: 80%;
-  max-width: 111.6rem;
-  min-height: 60rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
-const WriteWrap = styled.div`
-  width: 80%;
-  max-width: 100.6rem;
-
-  & h1 {
-    font-size: 30px;
-    margin-top: 50px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--4-gray);
-    margin-bottom: 2rem;
-  }
-`;
-const BtnStyle = styled.button`
-  height: 3rem;
-  width: 4rem;
-  border-radius: 0.5rem;
-  border: none;
-  background-color: var(--5-gray);
-  margin-right: 1rem;
-  font-weight: var(--fontWeight-semiBold);
-`;
-const Topper = styled.div`
-  margin-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 111.6rem;
-  margin-bottom: 1rem;
-`;
-const TopperRight = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  font-size: var(--fontSize-H5);
-  color: var(--8-gray);
-`;
-const TopperLeft = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  & h1 {
-    font-size: var(--fontSize-H3);
-    font-weight: var(--fontWeight-semiBold);
-  }
-  & p {
-    font-size: var(--fontSize-H5);
-    color: var(--4-gray);
-  }
-`;
-const IconContainer = styled.div`
-  display: flex;
-  justify-content: end;
-  font-size: var(--fontSize-H5);
-  align-items: center;
-`;
-const Category = styled.p`
-  background-color: var(--4-gray);
-  color: var(--12-gray);
-  width: fit-content;
-  padding: 1.2rem;
-  border-radius: 0.6rem;
-  font-size: var(--fontSize-H5);
-`;
 
 export default CommuDetail;

@@ -7,13 +7,17 @@ import WritePost from '../pages/community/WritePost';
 import Home from '../pages/home/Home';
 import Login from '../pages/login/Login';
 import MyPage from '../pages/mypage/MyPage';
-import Products from '../pages/products/Products';
+import ProductsList from '../pages/products/ProductsList';
 import ProductsPosts from '../pages/products/ProductsPosts';
 import ProductDetail from '../pages/productsDetail/ProductDetail';
 import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
+import { useAppSelector } from '../redux/reduxHooks/reduxBase';
 
 const Router = () => {
+  const { isLogin } = useAppSelector((state) => state.auth);
+
+  console.log(isLogin);
   return (
     <BrowserRouter>
       <GlobalStyles />
@@ -22,7 +26,7 @@ const Router = () => {
           <Route path="/" element={<Home />} />
           <Route path="login" element={<Login />} />
           <Route path="mypage" element={<MyPage />} />
-          <Route path="/products" element={<Products />} />
+          <Route path="/products" element={<ProductsList />} />
           <Route path="/products/detail/:id" element={<ProductDetail />} />
           <Route path="/productsposts" element={<ProductsPosts />} />
           <Route path="/community" element={<CommunityMain />} />

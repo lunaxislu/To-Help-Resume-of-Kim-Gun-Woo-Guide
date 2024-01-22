@@ -145,6 +145,12 @@ const ProductsWriteForm = () => {
 //     }
 //   }
 
+// react-hook-form validate
+// validate: {
+//   noSpace: (value) => !value.includes(" ") || "띄어쓰기는 사용할 수 없습니다.",
+//   noDot: (value) => !value.includes(".") || "마침표는 사용할 수 없습니다."
+// }
+
 //   return (
 //     <form onSubmit={handleOnSubmit}>
 //       <ProductsImage uploadedFileUrl={uploadedFileUrl} setUploadedFileUrl={setUploadedFileUrl} />
