@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const StPostContainer = styled.div`
@@ -6,7 +7,7 @@ export const StPostContainer = styled.div`
   gap: 20px;
 `;
 
-export const StPostWrapper = styled.div`
+export const StPostWrapper = styled(Link)`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
