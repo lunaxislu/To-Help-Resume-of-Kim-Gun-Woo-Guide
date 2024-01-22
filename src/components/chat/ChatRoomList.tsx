@@ -99,6 +99,7 @@ const ChatRoomList: React.FC<Props> = ({
         return (
           <St.StListRoom
             onClick={(e) => {
+              // 안 읽은 메세지가 있을 때만 작동
               if (findMatchMessage(room.id) > 0) {
                 updateToRead(room.id);
               }
