@@ -29,6 +29,7 @@ const ProductDetail = () => {
   const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<string>('');
   const [likesCount, setLikesCount] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const getUserData = async () => {
     const { data: user, error } = await supabase.auth.getUser();
@@ -121,7 +122,6 @@ const ProductDetail = () => {
     await sendFirstMessage();
   };
 
-  console.log(curUser);
   // 유저가 속한 채팅방 찾기
   const findRoom = async () => {
     const { data: foundRoom, error } = await supabase
@@ -606,6 +606,24 @@ const ProductDetail = () => {
     handleGetLikeCount();
   }, []);
 
+  const checkWindowSize = () => {
+    if (window.innerWidth <= 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('DOMContentLoaded', checkWindowSize);
+    window.addEventListener('resize', checkWindowSize);
+
+    return () => {
+      window.removeEventListener('DOMContentLoaded', checkWindowSize);
+      window.removeEventListener('resize', checkWindowSize);
+    };
+  });
+
   if (product === null) return <div>로딩 중</div>;
 
   const labels = ['수량', '상태', '거래 방식', '직거래 장소', '교환', '배송비'];
@@ -717,15 +735,21 @@ const ProductDetail = () => {
                 </St.StUserImage>
                 <St.StUserNickname>{data.nickname}</St.StUserNickname>
               </St.StUserTitlebox>
+
               <St.StAlertButton>
-                <St.StAlertIcon />
-                신고하기
+                {isMobile && (
+                  <St.StTimeLeft>{parseDate(data.created_at)}</St.StTimeLeft>
+                )}
+                {!isMobile && <St.StAlertIcon />}
+                <p>신고하기</p>
               </St.StAlertButton>
             </St.StProductInfoHeader>
             <St.StHeaderTitle>{data.title}</St.StHeaderTitle>
             <St.StHeaderPriceWrapper>
               <St.StPrice>{data.price.toLocaleString('kr-KO')}원</St.StPrice>
-              <St.StTimeLeft>{parseDate(data.created_at)}</St.StTimeLeft>
+              {!isMobile && (
+                <St.StTimeLeft>{parseDate(data.created_at)}</St.StTimeLeft>
+              )}
             </St.StHeaderPriceWrapper>
             <St.StProductInfoBody>
               <ProductDetailInfo
@@ -738,7 +762,7 @@ const ProductDetail = () => {
             {product[0].post_user_uid === curUser?.uid ? (
               <St.ButtonWrapper>
                 <St.Button $role="chat" onClick={handleDeletePost}>
-                  <h3>게시물 삭제</h3>
+                  <h3>삭제하기</h3>
                 </St.Button>
                 <St.Button
                   $role="chat"

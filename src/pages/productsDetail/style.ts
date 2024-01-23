@@ -10,6 +10,11 @@ const StDetailContainer = styled.div`
   padding: 4.9rem 0;
   margin: auto;
   font-family: 'Pretendard-Regular';
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+  }
 `;
 
 const StDetailInfoSection = styled.section`
@@ -22,6 +27,13 @@ const StDetailInfoSection = styled.section`
   justify-content: center;
   border-bottom: 0.1rem solid var(--3-gray);
   margin-bottom: 3rem;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+    width: 100%;
+    max-width: 768px;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const StImageWrapper = styled.div`
@@ -32,25 +44,12 @@ const StImageWrapper = styled.div`
   overflow: hidden;
   background-color: aliceblue;
   position: relative;
-`;
 
-const StCarouselBox = styled.div`
-  width: 300vw;
-  height: 100%;
-  overflow: hidden;
-`;
-const StImageList = styled.div`
-  width: 100vw;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  transition: all 1.2s ease;
-  transform: translateX(0vw);
-
-  div {
+  @media screen and (max-width: 768px) {
     width: 100%;
-    height: 100%;
-    background-color: blue;
+    max-width: 768px;
+    margin-bottom: 1.5rem;
+    border-radius: 0;
   }
 `;
 
@@ -64,6 +63,10 @@ const StProductInfoHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and (max-width: 768px) {
+    padding: 1.5rem;
+  }
 `;
 const StUserTitlebox = styled.div`
   width: fit-content;
@@ -71,21 +74,30 @@ const StUserTitlebox = styled.div`
   align-items: center;
   gap: 1rem;
 `;
+
 const StUserImage = styled.div`
   width: fit-content;
 `;
+
 const StProfileImages = styled.div`
   width: 22px;
   height: 22px;
   background-color: #eee;
   border-radius: 50%;
+
+  @media screen and (max-width: 768px) {
+    width: 16px;
+    height: 16px;
+  }
 `;
+
 const StUserNickname = styled.h4`
   color: var(--7, #878787);
   font-size: 1.4rem;
   font-weight: 500;
   line-height: 191.2%; /* 26.768px */
 `;
+
 const StAlertButton = styled.button`
   width: fit-content;
   background-color: transparent;
@@ -95,6 +107,17 @@ const StAlertButton = styled.button`
   display: flex;
   align-items: center;
   gap: 0.8rem;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.2rem;
+
+    p {
+      font-size: 1.4rem;
+    }
+  }
 `;
 
 const StAlertIcon = styled(AiFillAlert)`
@@ -107,6 +130,12 @@ const StHeaderTitle = styled.div`
   font-family: 'Pretendard-Medium';
   margin-block: 2.1rem;
   font-size: var(--fontSize-H2);
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.4rem;
+    padding: 0 1.5rem;
+    margin-block: 0.6rem;
+  }
 `;
 const StHeaderPriceWrapper = styled.div`
   width: 100%;
@@ -115,6 +144,12 @@ const StHeaderPriceWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   font-size: var(--fontSize-H2);
+
+  @media screen and (max-width: 768px) {
+    padding: 1.5rem;
+    font-size: 1.4rem;
+    margin-block: 0.6rem;
+  }
 `;
 const StPrice = styled.h3`
   font-family: 'Pretendard-Bold';
@@ -124,6 +159,10 @@ const StTimeLeft = styled.div`
   font-size: var(--fontSize-H5);
   color: var(--6-gray);
   font-weight: var(--fontWeight-medium);
+
+  @media screen and (max-width: 768px) {
+    max-width: 30%;
+  }
 `;
 
 const StProductInfoBody = styled.div`
@@ -138,6 +177,13 @@ const StProductInfoBody = styled.div`
   background-color: var(--3-gray);
   color: var(--8-gray);
   border-radius: 1rem;
+
+  @media screen and (max-width: 768px) {
+    width: 93%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem 1.5rem;
+  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -147,6 +193,14 @@ const ButtonWrapper = styled.div`
   align-items: center;
   gap: 1.4rem;
   margin-block: 2rem;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem 1.5rem;
+    margin-block: 0.1rem;
+  }
 `;
 
 const PopAni = keyframes`
@@ -215,11 +269,19 @@ const Button = styled.div<ButtonProps>`
     }
     background-color: var(--3-gray);
   }
+
+  @media screen and (max-width: 768px) {
+    h3 {
+      font-size: 1.15rem;
+    }
+
+    max-width: ${(props) => (props.$role === 'like' ? '7.1rem' : '100%')};
+  }
 `;
 
 const FaHeartIcon = styled(FaHeart)`
   margin-block: 0.4rem;
-  font-size: 2.2rem;
+  font-size: 2rem;
 `;
 
 // 상품 설명 섹션
@@ -227,6 +289,11 @@ const StProductIntroSection = styled.section`
   width: 100%;
   line-height: 3.1rem;
   color: var(--8-gray);
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: 0.3rem 1.5rem;
+  }
 `;
 const StProductIntroTitle = styled.h4`
   width: 100%;
@@ -260,8 +327,6 @@ export {
   StDetailContainer,
   StDetailInfoSection,
   StImageWrapper,
-  StCarouselBox,
-  StImageList,
   StProductInfo,
   StProductInfoHeader,
   StUserTitlebox,
