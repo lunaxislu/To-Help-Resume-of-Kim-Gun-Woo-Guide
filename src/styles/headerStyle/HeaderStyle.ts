@@ -13,8 +13,7 @@ export const HeaderContainer = styled.header`
   } */
 
   width: 100%;
-  padding: 3rem;
-  border: 3px solid #d9d9d9;
+  padding: 3rem 15rem;
 
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -116,6 +115,7 @@ export const Likes = styled.button`
     height: 1.4rem;
   }
 `;
+
 export const Alert = styled.button`
   align-items: center;
   display: flex;
@@ -171,8 +171,12 @@ export const UserIcon = styled.img`
 export const NavSection = styled.section`
   display: flex;
   justify-content: space-between;
-  margin: 0 10rem;
   margin-top: 2.3rem;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: 3rem;
+  }
 `;
 
 export const NavBar = styled.nav`
