@@ -535,6 +535,7 @@ const ProductDetail = () => {
         }
 
         alert('판매가 완료되었습니다');
+        navi('/');
       }
     } else {
       return;
@@ -652,7 +653,7 @@ const ProductDetail = () => {
   return (
     <>
       {showChatList && (
-        <StSelectChatBg>
+        <StSelectChatBg onClick={() => setShowChatList(false)}>
           <StChatList>
             <h1
               style={{
@@ -665,25 +666,38 @@ const ProductDetail = () => {
             >
               구매한 사용자를 선택해주세요
             </h1>
+            {!createdChatList ||
+              (createdChatList.length === 0 && (
+                <h1
+                  style={{
+                    textAlign: 'center',
+                    paddingTop: '7rem',
+                    height: '100%'
+                  }}
+                >
+                  채팅 내역이 없습니다
+                </h1>
+              ))}
             {createdChatList &&
               createdChatList.map((room: RoomType) => {
                 return (
-                  <StChatListItem
-                    key={room.id}
-                    id={room.participants[0].user_id}
-                    onClick={(e) => {
-                      handleSetBuyer(e);
-                      handleSelectedUser(e);
-                    }}
-                  >
-                    <div>{room.participants[0].user_name}</div>
-                  </StChatListItem>
+                  <>
+                    <StChatListItem
+                      key={room.id}
+                      id={room.participants[0].user_id}
+                      onClick={(e) => {
+                        handleSetBuyer(e);
+                        handleSelectedUser(e);
+                      }}
+                    >
+                      <div>{room.participants[0].user_name}</div>
+                    </StChatListItem>
+                    <StConfirmSellBtn onClick={handleSellComplete}>
+                      <span>{selectedUser}</span> 님에게 판매 완료하기
+                    </StConfirmSellBtn>
+                  </>
                 );
               })}
-
-            <StConfirmSellBtn onClick={handleSellComplete}>
-              <span>{selectedUser}</span> 님에게 판매 완료하기
-            </StConfirmSellBtn>
           </StChatList>
         </StSelectChatBg>
       )}
