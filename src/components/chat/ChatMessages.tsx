@@ -1,6 +1,6 @@
 import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
-import type { MessageCompProps } from './types';
+import type { MessageCompProps, MessageType } from './types';
 
 const ChatMessages = ({
   messages,
@@ -16,7 +16,10 @@ const ChatMessages = ({
   return (
     <>
       {messages
-        ?.sort((a: any, b: any) => a.created_at - b.created_at)
+        .sort(
+          (a: MessageType, b: MessageType) =>
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+        )
         .map((msg: any) => {
           return msg.sender_id === curUser?.id ? (
             <div key={msg.id}>

@@ -114,7 +114,7 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
       {activeTab === 3 &&
         communityPosts.map((post) => {
           return (
-            <StPostWrapper key={post.id}>
+            <StPostWrapper key={post.id} to={`/community/detail/${post.id}`}>
               <StPostTitle>{post.title}</StPostTitle>
               <StPostContentsWrapper>
                 {!post.images ? '' : <StPostImage src={post.images} />}
