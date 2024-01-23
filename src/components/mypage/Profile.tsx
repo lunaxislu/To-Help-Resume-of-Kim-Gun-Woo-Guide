@@ -9,6 +9,7 @@ import {
   StProfileButtons,
   StProfileContainer,
   StProfileContentsContainer,
+  StProfileEntireContainer,
   StProfileImage,
   StProfileImageWrapper,
   StProfileSaveButton
@@ -121,7 +122,7 @@ const Profile = () => {
   };
 
   return (
-    <>
+    <StProfileEntireContainer>
       <StProfileButtonContainer>
         {isEditing ? (
           <StProfileButtonWrapper>
@@ -182,7 +183,7 @@ const Profile = () => {
           </StProfileContainer>
         );
       })}
-    </>
+    </StProfileEntireContainer>
   );
 };
 

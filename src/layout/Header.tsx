@@ -134,10 +134,14 @@ const Header = () => {
             ''
           )}
           {isLogin ? (
-            <St.UserIcon
-              src={`${avatarUrl}`}
-              onClick={handleMyPageButtonClick}
-            />
+            <>
+              <St.UserIcon
+                src={`${avatarUrl}`}
+                onClick={handleMyPageButtonClick}
+              />
+              <St.MobileSearchIcon src="/assets/mobile_search.svg" />
+              <St.HamburgerMenu src="/assets/hamburger.svg" />
+            </>
           ) : (
             <St.Button onClick={handleNavigateToLogin}>
               로그인/회원가입
