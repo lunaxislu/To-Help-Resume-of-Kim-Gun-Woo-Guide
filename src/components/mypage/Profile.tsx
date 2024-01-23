@@ -38,6 +38,7 @@ const Profile = () => {
     queryFn: () => getUserProfile(userId)
   });
 
+  console.log(user);
   // profile 수정 버튼
   const editProfileHandler = () => {
     setIsEditing(true);
