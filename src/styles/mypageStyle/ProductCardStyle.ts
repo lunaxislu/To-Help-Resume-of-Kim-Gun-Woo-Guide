@@ -7,6 +7,18 @@ export const StCardContainer = styled.div`
   flex-wrap: wrap;
   gap: 1.5rem;
   margin: 2rem auto;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 export const StCardWrapper = styled(Link)`

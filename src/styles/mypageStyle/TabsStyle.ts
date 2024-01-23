@@ -6,7 +6,14 @@ export const TabsContainer = styled.ul`
   cursor: pointer;
   border-radius: 0.8rem;
   margin: 5rem auto;
-  gap: 2.5rem;
+  gap: 3.5rem;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 `;
 
 export const Tab = styled.li<{ active: number }>`
