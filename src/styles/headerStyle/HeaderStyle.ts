@@ -1,3 +1,4 @@
+import { BiWon } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -56,6 +57,9 @@ export const Sell = styled.button`
     font-size: var(--fontSize-H5);
     line-height: 2.6768rem;
   }
+`;
+export const StyledIcon = styled(BiWon)`
+  color: red;
 `;
 export const Likes = styled.button`
   align-items: center;

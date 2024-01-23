@@ -21,25 +21,26 @@ const SearchResults: React.FC = () => {
   const [communityItemsWithImages, setCommunityItemsWithImages] = useState<
     Communityy[]
   >([]);
+  const nav = performance.getEntriesByType('navigation')[1];
 
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        // 세션 스토리지에서 이전에 저장한 데이터 가져오기
+        // 로컬 스토리지에서 이전에 저장한 데이터 가져오기
         const storedUsedItems = JSON.parse(
-          sessionStorage.getItem('usedItems') || '[]'
+          localStorage.getItem('usedItems') || '[]'
         );
         const storedCommunityItems = JSON.parse(
-          sessionStorage.getItem('communityItems') || '[]'
+          localStorage.getItem('communityItems') || '[]'
         );
-        if (window.performance.navigation.type === 1) {
+        if (nav) {
           if (storedUsedItems.length > 0 || storedCommunityItems.length > 0) {
             setUsedItemsWithImages(storedUsedItems);
             setCommunityItemsWithImages(storedCommunityItems);
             return; // 데이터를 가져왔다면 여기서 중단
           }
         }
-        // 세션 스토리지에 저장된 데이터가 있으면 사용
+        // 로컬 스토리지에 저장된 데이터가 있으면 사용
         if (storedUsedItems.length > 0 || storedCommunityItems.length > 0) {
           setUsedItemsWithImages(storedUsedItems);
           setCommunityItemsWithImages(storedCommunityItems);
@@ -65,9 +66,9 @@ const SearchResults: React.FC = () => {
             })
           );
 
-          // Supabase에서 가져온 데이터를 세션 스토리지에 저장
-          sessionStorage.setItem('usedItems', JSON.stringify(usedItemsImages));
-          sessionStorage.setItem(
+          // Supabase에서 가져온 데이터를 로컬 스토리지에 저장
+          localStorage.setItem('usedItems', JSON.stringify(usedItemsImages));
+          localStorage.setItem(
             'communityItems',
             JSON.stringify(communityItemsImages)
           );
@@ -95,7 +96,7 @@ const SearchResults: React.FC = () => {
   useEffect(() => {
     // 검색어가 있으면 세션 스토리지에 저장
     if (searchQuery) {
-      sessionStorage.setItem('searchQuery', searchQuery);
+      localStorage.setItem('searchQuery', searchQuery);
     }
   }, [searchQuery]);
 

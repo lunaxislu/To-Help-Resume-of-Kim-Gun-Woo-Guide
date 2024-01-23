@@ -20,9 +20,9 @@ const SearchBar: React.FC = () => {
   };
 
   const handleSearch = async () => {
-    // 세션 스토리지 지우는 로직(엔터키, 검색버튼 눌렀을 때 모두 지워지도록)
-    sessionStorage.removeItem('usedItems');
-    sessionStorage.removeItem('communityItems');
+    // 로컬 스토리지 지우는 로직(엔터키, 검색버튼 눌렀을 때 모두 지워지도록)
+    localStorage.removeItem('usedItems');
+    localStorage.removeItem('communityItems');
 
     // 공란 일 때 실행 안함.
     if (!searchQuery.trim()) {
