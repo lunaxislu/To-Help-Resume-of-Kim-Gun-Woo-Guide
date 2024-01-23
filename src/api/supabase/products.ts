@@ -3,13 +3,15 @@ export interface LikeUser {
   user_uid: string;
 }
 export interface Product {
-  id: number;
+  id: string;
   quality: string;
   title: string;
   price: number;
   user: string;
   image_url: string;
   like_user: LikeUser[];
+  about: string;
+  isSell: boolean;
 }
 
 export interface ProductCardProps {

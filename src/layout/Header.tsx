@@ -6,6 +6,9 @@ import { setSuccessLogin, setSuccessLogout } from '../redux/modules/authSlice';
 import { setSearchQuery, setSearchResults } from '../redux/modules/searchSlice';
 import { useAppDispatch, useAppSelector } from '../redux/reduxHooks/reduxBase';
 import * as St from '../styles/headerStyle/HeaderStyle';
+import useSupabaseRealtime from './alertQeury';
+import AlertComp from './AlertComp';
+import { useSupabaseRealtimeContext } from '../context/realtimeData';
 
 interface User {
   username: string;
@@ -103,6 +106,12 @@ const Header = () => {
   useEffect(() => {
     getAuth();
   }, []);
+
+  const { realtimeData, setRealtimeData } = useSupabaseRealtimeContext();
+
+  useEffect(() => {
+    console.log(realtimeData);
+  }, [realtimeData]);
 
   return (
     <St.HeaderContainer>

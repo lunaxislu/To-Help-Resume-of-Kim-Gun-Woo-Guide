@@ -35,12 +35,13 @@ const ProductDetail = () => {
     // DB에 유저 정보 없음 에러
     if (error) console.log('cannot get User Info');
 
+    console.log(user.user);
     // DB에 유저 정보가 있다면 DB에 업로드
     if (user.user) {
       const { data: currentLogined, error } = await supabase
         .from('user')
         .select('*')
-        .eq('uid', user.user.id);
+        .eq('id', user.user.id);
 
       // 현재 로그인 유저의 데이터가 있다면
       if (currentLogined && currentLogined.length > 0) {
@@ -52,6 +53,7 @@ const ProductDetail = () => {
       await findRoom();
     }
   };
+
   const getProduct = async (id: string) => {
     let { data: products, error } = await supabase
       .from('products')
@@ -118,6 +120,7 @@ const ProductDetail = () => {
     await sendFirstMessage();
   };
 
+  console.log(curUser);
   // 유저가 속한 채팅방 찾기
   const findRoom = async () => {
     const { data: foundRoom, error } = await supabase
@@ -558,6 +561,21 @@ const ProductDetail = () => {
     }
   };
 
+  const handleDeletePost = async () => {
+    if (window.confirm('정말 삭제하시겠습니까?') === true) {
+      const { error } = await supabase.from('products').delete().eq('id', id);
+
+      if (error) console.log('삭제 실패!');
+
+      if (!error) {
+        alert('삭제 완료!');
+        navi('/');
+      }
+    } else {
+      return;
+    }
+  };
+
   useEffect(() => {
     if (id) {
       getProduct(id);
@@ -631,64 +649,6 @@ const ProductDetail = () => {
     );
   }
 
-  const StSelectChatBg = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #1d1d1d90;
-    z-index: 2;
-  `;
-
-  const StChatList = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 36rem;
-    height: 25rem;
-    background: var(--3-gray);
-    color: var(--opc-100);
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  `;
-
-  const StChatListItem = styled.div`
-    padding: 2rem 1rem;
-    height: 100%;
-
-    cursor: pointer;
-
-    &:hover {
-      color: var(--3-gray);
-      background-color: var(--opc-100);
-    }
-  `;
-
-  const StConfirmSellBtn = styled.button`
-    padding: 1rem;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    background-color: var(--opc-80);
-    border-radius: 0.8rem;
-    margin-block: 1rem;
-    cursor: pointer;
-
-    &:hover {
-      background-color: var(--opc-100);
-      color: var(--3-gray);
-    }
-
-    span {
-      font-size: 2rem;
-      font-weight: 600;
-    }
-  `;
   return (
     <>
       {showChatList && (
@@ -777,12 +737,9 @@ const ProductDetail = () => {
               />
               {/* 판매자에게 보여지는 버튼 */}
             </St.StProductInfoBody>
-            {id === curUser?.id ? (
+            {product[0].post_user_uid === curUser?.uid ? (
               <St.ButtonWrapper>
-                <St.Button
-                  $role="chat"
-                  onClick={() => alert('개발 중인 기능입니다!')}
-                >
+                <St.Button $role="chat" onClick={handleDeletePost}>
                   <h3>게시물 삭제</h3>
                 </St.Button>
                 <St.Button
@@ -827,7 +784,7 @@ const ProductDetail = () => {
                   </St.Button>
                 )}
 
-                {/* 게시물 아닌 사람이 보이는 버튼 */}
+                {/* 게시물 작성자가 아닌 사람이 보이는 버튼 */}
                 {/* 작성자 ID 가져오기 */}
                 {isExist ? (
                   <St.Button $role="chat" onClick={() => navi('/chat')}>
@@ -860,5 +817,64 @@ const ProductDetail = () => {
     </>
   );
 };
+
+const StSelectChatBg = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #1d1d1d90;
+  z-index: 2;
+`;
+
+const StChatList = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36rem;
+  height: 25rem;
+  background: var(--3-gray);
+  color: var(--opc-100);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+const StChatListItem = styled.div`
+  padding: 2rem 1rem;
+  height: 100%;
+
+  cursor: pointer;
+
+  &:hover {
+    color: var(--3-gray);
+    background-color: var(--opc-100);
+  }
+`;
+
+const StConfirmSellBtn = styled.button`
+  padding: 1rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  background-color: var(--opc-80);
+  border-radius: 0.8rem;
+  margin-block: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--opc-100);
+    color: var(--3-gray);
+  }
+
+  span {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+`;
 
 export default ProductDetail;

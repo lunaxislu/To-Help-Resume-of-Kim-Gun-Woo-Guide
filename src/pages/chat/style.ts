@@ -129,6 +129,7 @@ const StListRoom = styled.div<RoomStyledProps>`
   &:hover {
     background-color: var(--3-gray);
   }
+  position: relative;
 `;
 
 const StListUpper = styled.div`

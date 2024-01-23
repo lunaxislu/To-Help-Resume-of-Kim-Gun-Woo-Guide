@@ -3,6 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 import { Outlet, useLocation } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
+import { SupabaseRealtimeProvider } from '../context/realtimeData';
 
 const Layout = () => {
   const location = useLocation();
@@ -38,10 +39,12 @@ const Layout = () => {
 
   return (
     <>
-      <Header />
-      <Outlet />
-      {showTopbutton && <ScrollTopButton />}
-      <Footer />
+      <SupabaseRealtimeProvider>
+        <Header />
+        <Outlet />
+        {showTopbutton && <ScrollTopButton />}
+        <Footer />
+      </SupabaseRealtimeProvider>
     </>
   );
 };
