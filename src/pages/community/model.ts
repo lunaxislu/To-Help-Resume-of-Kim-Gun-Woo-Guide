@@ -8,7 +8,7 @@ export type Post = {
   nickname: string;
   comment: Comments | null;
   likes: number | null;
-  like_user: { uid: string }[];
+  like_user: string[];
   files: [];
   main_image: string;
   anon: boolean;

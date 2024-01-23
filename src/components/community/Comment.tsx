@@ -54,6 +54,49 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
     null
   ); // 수정 중인 댓글의 인덱스
   const [anon, setAnon] = useState(false);
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    // 사용자가 이미 좋아요를 했는지 확인
+    const userLiked = posts?.[0]?.likes_user?.includes(userId);
+    if (userLiked) {
+      setLiked(true);
+    }
+  }, [posts, userId]);
+
+  const toggleLike = async () => {
+    const newLikedStatus = !liked;
+    setLiked(newLikedStatus);
+
+    // 기본값으로 빈 배열 설정
+    const currentLikeUsers = posts![0]?.likes_user || [];
+
+    const updatedLikes = newLikedStatus ? likes! + 1 : likes! - 1;
+    let updatedLikeUsers;
+    if (newLikedStatus) {
+      updatedLikeUsers = [...currentLikeUsers, userId];
+    } else {
+      updatedLikeUsers = currentLikeUsers.filter((id: string) => id !== userId);
+    }
+
+    try {
+      // Supabase에 업데이트 요청
+      const { error } = await supabase
+        .from('community')
+        .update({ likes: updatedLikes, likes_user: updatedLikeUsers })
+        .eq('post_id', paramId);
+
+      if (error) {
+        throw error;
+      }
+
+      // 쿼리를 무효화하고 다시 가져와서 UI를 업데이트
+      queryClient.invalidateQueries(['posts', paramId]);
+    } catch (error) {
+      console.error('Error updating likes', error);
+      // 에러 처리 로직
+    }
+  };
   useEffect(() => {
     if (!isLoading && posts) {
       setComments(posts[0].comment);
@@ -145,7 +188,9 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
   return (
     <St.Container>
       <St.CountDivTop>
-        <St.LikesIcon className="likes" />
+        <div onClick={toggleLike}>
+          {liked ? <St.LikesIconOn /> : <St.LikesIcon className="likes" />}
+        </div>
         <p>{likes}</p>
 
         <St.CommentIcon className="comment" />

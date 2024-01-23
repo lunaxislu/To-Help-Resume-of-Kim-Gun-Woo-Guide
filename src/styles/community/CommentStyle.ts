@@ -1,4 +1,5 @@
 import { BsChatRightFill } from 'react-icons/bs';
+import { FaThumbsUp } from 'react-icons/fa';
 import { FaRegThumbsUp } from 'react-icons/fa6';
 import styled from 'styled-components';
 export const Name = styled.p`
@@ -14,6 +15,12 @@ export const CommentIcon = styled(BsChatRightFill)`
   /* opacity: 50%; */
 `;
 export const LikesIcon = styled(FaRegThumbsUp)`
+  color: #dbff00;
+  font-size: 1.7rem;
+
+  /* opacity: 50%; */
+`;
+export const LikesIconOn = styled(FaThumbsUp)`
   color: #dbff00;
   font-size: 1.7rem;
 
