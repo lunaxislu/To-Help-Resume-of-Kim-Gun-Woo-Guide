@@ -6,7 +6,9 @@ import { setSuccessLogin, setSuccessLogout } from '../redux/modules/authSlice';
 import { setSearchQuery, setSearchResults } from '../redux/modules/searchSlice';
 import { useAppDispatch, useAppSelector } from '../redux/reduxHooks/reduxBase';
 import * as St from '../styles/headerStyle/HeaderStyle';
-
+import { BiWon } from 'react-icons/bi';
+import { BiSolidHeart } from 'react-icons/bi';
+import { BiSolidBell } from 'react-icons/bi';
 interface User {
   username: string;
 }
@@ -112,12 +114,12 @@ const Header = () => {
         />
         <St.ButtonContainer>
           <St.Sell onClick={handleSellbuttonClick}>
-            <img src="/assets/sell.png" alt="sellIcon" />
+            <BiWon className="sellbtn" />
             <p>판매하기</p>
           </St.Sell>
           {isLogin ? (
             <St.Likes>
-              <img src="/assets/headerlikes.png" alt="likeIcon" />
+              <BiSolidHeart className="mylikes" />
               <p>찜</p>
             </St.Likes>
           ) : (
@@ -125,7 +127,7 @@ const Header = () => {
           )}
           {isLogin ? (
             <St.Alert>
-              <img src="assets/alert.png" alt="alertIcon" />
+              <BiSolidBell className="myAlarm" />
               <p>알림</p>
             </St.Alert>
           ) : (
