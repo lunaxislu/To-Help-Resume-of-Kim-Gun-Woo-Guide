@@ -8,16 +8,15 @@ export const StCardContainer = styled.div`
   gap: 1.5rem;
   margin: 2rem auto;
 
-  @media screen and (max-width: 1024px) {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
   @media screen and (max-width: 768px) {
+    /* width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; */
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    padding: 0 2rem;
   }
 `;
 
@@ -37,6 +36,10 @@ export const StCardWrapper = styled(Link)`
   &:visited {
     text-decoration: none;
   }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const StProductQuality = styled.p`
@@ -53,17 +56,31 @@ export const StProductQuality = styled.p`
 
 export const StProductImage = styled.img`
   object-fit: cover;
-  width: 20.8rem;
+  /* width: 20.8rem; */
   height: 20.8rem;
   border-style: none;
   border-radius: 0.6rem;
+
+  @media screen and (max-width: 768px) {
+    object-fit: cover;
+    width: 100%;
+    height: 14rem;
+  }
 `;
 
 export const StProductTitle = styled.p`
   margin-top: 1rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
 `;
 
 export const StProductPrice = styled.p`
   font-weight: bold;
   margin-top: 1rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
 `;
