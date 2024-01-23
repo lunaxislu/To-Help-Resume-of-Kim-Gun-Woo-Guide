@@ -98,6 +98,13 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
     setIsLoading(false);
   };
 
+  const handleText = (content: string): string => {
+    // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
+    const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
+
+    return textOnly;
+  };
+
   useEffect(() => {
     if (isInView) {
       loadMorePosts(offset);
@@ -118,7 +125,7 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
               <StPostTitle>{post.title}</StPostTitle>
               <StPostContentsWrapper>
                 {!post.images ? '' : <StPostImage src={post.images} />}
-                <StPostContent>{post.content}</StPostContent>
+                <StPostContent>{handleText(post.content)}</StPostContent>
               </StPostContentsWrapper>
 
               <StIconAndDateWrapper>
