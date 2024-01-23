@@ -155,7 +155,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
               <p>{product.user}</p>
               <p>{product.title}</p>
 
-              <StProductPrice>{product.price}원</StProductPrice>
+              <StProductPrice>
+                {product.price.toLocaleString('ko-KR')}원
+              </StProductPrice>
             </StCardWrapper>
           );
         })}
@@ -179,7 +181,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
                 <StProductQuality>{product.quality}</StProductQuality>
                 <p>{product.user}</p>
                 <p>{product.title}</p>
-                <StProductPrice>{product.price}원</StProductPrice>
+                <StProductPrice>
+                  {product.price.toLocaleString('ko-KR')}원
+                </StProductPrice>
               </StCardWrapper>
             </>
           );
@@ -204,7 +208,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
                 <StProductQuality>{product.quality}</StProductQuality>
                 <p>{product.user}</p>
                 <p>{product.title}</p>
-                <StProductPrice>{product.price}원</StProductPrice>
+                <StProductPrice>
+                  {product.price.toLocaleString('ko-KR')}원
+                </StProductPrice>
               </StCardWrapper>
             </>
           );
