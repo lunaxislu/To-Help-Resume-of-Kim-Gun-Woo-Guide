@@ -1,5 +1,21 @@
 import styled from 'styled-components';
 
+export const StProfileEntireContainer = styled.div`
+  width: 111.6rem;
+  flex-direction: column;
+  display: flex;
+  flex-wrap: wrap;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    padding: 0 2rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    justify-content: space-between;
+  }
+`;
+
 // 버튼 스타일
 export const StProfileButtonContainer = styled.div`
   display: flex;
@@ -11,7 +27,7 @@ export const StProfileButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: end;
-  gap: 1rem;
+  gap: 2rem;
 `;
 
 export const StProfileButtons = styled.a`
@@ -39,7 +55,6 @@ export const StProfileSaveButton = styled.a`
 export const StProfileContainer = styled.div`
   display: flex;
   align-items: center;
-  margin: 2rem 0;
   gap: 5rem;
   padding-bottom: 5rem;
   border-bottom: 1px solid var(--5-gray);
@@ -57,10 +72,14 @@ export const StProfileImage = styled.img`
   width: 18rem;
   height: 18rem;
   border-radius: 50%;
+
+  @media screen and (max-width: 768px) {
+    width: 7rem;
+    height: 7rem;
+  }
 `;
 
 export const StFileUploadInput = styled.input`
-  width: 9rem;
   display: none;
 `;
 
@@ -83,6 +102,10 @@ export const StProfileContentsContainer = styled.div`
 export const StContent = styled.p`
   color: var(--11-gray);
   text-align: left;
+
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
 `;
 
 export const StNicknameInput = styled.input`

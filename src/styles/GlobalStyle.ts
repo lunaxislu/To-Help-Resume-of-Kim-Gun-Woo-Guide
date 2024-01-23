@@ -111,11 +111,13 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
+    /* max-width: 1200px ; */
 	line-height: 1;
     font-size: 1.6rem;
     background-color: #131313;
     font-family: 'Pretendard-Medium';
     color: #F8F8F8;
+    /* margin: 0 auto; */
 }
 ol, ul {
 	list-style: none;
@@ -141,7 +143,7 @@ html {
 
 * {
     padding: 0;
-    margin: 0;
+    margin: 0 ;
     box-sizing: border-box;
 }
 `;

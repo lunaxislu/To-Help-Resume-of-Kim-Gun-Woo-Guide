@@ -163,6 +163,8 @@ const Home = () => {
                       fillOpacity="0.7"
                     />
                   </svg>
+                  <span className="likescount">{item.likes}</span>
+
                   <svg
                     className="commentss"
                     width="12"
@@ -177,6 +179,7 @@ const Home = () => {
                       fill-opacity="0.7"
                     />
                   </svg>
+                  <span>{item.comment.length}</span>
                   <h4>{parseDate(item.created_at)}</h4>
                 </div>
               </ComunityList>
@@ -420,11 +423,26 @@ const ComunityList = styled.li`
     width: 2rem;
     height: 2rem;
   }
+  .likescount {
+    position: absolute;
+    text-decoration: none;
+    bottom: 1.4rem;
+    left: 5rem;
+    color: var(--6, #717171);
+  }
   .commentss {
     position: absolute;
     bottom: 1.4rem;
-    left: 7rem;
+    left: 10rem;
     width: 2rem;
     height: 2rem;
+  }
+
+  span {
+    position: absolute;
+    text-decoration: none;
+    bottom: 1.4rem;
+    left: 13rem;
+    color: var(--6, #717171);
   }
 `;

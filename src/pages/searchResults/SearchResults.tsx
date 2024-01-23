@@ -21,25 +21,26 @@ const SearchResults: React.FC = () => {
   const [communityItemsWithImages, setCommunityItemsWithImages] = useState<
     Communityy[]
   >([]);
+  const nav = performance.getEntriesByType('navigation')[1];
 
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        // 세션 스토리지에서 이전에 저장한 데이터 가져오기
+        // 로컬 스토리지에서 이전에 저장한 데이터 가져오기
         const storedUsedItems = JSON.parse(
-          sessionStorage.getItem('usedItems') || '[]'
+          localStorage.getItem('usedItems') || '[]'
         );
         const storedCommunityItems = JSON.parse(
-          sessionStorage.getItem('communityItems') || '[]'
+          localStorage.getItem('communityItems') || '[]'
         );
-        if (window.performance.navigation.type === 1) {
+        if (nav) {
           if (storedUsedItems.length > 0 || storedCommunityItems.length > 0) {
             setUsedItemsWithImages(storedUsedItems);
             setCommunityItemsWithImages(storedCommunityItems);
             return; // 데이터를 가져왔다면 여기서 중단
           }
         }
-        // 세션 스토리지에 저장된 데이터가 있으면 사용
+        // 로컬 스토리지에 저장된 데이터가 있으면 사용
         if (storedUsedItems.length > 0 || storedCommunityItems.length > 0) {
           setUsedItemsWithImages(storedUsedItems);
           setCommunityItemsWithImages(storedCommunityItems);
@@ -65,9 +66,9 @@ const SearchResults: React.FC = () => {
             })
           );
 
-          // Supabase에서 가져온 데이터를 세션 스토리지에 저장
-          sessionStorage.setItem('usedItems', JSON.stringify(usedItemsImages));
-          sessionStorage.setItem(
+          // Supabase에서 가져온 데이터를 로컬 스토리지에 저장
+          localStorage.setItem('usedItems', JSON.stringify(usedItemsImages));
+          localStorage.setItem(
             'communityItems',
             JSON.stringify(communityItemsImages)
           );
@@ -95,7 +96,7 @@ const SearchResults: React.FC = () => {
   useEffect(() => {
     // 검색어가 있으면 세션 스토리지에 저장
     if (searchQuery) {
-      sessionStorage.setItem('searchQuery', searchQuery);
+      localStorage.setItem('searchQuery', searchQuery);
     }
   }, [searchQuery]);
 
@@ -202,6 +203,7 @@ const SearchResults: React.FC = () => {
                         fill-opacity="0.7"
                       />
                     </svg>
+                    <span className="likescount">{item.likes}</span>
                     <svg
                       className="commentss"
                       width="12"
@@ -216,6 +218,7 @@ const SearchResults: React.FC = () => {
                         fill-opacity="0.7"
                       />
                     </svg>
+                    <span>{item.comment.length}</span>
                     <h4>{parseDate(item.created_at)}</h4>
                   </div>
                 </PostList>
@@ -464,8 +467,22 @@ const PostList = styled.li`
   .commentss {
     position: absolute;
     bottom: 1.4rem;
-    left: 7rem;
+    left: 10rem;
     width: 2rem;
     height: 2rem;
+  }
+  .likescount {
+    position: absolute;
+    text-decoration: none;
+    bottom: 1.4rem;
+    left: 5rem;
+    color: var(--6, #717171);
+  }
+  span {
+    position: absolute;
+    text-decoration: none;
+    bottom: 1.4rem;
+    left: 13rem;
+    color: var(--6, #717171);
   }
 `;
