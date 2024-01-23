@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import styled from 'styled-components';
-
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 interface InfiniteCarouselProps {
   carouselImages: string[];
 }
@@ -63,10 +63,14 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
       </Slider>
       <CarouselButtons>
         <ArrowButton onClick={previous}>
-          <img src={'/assets/goprev.png'} alt={'pre-arrow'} />
+          <ColoredIcon>
+            <FaChevronLeft />
+          </ColoredIcon>
         </ArrowButton>
         <ArrowButton onClick={next}>
-          <img src={'/assets/gonext.png'} alt={'next-arrow'} />
+          <ColoredIcon>
+            <FaChevronRight className="rightarrow" />
+          </ColoredIcon>
         </ArrowButton>
       </CarouselButtons>
     </CarouselContainer>
@@ -132,12 +136,27 @@ const CarouselButtons = styled.div`
   box-sizing: border-box;
 `;
 
-const ArrowButton = styled.div`
-  img {
-    width: 5rem;
-    height: 5rem;
+const ArrowButton = styled.button`
+  background: none;
+  border: none;
+`;
+const ColoredIcon = styled.div`
+  display: inline-block;
+  position: relative;
+  width: 5rem;
+  height: 5rem;
+  background-color: rgba(255, 255, 255, 0.6);
+
+  border-radius: 50%;
+
+  svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    fill: var(--opc-100);
+    width: 2rem; /* 아이콘의 전체 크기를 설정합니다. */
+    height: 2rem;
     cursor: pointer;
-    user-select: none;
-    margin-right: 1.5rem;
   }
 `;

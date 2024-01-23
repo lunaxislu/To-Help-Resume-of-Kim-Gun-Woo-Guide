@@ -1,14 +1,19 @@
 import styled from 'styled-components';
 
 export const TabsContainer = styled.ul`
-  background-color: bagie;
+  width: 111.6rem;
   display: flex;
   cursor: pointer;
-
-  padding: 2rem;
   border-radius: 0.8rem;
-  margin: 2rem 0;
-  gap: 2rem;
+  margin: 5rem auto;
+  gap: 3.5rem;
+
+  @media screen and (max-width: 1024px) {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 `;
 
 export const Tab = styled.li<{ active: number }>`

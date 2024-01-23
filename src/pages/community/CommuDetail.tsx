@@ -19,6 +19,7 @@ const CommuDetail: React.FC = () => {
   const navigate = useNavigate();
   const [isEditState, setIsEditState] = useState(false);
   const [userId, setUserId] = useState('');
+
   useEffect(() => {
     const fetchData = async () => {
       try {

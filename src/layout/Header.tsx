@@ -6,7 +6,9 @@ import { setSuccessLogin, setSuccessLogout } from '../redux/modules/authSlice';
 import { setSearchQuery, setSearchResults } from '../redux/modules/searchSlice';
 import { useAppDispatch, useAppSelector } from '../redux/reduxHooks/reduxBase';
 import * as St from '../styles/headerStyle/HeaderStyle';
-
+import { BiWon } from 'react-icons/bi';
+import { BiSolidHeart } from 'react-icons/bi';
+import { BiSolidBell } from 'react-icons/bi';
 interface User {
   username: string;
 }
@@ -36,12 +38,12 @@ const Header = () => {
     if (isLogin) {
       navigate('/productsposts');
     } else {
-      navigate('/login');
+      navigate('/login/login');
     }
     if (isLogin) {
       navigate('/productsposts');
     } else {
-      navigate('/login');
+      navigate('/login/login');
     }
   };
 
@@ -50,7 +52,7 @@ const Header = () => {
     handlePageChange();
   };
   const handleNavigateToLogin = () => {
-    navigate('/login');
+    navigate('/login/login');
   };
 
   // 로그아웃 버튼
@@ -112,12 +114,12 @@ const Header = () => {
         />
         <St.ButtonContainer>
           <St.Sell onClick={handleSellbuttonClick}>
-            <img src="/assets/sell.png" alt="sellIcon" />
+            <BiWon className="sellbtn" />
             <p>판매하기</p>
           </St.Sell>
           {isLogin ? (
             <St.Likes>
-              <img src="/assets/headerlikes.png" alt="likeIcon" />
+              <BiSolidHeart className="mylikes" />
               <p>찜</p>
             </St.Likes>
           ) : (
@@ -125,17 +127,21 @@ const Header = () => {
           )}
           {isLogin ? (
             <St.Alert>
-              <img src="assets/alert.png" alt="alertIcon" />
+              <BiSolidBell className="myAlarm" />
               <p>알림</p>
             </St.Alert>
           ) : (
             ''
           )}
           {isLogin ? (
-            <St.UserIcon
-              src={`${avatarUrl}`}
-              onClick={handleMyPageButtonClick}
-            />
+            <>
+              <St.UserIcon
+                src={`${avatarUrl}`}
+                onClick={handleMyPageButtonClick}
+              />
+              <St.MobileSearchIcon src="/assets/mobile_search.svg" />
+              <St.HamburgerMenu src="/assets/hamburger.svg" />
+            </>
           ) : (
             <St.Button onClick={handleNavigateToLogin}>
               로그인/회원가입

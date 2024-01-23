@@ -1,19 +1,33 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const StPostContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  gap: 2rem;
+
+  @media screen and (max-width: 1024px) {
+    padding: 0 2rem;
+    gap: 2rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    padding: 0 2rem;
+  }
 `;
 
-export const StPostWrapper = styled.div`
+export const StPostWrapper = styled(Link)`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  height: 19.5rem;
   gap: 1.5rem;
-  background: #1f1f1f;
+  background: var(--2-gray);
   border-radius: 1rem;
   padding: 3rem;
+  text-decoration: none;
 
   & span {
     color: #9d9d9d;
@@ -24,6 +38,11 @@ export const StPostWrapper = styled.div`
 export const StPostTitle = styled.p`
   font-size: 1.8rem;
   color: #f8f8f8;
+  font-weight: var(--fontWeight-bold);
+
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H5);
+  }
 `;
 
 export const StPostContentsWrapper = styled.div`
@@ -40,21 +59,35 @@ export const StPostImage = styled.img`
 
 export const StPostContent = styled.p`
   font-size: 1.4rem;
-  color: #b6b6b6;
+  color: var(--8-gray);
+
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
 `;
 
 export const StIconAndDateWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 export const StIconContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+
   & span {
     margin-right: 0.5rem;
   }
 `;
 
 export const StPostDate = styled.p`
-  color: #717171;
-  font-size: 1.2rem;
+  color: var(--6-gray);
+  font-size: var(--fontSize-H6);
+
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;

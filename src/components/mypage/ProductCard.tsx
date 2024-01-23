@@ -155,7 +155,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
               <p>{product.user}</p>
               <p>{product.title}</p>
 
-              <StProductPrice>{product.price}원</StProductPrice>
+              <StProductPrice>
+                {product.price.toLocaleString('ko-KR')}원
+              </StProductPrice>
             </StCardWrapper>
           );
         })}
@@ -172,14 +174,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
               >
                 <StProductImage
                   src={
-                    'https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?q=80&w=1911&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                    product.image_url !== null &&
+                    product.image_url !== undefined
+                      ? product.image_url[0]
+                      : ''
                   }
                   alt=""
                 />
                 <StProductQuality>{product.quality}</StProductQuality>
                 <p>{product.user}</p>
                 <p>{product.title}</p>
-                <StProductPrice>{product.price}원</StProductPrice>
+                <StProductPrice>
+                  {product.price.toLocaleString('ko-KR')}원
+                </StProductPrice>
               </StCardWrapper>
             </>
           );
@@ -197,14 +204,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
               >
                 <StProductImage
                   src={
-                    'https://images.unsplash.com/photo-1632516643720-e7f5d7d6ecc9?q=80&w=1911&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                    product.image_url !== null &&
+                    product.image_url !== undefined
+                      ? product.image_url[0]
+                      : ''
                   }
                   alt=""
                 />
                 <StProductQuality>{product.quality}</StProductQuality>
                 <p>{product.user}</p>
                 <p>{product.title}</p>
-                <StProductPrice>{product.price}원</StProductPrice>
+                <StProductPrice>
+                  {product.price.toLocaleString('ko-KR')}원
+                </StProductPrice>
               </StCardWrapper>
             </>
           );

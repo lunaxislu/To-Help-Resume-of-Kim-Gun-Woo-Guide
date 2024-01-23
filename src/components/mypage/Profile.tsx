@@ -9,6 +9,7 @@ import {
   StProfileButtons,
   StProfileContainer,
   StProfileContentsContainer,
+  StProfileEntireContainer,
   StProfileImage,
   StProfileImageWrapper,
   StProfileSaveButton
@@ -38,6 +39,7 @@ const Profile = () => {
     queryFn: () => getUserProfile(userId)
   });
 
+  console.log(user);
   // profile 수정 버튼
   const editProfileHandler = () => {
     setIsEditing(true);
@@ -120,7 +122,7 @@ const Profile = () => {
   };
 
   return (
-    <>
+    <StProfileEntireContainer>
       <StProfileButtonContainer>
         {isEditing ? (
           <StProfileButtonWrapper>
@@ -181,7 +183,7 @@ const Profile = () => {
           </StProfileContainer>
         );
       })}
-    </>
+    </StProfileEntireContainer>
   );
 };
 
