@@ -1,12 +1,11 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import AddressBtn from './AddressBtn';
-import { ProductsInputType, AddressValueType } from '../ProductsType';
+import { ProductsInputType, AddressValueType, ProductsInputFinalType } from '../ProductsType';
 import ProductsImage from './ProductsImage';
 import { useNavigate } from 'react-router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as St from '../../../styles/products/ProductsPostsStyle'
-import { ProfileObject } from '../../../pages/community/model';
 
 const AddressInit: AddressValueType = {
   address: "",
@@ -63,8 +62,40 @@ const caveat = `
   불순한 의도는 처벌을 피할 수 없습니다.
   불순한 의도는 처벌을 피할 수 없습니다.`;
 
+const InputDefaultValue = {
+  title: '',
+  category: [],
+  shipping_cost: '',
+  deal_type: '',
+  address: '',
+  detailAddress: '',
+  quality: '',
+  changable: '',
+  exchange_product: '',
+  contents: '',
+  tags: '',
+  image_url: ''
+}
+
+const initialState = {
+  post_user_uid: "",
+  post_user_name: "",
+  nickname: "",
+}
+
 const ProductsWriteForm = () => {
   const navigate = useNavigate();
+
+  // image url
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string[]>([]);
+
+  // address value
+  const [addressValue, setAddressValue] = useState(AddressInit)
+  
+  const handleOnChangeAddressValue = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setAddressValue({ ...addressValue, [name]: value });
+  };
 
   // react-hook-form
   const {
@@ -72,26 +103,14 @@ const ProductsWriteForm = () => {
     handleSubmit,
     watch,
     getValues,
+    setError,
+    setValue,
     formState: {errors, isSubmitting}} = useForm<ProductsInputType>({
-      mode: 'onSubmit',
-    defaultValues: {
-      title: '',
-      category: [],
-      shipping_cost: '',
-      deal_type: '',
-      address: '',
-      detailAddress: '',
-      quality: '',
-      changable: '',
-      exchange_product: '',
-      contents: '',
-      tags: '',
-      image_url: ''
-    }
+      mode: 'onBlur',
+    defaultValues: InputDefaultValue
   });
 
-  const [profile, setProfile] = useState<ProfileObject[]>();
-  const [userId, setUserId] = useState('');
+  const [userState, setUserState] = useState(initialState)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,7 +118,7 @@ const ProductsWriteForm = () => {
         const {
           data: { user }
         } = await supabase.auth.getUser();
-        setUserId(user!.id);
+        setUserState(prevState => ({...prevState, post_user_uid: user!.id}));
 
         const { data: profiles, error } = await supabase
           .from('user')
@@ -110,8 +129,10 @@ const ProductsWriteForm = () => {
           console.log(error);
         }
 
-        if (profiles != null) {
-          setProfile(profiles);
+        if (profiles != null && profiles.length > 0) {
+          const userNickname = profiles[0].nickname;
+          const userName = profiles[0].username;
+          setUserState(prevState => ({...prevState, nickname: userNickname, post_user_name: userName}));
         }
       } catch (error: any) {
         console.log(error.message);
@@ -120,9 +141,35 @@ const ProductsWriteForm = () => {
 
     fetchData();
   }, []);
+  
+  const addPosts = async (EntireData: ProductsInputFinalType) => {
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .insert([EntireData]);
+
+      if (data) {
+        console.log(data);
+      }
+
+      if (error) throw error;
+      alert('중고거래 판매글이 등록되었습니다.');
+      navigate('/products');
+    } catch (error) {
+      alert('예상치 못한 문제가 발생하였습니다. 다시 시도하여 주십시오.');
+    }
+  };
+
 
   const onSubmit: SubmitHandler<ProductsInputType> = async (data) => {
     await new Promise((r: any) => setTimeout(r, 1000));
+
+    if (!uploadedFileUrl || uploadedFileUrl.length === 0) {
+      alert('이미지를 업로드해주세요.');
+      window.scrollTo({top:0})
+      return;
+    }
+
     const tagsArray = data.tags.split(',', 9).map((tag) => tag.trim());
     const address = {address: addressValue.address}
     const detailAddress = {detailAddress: addressValue.detailAddress}
@@ -134,40 +181,13 @@ const ProductsWriteForm = () => {
       address: address.address,
       detailAddress: detailAddress.detailAddress,
       image_url: imgUrl.image_url,
-      post_user_uid: userId
-    };
-    console.log(EntireData);
-
-    const addPosts = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('products')
-          .insert([EntireData]);
-
-        if (data) {
-          console.log(data);
-        }
-
-        if (error) throw error;
-        alert('중고거래 판매글이 등록되었습니다.');
-        navigate('/products');
-      } catch (error) {
-        alert('예상치 못한 문제가 발생하였습니다. 다시 시도하여 주십시오.');
-      }
+      post_user_uid: userState.post_user_uid,
+      post_user_name: userState.post_user_name,
+      nickname: userState.nickname,
     };
 
-    addPosts();
-  };
+    addPosts(EntireData);
 
-  // image url
-  const [uploadedFileUrl, setUploadedFileUrl]: any = useState([]);
-
-  // address value
-  const [addressValue, setAddressValue] = useState(AddressInit)
-  
-  const handleOnChangeAddressValue = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setAddressValue({ ...addressValue, [name]: value });
   };
 
   return (
@@ -182,13 +202,11 @@ const ProductsWriteForm = () => {
             message: "최대 40자까지 입력할 수 있습니다."
           }
         })} placeholder='상품명이 들어간 제목을 입력해주세요' />
-        <St.CountText>{watch("title").length}/40</St.CountText>
+        <St.TitleCount>{watch("title").length}/40</St.TitleCount>
       </St.WrapperStyle>
-      {/* <St.WrapperStyle>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <p style={{color: 'red'}}>{errors.title?.message}</p>
-        </div>
-      </St.WrapperStyle> */}
+        <St.Validation>
+          <St.ValidationText>{errors.title?.message === undefined ? '' : '* '+ errors.title?.message}</St.ValidationText>
+        </St.Validation>
 
       <St.WrapperStyle>
         <St.SemiTitle>카테고리<St.Required>*</St.Required></St.SemiTitle>
@@ -202,11 +220,11 @@ const ProductsWriteForm = () => {
           </St.CategoryContainer>
         {/* </div> */}
       </St.WrapperStyle>
-      {/* <St.WrapperStyle>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <p style={{color: 'red'}}>{errors.category?.message}</p>
-        </div>
-      </St.WrapperStyle> */}
+      <St.WrapperStyle>
+        <St.Validation>
+          <St.ValidationText>{errors.category === undefined ? '' : '* '+ errors.category?.message}</St.ValidationText>
+        </St.Validation>
+      </St.WrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>가격<St.Required>*</St.Required></St.SemiTitle>
@@ -225,12 +243,12 @@ const ProductsWriteForm = () => {
           </St.ShippingCostSelectWrapper>
         </St.InputWrapperStyle>
       </St.WrapperStyle>
-      {/* <St.WrapperStyle>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <p style={{color: 'red'}}>{errors.price?.message}</p>
-          <p style={{color: 'red'}}>{errors.shipping_cost?.message}</p>
-        </div>
-      </St.WrapperStyle> */}
+      <St.WrapperStyle>
+        <St.Validation2>
+            <St.ValidationText>{errors.price === undefined ? '' : '* '+ errors.price?.message}</St.ValidationText>
+            <St.ValidationText>{errors.shipping_cost === undefined ? '' : '* '+ errors.shipping_cost?.message}</St.ValidationText>
+        </St.Validation2>
+      </St.WrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>수량<St.Required>*</St.Required></St.SemiTitle>
@@ -240,30 +258,30 @@ const ProductsWriteForm = () => {
           min: 0
         })} placeholder='수량을 입력해주세요'/>
       </St.WrapperStyle>
-      {/* <St.WrapperStyle>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <p style={{color: 'red'}}>{errors.count?.message}</p>
-        </div>
-      </St.WrapperStyle> */}
+      <St.WrapperStyle>
+        <St.Validation>
+          <St.ValidationText>{errors.count === undefined ? '' : '* '+ errors.count?.message}</St.ValidationText>
+        </St.Validation>
+      </St.WrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>거래방식<St.Required>*</St.Required></St.SemiTitle>
         {deal_type.map((deal_type, idx) => 
           <St.InputCheckBoxLabel key={idx} htmlFor={deal_type}>
             <St.InputCheckBoxStyle type='radio' id={deal_type} value={deal_type} 
-            {...register("deal_type", {required: "거래방식을 입력해주세요."})} />{deal_type}</St.InputCheckBoxLabel>
+            {...register("deal_type", {required: "거래방식을 선택해주세요."})} />{deal_type}</St.InputCheckBoxLabel>
         )}
       </St.WrapperStyle>
-      {/* <St.WrapperStyle>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <p style={{color: 'red'}}>{errors.deal_type?.message}</p>
-        </div>
-      </St.WrapperStyle> */}
+      <St.WrapperStyle>
+        <St.Validation>
+          <St.ValidationText>{errors.deal_type === undefined ? '' : '* '+ errors.deal_type?.message}</St.ValidationText>
+        </St.Validation>
+      </St.WrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>직거래 지역</St.SemiTitle>
           <St.InputWrapperStyle>
-          <AddressBtn addressValue={addressValue} setAddressValue={setAddressValue} />
+          <AddressBtn register={register}  addressValue={addressValue} setAddressValue={setAddressValue} />
             <St.GapStyle/>
             <St.AddressInputStyle readOnly type='text' name='address' 
             required={getValues("deal_type") === '직거래' ? true : false} 
@@ -276,6 +294,7 @@ const ProductsWriteForm = () => {
             disabled={getValues("deal_type") === '택배' || getValues("deal_type") === '협의 후 결정'} 
             onChange={handleOnChangeAddressValue} 
             placeholder={getValues("deal_type") === '직거래' ? '상세주소를 기입해주세요.' : ""} />
+            <St.GapStyle2/>
           </St.InputWrapperStyle>
       </St.WrapperStyle>
       
@@ -292,11 +311,11 @@ const ProductsWriteForm = () => {
           {quality.map((quality, idx) => <St.QualityExplanation key={idx}>{quality.shape}</St.QualityExplanation>)}
         </St.QualityWrapper>
       </St.WrapperStyle>
-      {/* <St.WrapperStyle>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <p style={{color: 'red'}}>{errors.quality?.message}</p>
-        </div>
-      </St.WrapperStyle> */}
+      <St.WrapperStyle>
+        <St.Validation>
+          <St.ValidationText>{errors.quality === undefined ? '' : '*' + errors.quality?.message}</St.ValidationText>
+        </St.Validation>
+      </St.WrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>교환<St.Required>*</St.Required></St.SemiTitle>
@@ -308,30 +327,30 @@ const ProductsWriteForm = () => {
                   {...register("changable", {required: "교환 가능 여부를 선택해주세요."})} />{changable}</St.InputCheckBoxLabel>
               )}
             </St.ChangableSelectWrapper>
-            <St.InputStyle type='text' {...register("exchange_product", {
-              required: "교환을 원하는 상품을 입력해주세요."
-            })} placeholder='교환을 원하는 상품을 입력해주세요.' />
+            <St.InputStyle type='text' {...register("exchange_product", {required: getValues("changable") === "가능" ? "교환을 원하는 물품을 입력해주세요." : false})} placeholder='교환을 원하는 상품을 입력해주세요.' />
           </St.InputWrapperStyle>
       </St.WrapperStyle>
-      {/* <St.WrapperStyle>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <p style={{color: 'red'}}>{errors.changable?.message}</p>
-          <p style={{color: 'red'}}>{errors.exchange_product?.message}</p>
-        </div>
-      </St.WrapperStyle> */}
+      <St.WrapperStyle>
+          <St.Validation2>
+            <St.ValidationText>{errors.changable === undefined ? '' : '* '+ errors.changable?.message}</St.ValidationText>
+            <St.ValidationText>{errors.exchange_product === undefined ? '' : '* '+ errors.exchange_product?.message}</St.ValidationText>
+          </St.Validation2>
+      </St.WrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>설명<St.Required>*</St.Required></St.SemiTitle>
-          <St.TextAreaStyle {...register("contents", {
-            required: "내용을 입력해주세요."
-          })} placeholder='물품에 대한 구체적인 설명을 입력해주세요&#13;&#10;tip)설명이 구체적일수록 거래될 확률이 높아져요!' />
-          <St.CountText>{watch("contents").length}/2000</St.CountText>
+          <St.CountWrapper>
+            <St.TextAreaStyle {...register("contents", {
+              required: "내용을 입력해주세요."
+            })} placeholder='물품에 대한 구체적인 설명을 입력해주세요&#13;&#10;tip)설명이 구체적일수록 거래될 확률이 높아져요!' />
+            <St.ContentsCount>{watch("contents").length}/2000</St.ContentsCount>
+          </St.CountWrapper>
       </St.WrapperStyle>
-      {/* <St.WrapperStyle>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <p style={{color: 'red'}}>{errors.contents?.message}</p>
-        </div>
-      </St.WrapperStyle> */}
+      <St.WrapperStyle>
+        <St.Validation>
+          <St.ValidationText>{errors.contents === undefined ? '' : '* '+errors.contents?.message}</St.ValidationText>
+        </St.Validation>
+      </St.WrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>태그</St.SemiTitle>
@@ -347,23 +366,24 @@ const ProductsWriteForm = () => {
           <St.TagsExplanation>상품과 관련 없는 태그를 입력할 경우, 판매에 제재를 받을 수 있어요.</St.TagsExplanation>
         </div>
       </St.WrapperStyle>
-      {/* <St.WrapperStyle>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <p style={{color: 'red'}}>{errors.tags?.message}</p>
-        </div>
-      </St.WrapperStyle> */}
+      <St.WrapperStyle>
+        <St.Validation>
+          <St.ValidationText>{errors.tags === undefined ? '' : '* '+errors.tags?.message}</St.ValidationText>
+        </St.Validation>
+      </St.WrapperStyle>
       <St.CaveatBox>
         <St.CaveatText>{caveat}</St.CaveatText>
-        <label htmlFor='agreement'>
-          <input type='checkbox' id='agreement' {...register("agreement", {
+            <div style={{display: 'flex', flexDirection: 'row', gap: '3rem'}}>
+        <St.InputCheckBoxLabel htmlFor='agreement'>
+          <St.agreementCheckBoxStyle type='checkbox' id='agreement' {...register("agreement", {
           required: "주의사항에 동의를 해주셔야 중고거래 게시물을 등록할 수 있습니다."
-        })} />동의합니다.</label>
+        })} />동의합니다.</St.InputCheckBoxLabel>
+          <St.ValidationText>{errors.agreement === undefined ? '' : '* '+errors.agreement?.message}</St.ValidationText>
+        </div> 
       </St.CaveatBox>
-      {/* <St.WrapperStyle>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-          <p style={{color: 'red'}}>{errors.agreement?.message}</p>
-        </div>
-      </St.WrapperStyle> */}
+      <St.WrapperStyle>
+      </St.WrapperStyle>
+      <St.GapStyle/>
       <St.BtnWrapper>
         <St.WriteBtn type='submit' disabled={isSubmitting}>등록하기</St.WriteBtn>
       </St.BtnWrapper>
