@@ -15,6 +15,19 @@ import {
 import { WriteLayoutProps } from './model';
 // Quill.register('modules/imageActions', ImageActions);
 // Quill.register('modules/imageFormats', ImageFormats);
+const formats = [
+  'header',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'video',
+  'image',
+  'color',
+  'background',
+  'height',
+  'width'
+];
 
 const WriteLayout: React.FC<WriteLayoutProps> = ({
   profile,
@@ -195,22 +208,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         }
       }
     }),
-    []
-  );
-  const formats = useMemo(
-    () => [
-      'header',
-      'bold',
-      'italic',
-      'underline',
-      'strike',
-      'video',
-      'image',
-      'color',
-      'background',
-      'height',
-      'width'
-    ],
     []
   );
 

@@ -124,14 +124,17 @@ const CommuDetail: React.FC = () => {
                       ''
                     )}
                   </St.FeatureArea>
-                  <p>{`${post.comment.length}개의 댓글`}</p>
                 </div>
               );
             })}{' '}
           </div>
 
           <div>
-            <Comment userId={userId} paramId={param.id} />
+            <Comment
+              userId={userId}
+              paramId={param.id}
+              likes={posts![0].likes}
+            />
           </div>
         </St.ContentsContainer>
       )}

@@ -4,7 +4,6 @@ import { fetchPosts } from '../../pages/community/commuQuery';
 import { CommuListProps, Post } from '../../pages/community/model';
 import * as St from '../../styles/community/CommunityListStyle';
 import parseDate from '../../util/getDate';
-
 const CommuList: React.FC<CommuListProps> = ({
   selectCategory
 }: {
@@ -58,8 +57,9 @@ const CommuList: React.FC<CommuListProps> = ({
                 {' '}
                 <St.CommentArea>
                   <St.CommentIcon />
-
                   <p>{post.comment?.length}</p>
+                  <St.LikesIcon />
+                  <p>{post.likes}</p>
                 </St.CommentArea>
                 <div>
                   <p>{parseDate(post.created_at)}</p>

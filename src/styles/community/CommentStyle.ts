@@ -1,6 +1,6 @@
 import { BsChatRightFill } from 'react-icons/bs';
+import { FaRegThumbsUp } from 'react-icons/fa6';
 import styled from 'styled-components';
-
 export const Name = styled.p`
   font-size: var(--fontSize-H5);
 `;
@@ -10,7 +10,14 @@ export const CommentContent = styled.p`
 `;
 export const CommentIcon = styled(BsChatRightFill)`
   color: #dbff00;
-  opacity: 50%;
+
+  /* opacity: 50%; */
+`;
+export const LikesIcon = styled(FaRegThumbsUp)`
+  color: #dbff00;
+  font-size: 1.7rem;
+
+  /* opacity: 50%; */
 `;
 export const CountDiv = styled.div`
   width: 100%;
@@ -27,11 +34,11 @@ export const AnonLabel = styled.label`
 export const CountDivTop = styled.div`
   width: 100%;
   display: flex;
-  justify-content: end;
+  align-items: center;
   gap: 1rem;
   border-bottom: 0.1rem solid var(--12-gray);
-  padding: 1.5rem;
   margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
   font-size: var(--fontSize-H5);
 `;
 export const Container = styled.div`

@@ -1,6 +1,6 @@
 import { BsChatRightFill } from 'react-icons/bs';
+import { FaRegThumbsUp } from 'react-icons/fa6';
 import styled from 'styled-components';
-
 export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -58,6 +58,10 @@ export const CommentArea = styled.div`
   }
 `;
 export const CommentIcon = styled(BsChatRightFill)`
+  color: #dbff00;
+  opacity: 50%;
+`;
+export const LikesIcon = styled(FaRegThumbsUp)`
   color: #dbff00;
   opacity: 50%;
 `;

@@ -74,6 +74,7 @@ export type WriteLayoutProps = {
 export type CommentProps = {
   userId: string;
   paramId: string | undefined;
+  likes: number | undefined;
 };
 export type CommentUpload = {
   updateData: {

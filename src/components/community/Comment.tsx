@@ -14,7 +14,7 @@ import {
   ProfileObject
 } from '../../pages/community/model';
 import parseDate from '../../util/getDate';
-const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
+const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
   const queryClient = useQueryClient();
   useEffect(() => {
     const fetchData = async () => {
@@ -145,9 +145,11 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
   return (
     <St.Container>
       <St.CountDivTop>
-        {' '}
-        <St.CommentIcon />
-        {`${comments.length}`}
+        <St.LikesIcon className="likes" />
+        <p>{likes}</p>
+
+        <St.CommentIcon className="comment" />
+        <p>{`${comments.length}개의 댓글`}</p>
       </St.CountDivTop>
 
       <St.Form onSubmit={updateComment}>
@@ -166,7 +168,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
         </St.AnonLabel>
         <button type="submit">추가</button>
       </St.Form>
-      <St.CountDiv>{`${comments.length}개의 댓글`}</St.CountDiv>
+      {/* <St.CountDiv>{`${comments.length}개의 댓글`}</St.CountDiv> */}
       {comments?.map((comment, index) => {
         const parseTime = parseDate(comment.time);
         return (
