@@ -6,6 +6,7 @@ import { fetchData } from '../../components/main/DataFetch';
 import { Link } from 'react-router-dom';
 import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
 import parseDate from '../../util/getDate';
+import { FaArrowRight } from 'react-icons/fa6';
 type UsedItemsCountData = {
   count: number | null;
   data: {
@@ -78,7 +79,7 @@ const Home = () => {
           </div>
           <LinktoProducts to="/products">
             <p>전체보기</p>
-            <img src="/assets/nav.png" alt="전체보기" />
+            <FaArrowRight />
           </LinktoProducts>
         </div>
 
@@ -119,7 +120,7 @@ const Home = () => {
           <h2>작업자들의 커뮤니티에 함께해볼까요?</h2>
           <CommunityLink to="/community">
             <p>전체보기</p>
-            <img src="/assets/nav.png" alt="전체보기" />
+            <FaArrowRight />
           </CommunityLink>
         </Communitytitle>
         <ComunityWrapper>
@@ -195,7 +196,7 @@ export default Home;
 const HomeContainer = styled.section`
   display: flex;
   width: 144rem;
-  height: 189rem;
+  height: 170rem;
   flex-direction: column;
   margin: 0px auto;
   background-color: var(--1, #0b0b0b);
@@ -243,9 +244,9 @@ const LinktoProducts = styled(Link)`
     background-color: #83ad2e;
     color: #101d1c;
   }
-  img {
-    width: 0.9rem;
-    height: 0.8rem;
+  svg {
+    width: 1rem;
+    height: 0.9rem;
   }
 `;
 
@@ -342,9 +343,9 @@ const CommunityLink = styled(Link)`
     background-color: #83ad2e;
     color: #101d1c;
   }
-  img {
-    width: 0.9rem;
-    height: 0.8rem;
+  svg {
+    width: 1rem;
+    height: 0.9rem;
   }
 `;
 

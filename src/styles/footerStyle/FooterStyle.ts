@@ -5,13 +5,13 @@ export const FooterContainer = styled.div`
   flex-direction: column;
   width: 144rem;
   height: 23.8rem;
+  position: relative;
   font-size: var(--fontSize-body);
   font-weight: var(--fontWeight-regular);
   color: var(--9-gray);
   background-color: var(--2-gray);
   line-height: 2.24rem;
   margin: auto;
-  bottom: 0;
 `;
 export const FooterArea = styled.div`
   margin-left: 16.2rem;

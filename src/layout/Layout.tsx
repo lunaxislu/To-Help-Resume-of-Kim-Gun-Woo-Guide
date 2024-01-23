@@ -3,6 +3,7 @@ import Header from './Header';
 import Footer from './Footer';
 import { Outlet, useLocation } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
+import styled from 'styled-components';
 
 const Layout = () => {
   const location = useLocation();
@@ -37,13 +38,25 @@ const Layout = () => {
   }, [location.pathname]);
 
   return (
-    <>
+    <Wrapper>
       <Header />
-      <Outlet />
+      <ContentWrapper>
+        <Outlet />
+      </ContentWrapper>
       {showTopbutton && <ScrollTopButton />}
       <Footer />
-    </>
+    </Wrapper>
   );
 };
 
 export default Layout;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1;
+`;

@@ -1,3 +1,4 @@
+// searchSlice.ts
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Communityy, UsedItem } from '../../pages/home/usedtypes';
 
@@ -32,9 +33,27 @@ const searchSlice = createSlice({
       }>
     ) => {
       state.searchResults = action.payload;
+    },
+    updateUsedItems: (state, action: PayloadAction<UsedItem>) => {
+      const updatedUsedItems = state.searchResults.usedItemResults.map((item) =>
+        item.id === action.payload.id ? action.payload : item
+      );
+      state.searchResults.usedItemResults = updatedUsedItems;
+    },
+    updateCommunityItems: (state, action: PayloadAction<Communityy>) => {
+      const updatedCommunityItems = state.searchResults.communityResults.map(
+        (item) =>
+          item.post_id === action.payload.post_id ? action.payload : item
+      );
+      state.searchResults.communityResults = updatedCommunityItems;
     }
   }
 });
 
-export const { setSearchQuery, setSearchResults } = searchSlice.actions;
+export const {
+  setSearchQuery,
+  setSearchResults,
+  updateUsedItems,
+  updateCommunityItems
+} = searchSlice.actions;
 export default searchSlice.reducer;

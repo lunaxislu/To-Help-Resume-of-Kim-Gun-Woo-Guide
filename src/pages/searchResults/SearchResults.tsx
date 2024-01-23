@@ -6,6 +6,7 @@ import { RootState } from '../../redux/store/store';
 import { Communityy, UsedItem } from '../home/usedtypes';
 import styled from 'styled-components';
 import parseDate from '../../util/getDate';
+import { setSearchResults } from '../../redux/modules/searchSlice';
 
 const SearchResults: React.FC = () => {
   const { usedItemResults, communityResults } = useSelector(
@@ -14,7 +15,7 @@ const SearchResults: React.FC = () => {
   const searchQuery = useSelector(
     (state: RootState) => state.search.searchQuery
   );
-
+  const dispatch = useDispatch();
   const [usedItemsWithImages, setUsedItemsWithImages] = useState<UsedItem[]>(
     []
   );
@@ -26,56 +27,34 @@ const SearchResults: React.FC = () => {
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        // 로컬 스토리지에서 이전에 저장한 데이터 가져오기
-        const storedUsedItems = JSON.parse(
-          localStorage.getItem('usedItems') || '[]'
+        // Supabase에서 데이터 가져오기
+        const usedItemsImages = await Promise.all(
+          usedItemResults.map(async (item) => {
+            const pathToImage = `products/${item.image_Url}.png`;
+            const { data } = await supabase.storage
+              .from('images')
+              .getPublicUrl(pathToImage);
+            return { ...item, data };
+          })
         );
-        const storedCommunityItems = JSON.parse(
-          localStorage.getItem('communityItems') || '[]'
+
+        const communityItemsImages = await Promise.all(
+          communityResults.map(async (item) => {
+            const pathToImage = `quill_imgs/${item.image_url}.png`;
+            const { data } = await supabase.storage
+              .from('images')
+              .getPublicUrl(pathToImage);
+            return { ...item, data };
+          })
         );
-        if (nav) {
-          if (storedUsedItems.length > 0 || storedCommunityItems.length > 0) {
-            setUsedItemsWithImages(storedUsedItems);
-            setCommunityItemsWithImages(storedCommunityItems);
-            return; // 데이터를 가져왔다면 여기서 중단
-          }
-        }
-        // 로컬 스토리지에 저장된 데이터가 있으면 사용
-        if (storedUsedItems.length > 0 || storedCommunityItems.length > 0) {
-          setUsedItemsWithImages(storedUsedItems);
-          setCommunityItemsWithImages(storedCommunityItems);
-        } else {
-          // 세션 스토리지에 저장된 데이터가 없으면 Supabase에서 데이터 가져오기
-          const usedItemsImages = await Promise.all(
-            usedItemResults.map(async (item) => {
-              const pathToImage = `products/${item.image_Url}.png`;
-              const { data } = await supabase.storage
-                .from('images')
-                .getPublicUrl(pathToImage);
-              return { ...item, data };
-            })
-          );
 
-          const communityItemsImages = await Promise.all(
-            communityResults.map(async (item) => {
-              const pathToImage = `quill_imgs/${item.image_url}.png`;
-              const { data } = await supabase.storage
-                .from('images')
-                .getPublicUrl(pathToImage);
-              return { ...item, data };
-            })
-          );
-
-          // Supabase에서 가져온 데이터를 로컬 스토리지에 저장
-          localStorage.setItem('usedItems', JSON.stringify(usedItemsImages));
-          localStorage.setItem(
-            'communityItems',
-            JSON.stringify(communityItemsImages)
-          );
-
-          setUsedItemsWithImages(usedItemsImages);
-          setCommunityItemsWithImages(communityItemsImages);
-        }
+        // Redux 스토어에 업데이트
+        dispatch(
+          setSearchResults({
+            usedItemResults: usedItemsImages,
+            communityResults: communityItemsImages
+          })
+        );
       } catch (error) {
         console.error('수파베이스에 요청 중 실패:', error);
         throw error;
@@ -91,14 +70,7 @@ const SearchResults: React.FC = () => {
     ) {
       fetchSearchResults();
     }
-  }, [searchQuery, usedItemResults, communityResults]);
-
-  useEffect(() => {
-    // 검색어가 있으면 세션 스토리지에 저장
-    if (searchQuery) {
-      localStorage.setItem('searchQuery', searchQuery);
-    }
-  }, [searchQuery]);
+  }, [searchQuery, usedItemResults, communityResults, dispatch]);
 
   const usedItemCount = usedItemsWithImages.length;
   const communityCount = communityItemsWithImages.length;

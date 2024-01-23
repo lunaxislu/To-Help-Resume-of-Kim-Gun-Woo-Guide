@@ -139,6 +139,8 @@ const CarouselButtons = styled.div`
 const ArrowButton = styled.button`
   background: none;
   border: none;
+  width: 5rem;
+  height: 5rem;
 `;
 const ColoredIcon = styled.div`
   display: inline-block;
@@ -146,7 +148,6 @@ const ColoredIcon = styled.div`
   width: 5rem;
   height: 5rem;
   background-color: rgba(255, 255, 255, 0.6);
-
   border-radius: 50%;
 
   svg {
@@ -155,7 +156,7 @@ const ColoredIcon = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     fill: var(--opc-100);
-    width: 2rem; /* 아이콘의 전체 크기를 설정합니다. */
+    width: 2rem;
     height: 2rem;
     cursor: pointer;
   }
