@@ -90,3 +90,10 @@ export type Comments = {
   time: string;
   anon: boolean;
 }[];
+export type LikesObject = {
+  updateData: {
+    likes: number;
+    likes_user: string;
+  };
+  paramId: string | undefined;
+};

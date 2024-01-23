@@ -1,5 +1,10 @@
 import { supabase } from '../../api/supabase/supabaseClient';
-import { CommentUpload, InsertObject, UpdateObject } from './model';
+import {
+  CommentUpload,
+  InsertObject,
+  LikesObject,
+  UpdateObject
+} from './model';
 export const fetchPosts = async () => {
   const { data, error } = await supabase
     .from('community')
@@ -32,7 +37,7 @@ export const addPostMutation = async (insertData: InsertObject) => {
 };
 
 export const updatePostMutation = async (
-  postData: UpdateObject | CommentUpload
+  postData: UpdateObject | CommentUpload | LikesObject
 ) => {
   try {
     const { data, error } = await supabase

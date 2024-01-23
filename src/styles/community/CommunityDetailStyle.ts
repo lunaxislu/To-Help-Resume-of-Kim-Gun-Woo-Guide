@@ -1,3 +1,5 @@
+import { IoTrashOutline } from 'react-icons/io5';
+import { RiBallPenLine } from 'react-icons/ri';
 import styled from 'styled-components';
 export const Content = styled.div`
   display: flex;
@@ -5,8 +7,9 @@ export const Content = styled.div`
   margin-top: 2.4rem;
   line-height: 3rem;
   min-height: 60rem;
-  color: var(--8-gray);
-  font-size: var(--fontSize-H4);
+  color: var(--10-gray);
+  font-size: var(--fontSize-body);
+  font-weight: var(--fontWeight-medium);
 `;
 export const Container = styled.div`
   display: flex;
@@ -50,13 +53,12 @@ export const WriteWrap = styled.div`
   }
 `;
 export const BtnStyle = styled.button`
-  height: 3rem;
-  width: 4rem;
-  border-radius: 0.5rem;
   border: none;
-  background-color: var(--5-gray);
-  margin-right: 1rem;
+  background-color: transparent;
+  font-size: var(--fontSize-H6);
+  color: var(--8-gray);
   font-weight: var(--fontWeight-semiBold);
+  margin: 0.5rem;
 `;
 export const Topper = styled.div`
   margin-top: 1rem;
@@ -66,25 +68,9 @@ export const Topper = styled.div`
   max-width: 111.6rem;
   margin-bottom: 1rem;
 `;
-export const TopperRight = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  font-size: var(--fontSize-H5);
-  color: var(--8-gray);
-`;
-export const TopperLeft = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  & h1 {
-    font-size: var(--fontSize-H3);
-    font-weight: var(--fontWeight-semiBold);
-  }
-  & p {
-    font-size: var(--fontSize-H5);
-    color: var(--4-gray);
-  }
+export const DetailBody = styled.div`
+  border-bottom: 0.1rem solid var(--5-gray);
+  margin-bottom: 2rem;
 `;
 export const IconContainer = styled.div`
   display: flex;
@@ -93,10 +79,79 @@ export const IconContainer = styled.div`
   align-items: center;
 `;
 export const Category = styled.p`
-  background-color: var(--4-gray);
-  color: var(--12-gray);
-  width: fit-content;
-  padding: 1.2rem;
-  border-radius: 0.6rem;
+  /* margin-left: 1.5rem; */
+  width: 3.7rem;
+  height: 2.3rem;
+  font-size: var(--fontSize-H6);
+  color: var(--10-gray);
+  background-color: var(--3-gray);
+  border-radius: 5.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+export const Report = styled.p`
+  /* margin-left: 1.5rem;
+  width: 3.7rem;
+  height: 2.3rem; */
+  font-size: var(--fontSize-H6);
+  color: var(--6-gray);
+  border-radius: 5.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem;
+`;
+export const MainTopper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  & h1 {
+    font-size: var(--fontSize-H3);
+    font-weight: var(--fontWeight-semiBold);
+    color: var(--12-gray);
+  }
+`;
+export const SubTopper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+`;
+export const TitleCategory = styled.div`
+  display: flex;
+  gap: 1.5rem;
+`;
+export const TrachIcon = styled(IoTrashOutline)`
+  color: var(--opc-50);
+  margin-left: 1rem;
+  font-size: 1.5rem;
+`;
+export const PenIcon = styled(RiBallPenLine)`
+  color: var(--opc-50);
+  margin-left: 1rem;
+  font-size: 1.5rem;
+`;
+export const NameP = styled.p`
   font-size: var(--fontSize-H5);
+  font-weight: var(--fontWeight-medium);
+  color: var(--10-gray);
+`;
+export const TimeP = styled.p`
+  font-size: var(--fontSize-H5);
+  font-weight: var(--fontWeight-semiBold);
+  color: var(--6-gray);
+`;
+
+export const NoticeLike = styled.p`
+  font-size: var(--fontSize-H5);
+  font-weight: var(--fontWeight-medium);
+  color: var(--10-gray);
+  background-color: var(--opc-10);
+  width: 24.6rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8rem;
+  margin-bottom: 1rem;
 `;

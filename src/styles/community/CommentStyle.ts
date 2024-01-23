@@ -1,4 +1,4 @@
-import { BsChatRightFill } from 'react-icons/bs';
+import { BsArrowReturnLeft, BsChatRightFill } from 'react-icons/bs';
 import { FaThumbsUp } from 'react-icons/fa';
 import { FaRegThumbsUp } from 'react-icons/fa6';
 import styled from 'styled-components';
@@ -10,21 +10,21 @@ export const CommentContent = styled.p`
   width: 45rem;
 `;
 export const CommentIcon = styled(BsChatRightFill)`
-  color: #dbff00;
-
-  /* opacity: 50%; */
+  color: var(--opc-100);
 `;
 export const LikesIcon = styled(FaRegThumbsUp)`
-  color: #dbff00;
-  font-size: 1.7rem;
+  color: var(--opc-100);
 
-  /* opacity: 50%; */
+  font-size: 1.7rem;
 `;
 export const LikesIconOn = styled(FaThumbsUp)`
-  color: #dbff00;
+  color: var(--opc-100);
   font-size: 1.7rem;
-
-  /* opacity: 50%; */
+`;
+export const SendIcon = styled(BsArrowReturnLeft)`
+  color: var(--opc-100);
+  font-size: 1.9rem;
+  font-weight: var(--fontWeight-semiBold);
 `;
 export const CountDiv = styled.div`
   width: 100%;
@@ -43,8 +43,6 @@ export const CountDivTop = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-  border-bottom: 0.1rem solid var(--12-gray);
-  margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
   font-size: var(--fontSize-H5);
 `;
@@ -57,24 +55,33 @@ export const Container = styled.div`
 `;
 export const Form = styled.form`
   width: 100%;
-  max-width: 1116px;
-  height: 7.1rem;
+  max-width: 111.6rem;
+  height: 12.8rem;
   margin-top: 6px;
   margin-bottom: 6px;
   background-color: #1f1f1f;
   border-radius: 0.5rem;
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 1.2rem;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
   & button {
-    height: 3rem;
-    width: 4rem;
+    height: 5.3rem;
+    width: 5.3rem;
     border-radius: 0.5rem;
     border: none;
-    background-color: var(--5-gray);
-
+    background-color: var(--opc-10);
     font-weight: var(--fontWeight-semiBold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  & div {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0.1rem solid var(--5-gray);
+    align-items: end;
+    padding-bottom: 1.5rem;
   }
 `;
 export const CommentInput = styled.input`

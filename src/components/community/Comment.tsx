@@ -79,23 +79,14 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
       updatedLikeUsers = currentLikeUsers.filter((id: string) => id !== userId);
     }
 
-    try {
-      // Supabase에 업데이트 요청
-      const { error } = await supabase
-        .from('community')
-        .update({ likes: updatedLikes, likes_user: updatedLikeUsers })
-        .eq('post_id', paramId);
-
-      if (error) {
-        throw error;
-      }
-
-      // 쿼리를 무효화하고 다시 가져와서 UI를 업데이트
-      queryClient.invalidateQueries(['posts', paramId]);
-    } catch (error) {
-      console.error('Error updating likes', error);
-      // 에러 처리 로직
-    }
+    const likesUpdate = {
+      updateData: {
+        likes: updatedLikes,
+        likes_user: updatedLikeUsers
+      },
+      paramId
+    };
+    upsertMutation.mutate(likesUpdate);
   };
   useEffect(() => {
     if (!isLoading && posts) {
@@ -198,11 +189,18 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
       </St.CountDivTop>
 
       <St.Form onSubmit={updateComment}>
-        <St.CommentInput
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="댓글을 입력하세요"
-        />
+        <div>
+          <St.CommentInput
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="댓글을 입력하세요"
+          />
+
+          <button type="submit">
+            <St.SendIcon />
+          </button>
+        </div>
+
         <St.AnonLabel>
           <St.CheckBoxs
             type="checkbox"
@@ -211,7 +209,6 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
           />
           익명
         </St.AnonLabel>
-        <button type="submit">추가</button>
       </St.Form>
       {/* <St.CountDiv>{`${comments.length}개의 댓글`}</St.CountDiv> */}
       {comments?.map((comment, index) => {
