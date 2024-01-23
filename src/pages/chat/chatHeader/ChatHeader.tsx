@@ -1,10 +1,13 @@
-import React, { SetStateAction } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import * as St from '../style';
 import { SupabaseAPI } from '../supabaseChat/supabase_chat';
 import { User } from '@supabase/supabase-js';
 import { MessageType, RoomType } from '../../../components/chat/types';
 import { BsThreeDots } from 'react-icons/bs';
 import { UtilForChat } from '../chat_utils/functions';
+import { FaArrowLeft } from 'react-icons/fa';
+import { IoIosArrowBack } from 'react-icons/io';
+import { useNavigate } from 'react-router';
 
 interface ChatHeaderPropsType {
   showMene: boolean;
@@ -16,6 +19,7 @@ interface ChatHeaderPropsType {
   setClicked: React.Dispatch<SetStateAction<string | undefined>>;
   rooms: RoomType[] | null | undefined;
   setShowMenu: React.Dispatch<SetStateAction<boolean>>;
+  handleHideBoardPosition: any;
 }
 
 const ChatHeader = ({
@@ -27,14 +31,34 @@ const ChatHeader = ({
   setMessages,
   setClicked,
   rooms,
-  setShowMenu
+  setShowMenu,
+  handleHideBoardPosition
 }: ChatHeaderPropsType) => {
   const supaService = new SupabaseAPI();
   const utilFunctions = new UtilForChat();
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  const navi = useNavigate();
 
   const handleShowMenuToggle = () => {
     setShowMenu((prev) => !prev);
   };
+
+  const checkWindowSize = () => {
+    if (window.innerWidth <= 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  useState(() => {
+    window.addEventListener('resize', checkWindowSize);
+
+    return () => {
+      window.removeEventListener('resize', checkWindowSize);
+    };
+  });
 
   return (
     <St.StChatBoardHeader>
@@ -58,6 +82,9 @@ const ChatHeader = ({
         </St.StMenuBox>
       )}
       <St.StChatBoardHeaderName>
+        {isMobile && (
+          <St.StHeaderArrow onClick={() => handleHideBoardPosition()} />
+        )}
         <St.StListUserProfile
           $url={targetUser && targetUser[0]?.avatar_url}
         ></St.StListUserProfile>

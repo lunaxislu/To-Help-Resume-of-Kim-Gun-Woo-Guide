@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 import { RoomStyledProps } from '../../components/chat/types';
+import { IoIosArrowBack } from 'react-icons/io';
 
 export const StFadeAni = keyframes`
   from{
@@ -10,6 +11,19 @@ export const StFadeAni = keyframes`
   to {
     opacity: 1;
     transform: translateX(0%);
+  }
+`;
+
+const StChatWrapper = styled.div`
+  width: 100%;
+  max-width: 1114px;
+  padding: 4.2rem 1.6rem;
+  margin: auto;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+    overflow: hidden;
   }
 `;
 
@@ -24,6 +38,14 @@ const StChatContainer = styled.div`
   margin: auto;
   animation: ${StFadeAni} 0.6s forwards;
   font-family: 'Pretendard-Regular';
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
 `;
 
 const StChatList = styled.div`
@@ -35,13 +57,42 @@ const StChatList = styled.div`
   flex-direction: column;
   overflow-y: scroll;
   border-right: 0.3rem solid var(--3-gray);
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+  }
 `;
 
-const StChatBoard = styled.div`
+const StChatListItem = styled.div`
+  width: 100%;
+  max-width: 372px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+  }
+`;
+
+type BoardProps = {
+  $position: number;
+};
+
+const StChatBoard = styled.div<BoardProps>`
   width: 70%;
   height: 597px;
   overflow-y: hidden;
   position: relative;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 0.3s ease;
+    transform: ${(props) => `translateX(${props.$position}%)`};
+    z-index: 3;
+  }
 `;
 
 const StChatGround = styled.div`
@@ -49,6 +100,10 @@ const StChatGround = styled.div`
   height: 100%;
   overflow-y: scroll;
   padding: 1rem 0 15rem 0;
+
+  @media screen and (max-width: 768px) {
+    background-color: var(--2-gray);
+  }
 `;
 
 const StChatBoardHeader = styled.div`
@@ -62,6 +117,11 @@ const StChatBoardHeader = styled.div`
   padding: 2.7rem;
   background-color: transparent;
   border-bottom: 0.3rem solid var(--3-gray);
+
+  @media screen and (max-width: 768px) {
+    background-color: var(--2-gray);
+    padding: 1rem 1.5rem;
+  }
 `;
 
 const StChatBoardHeaderName = styled.h3`
@@ -70,6 +130,10 @@ const StChatBoardHeaderName = styled.h3`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const StChatForm = styled.form`
@@ -130,6 +194,11 @@ const StListRoom = styled.div<RoomStyledProps>`
     background-color: var(--3-gray);
   }
   position: relative;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+  }
 `;
 
 const StListUpper = styled.div`
@@ -170,6 +239,11 @@ const StListUserProfile = styled.div<ChatProfileType>`
   border-radius: 50px;
   background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
   background-size: cover;
+
+  @media screen and (max-width: 768px) {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const StUserInfoBox = styled.div`
@@ -207,12 +281,16 @@ const StImageViewerBg = styled.div`
   left: 0;
   background-color: #1d1d1d90;
   z-index: 3;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const StImageViewer = styled.div`
   width: 1200px;
   height: 80%;
-
   position: absolute;
   top: 50%;
   left: 50%;
@@ -231,6 +309,11 @@ const StImageViewer = styled.div`
     font-size: 2rem;
     cursor: pointer;
     z-index: 3;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 50%;
   }
 `;
 
@@ -277,9 +360,19 @@ const StUserProfile = styled.div<ChatProfileType>`
   background-size: cover;
 `;
 
+const StHeaderArrow = styled(IoIosArrowBack)`
+  font-size: 3rem;
+  height: max-content;
+  margin-right: 1rem;
+  color: var(--opc-100);
+  cursor: pointer;
+`;
+
 export {
+  StChatWrapper,
   StChatContainer,
   StChatList,
+  StChatListItem,
   StListRoom,
   StChatBoard,
   StChatGround,
@@ -299,5 +392,6 @@ export {
   StViewerImg,
   StMenuBox,
   StMenu,
-  StUserProfile
+  StUserProfile,
+  StHeaderArrow
 };

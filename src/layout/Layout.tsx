@@ -4,6 +4,7 @@ import Footer from './Footer';
 import { Outlet, useLocation } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
 import { SupabaseRealtimeProvider } from '../context/realtimeData';
+import styled from 'styled-components';
 
 const Layout = () => {
   const location = useLocation();

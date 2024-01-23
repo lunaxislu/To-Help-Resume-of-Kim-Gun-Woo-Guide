@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import { supabase } from '../../api/supabase/supabaseClient';
 import * as St from '../../pages/chat/style';
 import { MessageType, RoomType } from './types';
@@ -11,18 +11,15 @@ type Props = {
   handleCurClicked: React.MouseEventHandler<HTMLDivElement>;
   clicked: string | undefined;
   unread: any[] | null;
+  handleBoardPosition: any;
 };
-
-const StChatListItem = styled.div`
-  width: 100%;
-  max-width: 372px;
-`;
 
 const ChatRoomList: React.FC<Props> = ({
   rooms,
   handleCurClicked,
   clicked,
-  unread
+  unread,
+  handleBoardPosition
 }: Props) => {
   const [newMsg, setNewMsg] = useState<any | null>(null);
   const [allMessage, setAllMessage] = useState<MessageType[] | null>(null);
@@ -124,7 +121,7 @@ const ChatRoomList: React.FC<Props> = ({
   console.log(products);
 
   return (
-    <StChatListItem>
+    <St.StChatListItem>
       {rooms?.map((room, i) => {
         if (checkProductsStatus(room.about) === true)
           return (
@@ -178,6 +175,7 @@ const ChatRoomList: React.FC<Props> = ({
                   updateToRead(room.id);
                 }
                 handleCurClicked(e);
+                handleBoardPosition();
               }}
               $current={clicked}
               id={room.id}
@@ -213,7 +211,7 @@ const ChatRoomList: React.FC<Props> = ({
           );
         }
       })}
-    </StChatListItem>
+    </St.StChatListItem>
   );
 };
 

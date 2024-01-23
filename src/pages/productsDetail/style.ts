@@ -26,11 +26,12 @@ const StDetailInfoSection = styled.section`
 
 const StImageWrapper = styled.div`
   width: 100%;
-  max-width: 430px;
+  max-width: 510px;
   height: 43.5rem;
   border-radius: 12px;
   overflow: hidden;
   background-color: aliceblue;
+  position: relative;
 `;
 
 const StCarouselBox = styled.div`

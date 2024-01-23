@@ -4,7 +4,6 @@ import ChatRoomList from '../../components/chat/ChatRoomList';
 import ChatMessages from '../../components/chat/ChatMessages';
 import type { MessageType, RoomType } from '../../components/chat/types';
 import * as St from './style';
-import styled from 'styled-components';
 import ChatHeader from './chatHeader/ChatHeader';
 import ChatForm from './chatForm/ChatForm';
 import { UtilForChat } from './chat_utils/functions';
@@ -21,9 +20,19 @@ export default function ChatRoom() {
   const [targetUser, setTargetUser] = useState<any[]>();
   const [showFileInput, setShowFileInput] = useState<boolean>(false);
 
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [boardPosition, setboardPosition] = useState<number>(100);
+
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const utilFunctions = new UtilForChat();
+
+  const handleBoardPosition = () => {
+    setboardPosition(0);
+  };
+  const handleHideBoardPosition = () => {
+    setboardPosition(100);
+  };
 
   const handleHideImage = (e: MouseEvent<HTMLElement>) => {
     setShowImage(false);
@@ -89,8 +98,26 @@ export default function ChatRoom() {
     }
   }, [messages]);
 
+  const checkWindowSize = () => {
+    if (window.innerWidth <= 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('DOMContentLoaded', checkWindowSize);
+    window.addEventListener('resize', checkWindowSize);
+
+    return () => {
+      window.removeEventListener('DOMContentLoaded', checkWindowSize);
+      window.removeEventListener('resize', checkWindowSize);
+    };
+  });
+
   return (
-    <StChatContainer>
+    <St.StChatWrapper>
       {showImage && (
         <St.StImageViewerBg onClick={handleHideImage}>
           <St.StImageViewer>
@@ -102,15 +129,17 @@ export default function ChatRoom() {
       <St.StChatContainer>
         <St.StChatList onClick={() => setShowFileInput(false)}>
           <ChatRoomList
+            handleBoardPosition={handleBoardPosition}
             clicked={clicked}
             rooms={rooms}
             handleCurClicked={handleCurClicked}
             unread={unread}
           />
         </St.StChatList>
-        <St.StChatBoard>
+        <St.StChatBoard $position={boardPosition}>
           {clicked && (
             <ChatHeader
+              handleHideBoardPosition={handleHideBoardPosition}
               showMene={showMene}
               clicked={clicked}
               curUser={curUser}
@@ -139,13 +168,6 @@ export default function ChatRoom() {
           />
         </St.StChatBoard>
       </St.StChatContainer>
-    </StChatContainer>
+    </St.StChatWrapper>
   );
 }
-
-const StChatContainer = styled.div`
-  width: 100%;
-  max-width: 1114px;
-  padding: 4.2rem 1.6rem;
-  margin: auto;
-`;

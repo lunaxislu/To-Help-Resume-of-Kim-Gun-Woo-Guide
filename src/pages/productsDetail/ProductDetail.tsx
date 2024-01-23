@@ -6,11 +6,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductDetailInfo from '../../components/productDetailInfoBody/ProductDetailInfo';
 import * as St from './style';
 import type { CustomUser, Product } from './types';
-import { Participants, RoomType } from '../../components/chat/types';
+import { RoomType } from '../../components/chat/types';
 import parseDate from '../../util/getDate';
 import { FaHeart } from 'react-icons/fa';
 import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
+import ProductDetailCarousel from './ProductDetailCarousel';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
@@ -706,24 +707,7 @@ const ProductDetail = () => {
       <St.StDetailContainer>
         <St.StDetailInfoSection>
           <St.StImageWrapper>
-            <St.StCarouselBox>
-              <St.StImageList>
-                {product[0].image_url !== null &&
-                  product[0]?.image_url.map((url: string, i: number) => {
-                    return (
-                      <div
-                        key={i}
-                        style={{
-                          background: `url(${url})`,
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                          backgroundRepeat: 'no-repeat'
-                        }}
-                      ></div>
-                    );
-                  })}
-              </St.StImageList>
-            </St.StCarouselBox>
+            <ProductDetailCarousel carouselImages={product[0].image_url} />
           </St.StImageWrapper>
           <St.StProductInfo>
             <St.StProductInfoHeader>
