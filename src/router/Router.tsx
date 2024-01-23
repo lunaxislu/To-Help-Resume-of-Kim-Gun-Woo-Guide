@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Layout from '../layout/Layout';
 import ChatRoom from '../pages/chat/ChatRoom';
 import CommuDetail from '../pages/community/CommuDetail';
@@ -23,17 +23,42 @@ const Router = () => {
       <GlobalStyles />
       <Routes>
         <Route element={<Layout />}>
+          <Route
+            path="/login/:mode"
+            element={isLogin ? <Navigate to="/" /> : <Login />}
+          />
           <Route path="/" element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="mypage" element={<MyPage />} />
+          <Route
+            path="/mypage"
+            element={isLogin ? <MyPage /> : <Navigate to="/login/login" />}
+          />
           <Route path="/products" element={<ProductsList />} />
-          <Route path="/products/detail/:id" element={<ProductDetail />} />
-          <Route path="/productsposts" element={<ProductsPosts />} />
+          <Route
+            path="/products/detail/:id"
+            element={
+              isLogin ? <ProductDetail /> : <Navigate to="/login/login" />
+            }
+          />
+          <Route
+            path="/productsposts"
+            element={
+              isLogin ? <ProductsPosts /> : <Navigate to="/login/login" />
+            }
+          />
           <Route path="/community" element={<CommunityMain />} />
-          <Route path="/community_write" element={<WritePost />} />
+          <Route
+            path="/community_write"
+            element={isLogin ? <WritePost /> : <Navigate to="/login/login" />}
+          />
           <Route path="/search-results" element={<SearchResults />} />
-          <Route path="/chat" element={<ChatRoom />} />
-          <Route path="/community/detail/:id" element={<CommuDetail />} />
+          <Route
+            path="/chat"
+            element={isLogin ? <ChatRoom /> : <Navigate to="/login/login" />}
+          />
+          <Route
+            path="/community/detail/:id"
+            element={isLogin ? <CommuDetail /> : <Navigate to="/login/login" />}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
