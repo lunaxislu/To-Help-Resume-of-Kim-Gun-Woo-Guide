@@ -36,12 +36,12 @@ const Header = () => {
     if (isLogin) {
       navigate('/productsposts');
     } else {
-      navigate('/login');
+      navigate('/login/login');
     }
     if (isLogin) {
       navigate('/productsposts');
     } else {
-      navigate('/login');
+      navigate('/login/login');
     }
   };
 
@@ -50,7 +50,7 @@ const Header = () => {
     handlePageChange();
   };
   const handleNavigateToLogin = () => {
-    navigate('/login');
+    navigate('/login/login');
   };
 
   // 로그아웃 버튼
