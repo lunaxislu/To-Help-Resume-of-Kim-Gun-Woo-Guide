@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const HeaderContainer = styled.header`
-  width: 144rem;
+  /* width: 144rem;
   height: 14.8rem;
   display: flex;
   flex-shrink: 0;
@@ -10,33 +10,59 @@ export const HeaderContainer = styled.header`
   margin: 0 auto;
   background-color: {
     color: var(--bgColor);
+  } */
+
+  width: 100%;
+  padding: 3rem;
+  border: 3px solid #d9d9d9;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: 3rem;
   }
-  /* border: 3px solid #d9d9d9; */
 `;
 
 export const HeaderSection = styled.section`
+  /* 
+  margin: 0 10rem;
+  margin-top: 3.4rem; */
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 10rem;
-  margin-top: 3.4rem;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
+
 export const Logo = styled.img`
   width: 10.1rem;
   height: 2.6rem;
   cursor: pointer;
   user-select: none;
   margin: auto 0;
+
+  @media screen and (max-width: 768px) {
+    width: 4.7rem;
+    height: 1.1rem;
+  }
 `;
+
 export const ButtonContainer = styled.div`
   display: flex;
-  width: 24rem;
+  /* width: 24rem; */
   height: 3.5rem;
   align-items: center;
   gap: 1rem;
   user-select: none;
   margin: auto 0;
+
+  @media screen and (max-width: 768px) {
+    justify-content: space-between;
+  }
 `;
+
 export const Sell = styled.button`
   align-items: center;
   display: flex;
@@ -46,6 +72,10 @@ export const Sell = styled.button`
   background: transparent;
   cursor: pointer;
   gap: 0.6rem;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 
   p {
     color: var(--11-gray);
@@ -70,6 +100,10 @@ export const Likes = styled.button`
   cursor: pointer;
   gap: 0.6rem;
 
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+
   p {
     color: var(--11-gray);
     font-weight: var(--fontWeight-medium);
@@ -91,6 +125,10 @@ export const Alert = styled.button`
   background: transparent;
   cursor: pointer;
   gap: 0.6rem;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
   .myAlarm {
     color: var(--opc-100);
     width: 1.4rem;
@@ -103,6 +141,7 @@ export const Alert = styled.button`
     line-height: 2.6768rem;
   }
 `;
+
 export const Button = styled.button`
   align-items: center;
   display: flex;
@@ -117,11 +156,16 @@ export const Button = styled.button`
   line-height: 2.6768rem;
   margin-left: 2rem;
 `;
+
 export const UserIcon = styled.img`
   border-radius: 50%;
   width: 3.5rem;
   height: 3.5rem;
   cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const NavSection = styled.section`
@@ -130,12 +174,18 @@ export const NavSection = styled.section`
   margin: 0 10rem;
   margin-top: 2.3rem;
 `;
+
 export const NavBar = styled.nav`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 3.6rem;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
+
 export const NavButton = styled(Link)`
   text-decoration: none;
   align-items: center;
@@ -144,6 +194,7 @@ export const NavButton = styled(Link)`
   font-size: var(--fontSize-H4);
   font-weight: var(--fontWeight-semiBold);
 `;
+
 export const LogOut = styled.button`
   align-items: center;
   justify-content: center;
@@ -158,4 +209,22 @@ export const LogOut = styled.button`
   font-size: var(--fontSize-H5);
   line-height: 2.6768rem;
   cursor: pointer;
+`;
+
+export const HamburgerMenu = styled.img`
+  cursor: pointer;
+  display: none;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+`;
+
+export const MobileSearchIcon = styled.img`
+  cursor: pointer;
+  display: none;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
 `;
