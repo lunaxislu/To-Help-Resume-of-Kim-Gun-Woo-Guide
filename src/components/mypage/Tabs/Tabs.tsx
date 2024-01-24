@@ -11,10 +11,12 @@ const Tabs = () => {
     '내가 쓴 글',
     '추천한 글'
   ];
-  const [toggle, setToggle] = useState<number | null>(1);
+  const [toggle, setToggle] = useState<number | null>(0);
   const clickToggleTab = (index: number) => {
     setToggle(index);
   };
+
+  console.log(toggle);
 
   return (
     <>
@@ -32,13 +34,12 @@ const Tabs = () => {
         })}
       </StTabsContainer>
 
-      {toggle === 1 || toggle === 2 || toggle === 3 ? (
+      {toggle === 0 || toggle === 1 || toggle === 2 ? (
         <MyPageItemList activeTab={toggle} />
       ) : (
         ''
       )}
-
-      {toggle === 4 || toggle === 5 ? (
+      {toggle === 3 || toggle === 4 ? (
         <MyPageCommunityPostList activeTab={toggle} />
       ) : (
         ''

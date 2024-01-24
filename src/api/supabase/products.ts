@@ -19,4 +19,13 @@ export interface ProductCardProps {
   activeTab: number;
 }
 
+export interface MyPageItemCardProps {
+  id: string;
+  image_url: string;
+  user: string;
+  quality: string;
+  title: string;
+  price: number;
+}
+
 // TODO: ProductCard에 있는 함수들 공통화

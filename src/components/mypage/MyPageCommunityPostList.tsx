@@ -171,7 +171,7 @@ const MyPageCommunityPostList: React.FC<CommunityCardProps> = ({
           );
         })}
 
-      {activeTab === 5 &&
+      {activeTab === 4 &&
         favCommunityPosts.map((post) => {
           return (
             <StPostWrapper

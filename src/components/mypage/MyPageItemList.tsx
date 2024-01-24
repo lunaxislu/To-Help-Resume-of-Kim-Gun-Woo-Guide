@@ -11,18 +11,18 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import SkeletonProductCard from '../card/SkeletonProductCard';
 import { Product, ProductCardProps } from '../../api/supabase/products';
 import { userId } from '../../util/getUserId';
+import MyPageItemCard from './ItemCard/MyPageItemCard';
 
 const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
   const containerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [loadedProducts, setLoadedProducts] = useState<Product[]>([]);
-  const [loadedPurchasedProducts, setLoadedPurchasedProducts] = useState<
-    Product[]
-  >([]);
-  const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
   const [offset, setOffset] = useState(1);
   const [isInView, setIsInView] = useState(false);
+
+  const [myItems, setMyItems] = useState<Product[]>([]);
+  const [purchasedItems, setPurchasedItems] = useState<Product[]>([]);
+  const [favItems, setFavItems] = useState<Product[]>([]);
 
   const getCurrentUserProducts = async () => {
     let { data: products, error } = await supabase
@@ -32,7 +32,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
       .limit(10);
 
     if (products && products.length > 0) {
-      setLoadedProducts(products);
+      setMyItems(products);
     }
   };
 
@@ -44,7 +44,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
       .limit(10);
 
     if (purchasedProducts && purchasedProducts.length > 0) {
-      setLoadedPurchasedProducts(purchasedProducts);
+      setPurchasedItems(purchasedProducts);
     }
   };
 
@@ -61,7 +61,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
           )
         )
         .map((product) => product);
-      setFavoriteProducts(filteredFavProducts);
+      setFavItems(filteredFavProducts);
     }
   };
 
@@ -107,7 +107,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
       const newProducts = await fetchProducts(offset, CARDS_COUNT);
 
       if (newProducts) {
-        setLoadedProducts((prevProducts) => [...prevProducts, ...newProducts]);
+        setMyItems((prevProducts) => [...prevProducts, ...newProducts]);
       }
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -136,89 +136,49 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
 
   return (
     <StCardContainer ref={containerRef}>
-      {activeTab === 1 &&
-        loadedProducts.map((product) => {
+      {activeTab === 0 &&
+        myItems.map((item) => {
           return (
-            <StCardWrapper
-              key={product.id}
-              to={`/products/detail/${product.id}`}
-            >
-              <StProductImage
-                src={
-                  product.image_url !== null && product.image_url !== undefined
-                    ? product.image_url[0]
-                    : ''
-                }
-                alt=""
-              />
-              <StProductQuality>{product.quality}</StProductQuality>
-              <p>{product.user}</p>
-              <p>{product.title}</p>
-
-              <StProductPrice>
-                {product.price.toLocaleString('ko-KR')}원
-              </StProductPrice>
-            </StCardWrapper>
+            <MyPageItemCard
+              id={item.id}
+              image_url={item.image_url}
+              user={item.user}
+              quality={item.quality}
+              title={item.title}
+              price={item.price}
+            />
           );
         })}
 
-      {isLoading && <SkeletonProductCard cards={3} />}
+      {isLoading && <SkeletonProductCard cards={myItems.length} />}
+
+      {activeTab === 1 &&
+        purchasedItems.map((item) => {
+          return (
+            <MyPageItemCard
+              id={item.id}
+              image_url={item.image_url}
+              user={item.user}
+              quality={item.quality}
+              title={item.title}
+              price={item.price}
+            />
+          );
+        })}
+
+      {isLoading && <SkeletonProductCard cards={purchasedItems.length} />}
 
       {activeTab === 2 &&
-        loadedPurchasedProducts.map((product) => {
+        favItems.map((item) => {
           return (
-            <>
-              <StCardWrapper
-                key={product.id}
-                to={`/products/detail/${product.id}`}
-              >
-                <StProductImage
-                  src={
-                    product.image_url !== null &&
-                    product.image_url !== undefined
-                      ? product.image_url[0]
-                      : ''
-                  }
-                  alt=""
-                />
-                <StProductQuality>{product.quality}</StProductQuality>
-                <p>{product.user}</p>
-                <p>{product.title}</p>
-                <StProductPrice>
-                  {product.price.toLocaleString('ko-KR')}원
-                </StProductPrice>
-              </StCardWrapper>
-            </>
-          );
-        })}
-
-      {isLoading && <SkeletonProductCard cards={10} />}
-
-      {activeTab === 4 &&
-        favoriteProducts.map((product) => {
-          return (
-            <>
-              <StCardWrapper
-                key={product.id}
-                to={`/products/detail/${product.id}`}
-              >
-                <StProductImage
-                  src={
-                    product.image_url !== null &&
-                    product.image_url !== undefined
-                      ? product.image_url[0]
-                      : ''
-                  }
-                  alt=""
-                />
-                <StProductQuality>{product.quality}</StProductQuality>
-                <p>{product.user}</p>
-                <p>{product.title}</p>
-                <StProductPrice>
-                  {product.price.toLocaleString('ko-KR')}원
-                </StProductPrice>
-              </StCardWrapper>
-            </>
+            <MyPageItemCard
+              id={item.id}
+              image_url={item.image_url}
+              user={item.user}
+              quality={item.quality}
+              title={item.title}
+              price={item.price}
+            />
           );
         })}
 
