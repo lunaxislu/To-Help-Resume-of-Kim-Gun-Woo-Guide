@@ -1,5 +1,6 @@
 import { CgCloseO } from "react-icons/cg";
 import { GoChevronLeft } from "react-icons/go";
+import { GoInfo } from 'react-icons/go';
 import styled from "styled-components";
 
 // ProductsPosts
@@ -10,14 +11,14 @@ export const EntireContainer = styled.div`
   margin-bottom: 15rem;
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;
+    min-width: 3.5rem;
   }
 `;
 export const ContentsContainer = styled.div`
-  max-width: 111.6rem;
+  width: 90%;
   margin: auto;
   @media screen and (max-width: 768px) {
     max-width: 90%;
-    min-width: 3.1rem;
   }
 `;
 export const BackBtnBox = styled.div`
@@ -85,6 +86,7 @@ export const UpLoadImageContainer = styled.div`
   @media screen and (max-width: 768px) {
     margin-bottom: 1.6rem;
     flex-direction: column;
+    gap: 0rem;
   }
 `;
 export const ImageWrapper = styled.div`
@@ -237,7 +239,49 @@ export const Required = styled.p`
   }
 `;
 export const InputStyle = styled.input`
-  width: 85.7rem;
+  width: 80%;
+  height: 5rem;
+  background-color: var(--3-gray);
+  font-family: 'Pretendard-Medium';
+  font-size: var(--fontSize-H5);
+  border: none;
+  border-radius: 0.7rem;
+  color: var(--12-gray);
+  padding-left: 2rem;
+  /* Chrome, Safari, Edge, Opera */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  /* Firefox */
+  /* &input[type=number] {
+    -moz-appearance: textfield;
+  } */
+  &::placeholder {
+    color: var(--5-gray);
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 3rem;
+    font-size: var(--fontSize-H6);
+    border-radius: 0.6rem;
+    color: var(--12-gray);
+    padding-left: 1rem;
+    &::placeholder {
+      color: var(--5-gray);
+    }
+  }
+`;
+export const InputWrapperStyle = styled.div`
+  width: 87%;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`;
+export const InputStyle2 = styled.input`
+  width: 100%;
   height: 5rem;
   background-color: var(--3-gray);
   font-family: 'Pretendard-Medium';
@@ -315,6 +359,12 @@ export const TextValidation = styled.div`
   flex-direction: column;
   height: 5rem;
   padding: 1rem 0 0 19rem;
+    @media screen and (max-width: 1240px) {
+    padding: 1rem 0 0 18rem;
+  }
+  @media screen and (max-width: 950px) {
+    padding: 1rem 0 0 17rem;
+  }
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -341,6 +391,11 @@ export const CategoryContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 2.2rem;
+  @media screen and (max-width: 940px) {
+    height: 12rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
   @media screen and (max-width: 768px) {
     height: 6rem;
     grid-template-columns: repeat(5, 1fr);
@@ -372,7 +427,7 @@ export const InputCheckBoxStyle = styled.input`
   position: relative;
   cursor: pointer;
   outline: none;
-  margin-left: 1rem;
+  margin-left: 0rem;
   @media screen and (max-width: 768px) {
     width: 2.2rem;
     height: 2.2rem;
@@ -405,6 +460,12 @@ export const RowValidation = styled.div`
   height: 5rem;
   padding: 1rem 0 0 19rem;
   gap: 1rem;
+  @media screen and (max-width: 1240px) {
+    padding: 1rem 0 0 18rem;
+  }
+  @media screen and (max-width: 950px) {
+    padding: 1rem 0 0 17rem;
+  }
   @media screen and (max-width: 768px) {
     height: 3rem;
     padding: 0.5rem 0 0 0;
@@ -414,23 +475,25 @@ export const RowValidation = styled.div`
 export const MobileDealTypeWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: 2rem;
 `;
 export const Validation = styled.div`
   display: flex;
   flex-direction: column;
   height: 5rem;
   padding: 1rem 0 0 19rem;
+  @media screen and (max-width: 1240px) {
+    padding: 1rem 0 0 18rem;
+  }
+  @media screen and (max-width: 950px) {
+    padding: 1rem 0 0 17rem;
+  }
   @media screen and (max-width: 768px) {
     font-size: 1rem;
     font-weight: var(--fontWeight-regular);
     height: 1rem;
     padding: 0.5rem 0 0 0;
   }
-`;
-export const InputWrapperStyle = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 export const AddressBtn = styled.button`
   width: 10rem;
@@ -452,7 +515,7 @@ export const AddressBtn = styled.button`
 `;
 // 우편번호 넣는 칸 추가해야함..
 export const AddressInputStyle = styled.input`
-  width: 200%;
+  width: 50%;
   height: 5rem;
   background-color: var(--3-gray);
   font-size: var(--fontSize-H5);
@@ -484,12 +547,15 @@ export const GapStyle2 = styled.div`
   }
 `;
 export const QualityWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr 3fr);
   gap: 2.3rem;
   margin-right: 2rem;
+  @media screen and (max-width: 910px) {
+    grid-template-columns: repeat(1, 1fr 2fr);
+  }
   @media screen and (max-width: 768px) {
-    display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.2rem;
     margin-right: 0.7rem;
@@ -508,13 +574,14 @@ export const QualityExplanation = styled.p`
 export const ChangableSelectWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  gap: 2rem;
   margin-bottom: 3rem;
   @media screen and (max-width: 768px) {
     margin-bottom: 1rem;
   }
 `;
 export const TextAreaStyle = styled.textarea`
-  width: 85.7rem;
+  width: 91%;
   height: 19.6rem;
   resize: none;
   background-color: var(--3-gray);
@@ -544,7 +611,7 @@ export const CountWrapper = styled.div`
 `;
 export const ContentsCount = styled.span`
   height: 100%;
-  margin-left: 2rem;
+  margin-left: 1rem;
   color: var(--7-gray);
   font-size: var(--fontSize-H6);
   @media screen and (max-width: 768px) {
@@ -562,6 +629,7 @@ export const TagsExplanation = styled.p`
   font-size: var(--fontSize-H5);
   color: var(--7-gray);
   line-height: 1.5;
+  margin-top: 0.7rem;
   @media screen and (max-width: 768px) {
     font-size: 1rem;
     gap: 0.4rem;
@@ -657,3 +725,55 @@ export const WriteBtn = styled.button`
     font-size: var(--fontSize-H5);
   }
 `;
+
+export const QualityInfoWrapper = styled.div`
+  max-width: 29.7rem;
+  height: 22.4rem;
+  border-radius: 1rem;
+  border: 0.1rem solid rgba(204, 255, 0, 0.50);
+  background-color: var(--3-gray);
+  padding: 1.4rem;
+  position: absolute;
+  margin-top: 2rem;
+  z-index: 1;
+`;
+export const QualityDetail = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr 2fr);
+  p {
+    color: var(--12-gray);
+    font-size: var(--fontSize-H6);
+    margin-top: 0.2rem;
+  }
+  span {
+    color: var(--7-gray);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+  }
+`;
+export const QualityInfoBtn = styled.div`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+    margin-left: auto;
+    width: 1.6rem;
+    height: 1.6rem;
+    :hover {
+      cursor: pointer;
+    }
+  }
+  `;
+  export const QualityInfoIcon = styled(GoInfo)`
+    display: none;
+    @media screen and (max-width: 768px) {
+      display: block;
+      width: 100%;
+      height: 100%;
+      color: var(--opc-100);
+      :hover { 
+        cursor: pointer;
+      }
+    }
+  `;

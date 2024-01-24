@@ -110,6 +110,7 @@ const ProductsWriteForm = () => {
     defaultValues: InputDefaultValue
   });
 
+  // 유저 테이블에서 같은 id 값 찾아서 원하는 유저정보 가져오기
   const [userState, setUserState] = useState(initialState)
 
   useEffect(() => {
@@ -190,6 +191,12 @@ const ProductsWriteForm = () => {
 
   };
 
+  // 모바일 환경에서 물품 상태에 관한 내용 토글 State
+  const [showQualityToggle, setShowQualityToggle] = useState<boolean>(false);
+  const handleOnClickToggle = () => {
+    setShowQualityToggle(prev => !prev);
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <ProductsImage uploadedFileUrl={uploadedFileUrl} setUploadedFileUrl={setUploadedFileUrl} />
@@ -216,7 +223,6 @@ const ProductsWriteForm = () => {
 
       <St.WrapperStyle>
         <St.SemiTitle>카테고리<St.Required>*</St.Required></St.SemiTitle>
-        {/* <div style={{display: 'flex', flexWrap: 'wrap', maxWidth: '85.7rem'}}> */}
           <St.CategoryContainer>
             {major.map((major, idx) => 
             <div style={{display: 'flex', flexDirection: 'row'}}>
@@ -226,7 +232,6 @@ const ProductsWriteForm = () => {
             </div>
             )}
           </St.CategoryContainer>
-        {/* </div> */}
       </St.WrapperStyle>
       <St.MobileWrapperStyle>
         <St.Validation>
@@ -237,7 +242,7 @@ const ProductsWriteForm = () => {
       <St.WrapperStyle>
         <St.SemiTitle>가격<St.Required>*</St.Required></St.SemiTitle>
         <St.InputWrapperStyle>
-          <St.InputStyle type='number' {...register("price", {
+          <St.InputStyle2 type='number' {...register("price", {
             required: "가격을 입력해주세요.",
             valueAsNumber: true,
             min: 0
@@ -260,11 +265,13 @@ const ProductsWriteForm = () => {
 
       <St.WrapperStyle>
         <St.SemiTitle>수량<St.Required>*</St.Required></St.SemiTitle>
-        <St.InputStyle type='number' {...register("count", {
+        <St.InputWrapperStyle>
+        <St.InputStyle2 type='number' {...register("count", {
           required: "수량을 입력해주세요.",
           valueAsNumber: true,
           min: 0
         })} placeholder='수량을 입력해주세요'/>
+        </St.InputWrapperStyle>
       </St.WrapperStyle>
       <St.MobileWrapperStyle>
         <St.Validation>
@@ -274,13 +281,15 @@ const ProductsWriteForm = () => {
 
       <St.WrapperStyle>
         <St.SemiTitle>거래방식<St.Required>*</St.Required></St.SemiTitle>
-        <St.MobileDealTypeWrapper>
-          {deal_type.map((deal_type, idx) => 
-            <St.InputCheckBoxLabel key={idx} htmlFor={deal_type}>
-              <St.InputCheckBoxStyle type='radio' id={deal_type} value={deal_type} 
-              {...register("deal_type", {required: "거래방식을 선택해주세요."})} />{deal_type}</St.InputCheckBoxLabel>
-              )}
-        </St.MobileDealTypeWrapper>
+        <St.InputWrapperStyle>
+          <St.MobileDealTypeWrapper>
+            {deal_type.map((deal_type, idx) => 
+              <St.InputCheckBoxLabel key={idx} htmlFor={deal_type}>
+                <St.InputCheckBoxStyle type='radio' id={deal_type} value={deal_type} 
+                {...register("deal_type", {required: "거래방식을 선택해주세요."})} />{deal_type}</St.InputCheckBoxLabel>
+                )}
+          </St.MobileDealTypeWrapper>
+        </St.InputWrapperStyle>
       </St.WrapperStyle>
       <St.MobileWrapperStyle>
         <St.Validation>
@@ -309,16 +318,34 @@ const ProductsWriteForm = () => {
       </St.WrapperStyle>
       
       <St.WrapperStyle>
-        <St.SemiTitle>물품상태<St.Required>*</St.Required></St.SemiTitle>
+        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+          <div>
+            <St.SemiTitle>물품상태<St.Required>*</St.Required></St.SemiTitle>
+          </div>
+          <St.QualityInfoBtn onClick={handleOnClickToggle}>
+            <St.QualityInfoIcon />
+          </St.QualityInfoBtn>
+            {showQualityToggle && (
+            <div style={{display: 'flex', justifyContent: 'end'}}>
+              <St.QualityInfoWrapper>
+                {quality.map((quality) => 
+                <St.QualityDetail>
+                  <p key={quality.condition}>{quality.condition}</p><span>{quality.shape}</span>
+                </St.QualityDetail>
+                )}
+              </St.QualityInfoWrapper>
+            </div>
+            )}
+        </div>
         <St.QualityWrapper>
           {quality.map((quality, idx) => 
+          <>
             <St.InputCheckBoxLabel key={idx} htmlFor={quality.condition}>
               <St.InputCheckBoxStyle type='radio' id={quality.condition} value={quality.condition} 
               {...register("quality", {required: "물품상태를 선택해주세요."})} />{quality.condition}</St.InputCheckBoxLabel>
+              <St.QualityExplanation key={idx}>{quality.shape}</St.QualityExplanation>
+          </>
           )}
-        </St.QualityWrapper>
-        <St.QualityWrapper>
-          {quality.map((quality, idx) => <St.QualityExplanation key={idx}>{quality.shape}</St.QualityExplanation>)}
         </St.QualityWrapper>
       </St.WrapperStyle>
       <St.MobileWrapperStyle>
@@ -337,7 +364,7 @@ const ProductsWriteForm = () => {
                   {...register("changable", {required: "교환 가능 여부를 선택해주세요."})} />{changable}</St.InputCheckBoxLabel>
               )}
             </St.ChangableSelectWrapper>
-            <St.InputStyle type='text' {...register("exchange_product", {required: getValues("changable") === "가능" ? "교환을 원하는 물품을 입력해주세요." : false})} placeholder='교환을 원하는 상품을 입력해주세요.' />
+            <St.InputStyle2 type='text' {...register("exchange_product", {required: getValues("changable") === "가능" ? "교환을 원하는 물품을 입력해주세요." : false})} placeholder='교환을 원하는 상품을 입력해주세요.' />
           </St.InputWrapperStyle>
       </St.WrapperStyle>
       <St.WrapperStyle>
@@ -349,12 +376,14 @@ const ProductsWriteForm = () => {
 
       <St.WrapperStyle>
         <St.SemiTitle>설명<St.Required>*</St.Required></St.SemiTitle>
-          <St.CountWrapper>
-            <St.TextAreaStyle {...register("contents", {
-              required: "내용을 입력해주세요."
-            })} placeholder='물품에 대한 구체적인 설명을 입력해주세요&#13;&#10;tip)설명이 구체적일수록 거래될 확률이 높아져요!' />
-            <St.ContentsCount>{watch("contents").length}/2000</St.ContentsCount>
-          </St.CountWrapper>
+          <St.InputWrapperStyle>
+            <St.CountWrapper>
+              <St.TextAreaStyle {...register("contents", {
+                required: "내용을 입력해주세요."
+              })} placeholder='물품에 대한 구체적인 설명을 입력해주세요&#13;&#10;tip)설명이 구체적일수록 거래될 확률이 높아져요!' />
+              <St.ContentsCount>{watch("contents").length}/2000</St.ContentsCount>
+            </St.CountWrapper>
+          </St.InputWrapperStyle>
       </St.WrapperStyle>
       <St.MobileTextValidationWrapper>
           <St.MobileTextValidation>
@@ -370,23 +399,23 @@ const ProductsWriteForm = () => {
 
       <St.WrapperStyle>
         <St.SemiTitle>태그</St.SemiTitle>
-        <St.TagsInputWrapper>
-          <St.InputStyle type='text' {...register("tags", {
+        <St.InputWrapperStyle>
+          <St.InputStyle2 type='text' {...register("tags", {
             pattern: {
               value: /^[가-힣A-Za-z,]+$/i,
               message: "한글과 영어만 입력 가능합니다.",
             }
           })} placeholder='태그를 입력해주세요.' />
+          <St.GapStyle/>
           <St.TagsExplanation>콤마(,)로 구분되며 최대 9개까지 입력할 수 있어요.</St.TagsExplanation>
           <St.TagsExplanation>사람들이 내 상품을 더 잘 찾을 수 있어요.</St.TagsExplanation>
           <St.TagsExplanation>상품과 관련 없는 태그를 입력할 경우, 판매에 제재를 받을 수 있어요.</St.TagsExplanation>
-        </St.TagsInputWrapper>
+        </St.InputWrapperStyle>
       </St.WrapperStyle>
-      {/* <St.TextValidation> */}
         <St.TagsValidation>
           <St.ValidationText>{errors.tags === undefined ? '' : '* '+errors.tags?.message}</St.ValidationText>
         </St.TagsValidation>
-      {/* </St.TextValidation> */}
+
       <St.CaveatBox>
         <St.CaveatText>{caveat}</St.CaveatText>
         <St.AgreementCheckBoxWrapper>
@@ -399,6 +428,7 @@ const ProductsWriteForm = () => {
       <St.WrapperStyle>
       <St.ValidationText>{errors.agreement === undefined ? '' : '* '+errors.agreement?.message}</St.ValidationText>
       </St.WrapperStyle>
+
       <St.GapStyle/>
       <St.BtnWrapper>
         <St.WriteBtn type='submit' disabled={isSubmitting}>등록하기</St.WriteBtn>
