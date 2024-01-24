@@ -7,6 +7,26 @@ import * as St from './style';
 import ChatHeader from './chatHeader/ChatHeader';
 import ChatForm from './chatForm/ChatForm';
 import { UtilForChat } from './chat_utils/functions';
+import styled from 'styled-components';
+import { IoIosArrowBack } from 'react-icons/io';
+import { useNavigate } from 'react-router';
+
+const StChatRoomBar = styled.div`
+  width: 100%;
+  max-width: 768px;
+  padding: 0.6rem 0.3rem;
+  gap: 1rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 0.1rem solid var(--3-gray);
+`;
+
+const StHeaderArrow = styled(IoIosArrowBack)`
+  font-size: 3rem;
+  height: max-content;
+  color: var(--opc-100);
+  cursor: pointer;
+`;
 
 export default function ChatRoom() {
   const [showImage, setShowImage] = useState<boolean>(false);
@@ -24,6 +44,7 @@ export default function ChatRoom() {
   const [boardPosition, setboardPosition] = useState<number>(100);
 
   const scrollRef = useRef<HTMLDivElement>(null);
+  const navi = useNavigate();
 
   const utilFunctions = new UtilForChat();
 
@@ -128,6 +149,12 @@ export default function ChatRoom() {
       )}
 
       <St.StChatContainer>
+        {isMobile && (
+          <StChatRoomBar>
+            <StHeaderArrow onClick={() => navi(-1)} />
+            채팅목록
+          </StChatRoomBar>
+        )}
         <St.StChatList onClick={() => setShowFileInput(false)}>
           <ChatRoomList
             handleBoardPosition={handleBoardPosition}

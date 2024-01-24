@@ -62,6 +62,7 @@ const StChatList = styled.div`
   @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 768px;
+    border-right: none;
   }
 `;
 
