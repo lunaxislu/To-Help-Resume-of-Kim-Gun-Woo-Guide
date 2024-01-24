@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StTab, StTabsContainer } from '../../../styles/mypageStyle/TabsStyle';
-import MyPageItemList from '../MyPageItemList';
-import MyPageCommunityPostList from '../MyPageCommunityPostList';
+import MyPageItemList from '../Items/MyPageItemList';
+import MyPageCommunityPostList from '../Commnity/MyPageCommunityPostList';
 
 const Tabs = () => {
   const tabMenuArray = [

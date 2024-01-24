@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StCardContainer } from '../../styles/mypageStyle/ProductCardStyle';
+import { StCardContainer } from '../../../styles/mypageStyle/ProductCardStyle';
 import { debounce } from 'lodash';
-import { supabase } from '../../api/supabase/supabaseClient';
-import SkeletonProductCard from '../card/SkeletonProductCard';
-import { Product, ProductCardProps } from '../../api/supabase/products';
-import { userId } from '../../util/getUserId';
-import MyPageItemCard from './ItemCard/MyPageItemCard';
+import { supabase } from '../../../api/supabase/supabaseClient';
+import SkeletonProductCard from '../../card/SkeletonProductCard';
+import { Product, ProductCardProps } from '../../../api/supabase/products';
+import { userId } from '../../../util/getUserId';
+import MyPageItemCard from './MyPageItemCard';
 
 const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
