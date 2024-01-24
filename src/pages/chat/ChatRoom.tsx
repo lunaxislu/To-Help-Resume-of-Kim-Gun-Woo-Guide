@@ -107,6 +107,7 @@ export default function ChatRoom() {
   };
 
   useEffect(() => {
+    checkWindowSize();
     window.addEventListener('DOMContentLoaded', checkWindowSize);
     window.addEventListener('resize', checkWindowSize);
 

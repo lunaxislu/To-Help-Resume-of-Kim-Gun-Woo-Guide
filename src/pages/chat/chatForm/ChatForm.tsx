@@ -20,6 +20,10 @@ const StImageButton = styled(FaPlus)`
   color: var(--opc-100);
   transform: translateY(-50%);
   cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    right: 2rem;
+  }
 `;
 
 const ChatForm = ({

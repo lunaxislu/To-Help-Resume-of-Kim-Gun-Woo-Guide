@@ -37,7 +37,6 @@ const ProductDetail = () => {
     // DB에 유저 정보 없음 에러
     if (error) console.log('cannot get User Info');
 
-    console.log(user.user);
     // DB에 유저 정보가 있다면 DB에 업로드
     if (user.user) {
       const { data: currentLogined, error } = await supabase
@@ -615,6 +614,7 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
+    checkWindowSize();
     window.addEventListener('DOMContentLoaded', checkWindowSize);
     window.addEventListener('resize', checkWindowSize);
 
@@ -741,7 +741,7 @@ const ProductDetail = () => {
                   <St.StTimeLeft>{parseDate(data.created_at)}</St.StTimeLeft>
                 )}
                 {!isMobile && <St.StAlertIcon />}
-                <p>신고하기</p>
+                <p style={{ cursor: 'pointer' }}>신고하기</p>
               </St.StAlertButton>
             </St.StProductInfoHeader>
             <St.StHeaderTitle>{data.title}</St.StHeaderTitle>
@@ -849,6 +849,12 @@ const StSelectChatBg = styled.div`
   transform: translate(-50%, -50%);
   background-color: #1d1d1d90;
   z-index: 2;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+  }
 `;
 
 const StChatList = styled.div`
@@ -864,6 +870,10 @@ const StChatList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+
+  @media screen and (max-width: 768px) {
+    position: absolute;
+  }
 `;
 
 const StChatListItem = styled.div`

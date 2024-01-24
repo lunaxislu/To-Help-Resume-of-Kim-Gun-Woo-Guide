@@ -45,6 +45,7 @@ const StChatContainer = styled.div`
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    border: 0.1rem solid var(--3-gray);
   }
 `;
 
@@ -151,6 +152,9 @@ const ImageInput = styled.input.attrs({ type: 'file' })`
   margin-bottom: 1rem;
   background-color: var(--3-gray);
   border-radius: 0.6rem;
+  @media screen and (max-width: 768px) {
+    margin-left: 0;
+  }
 `;
 
 const StChatInput = styled.textarea.attrs({

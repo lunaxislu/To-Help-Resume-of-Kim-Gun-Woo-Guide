@@ -53,6 +53,7 @@ const ChatHeader = ({
   };
 
   useState(() => {
+    checkWindowSize();
     window.addEventListener('resize', checkWindowSize);
 
     return () => {

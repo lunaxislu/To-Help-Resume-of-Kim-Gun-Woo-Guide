@@ -6,10 +6,10 @@ import { setSuccessLogin, setSuccessLogout } from '../redux/modules/authSlice';
 import { setSearchQuery, setSearchResults } from '../redux/modules/searchSlice';
 import { useAppDispatch, useAppSelector } from '../redux/reduxHooks/reduxBase';
 import * as St from '../styles/headerStyle/HeaderStyle';
-import { useSupabaseRealtimeContext } from '../context/realtimeData';
 import { BiWon } from 'react-icons/bi';
 import { BiSolidHeart } from 'react-icons/bi';
 import { BiSolidBell } from 'react-icons/bi';
+import { userId } from '../util/getUserId';
 
 interface User {
   username: string;
@@ -23,6 +23,10 @@ const Header = () => {
   const { isLogin } = useAppSelector((state) => state.auth);
   const location = useLocation();
   const dispatch = useAppDispatch();
+
+  const [newAlert, setAlert] = useState<any[]>([]);
+  const [userChatRooms, setUserChatRoom] = useState<string[]>([]);
+
   // 페이지 이동 시 검색어 초기화 함수
   const handlePageChange = () => {
     dispatch(setSearchQuery('')); // 검색어 초기화
@@ -108,14 +112,45 @@ const Header = () => {
     getAuth();
   }, []);
 
-  const { realtimeData, setRealtimeData } = useSupabaseRealtimeContext();
+  const getUserChatRoom = async () => {
+    const { data: chatRooms, error } = await supabase
+      .from('user')
+      .select('chat_rooms')
+      .eq('uid', userId);
+    if (chatRooms) {
+      setUserChatRoom(chatRooms[0].chat_rooms);
+    }
+  };
 
   useEffect(() => {
-    console.log(realtimeData);
-  }, [realtimeData]);
+    const chatMessages = supabase
+      .channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'chat_messages' },
+        (payload: any) => {
+          console.log('Change received!', payload);
+          if (userChatRooms.includes(payload.new.chat_room_id)) {
+            setAlert((prev: any) => [payload.new, ...prev]);
+            alert('알림이 도착했소');
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      chatMessages.unsubscribe();
+    };
+  });
+  console.log(newAlert);
+
+  useEffect(() => {
+    getUserChatRoom();
+  }, []);
 
   return (
     <St.HeaderContainer>
+      {}
       <St.HeaderSection>
         <St.Logo
           src="/assets/logo2.png"

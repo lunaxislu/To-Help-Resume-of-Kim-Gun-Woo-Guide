@@ -80,7 +80,6 @@ const ChatRoomList: React.FC<Props> = ({
   // product(게시물)의 id가 chatRoom의 about의 값이 되기 때문에
   // 채팅과 연결 된 게시물의 가져오려면 각 room의 about값과 같은 product를 찾아서 => isSell이나, 존재 여부에 따라 조건부 렌더
   const checkProductsStatus = (room_id: string) => {
-    console.log(products);
     const matchedProduct = products.filter(
       (item: Product) => item.id === room_id
     );
@@ -118,7 +117,6 @@ const ChatRoomList: React.FC<Props> = ({
     getAllMessage();
     getProductsforRoom();
   }, []);
-  console.log(products);
 
   return (
     <St.StChatListItem>

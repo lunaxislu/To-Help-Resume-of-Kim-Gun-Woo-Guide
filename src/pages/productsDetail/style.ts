@@ -2,6 +2,18 @@ import { FaHeart } from 'react-icons/fa';
 import { AiFillAlert } from 'react-icons/ai';
 import styled, { keyframes } from 'styled-components';
 
+export const StFadeAni = keyframes`
+  from{
+    opacity: 0;
+    transform: translateX(-5%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+`;
+
 const StDetailContainer = styled.div`
   width: 100%;
   height: 100%;
@@ -10,6 +22,7 @@ const StDetailContainer = styled.div`
   padding: 4.9rem 0;
   margin: auto;
   font-family: 'Pretendard-Regular';
+  animation: ${StFadeAni} 0.3s ease;
 
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -179,7 +192,8 @@ const StProductInfoBody = styled.div`
   border-radius: 1rem;
 
   @media screen and (max-width: 768px) {
-    width: 93%;
+    width: 94%;
+    max-width: 768px;
     margin-left: auto;
     margin-right: auto;
     padding: 2rem 1.5rem;

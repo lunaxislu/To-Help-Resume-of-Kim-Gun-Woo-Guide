@@ -3,12 +3,11 @@ import Header from './Header';
 import Footer from './Footer';
 import { Outlet, useLocation } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
-import { SupabaseRealtimeProvider } from '../context/realtimeData';
-import styled from 'styled-components';
 
 const Layout = () => {
   const location = useLocation();
   const [showTopbutton, setShowTopButton] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
@@ -40,12 +39,10 @@ const Layout = () => {
 
   return (
     <>
-      <SupabaseRealtimeProvider>
-        <Header />
-        <Outlet />
-        {showTopbutton && <ScrollTopButton />}
-        <Footer />
-      </SupabaseRealtimeProvider>
+      <Header />
+      <Outlet />
+      {showTopbutton && <ScrollTopButton />}
+      <Footer />
     </>
   );
 };
