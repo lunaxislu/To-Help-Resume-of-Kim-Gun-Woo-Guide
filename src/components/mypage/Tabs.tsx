@@ -19,11 +19,14 @@ const Tabs = () => {
         <Tab active={toggle} tabIndex={2} onClick={() => clickToggleTab(2)}>
           구매한 물품
         </Tab>
-        <Tab active={toggle} tabIndex={3} onClick={() => clickToggleTab(3)}>
-          커뮤니티
-        </Tab>
         <Tab active={toggle} tabIndex={4} onClick={() => clickToggleTab(4)}>
           찜한 물품
+        </Tab>
+        <Tab active={toggle} tabIndex={3} onClick={() => clickToggleTab(3)}>
+          내가 쓴 글
+        </Tab>
+        <Tab active={toggle} tabIndex={3} onClick={() => clickToggleTab(3)}>
+          추천한 글
         </Tab>
       </TabsContainer>
 

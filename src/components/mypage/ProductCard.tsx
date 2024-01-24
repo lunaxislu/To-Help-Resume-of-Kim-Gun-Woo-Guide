@@ -10,7 +10,8 @@ import { debounce } from 'lodash';
 import { supabase } from '../../api/supabase/supabaseClient';
 import SkeletonProductCard from '../card/SkeletonProductCard';
 import { Product, ProductCardProps } from '../../api/supabase/products';
-import { Link, useNavigate } from 'react-router-dom';
+import { PostgrestResponse } from '@supabase/supabase-js';
+import { userId } from '../../util/getUserId';
 
 const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
@@ -23,8 +24,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
   const [favoriteProducts, setFavoriteProducts] = useState<Product[]>([]);
   const [offset, setOffset] = useState(1);
   const [isInView, setIsInView] = useState(false);
-  const userId = localStorage.getItem('userId');
-  const navigate = useNavigate();
 
   const getCurrentUserProducts = async () => {
     let { data: products, error } = await supabase
@@ -50,23 +49,26 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
     }
   };
 
-  // const getFavoriteProducts = async () => {
-  //   let { data: favProducts, error } = await supabase
-  //     .from('products')
-  //     .select()
-  //     .contains('like_user', [
-  //       {
-  //         userNickname: 'gkgkgk',
-  //         user_uid: '47f878e9-1570-40f8-bb9d-fe24bd6726d7'
-  //       }
-  //     ]);
+  const getFavoriteProducts = async () => {
+    let { data: favProducts, error } = await supabase
+      .from('products')
+      .select('*');
 
-  //   if (favProducts && favProducts.length > 0) {
-  //     setFavoriteProducts(favProducts);
-  //   }
-  // };
+    if (favProducts && favProducts.length > 0) {
+      const filteredFavProducts = favProducts
+        .filter((product) =>
+          product.like_user?.some(
+            (like: { user_uid: string }) => like.user_uid === userId
+          )
+        )
+        .map((product) => product);
+      setFavoriteProducts(filteredFavProducts);
+    }
+  };
 
-  // console.log(favoriteProducts);
+  useEffect(() => {
+    getFavoriteProducts();
+  }, []);
 
   const onScrollHandler = () => {
     // js script가 동작하고 카드를 감싸는 전체 컨테이너가 바닥에 닿을 때
@@ -104,7 +106,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
     setOffset((prev) => prev + 1);
     try {
       const newProducts = await fetchProducts(offset, CARDS_COUNT);
-      console.log(newProducts);
 
       if (newProducts) {
         setLoadedProducts((prevProducts) => [...prevProducts, ...newProducts]);
@@ -195,7 +196,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
       {isLoading && <SkeletonProductCard cards={10} />}
 
       {activeTab === 4 &&
-        loadedPurchasedProducts.map((product) => {
+        favoriteProducts.map((product) => {
           return (
             <>
               <StCardWrapper

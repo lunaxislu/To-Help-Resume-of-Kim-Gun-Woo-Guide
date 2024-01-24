@@ -4,12 +4,13 @@ export interface LikeUser {
 }
 export interface Product {
   id: number;
+  nickname: string;
   quality: string;
   title: string;
   price: number;
   user: string;
   image_url: string;
-  like_user: LikeUser[];
+  like_user: Array<{ user_uid: string }>;
 }
 
 export interface ProductCardProps {

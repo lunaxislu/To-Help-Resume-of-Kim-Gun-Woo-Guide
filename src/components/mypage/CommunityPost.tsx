@@ -63,6 +63,18 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
     }
   };
 
+  const getCurrentUserFavCommunityPosts = async () => {
+    let { data: communityPosts, error } = await supabase
+      .from('community')
+      .select('*')
+      .eq('post_user', userId)
+      .limit(10);
+
+    if (communityPosts && communityPosts.length > 0) {
+      setCommunityPosts(communityPosts);
+    }
+  };
+
   useEffect(() => {
     const debouncedScroll = debounce(() => onScrollHandler(), 200);
     window.addEventListener('scroll', debouncedScroll);
