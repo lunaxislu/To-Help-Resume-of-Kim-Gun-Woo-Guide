@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/store';
 import styled from 'styled-components';
 import parseDate from '../../util/getDate';
 import { setSearchResults } from '../../redux/modules/searchSlice';
+import { FaArrowRight } from 'react-icons/fa';
 
 const SearchResults: React.FC = () => {
   const { usedItemResults, communityResults } = useSelector(
@@ -14,7 +15,12 @@ const SearchResults: React.FC = () => {
   const searchQuery = useSelector(
     (state: RootState) => state.search.searchQuery
   );
+  const location = useLocation();
+  const newSearchQuery = new URLSearchParams(location.search).get('q') || '';
 
+  useEffect(() => {
+    // 검색 수행
+  }, [newSearchQuery]);
   const dispatch = useDispatch();
 
   const usedItemCount = usedItemResults.length;
@@ -30,7 +36,9 @@ const SearchResults: React.FC = () => {
       <SearchResultsCountContainer>
         <CheckImage src="/assets/checkresults.png" alt="검색결과" />
         <FullCounts>
-          {usedItemCount + communityCount}개의 결과가 검색되었어요
+          {usedItemCount === 0 && communityCount === 0
+            ? '해당 검색어에 대한 결과를 찾을 수 없어요'
+            : `${usedItemCount + communityCount}개의 결과가 검색되었어요`}
         </FullCounts>
       </SearchResultsCountContainer>
       <ResultListContainer>
@@ -39,10 +47,10 @@ const SearchResults: React.FC = () => {
             <CountList>{usedItemCount}개의 상품이 거래되고 있어요</CountList>
             <LinktoUsedProducts to="/products">
               <p>전체보기</p>
-              <img src="/assets/nav.png" alt="전체보기" />
+              <FaArrowRight />
             </LinktoUsedProducts>
           </CountBar>
-          <UsedItemsList>
+          <UsedItemsList usedItemCount={usedItemCount}>
             {usedItemResults.slice(0, 5).map((item) => (
               <ToProductsPage key={item.id} to={`/products/detail/${item.id}`}>
                 <ProductList>
@@ -74,7 +82,7 @@ const SearchResults: React.FC = () => {
             <CountList>{communityCount}개의 이야기가 있어요</CountList>
             <LinktoCommunityPosts to="/community">
               <p>전체보기</p>
-              <img src="/assets/nav.png" alt="전체보기" />
+              <FaArrowRight />
             </LinktoCommunityPosts>
           </CountBar>
           <CommunityPostsList>
@@ -120,6 +128,7 @@ const SearchResults: React.FC = () => {
                         fillOpacity="0.7"
                       />
                     </svg>
+                    <span className="likescount">{item.likes}</span>
                     <svg
                       className="commentss"
                       width="12"
@@ -134,6 +143,7 @@ const SearchResults: React.FC = () => {
                         fillOpacity="0.7"
                       />
                     </svg>
+                    <span className="mycomments">{item.comment.length}</span>
                     <h4>{parseDate(item.created_at)}</h4>
                   </div>
                 </PostList>
@@ -220,14 +230,14 @@ const LinktoUsedProducts = styled(Link)`
     background-color: #83ad2e;
     color: #101d1c;
   }
-  img {
-    width: 0.9rem;
-    height: 0.8rem;
+  svg {
+    width: 1rem;
+    height: 0.9rem;
   }
 `;
-const UsedItemsList = styled.ul`
+const UsedItemsList = styled.ul<{ usedItemCount: number }>`
   width: 111.6rem;
-  height: 32rem;
+  height: ${({ usedItemCount }) => (usedItemCount === 0 ? '10rem' : '32rem')};
   display: flex;
   flex-wrap: wrap;
   margin-top: 2rem;
@@ -306,9 +316,9 @@ const LinktoCommunityPosts = styled(Link)`
     background-color: #83ad2e;
     color: #101d1c;
   }
-  img {
-    width: 0.9rem;
-    height: 0.8rem;
+  svg {
+    width: 1rem;
+    height: 0.9rem;
   }
 `;
 const CommunityPostsList = styled.ul`
@@ -384,11 +394,25 @@ const PostList = styled.li`
     width: 2rem;
     height: 2rem;
   }
+  .likescount {
+    position: absolute;
+    text-decoration: none;
+    bottom: 1.4rem;
+    left: 5rem;
+    color: var(--6, #717171);
+  }
   .commentss {
     position: absolute;
     bottom: 1.4rem;
-    left: 7rem;
+    left: 8rem;
     width: 2rem;
     height: 2rem;
+  }
+  .mycomments {
+    position: absolute;
+    text-decoration: none;
+    bottom: 1.4rem;
+    left: 11rem;
+    color: var(--6, #717171);
   }
 `;
