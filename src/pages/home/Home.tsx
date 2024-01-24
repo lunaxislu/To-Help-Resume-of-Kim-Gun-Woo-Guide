@@ -205,6 +205,7 @@ const CarouselWrapper = styled.div`
   width: 100%;
   cursor: pointer;
 `;
+
 const HomeSection = styled.div`
   width: 111.6rem;
   margin: 0 auto;
