@@ -3,7 +3,7 @@ export interface LikeUser {
   user_uid: string;
 }
 export interface Product {
-  id: number;
+  id: string;
   nickname: string;
   quality: string;
   title: string;
