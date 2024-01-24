@@ -1,82 +1,241 @@
 import { CgCloseO } from "react-icons/cg";
+import { GoChevronLeft } from "react-icons/go";
 import styled from "styled-components";
 
 // ProductsPosts
 export const EntireContainer = styled.div`
-  width: 144rem;
+  max-width: 144rem;
   display: flex;
   margin: auto;
   margin-bottom: 15rem;
-`
+  @media screen and (max-width: 768px) {
+    max-width: 76.8rem;
+  }
+`;
 export const ContentsContainer = styled.div`
-  width: 111.6rem;
+  max-width: 111.6rem;
   margin: auto;
-`
-
+  @media screen and (max-width: 768px) {
+    max-width: 90%;
+    min-width: 3.1rem;
+  }
+`;
+export const BackBtnBox = styled.div`
+  width: 2rem;
+  height: 1.5rem;
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+`;
+export const BackIcon = styled(GoChevronLeft)`
+  width: 100%;
+  height: 100%;
+  color: var(--opc-100);
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+`;
+export const Hr = styled.hr`
+  width: 100%;
+  height: 0.1rem;
+  border: none;
+  background-color: var(--6-gray);
+  margin-bottom: 2rem;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 1rem;
+  }
+`;
 export const TitleContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 4.2rem;
   margin-bottom: 2rem;
-  `
-
+  @media screen and (max-width: 768px) {
+    max-width: 76.8rem;
+    margin-top: 0.6rem;
+    margin-bottom: 0.8rem;
+  }
+`;
 export const Title = styled.h1`
   font-size: var(--fontSize-H2);
   margin-right: 1.7rem;
-`
-
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H5);
+    margin-right: 1rem;
+  }
+`;
 export const TetleRequired = styled.p`
   color: var(--opc-100);
   font-size: var(--fontSize-H6);
   line-height: 200%;
-`
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+`;
 
-export const Hr = styled.hr`
-  height: 0.1rem;
-  margin-bottom: 2rem;
-`
+// ProductsImage(사진 업로드)
+export const UpLoadImageContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 5rem;
+  gap: 3.2rem;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 1.6rem;
+    flex-direction: column;
+  }
+`;
+export const ImageWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  gap: 2rem;
+  @media screen and (max-width: 768px) {
+    gap: 1rem;
+  }
+`;
+export const ImageCard = styled.div`
+  border-radius: 0.5rem;
+  width: 18.5rem;
+  height: 18.5rem;
+  display: flex;
+  flex-direction: row-reverse;
+  :hover {
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    width: 9rem;
+    height: 9rem;
+  }
+`;
+export const Image = styled.img`
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5rem;
+`;
+export const ImageOrderWrapper = styled.div`
+  border: 0.15rem solid var(--opc-100);
+  width: 18.5rem;
+  height: 18.5rem;
+  border-radius: 0.5rem;
+  padding: 1.2rem 0 0 1.2rem;
+  position: absolute;
+  @media screen and (max-width: 768px) {
+    width: 9rem;
+    height: 9rem;
+    padding: 0.6rem 0 0 0.6rem;
+  }
+`;
+export const ImageOrder = styled.div`
+  width: 4.9rem;
+  height: 1.9rem;
+  border-radius: 0.4rem;
+  background-color: var(--opc-80);
+  color: var(--1-gray);
+  text-align: center;
+  line-height: 2;
+  font-size: 1rem;
+  font-weight: var(--fontWeight-semiBold);
+  :hover {
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    width: 2.4rem;
+    height: 0.9rem;
+    border-radius: 0.3rem;
+    line-height: 1.4;
+    font-size: 0.6rem;
+  }
+`;
+export const ImgCount = styled.span`
+  height: 100%;
+  margin-left: 2rem;
+  color: var(--7-gray);
+  font-size: var(--fontSize-H6);
+  line-height: 2.7;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-left: 0.6rem;
+  }
+`;
+export const ImageDeleteBtn = styled.div`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100%;
+  position: absolute;
+  :hover {
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    width: 1rem;
+    height: 1rem;
+  }
+`;
+export const ImageDeleteIcon = styled(CgCloseO)`
+  width: 100%;
+  height: 100%;
+  color: var(--5-gray);
+  position: absolute;
+`;
+export const UpLoadBox = styled.label`
+  width: 18.5rem;
+  height: 18.5rem;
+  border-radius: 0.5rem;
+  border: 0.1rem solid var(--opc-20);
+  background-color: var(--opc-10);
+  color: var(--opc-100);
+  font-size: 5rem;
+  text-align: center;
+  line-height: 3.5;
+  position: relative;
+    &:hover {
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    width: 9rem;
+    height: 9rem;
+    font-size: 2rem;
+    line-height: 4.1;
+  }
+`;
 
 // ProductsWriteForm
 export const WrapperStyle = styled.div`
   display: flex;
   flex-direction: row;
-  //margin-bottom: 5rem;
-`
-
-export const Validation = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 5rem;
-  padding: 1rem 0 0 19rem;
-`
-
-export const Validation2 = styled.div`
-  display: flex;
-  flex-direction: row;
-  height: 5rem;
-  padding: 1rem 0 0 19rem;
-  gap: 1rem;
-`
-
-export const ValidationText = styled.p`
-  color: red;
-  line-height: 1.8;
-`
-
+  margin-top: 0.5rem;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
 export const SemiTitle = styled.h2`
   width: 18.8rem;
   display: flex;
   flex-direction: row;
   line-height: 2;
-`
-
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+    line-height: 1.5;
+    margin-bottom: 0.9rem;
+  }
+`;
 export const Required = styled.p`
-color: var(--opc-100);
-font-size: var(--fontSize-H6);
-line-height: 2.5;
-margin-left: 0.3rem;
-`
-
+  color: var(--opc-100);
+  font-size: var(--fontSize-H6);
+  line-height: 2.5;
+  margin-left: 0.3rem;
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+    line-height: 1.5;
+  }
+`;
 export const InputStyle = styled.input`
   width: 85.7rem;
   height: 5rem;
@@ -87,57 +246,122 @@ export const InputStyle = styled.input`
   border-radius: 0.7rem;
   color: var(--12-gray);
   padding-left: 2rem;
+  /* Chrome, Safari, Edge, Opera */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+  /* Firefox */
+  /* &input[type=number] {
+    -moz-appearance: textfield;
+  } */
   &::placeholder {
     color: var(--5-gray);
   }
-`
-
-export const ImgCount = styled.span`
-  height: 100%;
-  margin-left: 2rem;
-  color: var(--7-gray);
-  font-size: var(--fontSize-H6);
-  line-height: 2.7;
-`
-
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 3rem;
+    font-size: var(--fontSize-H6);
+    border-radius: 0.6rem;
+    color: var(--12-gray);
+    padding-left: 1rem;
+    &::placeholder {
+      color: var(--5-gray);
+    }
+  }
+`;
+export const MobileTextValidationWrapper = styled.div`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1.6rem;
+  }
+`;
+export const MobileTitleCount = styled.span`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+    color: var(--7-gray);
+    font-size: var(--fontSize-H6);
+    height: 100%;
+    margin: 0.5rem 0 0 auto;
+    font-size: 1rem;
+    line-height: 1;
+  }
+`;
+export const MobileTextValidation = styled.div`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+    font-size: 1rem;
+    font-weight: var(--fontWeight-regular);
+    height: 1rem;
+    padding: 0.5rem 0 0 0;
+  }
+`;
 export const TitleCount = styled.span`
   height: 100%;
   margin-left: 2rem;
   color: var(--7-gray);
   font-size: var(--fontSize-H6);
   line-height: 4;
-`
-
-export const CountWrapper = styled.div`
-  align-items: end;
-`
-
-export const ContentsCount = styled.span`
-  height: 100%;
-  margin-left: 2rem;
-  color: var(--7-gray);
-  font-size: var(--fontSize-H6);
-`
-
-export const InputWrapperStyle = styled.div`
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+export const TextValidation = styled.div`
   display: flex;
   flex-direction: column;
-`
-
+  height: 5rem;
+  padding: 1rem 0 0 19rem;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+export const ValidationText = styled.p`
+  color: #EA4949;
+  line-height: 1.8;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
+`;
+export const MobileWrapperStyle = styled.div`
+  display: flex;
+  flex-direction: row;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    height: 3rem;
+  }
+`;
 export const CategoryContainer = styled.div`
-  height: 30px;
+  height: 8rem;
   display: flex;
   align-items: center;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2.2rem;
+  @media screen and (max-width: 768px) {
+    height: 6rem;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+  }
+  @media screen and (max-width: 520px) {
+    height: 9rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
   `;
-
 export const InputCheckBoxLabel = styled.label`
   color: var(--11-gray);
   display: flex;
   align-items: center;
   gap: 1rem;
   cursor: pointer;
-`
-
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
+`;
 export const InputCheckBoxStyle = styled.input`
   appearance: none;
   width: 2.8rem;
@@ -149,52 +373,65 @@ export const InputCheckBoxStyle = styled.input`
   cursor: pointer;
   outline: none;
   margin-left: 1rem;
+  @media screen and (max-width: 768px) {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 0.5rem;
+    margin-left: 0.7rem;
+  }
   /* 체크 표시 스타일 */
   &:checked:before {
     content: '✔';
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 1.4rem;
     color: var(--opc-100);
   }
 `;
-
 export const ShippingCostSelectWrapper = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 2.5rem;
-`
-
-export const ChangableSelectWrapper = styled.div`
+  gap: 2rem;
+  @media screen and (max-width: 768px) {
+    margin-top: 1rem;
+  }
+`;
+export const RowValidation = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 3rem;
-`
-
-export const AddressInputStyle = styled.input`
-  min-width: 47.7rem;
   height: 5rem;
-  background-color: var(--3-gray);
-  font-size: var(--fontSize-H6);
-  font-family: 'Pretendard-Medium';
-  border: none;
-  border-radius: 0.7rem;
-  color: var(--8-gray);
-  padding-left: 2rem;
-  &::placeholder {
-    color: var(--5-gray);
+  padding: 1rem 0 0 19rem;
+  gap: 1rem;
+  @media screen and (max-width: 768px) {
+    height: 3rem;
+    padding: 0.5rem 0 0 0;
+    gap: 0.5rem;
   }
-`
-
-export const GapStyle = styled.div`
-  margin-bottom: 2.3rem;
-`
-export const GapStyle2 = styled.div`
-  margin-bottom: 5rem;
-`
-
+`;
+export const MobileDealTypeWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+`;
+export const Validation = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 5rem;
+  padding: 1rem 0 0 19rem;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    font-weight: var(--fontWeight-regular);
+    height: 1rem;
+    padding: 0.5rem 0 0 0;
+  }
+`;
+export const InputWrapperStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 export const AddressBtn = styled.button`
   width: 10rem;
   height: 5rem;
@@ -203,29 +440,82 @@ export const AddressBtn = styled.button`
   background-color: var(--3-gray);
   font-family: 'Pretendard-Medium';
   color: var(--10-gray);
-  cursor: pointer;
   :hover {
     cursor: pointer;
   }
-`
-
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+    width: 6.8rem;
+    height: 3rem;
+    border-radius: 0.6rem;
+  }
+`;
 // 우편번호 넣는 칸 추가해야함..
-
+export const AddressInputStyle = styled.input`
+  width: 200%;
+  height: 5rem;
+  background-color: var(--3-gray);
+  font-size: var(--fontSize-H5);
+  font-family: 'Pretendard-Medium';
+  border: none;
+  border-radius: 0.7rem;
+  color: var(--8-gray);
+  padding-left: 2rem;
+  &::placeholder {
+    color: var(--5-gray);
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 3rem;
+    padding-left: 1rem;
+    font-size: var(--fontSize-H6);
+  }
+`;
+export const GapStyle = styled.div`
+  margin-bottom: 2.3rem;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 0.6rem;
+  }
+`;
+export const GapStyle2 = styled.div`
+  margin-bottom: 5rem;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 3rem;
+  }
+`;
 export const QualityWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.3rem;
   margin-right: 2rem;
-`
-
+  @media screen and (max-width: 768px) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-right: 0.7rem;
+  }
+  @media screen and (max-width: 450px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
 export const QualityExplanation = styled.p`
   color: var(--6-gray);
   padding: 0.6rem;
-`
-
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+export const ChangableSelectWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 3rem;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 1rem;
+  }
+`;
 export const TextAreaStyle = styled.textarea`
   width: 85.7rem;
-  min-height: 19.6rem;
+  height: 19.6rem;
   resize: none;
   background-color: var(--3-gray);
   font-size: var(--fontSize-H5);
@@ -234,6 +524,7 @@ export const TextAreaStyle = styled.textarea`
   color: var(--12-gray);
   padding: 2rem;
   font-family: 'Pretendard-Medium';
+  overflow: hidden;
   &::-moz-input-placeholder {
     line-height: 2;
   }
@@ -243,27 +534,80 @@ export const TextAreaStyle = styled.textarea`
   &::placeholder {
     color: var(--5-gray);
   }
-`
-
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    font-size: var(--fontSize-H6);
+  }
+`;
+export const CountWrapper = styled.div`
+  align-items: end;
+`;
+export const ContentsCount = styled.span`
+  height: 100%;
+  margin-left: 2rem;
+  color: var(--7-gray);
+  font-size: var(--fontSize-H6);
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+export const MobileTextAreaWrapperStyle = styled.div`
+  display: flex;
+  flex-direction: row;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
 export const TagsExplanation = styled.p`
   font-size: var(--fontSize-H5);
   color: var(--7-gray);
   line-height: 1.5;
-`
-
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    gap: 0.4rem;
+    line-height: 1.5;
+  }
+`;
 export const CaveatBox = styled.div`
   background-color: var(--3-gray);
   border-radius: 1rem;
   padding: 3.5rem;
-`
-
+  @media screen and (max-width: 768px) {
+    padding: 1.7rem;
+  }
+`;
 export const CaveatText = styled.p`
   color: var(--7-gray);
   line-height: 2;
   margin-bottom: 2.7rem;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 2.2rem;
+    font-size: 1rem;
+  }
+`;
+export const TagsInputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 `
-
-export const agreementCheckBoxStyle = styled.input`
+export const TagsValidation = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 5rem;
+  padding: 1rem 0 0 19rem;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    font-weight: var(--fontWeight-regular);
+    height: 3rem;
+    padding: 0.5rem 0 0 0;
+  }
+`;
+export const AgreementCheckBoxWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+`
+export const AgreementCheckBoxStyle = styled.input`
   appearance: none;
   width: 2.8rem;
   height: 2.8rem;
@@ -278,20 +622,22 @@ export const agreementCheckBoxStyle = styled.input`
   &:checked:before {
     content: '✔';
     position: absolute;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.4rem;
+    font-size: var(--fontSize-H5);
     color: var(--opc-100);
   }
+  @media screen and (max-width: 768px) {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
 `;
-
 export const BtnWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-top: 1.2rem;
-`
-
+`;
 export const WriteBtn = styled.button`
   border: none;
   border-radius: 0.5rem;
@@ -305,101 +651,9 @@ export const WriteBtn = styled.button`
   &:hover {
     cursor: pointer;
   }
-`
-
-// ProductsImage(사진 업로드)
-export const UpLoadImageContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 5rem;
-  `
-
-export const ImageWrapper = styled.div`
-  width: 85.7rem;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  border-radius: 0.5rem;
-  gap: 2rem;
-`
-
-export const ImageCard = styled.div`
-  border-radius: 0.5rem;
-  width: 18.5rem;
-  height: 18.5rem;
-  display: flex;
-  flex-direction: row-reverse;
-  :hover {
-    cursor: pointer;
+  @media screen and (max-width: 768px) {
+    width: 6.5rem;
+    height: 3rem;
+    font-size: var(--fontSize-H5);
   }
-`
-
-export const Image = styled.img`
-  object-fit: cover;
-  object-position: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 0.5rem;
-`
-
-export const ImageOrderWrapper = styled.div`
-  border: 0.15rem solid var(--opc-100);
-  width: 18.5rem;
-  height: 18.5rem;
-  border-radius: 0.5rem;
-  padding: 1.2rem 0 0 1.2rem;
-  position: absolute;
-`
-
-export const ImageOrder = styled.div`
-  width: 4.9rem;
-  height: 1.9rem;
-  border-radius: 0.4rem;
-  background-color: var(--opc-80);
-  color: var(--1-gray);
-  text-align: center;
-  line-height: 1.9;
-  font-size: 1rem;
-  font-weight: var(--fontWeight-semiBold);
-  :hover {
-    cursor: pointer;
-  }
-`
-
-export const ImageDeleteBtn = styled.div`
-  width: 2rem;
-  height: 2rem;
-  border-radius: 100%;
-  position: absolute;
-  :hover {
-    cursor: pointer;
-  }
-`
-
-export const ImageDeleteIcon = styled(CgCloseO)`
-  width: 100%;
-  height: 100%;
-  color: var(--5-gray);
-  position: absolute;
 `;
-
-// 사진 안으로 들어가도록 하고 꾸미기
-
-export const UpLoadBox = styled.label`
-  width: 18.5rem;
-  height: 18.5rem;
-  border-radius: 0.5rem;
-  border: 0.1rem solid var(--opc-20);
-  background-color: var(--opc-10);
-  color: var(--opc-100);
-  font-size: 5rem;
-  text-align: center;
-  line-height: 3.3;
-  position: relative;
-    &:hover {
-    cursor: pointer;
-  }
-`
-
-// 첫번째 사진만 테두리가 생기도록 조건부 걸어주기
-// 대표사진 걸어놓기

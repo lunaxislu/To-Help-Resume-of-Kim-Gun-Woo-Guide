@@ -3,19 +3,30 @@ import styled, { css } from "styled-components";
 
 // ProductsList(page)
 export const EntireContainer = styled.div`
-  width: 144rem;
+  max-width: 144rem;
   display: flex;
   margin: auto;
   margin-bottom: 15rem;
+  @media screen and (max-width: 768px) {
+    max-width: 76.8rem;
+  }
 `
 export const ContentsContainer = styled.div`
-  width: 111.6rem;
+  max-width: 111.6rem;
   margin: auto;
+  @media screen and (max-width: 768px) {
+    max-width: 76.8rem;
+    min-width: 3.1rem;
+  }
 `
 
 export const Title = styled.h1`
   font-size: var(--fontSize-H3);
   margin: 4rem 0 2.6rem 0;
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H5);
+  margin: 2rem 0 1.4rem 0;
+  }
 `
 
 export const BarContainer = styled.div`

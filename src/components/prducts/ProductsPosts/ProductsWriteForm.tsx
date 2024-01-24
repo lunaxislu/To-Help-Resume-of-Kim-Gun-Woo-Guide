@@ -196,35 +196,43 @@ const ProductsWriteForm = () => {
       <St.WrapperStyle>
         <St.SemiTitle>제목<St.Required>*</St.Required></St.SemiTitle>
         <St.InputStyle type='text' {...register("title", {
-          required: "제목을 입력해주세요.",
+          required: "제목은 필수로 입력해야합니다.",
           maxLength: {
             value: 40,
             message: "최대 40자까지 입력할 수 있습니다."
           }
-        })} placeholder='상품명이 들어간 제목을 입력해주세요' />
-        <St.TitleCount>{watch("title").length}/40</St.TitleCount>
+        })} placeholder='판매글의 제목을 입력해주세요' />
+        <St.MobileTextValidationWrapper>
+          <St.MobileTextValidation>
+            <St.ValidationText>{errors.title?.message === undefined ? '' : '* '+ errors.title?.message}</St.ValidationText>
+          </St.MobileTextValidation>
+          <St.MobileTitleCount>{watch("title").length}/40</St.MobileTitleCount>
+        </St.MobileTextValidationWrapper>
+          <St.TitleCount>{watch("title").length}/40</St.TitleCount>
       </St.WrapperStyle>
-        <St.Validation>
+        <St.TextValidation>
           <St.ValidationText>{errors.title?.message === undefined ? '' : '* '+ errors.title?.message}</St.ValidationText>
-        </St.Validation>
+        </St.TextValidation>
 
       <St.WrapperStyle>
         <St.SemiTitle>카테고리<St.Required>*</St.Required></St.SemiTitle>
         {/* <div style={{display: 'flex', flexWrap: 'wrap', maxWidth: '85.7rem'}}> */}
           <St.CategoryContainer>
             {major.map((major, idx) => 
-                <St.InputCheckBoxLabel key={idx} htmlFor={major}>
-                  <St.InputCheckBoxStyle type='checkbox' id={major} value={major} 
-                  {...register("category", {required: "카테고리를 선택해주세요."})} />{major}</St.InputCheckBoxLabel>
+            <div style={{display: 'flex', flexDirection: 'row'}}>
+              <St.InputCheckBoxLabel key={idx} htmlFor={major}>
+                <St.InputCheckBoxStyle type='checkbox' id={major} value={major} 
+                {...register("category", {required: "카테고리를 선택해주세요."})} />{major}</St.InputCheckBoxLabel>
+            </div>
             )}
           </St.CategoryContainer>
         {/* </div> */}
       </St.WrapperStyle>
-      <St.WrapperStyle>
+      <St.MobileWrapperStyle>
         <St.Validation>
           <St.ValidationText>{errors.category === undefined ? '' : '* '+ errors.category?.message}</St.ValidationText>
         </St.Validation>
-      </St.WrapperStyle>
+      </St.MobileWrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>가격<St.Required>*</St.Required></St.SemiTitle>
@@ -244,10 +252,10 @@ const ProductsWriteForm = () => {
         </St.InputWrapperStyle>
       </St.WrapperStyle>
       <St.WrapperStyle>
-        <St.Validation2>
+        <St.RowValidation>
             <St.ValidationText>{errors.price === undefined ? '' : '* '+ errors.price?.message}</St.ValidationText>
             <St.ValidationText>{errors.shipping_cost === undefined ? '' : '* '+ errors.shipping_cost?.message}</St.ValidationText>
-        </St.Validation2>
+        </St.RowValidation>
       </St.WrapperStyle>
 
       <St.WrapperStyle>
@@ -258,25 +266,27 @@ const ProductsWriteForm = () => {
           min: 0
         })} placeholder='수량을 입력해주세요'/>
       </St.WrapperStyle>
-      <St.WrapperStyle>
+      <St.MobileWrapperStyle>
         <St.Validation>
           <St.ValidationText>{errors.count === undefined ? '' : '* '+ errors.count?.message}</St.ValidationText>
         </St.Validation>
-      </St.WrapperStyle>
+      </St.MobileWrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>거래방식<St.Required>*</St.Required></St.SemiTitle>
-        {deal_type.map((deal_type, idx) => 
-          <St.InputCheckBoxLabel key={idx} htmlFor={deal_type}>
-            <St.InputCheckBoxStyle type='radio' id={deal_type} value={deal_type} 
-            {...register("deal_type", {required: "거래방식을 선택해주세요."})} />{deal_type}</St.InputCheckBoxLabel>
-        )}
+        <St.MobileDealTypeWrapper>
+          {deal_type.map((deal_type, idx) => 
+            <St.InputCheckBoxLabel key={idx} htmlFor={deal_type}>
+              <St.InputCheckBoxStyle type='radio' id={deal_type} value={deal_type} 
+              {...register("deal_type", {required: "거래방식을 선택해주세요."})} />{deal_type}</St.InputCheckBoxLabel>
+              )}
+        </St.MobileDealTypeWrapper>
       </St.WrapperStyle>
-      <St.WrapperStyle>
+      <St.MobileWrapperStyle>
         <St.Validation>
           <St.ValidationText>{errors.deal_type === undefined ? '' : '* '+ errors.deal_type?.message}</St.ValidationText>
         </St.Validation>
-      </St.WrapperStyle>
+      </St.MobileWrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>직거래 지역</St.SemiTitle>
@@ -299,23 +309,23 @@ const ProductsWriteForm = () => {
       </St.WrapperStyle>
       
       <St.WrapperStyle>
-        <St.SemiTitle>상품상태<St.Required>*</St.Required></St.SemiTitle>
+        <St.SemiTitle>물품상태<St.Required>*</St.Required></St.SemiTitle>
         <St.QualityWrapper>
           {quality.map((quality, idx) => 
             <St.InputCheckBoxLabel key={idx} htmlFor={quality.condition}>
               <St.InputCheckBoxStyle type='radio' id={quality.condition} value={quality.condition} 
-              {...register("quality", {required: "상품상태를 선택해주세요."})} />{quality.condition}</St.InputCheckBoxLabel>
+              {...register("quality", {required: "물품상태를 선택해주세요."})} />{quality.condition}</St.InputCheckBoxLabel>
           )}
         </St.QualityWrapper>
         <St.QualityWrapper>
           {quality.map((quality, idx) => <St.QualityExplanation key={idx}>{quality.shape}</St.QualityExplanation>)}
         </St.QualityWrapper>
       </St.WrapperStyle>
-      <St.WrapperStyle>
+      <St.MobileWrapperStyle>
         <St.Validation>
           <St.ValidationText>{errors.quality === undefined ? '' : '*' + errors.quality?.message}</St.ValidationText>
         </St.Validation>
-      </St.WrapperStyle>
+      </St.MobileWrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>교환<St.Required>*</St.Required></St.SemiTitle>
@@ -331,10 +341,10 @@ const ProductsWriteForm = () => {
           </St.InputWrapperStyle>
       </St.WrapperStyle>
       <St.WrapperStyle>
-          <St.Validation2>
+          <St.RowValidation>
             <St.ValidationText>{errors.changable === undefined ? '' : '* '+ errors.changable?.message}</St.ValidationText>
             <St.ValidationText>{errors.exchange_product === undefined ? '' : '* '+ errors.exchange_product?.message}</St.ValidationText>
-          </St.Validation2>
+          </St.RowValidation>
       </St.WrapperStyle>
 
       <St.WrapperStyle>
@@ -346,15 +356,21 @@ const ProductsWriteForm = () => {
             <St.ContentsCount>{watch("contents").length}/2000</St.ContentsCount>
           </St.CountWrapper>
       </St.WrapperStyle>
-      <St.WrapperStyle>
+      <St.MobileTextValidationWrapper>
+          <St.MobileTextValidation>
+            <St.ValidationText>{errors.contents?.message === undefined ? '' : '* '+ errors.contents?.message}</St.ValidationText>
+          </St.MobileTextValidation>
+          <St.MobileTitleCount>{watch("contents").length}/2000</St.MobileTitleCount>
+        </St.MobileTextValidationWrapper>
+      <St.MobileTextAreaWrapperStyle>
         <St.Validation>
           <St.ValidationText>{errors.contents === undefined ? '' : '* '+errors.contents?.message}</St.ValidationText>
         </St.Validation>
-      </St.WrapperStyle>
+      </St.MobileTextAreaWrapperStyle>
 
       <St.WrapperStyle>
         <St.SemiTitle>태그</St.SemiTitle>
-        <div style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+        <St.TagsInputWrapper>
           <St.InputStyle type='text' {...register("tags", {
             pattern: {
               value: /^[가-힣A-Za-z,]+$/i,
@@ -364,24 +380,24 @@ const ProductsWriteForm = () => {
           <St.TagsExplanation>콤마(,)로 구분되며 최대 9개까지 입력할 수 있어요.</St.TagsExplanation>
           <St.TagsExplanation>사람들이 내 상품을 더 잘 찾을 수 있어요.</St.TagsExplanation>
           <St.TagsExplanation>상품과 관련 없는 태그를 입력할 경우, 판매에 제재를 받을 수 있어요.</St.TagsExplanation>
-        </div>
+        </St.TagsInputWrapper>
       </St.WrapperStyle>
-      <St.WrapperStyle>
-        <St.Validation>
+      {/* <St.TextValidation> */}
+        <St.TagsValidation>
           <St.ValidationText>{errors.tags === undefined ? '' : '* '+errors.tags?.message}</St.ValidationText>
-        </St.Validation>
-      </St.WrapperStyle>
+        </St.TagsValidation>
+      {/* </St.TextValidation> */}
       <St.CaveatBox>
         <St.CaveatText>{caveat}</St.CaveatText>
-            <div style={{display: 'flex', flexDirection: 'row', gap: '3rem'}}>
-        <St.InputCheckBoxLabel htmlFor='agreement'>
-          <St.agreementCheckBoxStyle type='checkbox' id='agreement' {...register("agreement", {
-          required: "주의사항에 동의를 해주셔야 중고거래 게시물을 등록할 수 있습니다."
-        })} />동의합니다.</St.InputCheckBoxLabel>
-          <St.ValidationText>{errors.agreement === undefined ? '' : '* '+errors.agreement?.message}</St.ValidationText>
-        </div> 
+        <St.AgreementCheckBoxWrapper>
+          <St.InputCheckBoxLabel htmlFor='agreement'>
+            <St.AgreementCheckBoxStyle type='checkbox' id='agreement' {...register("agreement", {
+            required: "주의사항에 동의하셔야 게시물 등록이 가능해요."
+          })} />동의합니다.</St.InputCheckBoxLabel>
+        </St.AgreementCheckBoxWrapper> 
       </St.CaveatBox>
       <St.WrapperStyle>
+      <St.ValidationText>{errors.agreement === undefined ? '' : '* '+errors.agreement?.message}</St.ValidationText>
       </St.WrapperStyle>
       <St.GapStyle/>
       <St.BtnWrapper>
