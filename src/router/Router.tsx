@@ -17,7 +17,7 @@ import { useAppSelector } from '../redux/reduxHooks/reduxBase';
 const Router = () => {
   const { isLogin } = useAppSelector((state) => state.auth);
 
-  console.log(isLogin);
+  // console.log(isLogin);
   return (
     <BrowserRouter>
       <GlobalStyles />

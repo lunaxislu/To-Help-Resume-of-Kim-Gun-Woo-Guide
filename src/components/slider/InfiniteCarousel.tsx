@@ -87,11 +87,19 @@ const CarouselContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   overflow: hidden;
+  @media screen and (max-width: 1024px) {
+    max-width: 1024px;
+    max-height: 285px;
+  }
+
   .dots_custom {
     display: inline-block;
     vertical-align: middle;
     margin: auto 0;
     padding: 0;
+    @media screen and (max-width: 1024px) {
+      margin-bottom: 10rem;
+    }
   }
 
   .dots_custom li {
@@ -100,6 +108,8 @@ const CarouselContainer = styled.div`
     display: inline-block;
     margin: 0 0.6rem;
     padding: 0;
+    @media screen and (max-width: 1024px) {
+    }
   }
 
   .dots_custom li button {
@@ -124,6 +134,9 @@ const CarouselImage = styled.img`
   max-height: 40.1rem;
   object-fit: cover;
   box-sizing: border-box;
+  @media screen and (max-width: 1024px) {
+    max-width: 100%;
+  }
 `;
 const CarouselButtons = styled.div`
   position: absolute;
@@ -134,6 +147,10 @@ const CarouselButtons = styled.div`
   width: 100%;
   padding: 0 2rem;
   box-sizing: border-box;
+  @media screen and (max-width: 1024px) {
+    max-width: 100%;
+    padding: 0 3rem;
+  }
 `;
 
 const ArrowButton = styled.button`
@@ -141,6 +158,10 @@ const ArrowButton = styled.button`
   border: none;
   width: 5rem;
   height: 5rem;
+  @media screen and (max-width: 1024px) {
+    max-width: 76%;
+    max-height: 76%;
+  }
 `;
 const ColoredIcon = styled.div`
   display: inline-block;
@@ -149,6 +170,10 @@ const ColoredIcon = styled.div`
   height: 5rem;
   background-color: rgba(255, 255, 255, 0.6);
   border-radius: 50%;
+  @media screen and (max-width: 1024px) {
+    max-width: 76%;
+    max-height: 76%;
+  }
 
   svg {
     position: absolute;

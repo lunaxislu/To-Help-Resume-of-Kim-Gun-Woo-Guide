@@ -49,24 +49,27 @@ const SearchBar: React.FC = () => {
       // 중고 게시물 이미지 가져오기
       const usedItemsWithImages = await Promise.all(
         usedItemData.map(async (item: UsedItem) => {
-          const pathToImage = `pictures/${item.image_Url}.png`;
+          const pathToImage = `products/${item.image_url}.png`;
           const { data } = await supabase.storage
-            .from('picture')
+            .from('images')
             .getPublicUrl(pathToImage);
           return { ...item, data };
         })
       );
+      console.log('usedItemData:', usedItemData);
+      console.log(usedItemsWithImages);
 
       // 커뮤 게시물 이미지 가져오기
       const communityItemsWithImages = await Promise.all(
         communityData.map(async (item: Communityy) => {
-          const pathToImage = `pictures/${item.image_Url}.png`;
+          const pathToImage = `quill_imgs/${item.image_Url}.png`;
           const { data } = await supabase.storage
-            .from('community_picture')
+            .from('images')
             .getPublicUrl(pathToImage);
           return { ...item, data };
         })
       );
+      console.log(communityItemsWithImages);
 
       dispatch(
         setSearchResults({
@@ -74,8 +77,6 @@ const SearchBar: React.FC = () => {
           communityResults: communityItemsWithImages || []
         })
       );
-
-      navigate(`/search-results?q=${encodeURIComponent(searchQuery)}`);
     } catch (error) {
       console.error('수파베이스에 요청 중 실패:', error);
     }
@@ -83,6 +84,8 @@ const SearchBar: React.FC = () => {
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      e.preventDefault();
+      navigate(`/search-results?q=${encodeURIComponent(searchQuery)}`);
       handleSearch();
     }
   };
