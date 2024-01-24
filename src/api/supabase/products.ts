@@ -10,7 +10,9 @@ export interface Product {
   price: number;
   user: string;
   image_url: string;
-  like_user: Array<{ user_uid: string }>;
+  like_user: LikeUser[];
+  about: string;
+  isSell: boolean;
 }
 
 export interface ProductCardProps {

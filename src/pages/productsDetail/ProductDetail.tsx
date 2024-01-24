@@ -6,11 +6,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductDetailInfo from '../../components/productDetailInfoBody/ProductDetailInfo';
 import * as St from './style';
 import type { CustomUser, Product } from './types';
-import { Participants, RoomType } from '../../components/chat/types';
+import { RoomType } from '../../components/chat/types';
 import parseDate from '../../util/getDate';
 import { FaHeart } from 'react-icons/fa';
-import { v4 } from 'uuid';
+import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
+import ProductDetailCarousel from './ProductDetailCarousel';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
@@ -28,6 +29,7 @@ const ProductDetail = () => {
   const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<string>('');
   const [likesCount, setLikesCount] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const getUserData = async () => {
     const { data: user, error } = await supabase.auth.getUser();
@@ -40,7 +42,7 @@ const ProductDetail = () => {
       const { data: currentLogined, error } = await supabase
         .from('user')
         .select('*')
-        .eq('uid', user.user.id);
+        .eq('id', user.user.id);
 
       // 현재 로그인 유저의 데이터가 있다면
       if (currentLogined && currentLogined.length > 0) {
@@ -52,6 +54,7 @@ const ProductDetail = () => {
       await findRoom();
     }
   };
+
   const getProduct = async (id: string) => {
     let { data: products, error } = await supabase
       .from('products')
@@ -88,7 +91,7 @@ const ProductDetail = () => {
   ) => {
     const roomForm = [
       {
-        id: v4(),
+        id: uuid(),
         room_name: `${target.username}`,
         about: `${id}`,
         participants: [
@@ -204,8 +207,7 @@ const ProductDetail = () => {
         ];
         const { data, error } = await supabase
           .from('chat_messages')
-          .insert(InitMessage)
-          .eq('uid', product[0].post_user_uid);
+          .insert(InitMessage);
 
         if (error) console.log('Send Messages Failed', error);
 
@@ -226,7 +228,6 @@ const ProductDetail = () => {
       });
       if (connectedRoom && connectedRoom.length > 0) {
         setIsExist(true);
-        console.log('exists!');
       }
     }
   };
@@ -533,6 +534,7 @@ const ProductDetail = () => {
         }
 
         alert('판매가 완료되었습니다');
+        navi('/');
       }
     } else {
       return;
@@ -556,6 +558,21 @@ const ProductDetail = () => {
 
     if (likes && likes.length > 0) {
       setLikesCount(likes[0].likes);
+    }
+  };
+
+  const handleDeletePost = async () => {
+    if (window.confirm('정말 삭제하시겠습니까?') === true) {
+      const { error } = await supabase.from('products').delete().eq('id', id);
+
+      if (error) console.log('삭제 실패!');
+
+      if (!error) {
+        alert('삭제 완료!');
+        navi('/');
+      }
+    } else {
+      return;
     }
   };
 
@@ -586,6 +603,25 @@ const ProductDetail = () => {
   useEffect(() => {
     handleGetLikeCount();
   }, []);
+
+  const checkWindowSize = () => {
+    if (window.innerWidth <= 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  useEffect(() => {
+    checkWindowSize();
+    window.addEventListener('DOMContentLoaded', checkWindowSize);
+    window.addEventListener('resize', checkWindowSize);
+
+    return () => {
+      window.removeEventListener('DOMContentLoaded', checkWindowSize);
+      window.removeEventListener('resize', checkWindowSize);
+    };
+  });
 
   if (product === null) return <div>로딩 중</div>;
 
@@ -632,68 +668,10 @@ const ProductDetail = () => {
     );
   }
 
-  const StSelectChatBg = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #1d1d1d90;
-    z-index: 2;
-  `;
-
-  const StChatList = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 36rem;
-    height: 25rem;
-    background: var(--3-gray);
-    color: var(--opc-100);
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  `;
-
-  const StChatListItem = styled.div`
-    padding: 2rem 1rem;
-    height: 100%;
-
-    cursor: pointer;
-
-    &:hover {
-      color: var(--3-gray);
-      background-color: var(--opc-100);
-    }
-  `;
-
-  const StConfirmSellBtn = styled.button`
-    padding: 1rem;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    background-color: var(--opc-80);
-    border-radius: 0.8rem;
-    margin-block: 1rem;
-    cursor: pointer;
-
-    &:hover {
-      background-color: var(--opc-100);
-      color: var(--3-gray);
-    }
-
-    span {
-      font-size: 2rem;
-      font-weight: 600;
-    }
-  `;
   return (
     <>
       {showChatList && (
-        <StSelectChatBg>
+        <StSelectChatBg onClick={() => setShowChatList(false)}>
           <StChatList>
             <h1
               style={{
@@ -706,51 +684,46 @@ const ProductDetail = () => {
             >
               구매한 사용자를 선택해주세요
             </h1>
+            {!createdChatList ||
+              (createdChatList.length === 0 && (
+                <h1
+                  style={{
+                    textAlign: 'center',
+                    paddingTop: '7rem',
+                    height: '100%'
+                  }}
+                >
+                  채팅 내역이 없습니다
+                </h1>
+              ))}
             {createdChatList &&
               createdChatList.map((room: RoomType) => {
                 return (
-                  <StChatListItem
-                    key={room.id}
-                    id={room.participants[0].user_id}
-                    onClick={(e) => {
-                      handleSetBuyer(e);
-                      handleSelectedUser(e);
-                    }}
-                  >
-                    <div>{room.participants[0].user_name}</div>
-                  </StChatListItem>
+                  <>
+                    <StChatListItem
+                      key={room.id}
+                      id={room.participants[0].user_id}
+                      onClick={(e) => {
+                        handleSetBuyer(e);
+                        handleSelectedUser(e);
+                      }}
+                    >
+                      <div>{room.participants[0].user_name}</div>
+                    </StChatListItem>
+                    <StConfirmSellBtn onClick={handleSellComplete}>
+                      <span>{selectedUser}</span> 님에게 판매 완료하기
+                    </StConfirmSellBtn>
+                  </>
                 );
               })}
-
-            <StConfirmSellBtn onClick={handleSellComplete}>
-              <span>{selectedUser}</span> 님에게 판매 완료하기
-            </StConfirmSellBtn>
           </StChatList>
         </StSelectChatBg>
       )}
-
       <ToastContainer />
       <St.StDetailContainer>
         <St.StDetailInfoSection>
           <St.StImageWrapper>
-            <St.StCarouselBox>
-              <St.StImageList>
-                {product[0].image_url !== null &&
-                  product[0]?.image_url.map((url: string, i: number) => {
-                    return (
-                      <div
-                        key={i}
-                        style={{
-                          background: `url(${url})`,
-                          backgroundSize: 'cover',
-                          backgroundPosition: 'center',
-                          backgroundRepeat: 'no-repeat'
-                        }}
-                      ></div>
-                    );
-                  })}
-              </St.StImageList>
-            </St.StCarouselBox>
+            <ProductDetailCarousel carouselImages={product[0].image_url} />
           </St.StImageWrapper>
           <St.StProductInfo>
             <St.StProductInfoHeader>
@@ -758,17 +731,42 @@ const ProductDetail = () => {
                 <St.StUserImage>
                   <St.StProfileImages></St.StProfileImages>
                 </St.StUserImage>
-                <St.StUserNickname>{data.nickname}</St.StUserNickname>
+                <St.StUserNickname>{data.post_user_name}</St.StUserNickname>
               </St.StUserTitlebox>
+
               <St.StAlertButton>
-                <St.StAlertIcon />
-                신고하기
+                {isMobile && (
+                  <St.StTimeLeft>{parseDate(data.created_at)}</St.StTimeLeft>
+                )}
+                {!isMobile && <St.StAlertIcon />}
+                <p style={{ cursor: 'pointer' }}>신고하기</p>
               </St.StAlertButton>
             </St.StProductInfoHeader>
             <St.StHeaderTitle>{data.title}</St.StHeaderTitle>
             <St.StHeaderPriceWrapper>
-              <St.StPrice>{data.price.toLocaleString('kr-KO')}원</St.StPrice>
-              <St.StTimeLeft>{parseDate(data.created_at)}</St.StTimeLeft>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '2rem'
+                }}
+              >
+                <St.StPrice>{data.price.toLocaleString('kr-KO')}원</St.StPrice>
+                <div
+                  style={{
+                    padding: '.5rem',
+                    backgroundColor: 'var(--4-gray)',
+                    borderRadius: '2px',
+                    fontSize: '1.2rem'
+                  }}
+                >
+                  {data.shipping_cost}
+                </div>
+              </div>
+
+              {!isMobile && (
+                <St.StTimeLeft>{parseDate(data.created_at)}</St.StTimeLeft>
+              )}
             </St.StHeaderPriceWrapper>
             <St.StProductInfoBody>
               <ProductDetailInfo
@@ -778,13 +776,10 @@ const ProductDetail = () => {
               />
               {/* 판매자에게 보여지는 버튼 */}
             </St.StProductInfoBody>
-            {id === curUser?.id ? (
+            {product[0].post_user_uid === curUser?.uid ? (
               <St.ButtonWrapper>
-                <St.Button
-                  $role="chat"
-                  onClick={() => alert('개발 중인 기능입니다!')}
-                >
-                  <h3>게시물 삭제</h3>
+                <St.Button $role="chat" onClick={handleDeletePost}>
+                  <h3>삭제하기</h3>
                 </St.Button>
                 <St.Button
                   $role="chat"
@@ -816,11 +811,12 @@ const ProductDetail = () => {
                   // 실시간 좋아요 개수 반영
                   /////////////////////////
                   <St.Button $role="like" onClick={handleCancleLike}>
-                    <p style={{ color: 'red' }}>
+                    <p>
                       <FaHeart
                         style={{
                           marginBlock: '0.4rem',
-                          fontSize: '2.2rem'
+                          fontSize: '2.2rem',
+                          color: 'red'
                         }}
                       />
                       {likesCount}
@@ -828,7 +824,7 @@ const ProductDetail = () => {
                   </St.Button>
                 )}
 
-                {/* 게시물 아닌 사람이 보이는 버튼 */}
+                {/* 게시물 작성자가 아닌 사람이 보이는 버튼 */}
                 {/* 작성자 ID 가져오기 */}
                 {isExist ? (
                   <St.Button $role="chat" onClick={() => navi('/chat')}>
@@ -861,5 +857,74 @@ const ProductDetail = () => {
     </>
   );
 };
+
+const StSelectChatBg = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #1d1d1d90;
+  z-index: 2;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+  }
+`;
+
+const StChatList = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36rem;
+  height: 25rem;
+  background: var(--3-gray);
+  color: var(--opc-100);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  @media screen and (max-width: 768px) {
+    position: absolute;
+  }
+`;
+
+const StChatListItem = styled.div`
+  padding: 2rem 1rem;
+  height: 100%;
+
+  cursor: pointer;
+
+  &:hover {
+    color: var(--3-gray);
+    background-color: var(--opc-100);
+  }
+`;
+
+const StConfirmSellBtn = styled.button`
+  padding: 1rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  background-color: var(--opc-80);
+  border-radius: 0.8rem;
+  margin-block: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--opc-100);
+    color: var(--3-gray);
+  }
+
+  span {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+`;
 
 export default ProductDetail;

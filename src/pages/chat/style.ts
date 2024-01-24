@@ -1,5 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 import { RoomStyledProps } from '../../components/chat/types';
+import { IoIosArrowBack } from 'react-icons/io';
 
 export const StFadeAni = keyframes`
   from{
@@ -10,6 +11,19 @@ export const StFadeAni = keyframes`
   to {
     opacity: 1;
     transform: translateX(0%);
+  }
+`;
+
+const StChatWrapper = styled.div`
+  width: 100%;
+  max-width: 1114px;
+  padding: 4.2rem 1.6rem;
+  margin: auto;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+    overflow: hidden;
   }
 `;
 
@@ -24,6 +38,15 @@ const StChatContainer = styled.div`
   margin: auto;
   animation: ${StFadeAni} 0.6s forwards;
   font-family: 'Pretendard-Regular';
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 0.1rem solid var(--3-gray);
+  }
 `;
 
 const StChatList = styled.div`
@@ -35,13 +58,46 @@ const StChatList = styled.div`
   flex-direction: column;
   overflow-y: scroll;
   border-right: 0.3rem solid var(--3-gray);
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+    border-right: none;
+  }
 `;
 
-const StChatBoard = styled.div`
+const StChatListItem = styled.div`
+  width: 100%;
+  max-width: 372px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+  }
+`;
+
+type BoardProps = {
+  $position: number;
+};
+
+const StChatBoard = styled.div<BoardProps>`
   width: 70%;
   height: 597px;
   overflow-y: hidden;
   position: relative;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+    height: 100%;
+    max-height: 640px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 0.3s ease;
+    transform: ${(props) => `translateX(${props.$position}%)`};
+    z-index: 3;
+    padding-bottom: 1rem;
+  }
 `;
 
 const StChatGround = styled.div`
@@ -49,6 +105,12 @@ const StChatGround = styled.div`
   height: 100%;
   overflow-y: scroll;
   padding: 1rem 0 15rem 0;
+
+  @media screen and (max-width: 768px) {
+    padding: 1rem 0 11rem 0;
+    background-color: var(--2-gray);
+    max-height: 620px;
+  }
 `;
 
 const StChatBoardHeader = styled.div`
@@ -62,6 +124,11 @@ const StChatBoardHeader = styled.div`
   padding: 2.7rem;
   background-color: transparent;
   border-bottom: 0.3rem solid var(--3-gray);
+
+  @media screen and (max-width: 768px) {
+    background-color: var(--2-gray);
+    padding: 1rem 1.5rem;
+  }
 `;
 
 const StChatBoardHeaderName = styled.h3`
@@ -70,6 +137,10 @@ const StChatBoardHeaderName = styled.h3`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const StChatForm = styled.form`
@@ -78,6 +149,14 @@ const StChatForm = styled.form`
   position: sticky;
   bottom: 0;
   padding-bottom: 1rem;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin: auto;
+    bottom: -1rem;
+    background-color: var(--2-gray);
+    padding: 1rem;
+  }
 `;
 
 const ImageInput = styled.input.attrs({ type: 'file' })`
@@ -87,6 +166,9 @@ const ImageInput = styled.input.attrs({ type: 'file' })`
   margin-bottom: 1rem;
   background-color: var(--3-gray);
   border-radius: 0.6rem;
+  @media screen and (max-width: 768px) {
+    margin-left: 0;
+  }
 `;
 
 const StChatInput = styled.textarea.attrs({
@@ -129,6 +211,12 @@ const StListRoom = styled.div<RoomStyledProps>`
   &:hover {
     background-color: var(--3-gray);
   }
+  position: relative;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 768px;
+  }
 `;
 
 const StListUpper = styled.div`
@@ -169,6 +257,11 @@ const StListUserProfile = styled.div<ChatProfileType>`
   border-radius: 50px;
   background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
   background-size: cover;
+
+  @media screen and (max-width: 768px) {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const StUserInfoBox = styled.div`
@@ -176,6 +269,10 @@ const StUserInfoBox = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const StUnreadCount = styled.div`
@@ -186,6 +283,10 @@ const StUnreadCount = styled.div`
   border-radius: 50px;
   color: var(--2-gray);
   background-color: var(--opc-100);
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const StListBody = styled.div`
@@ -195,9 +296,109 @@ const StListBody = styled.div`
   height: 'fit-content';
 `;
 
+const StImageViewerBg = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #1d1d1d90;
+  z-index: 3;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+const StImageViewer = styled.div`
+  width: 1200px;
+  height: 80%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  background-color: #1d1d1d;
+  margin: auto;
+  text-align: center;
+
+  &::before {
+    content: 'X';
+    position: absolute;
+    top: 3%;
+    right: 2%;
+    color: var(--primary-color);
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 3;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 50%;
+  }
+`;
+
+const StViewerImg = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+`;
+
+const StMenuBox = styled.div`
+  width: 200px;
+  height: fit-content;
+  position: absolute;
+  top: 50%;
+  right: 8%;
+  z-index: 5;
+  background-color: #1d1d1d;
+`;
+
+const StMenu = styled.div`
+  width: 100%;
+  padding: 1.25rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--opc-100);
+    background-color: var(--1-gray);
+  }
+`;
+
+//////////////////////////////////
+
+const StUserProfile = styled.div<ChatProfileType>`
+  width: 28px;
+  height: 28px;
+  border-radius: 50px;
+  background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
+  background-size: cover;
+`;
+
+const StHeaderArrow = styled(IoIosArrowBack)`
+  font-size: 3rem;
+  height: max-content;
+  margin-right: 1rem;
+  color: var(--opc-100);
+  cursor: pointer;
+`;
+
 export {
+  StChatWrapper,
   StChatContainer,
   StChatList,
+  StChatListItem,
   StListRoom,
   StChatBoard,
   StChatGround,
@@ -211,5 +412,12 @@ export {
   StUnreadCount,
   StListBody,
   StListUpper,
-  StListLower
+  StListLower,
+  StImageViewerBg,
+  StImageViewer,
+  StViewerImg,
+  StMenuBox,
+  StMenu,
+  StUserProfile,
+  StHeaderArrow
 };
