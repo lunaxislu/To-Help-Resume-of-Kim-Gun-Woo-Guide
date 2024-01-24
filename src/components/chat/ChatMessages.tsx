@@ -54,7 +54,7 @@ const ChatMessages = ({
 const StMyImageballoon = styled.img`
   width: 200px;
   display: block;
-  margin-right: 1rem;
+  margin-right: 2.5rem;
   margin-left: auto;
   padding: 1rem;
   background: #eee;
@@ -73,7 +73,7 @@ const StImageballoon = styled.img`
   width: 200px;
   display: block;
   margin-right: auto;
-  margin-left: 1rem;
+  margin-left: 2.5rem;
   padding: 1rem;
   background: #eee;
   border-radius: 12px;

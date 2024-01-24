@@ -85,6 +85,12 @@ const StMapModal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    width: 100%;
+    max-width: 768px;
+  }
 `;
 
 export default ProductDetailInfo;

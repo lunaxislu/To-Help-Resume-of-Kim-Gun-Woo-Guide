@@ -27,6 +27,13 @@ const Header = () => {
   const [newAlert, setAlert] = useState<any[]>([]);
   const [userChatRooms, setUserChatRoom] = useState<string[]>([]);
 
+  const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
+
+  // 반응형 대응 서치 컴포넌트 두두둥장
+  const handleShowSearchComp = () => {
+    setShowSearchComp((prev) => !prev);
+  };
+
   // 페이지 이동 시 검색어 초기화 함수
   const handlePageChange = () => {
     dispatch(setSearchQuery('')); // 검색어 초기화
@@ -115,13 +122,14 @@ const Header = () => {
   const getUserChatRoom = async () => {
     const { data: chatRooms, error } = await supabase
       .from('user')
-      .select('chat_rooms')
+      .select('*')
       .eq('uid', userId);
     if (chatRooms) {
       setUserChatRoom(chatRooms[0].chat_rooms);
     }
   };
 
+  // 메세지 실시간 알림 받기
   useEffect(() => {
     const chatMessages = supabase
       .channel('custom-all-channel')
@@ -130,19 +138,19 @@ const Header = () => {
         { event: '*', schema: 'public', table: 'chat_messages' },
         (payload: any) => {
           console.log('Change received!', payload);
-          if (userChatRooms.includes(payload.new.chat_room_id)) {
+          if (
+            userChatRooms.includes(payload.new.chat_room_id) &&
+            payload.new.sender_id !== userId
+          ) {
             setAlert((prev: any) => [payload.new, ...prev]);
-            alert('알림이 도착했소');
           }
         }
       )
       .subscribe();
-
     return () => {
       chatMessages.unsubscribe();
     };
   });
-  console.log(newAlert);
 
   useEffect(() => {
     getUserChatRoom();
@@ -184,7 +192,10 @@ const Header = () => {
                 src={`${avatarUrl}`}
                 onClick={handleMyPageButtonClick}
               />
-              <St.MobileSearchIcon src="/assets/mobile_search.svg" />
+              <St.MobileSearchIcon
+                src="/assets/mobile_search.svg"
+                onClick={handleShowSearchComp}
+              />
               <St.HamburgerMenu src="/assets/hamburger.svg" />
             </>
           ) : (
@@ -210,7 +221,10 @@ const Header = () => {
           )}
         </St.NavBar>
 
-        <SearchBar />
+        <SearchBar
+          showSearchComp={showSearchComp}
+          setShowSearchComp={setShowSearchComp}
+        />
       </St.NavSection>
     </St.HeaderContainer>
   );

@@ -134,6 +134,7 @@ const ChatRoomList: React.FC<Props> = ({
               id={room.id}
               key={room.id}
             >
+              {/* onClick={handleBoardPosition} 완료 상품 관련 채팅을 띄워줘야할지,,, 고민즁... */}
               <StStatusOveray>
                 <StOverayText>판매 완료 상품입니다</StOverayText>
               </StStatusOveray>
@@ -235,5 +236,9 @@ const StOverayText = styled.h1`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.4rem;
+  }
 `;
 export default ChatRoomList;

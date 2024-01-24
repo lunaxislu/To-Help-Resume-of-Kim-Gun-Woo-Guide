@@ -228,7 +228,6 @@ const ProductDetail = () => {
       });
       if (connectedRoom && connectedRoom.length > 0) {
         setIsExist(true);
-        console.log('exists!');
       }
     }
   };
@@ -720,7 +719,6 @@ const ProductDetail = () => {
           </StChatList>
         </StSelectChatBg>
       )}
-
       <ToastContainer />
       <St.StDetailContainer>
         <St.StDetailInfoSection>
@@ -733,7 +731,7 @@ const ProductDetail = () => {
                 <St.StUserImage>
                   <St.StProfileImages></St.StProfileImages>
                 </St.StUserImage>
-                <St.StUserNickname>{data.nickname}</St.StUserNickname>
+                <St.StUserNickname>{data.post_user_name}</St.StUserNickname>
               </St.StUserTitlebox>
 
               <St.StAlertButton>
@@ -746,7 +744,26 @@ const ProductDetail = () => {
             </St.StProductInfoHeader>
             <St.StHeaderTitle>{data.title}</St.StHeaderTitle>
             <St.StHeaderPriceWrapper>
-              <St.StPrice>{data.price.toLocaleString('kr-KO')}원</St.StPrice>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '2rem'
+                }}
+              >
+                <St.StPrice>{data.price.toLocaleString('kr-KO')}원</St.StPrice>
+                <div
+                  style={{
+                    padding: '.5rem',
+                    backgroundColor: 'var(--4-gray)',
+                    borderRadius: '2px',
+                    fontSize: '1.2rem'
+                  }}
+                >
+                  {data.shipping_cost}
+                </div>
+              </div>
+
               {!isMobile && (
                 <St.StTimeLeft>{parseDate(data.created_at)}</St.StTimeLeft>
               )}
@@ -794,11 +811,12 @@ const ProductDetail = () => {
                   // 실시간 좋아요 개수 반영
                   /////////////////////////
                   <St.Button $role="like" onClick={handleCancleLike}>
-                    <p style={{ color: 'red' }}>
+                    <p>
                       <FaHeart
                         style={{
                           marginBlock: '0.4rem',
-                          fontSize: '2.2rem'
+                          fontSize: '2.2rem',
+                          color: 'red'
                         }}
                       />
                       {likesCount}

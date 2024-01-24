@@ -255,6 +255,10 @@ const StUserInfoBox = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const StUnreadCount = styled.div`
@@ -265,6 +269,10 @@ const StUnreadCount = styled.div`
   border-radius: 50px;
   color: var(--2-gray);
   background-color: var(--opc-100);
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const StListBody = styled.div`
