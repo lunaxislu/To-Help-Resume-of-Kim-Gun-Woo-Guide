@@ -16,8 +16,8 @@ export const GlobalStyles = createGlobalStyle`
     /* Font Weight */
     --fontWeight-bold: 700;
     --fontWeight-semiBold: 600;
-    --fontWeight-medium: 500;
-    --fontWeight-regular: 400; /* 쓰이고 있는 곳 없음 */
+    --fontWeight-medium: 500; /* 기본 굵기 */
+    --fontWeight-regular: 400; /* 모바일에서 쓰임 */
 
     /* 어두운 배경색 */
     --bgColor : #131313;
