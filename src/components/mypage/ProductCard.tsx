@@ -10,7 +10,6 @@ import { debounce } from 'lodash';
 import { supabase } from '../../api/supabase/supabaseClient';
 import SkeletonProductCard from '../card/SkeletonProductCard';
 import { Product, ProductCardProps } from '../../api/supabase/products';
-import { PostgrestResponse } from '@supabase/supabase-js';
 import { userId } from '../../util/getUserId';
 
 const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {

@@ -26,6 +26,7 @@ export interface Community {
   images: string;
   post_id: string;
   comment: [];
+  likes: number;
 }
 
 interface CommunityCardProps {
@@ -40,6 +41,7 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
   const [offset, setOffset] = useState(1);
   const [isInView, setIsInView] = useState(false);
   const [communityPosts, setCommunityPosts] = useState<Community[]>([]);
+  const [favCommunityPosts, setFavCommunityPosts] = useState<Community[]>([]);
 
   const getCurrentUserCommunityPosts = async () => {
     let { data: communityPosts, error } = await supabase
@@ -64,16 +66,24 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
   };
 
   const getCurrentUserFavCommunityPosts = async () => {
-    let { data: communityPosts, error } = await supabase
+    let { data: favCommunityPosts, error } = await supabase
       .from('community')
-      .select('*')
-      .eq('post_user', userId)
-      .limit(10);
+      .select('*');
 
-    if (communityPosts && communityPosts.length > 0) {
-      setCommunityPosts(communityPosts);
+    console.log(userId);
+
+    if (favCommunityPosts && favCommunityPosts.length > 0) {
+      const filteredFavProducts = favCommunityPosts
+        .filter((user) => user.likes_user.includes(userId))
+        .map((item) => item);
+
+      setFavCommunityPosts(filteredFavProducts);
     }
   };
+
+  useEffect(() => {
+    getCurrentUserFavCommunityPosts();
+  }, []);
 
   useEffect(() => {
     const debouncedScroll = debounce(() => onScrollHandler(), 200);
@@ -130,13 +140,10 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
     getCurrentUserCommunityPosts();
   }, []);
 
-  console.log(communityPosts);
-
   return (
     <StPostContainer ref={containerRef}>
       {activeTab === 3 &&
         communityPosts.map((post) => {
-          console.log(post);
           return (
             <StPostWrapper
               key={post.id}
@@ -151,6 +158,35 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
               <StIconAndDateWrapper>
                 <StIconContainer>
                   <img src="/assets/thabong.png" />
+                  <span>{post.likes}</span>
+                  <img src="/assets/comments.svg" />
+                  <span>{post.comment?.length}</span>
+                </StIconContainer>
+
+                <StPostDate>{parseDate(post.created_at)}</StPostDate>
+              </StIconAndDateWrapper>
+            </StPostWrapper>
+          );
+        })}
+
+      {activeTab === 5 &&
+        favCommunityPosts.map((post) => {
+          return (
+            <StPostWrapper
+              key={post.id}
+              to={`/community/detail/${post.post_id}`}
+            >
+              <StPostTitle>{post.title}</StPostTitle>
+              <StPostContentsWrapper>
+                {!post.images ? '' : <StPostImage src={post.images} />}
+                <StPostContent>{handleText(post.content)}</StPostContent>
+              </StPostContentsWrapper>
+
+              <StIconAndDateWrapper>
+                <StIconContainer>
+                  <img src="/assets/thabong.png" />
+                  <span>{post.likes}</span>
+                  <img src="/assets/comments.svg" />
                   <span>{post.comment?.length}</span>
                 </StIconContainer>
 

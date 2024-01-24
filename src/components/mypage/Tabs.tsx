@@ -5,7 +5,6 @@ import CommunityPost from './CommunityPost';
 
 const Tabs = () => {
   const [toggle, setToggle] = useState(1);
-
   const clickToggleTab = (index: number) => {
     setToggle(index);
   };
@@ -25,7 +24,7 @@ const Tabs = () => {
         <Tab active={toggle} tabIndex={3} onClick={() => clickToggleTab(3)}>
           내가 쓴 글
         </Tab>
-        <Tab active={toggle} tabIndex={3} onClick={() => clickToggleTab(3)}>
+        <Tab active={toggle} tabIndex={5} onClick={() => clickToggleTab(5)}>
           추천한 글
         </Tab>
       </TabsContainer>
@@ -34,6 +33,7 @@ const Tabs = () => {
       {toggle === 2 ? <ProductCard activeTab={toggle} /> : null}
       {toggle === 4 ? <ProductCard activeTab={toggle} /> : null}
       {toggle === 3 ? <CommunityPost activeTab={toggle} /> : null}
+      {toggle === 5 ? <CommunityPost activeTab={toggle} /> : null}
     </>
   );
 };
