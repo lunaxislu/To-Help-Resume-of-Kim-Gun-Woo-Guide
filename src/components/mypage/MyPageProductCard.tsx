@@ -12,7 +12,7 @@ import SkeletonProductCard from '../card/SkeletonProductCard';
 import { Product, ProductCardProps } from '../../api/supabase/products';
 import { userId } from '../../util/getUserId';
 
-const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
+const MyPageProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
   const containerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -227,4 +227,4 @@ const ProductCard: React.FC<ProductCardProps> = ({ activeTab }) => {
   );
 };
 
-export default ProductCard;
+export default MyPageProductCard;
