@@ -1,10 +1,12 @@
 import { BsChatRightFill } from 'react-icons/bs';
 import { FaRegThumbsUp } from 'react-icons/fa6';
 import styled from 'styled-components';
+import { PageBtnProps } from '../../pages/community/model';
 export const Container = styled.ul`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2.4rem;
+
   @media screen and (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -47,6 +49,7 @@ export const Posts = styled.li`
   justify-content: space-between;
   color: #d9d9d9;
   cursor: pointer;
+
   & h2 {
     font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-medium);
@@ -105,4 +108,17 @@ export const LikesIcon = styled(FaRegThumbsUp)`
 export const Title = styled.h2`
   color: white;
   font-size: 2.4rem;
+`;
+export const PageNumber = styled.div`
+  text-align: center;
+  margin-top: 9.2rem;
+  display: flex;
+  justify-content: center;
+  gap: 5rem;
+`;
+export const PageBtn = styled.button<PageBtnProps>`
+  background-color: transparent;
+  border: none;
+  color: ${(props) =>
+    props.$currentPage === props.pageNumber ? 'var(--opc-100)' : '#f8f8f8'};
 `;

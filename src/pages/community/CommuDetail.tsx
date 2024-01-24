@@ -27,7 +27,6 @@ const CommuDetail: React.FC = () => {
           data: { user }
         } = await supabase.auth.getUser();
         setUserId(user!.id);
-        console.log(userId);
       } catch (error: any) {
         console.log(error.message);
       }

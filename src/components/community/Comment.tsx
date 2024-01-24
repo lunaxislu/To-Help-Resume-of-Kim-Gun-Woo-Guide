@@ -93,7 +93,6 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
   useEffect(() => {
     if (!isLoading && posts) {
       setComments(posts[0].comment);
-      console.log(comment);
     }
   }, [isLoading, posts]);
   const upsertMutation = useMutation(updatePostMutation, {

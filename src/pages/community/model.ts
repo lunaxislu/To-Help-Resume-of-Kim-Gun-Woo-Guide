@@ -97,3 +97,7 @@ export type LikesObject = {
   };
   paramId: string | undefined;
 };
+export type PageBtnProps = {
+  $currentPage: number;
+  pageNumber: number;
+};
