@@ -1,11 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  StCardContainer,
-  StCardWrapper,
-  StProductImage,
-  StProductPrice,
-  StProductQuality
-} from '../../styles/mypageStyle/ProductCardStyle';
+import { StCardContainer } from '../../styles/mypageStyle/ProductCardStyle';
 import { debounce } from 'lodash';
 import { supabase } from '../../api/supabase/supabaseClient';
 import SkeletonProductCard from '../card/SkeletonProductCard';
