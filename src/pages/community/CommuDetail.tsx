@@ -50,6 +50,7 @@ const CommuDetail: React.FC = () => {
   const deletePost = async () => {
     if (window.confirm(`정말로"${posts![0].title}" 글을 삭제하시겠습니까?`)) {
       deleteMutation.mutate(param.id);
+      setEditToolOpen(!editToolOpen);
       navigate('/community');
     }
   };
@@ -113,7 +114,10 @@ const CommuDetail: React.FC = () => {
                           {posts[0].post_user === userId ? (
                             <>
                               <St.DropdownItem
-                                onClick={() => setIsEditState(true)}
+                                onClick={() => {
+                                  setIsEditState(true);
+                                  setEditToolOpen(!editToolOpen);
+                                }}
                               >
                                 수정하기
                               </St.DropdownItem>

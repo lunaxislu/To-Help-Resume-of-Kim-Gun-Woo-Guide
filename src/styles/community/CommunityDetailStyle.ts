@@ -20,7 +20,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   color: var(--12-gray);
-  margin-bottom: 5rem;
+  /* margin-bottom: 5rem; */
   & strong {
     font-weight: bold;
   }
@@ -236,8 +236,5 @@ export const DropdownItem = styled.div`
     padding: 12px 12px;
     font-size: var(--fontSize-H6);
     cursor: pointer;
-    &:hover {
-      background-color: #f5f5f5;
-    }
   }
 `;

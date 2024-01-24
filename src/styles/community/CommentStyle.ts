@@ -3,11 +3,30 @@ import { FaThumbsUp } from 'react-icons/fa';
 import { FaRegThumbsUp } from 'react-icons/fa6';
 import styled from 'styled-components';
 export const Name = styled.p`
+  font-size: var(--fontSize-body);
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
+`;
+export const Time = styled.p`
   font-size: var(--fontSize-H5);
+  color: var(--9-gray);
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 export const CommentContent = styled.p`
   font-size: var(--fontSize-H6);
-  width: 45rem;
+  max-width: 45rem;
+  /* width: 30rem; */
+  @media screen and (max-width: 768px) {
+    /* width: 17rem; */
+  }
+`;
+export const LeftCommentSide = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
 `;
 export const CommentIcon = styled(BsChatRightFill)`
   color: var(--opc-100);
@@ -25,6 +44,10 @@ export const SendIcon = styled(BsArrowReturnLeft)`
   color: var(--opc-100);
   font-size: 1.9rem;
   font-weight: var(--fontWeight-semiBold);
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    font-weight: var(--fontWeight-bold);
+  }
 `;
 export const CountDiv = styled.div`
   width: 100%;
@@ -37,6 +60,10 @@ export const AnonLabel = styled.label`
   align-items: center;
   gap: 0.3rem;
   font-size: var(--fontSize-H5);
+  white-space: nowrap;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 export const CountDivTop = styled.div`
   width: 100%;
@@ -83,6 +110,24 @@ export const Form = styled.form`
     align-items: end;
     padding-bottom: 1.5rem;
   }
+  @media screen and (max-width: 768px) {
+    position: fixed;
+    bottom: 0;
+    margin: 0;
+    flex-direction: row-reverse;
+    height: 4rem;
+    justify-content: start;
+    & button {
+      height: 2.4rem;
+      width: 2.4rem;
+    }
+    & div {
+      border-bottom: none;
+      align-items: center;
+      padding-bottom: 0;
+      width: 100%;
+    }
+  }
 `;
 export const CommentInput = styled.input`
   width: 80%;
@@ -93,6 +138,12 @@ export const CommentInput = styled.input`
   &::placeholder {
     color: var(--5-gray);
     font-size: 16px;
+  }
+  @media screen and (max-width: 768px) {
+    height: 24px;
+    &::placeholder {
+      font-size: var(--fontSize-H6);
+    }
   }
 `;
 export const CheckBoxs = styled.input`
@@ -117,6 +168,10 @@ export const CheckBoxs = styled.input`
     font-size: 14px;
     color: var(--opc-100);
   }
+  @media screen and (max-width: 768px) {
+    width: 18px;
+    height: 18px;
+  }
 `;
 export const CommentContainer = styled.div`
   margin-top: 10px;
@@ -128,6 +183,7 @@ export const CommentContainer = styled.div`
   padding: 20px;
   border-radius: 5px;
   align-items: center;
+  /* white-space: nowrap; */
   & button {
     padding: 10px;
     border-radius: 20px;
@@ -135,11 +191,11 @@ export const CommentContainer = styled.div`
     background-color: #f3f3f3;
   }
   & input {
-    width: 30rem;
     background-color: var(--7-gray);
     border: none;
     height: 3.8rem;
     border-radius: 1rem;
+    min-width: 20rem;
   }
 `;
 export const LeftSide = styled.div`
@@ -154,4 +210,10 @@ export const LeftSide = styled.div`
 export const UpdateBtnContainer = styled.div`
   display: flex;
   gap: 1.2rem;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
+  & p {
+    white-space: nowrap;
+  }
 `;

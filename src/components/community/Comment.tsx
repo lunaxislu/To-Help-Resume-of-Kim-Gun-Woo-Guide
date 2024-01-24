@@ -18,22 +18,24 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
   const queryClient = useQueryClient();
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const { data: profiles, error } = await supabase
-          .from('user')
-          .select('*')
-          .eq('id', userId);
-        console.log(profiles);
-        if (error) {
-          console.log(error);
-        }
+      if (userId) {
+        try {
+          const { data: user, error } = await supabase
+            .from('user')
+            .select('*')
+            .eq('id', userId);
+          console.log(user);
+          if (error) {
+            console.log(error);
+          }
 
-        if (profiles != null) {
-          setProfile(profiles);
-          console.log(profiles);
+          if (user != null) {
+            setProfile(user);
+            console.log(user);
+          }
+        } catch (error: any) {
+          console.log(error.message);
         }
-      } catch (error: any) {
-        console.log(error.message);
       }
     };
     fetchData();
@@ -215,12 +217,12 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
         const parseTime = parseDate(comment.time);
         return (
           <St.CommentContainer key={index}>
-            <div>
+            <St.LeftCommentSide>
               <St.LeftSide>
                 <St.Name>
                   {comment.anon ? '익명의 작업자' : comment.nickname}
                 </St.Name>
-                <p>{parseTime}</p>
+                <St.Time>{parseTime}</St.Time>
               </St.LeftSide>
               {isEdit && editedCommentIndex === index ? (
                 <input
@@ -230,7 +232,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
               ) : (
                 <St.CommentContent>{comment.comment}</St.CommentContent>
               )}
-            </div>{' '}
+            </St.LeftCommentSide>{' '}
             <St.UpdateBtnContainer>
               {profile.length > 0 && comment.comment_user === profile[0].id ? (
                 isEdit && editedCommentIndex === index ? (
