@@ -34,7 +34,9 @@ interface CommunityCardProps {
   activeTab: number;
 }
 
-const MyPageCommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
+const MyPageCommunityPostList: React.FC<CommunityCardProps> = ({
+  activeTab
+}) => {
   const CARDS_COUNT = 10;
   const containerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -201,4 +203,4 @@ const MyPageCommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
   );
 };
 
-export default MyPageCommunityPost;
+export default MyPageCommunityPostList;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StTab, StTabsContainer } from '../../../styles/mypageStyle/TabsStyle';
-import MyPageProductCard from '../MyPageProductCard';
-import MyPageCommunityPost from '../MyPageCommunityPost';
+import MyPageItemList from '../MyPageItemList';
+import MyPageCommunityPostList from '../MyPageCommunityPostList';
 
 const Tabs = () => {
   const tabMenuArray = [
@@ -33,13 +33,13 @@ const Tabs = () => {
       </StTabsContainer>
 
       {toggle === 1 || toggle === 2 || toggle === 3 ? (
-        <MyPageProductCard activeTab={toggle} />
+        <MyPageItemList activeTab={toggle} />
       ) : (
         ''
       )}
 
       {toggle === 4 || toggle === 5 ? (
-        <MyPageCommunityPost activeTab={toggle} />
+        <MyPageCommunityPostList activeTab={toggle} />
       ) : (
         ''
       )}

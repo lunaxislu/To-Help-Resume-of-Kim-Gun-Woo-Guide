@@ -16,7 +16,6 @@ export interface Product {
 }
 
 export interface ProductCardProps {
-  //   list: Product[];
   activeTab: number;
 }
 
