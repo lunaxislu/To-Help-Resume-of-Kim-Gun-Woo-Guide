@@ -1,5 +1,5 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
-import { Map, MapInfoWindow, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 
 type CoderResult = {
@@ -30,6 +30,7 @@ const StModalContainer = styled.div`
 
   @media screen and (max-width: 768px) {
     width: 90%;
+    top: 15%;
   }
 `;
 

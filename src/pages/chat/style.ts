@@ -88,12 +88,15 @@ const StChatBoard = styled.div<BoardProps>`
   @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 768px;
+    height: 100%;
+    max-height: 640px;
     position: absolute;
     top: 0;
     left: 0;
     transition: all 0.3s ease;
     transform: ${(props) => `translateX(${props.$position}%)`};
     z-index: 3;
+    padding-bottom: 1rem;
   }
 `;
 
@@ -104,7 +107,9 @@ const StChatGround = styled.div`
   padding: 1rem 0 15rem 0;
 
   @media screen and (max-width: 768px) {
+    padding: 1rem 0 11rem 0;
     background-color: var(--2-gray);
+    max-height: 620px;
   }
 `;
 
@@ -144,6 +149,14 @@ const StChatForm = styled.form`
   position: sticky;
   bottom: 0;
   padding-bottom: 1rem;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin: auto;
+    bottom: -1rem;
+    background-color: var(--2-gray);
+    padding: 1rem;
+  }
 `;
 
 const ImageInput = styled.input.attrs({ type: 'file' })`

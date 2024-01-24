@@ -135,7 +135,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <SearchInputContainer $position={showSearchComp}>
       <div
-        style={{ position: 'relative', display: 'flex', alignItems: 'center' }}
+        style={{
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center'
+        }}
       >
         {isMobile && (
           <IoIosArrowBack
@@ -177,9 +181,8 @@ const SearchInputContainer = styled.div<MobileProps>`
   /* display: flex; */
   align-items: center;
   position: relative;
-
   @media screen and (max-width: 768px) {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     position: absolute;
     top: 0;
@@ -189,10 +192,12 @@ const SearchInputContainer = styled.div<MobileProps>`
     ${(props) => {
       if (props.$position === true) {
         return css`
+          opacity: 1;
           transform: translateX(0%);
         `;
       } else {
         return css`
+          opacity: 0;
           transform: translateX(100%);
         `;
       }

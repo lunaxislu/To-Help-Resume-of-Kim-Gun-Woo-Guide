@@ -52,7 +52,7 @@ export class UtilForChat {
       .from('chat_messages')
       .select()
       .eq('chat_room_id', room_id)
-      .eq('isNew', false);
+      .eq('isNew', true);
 
     if (error) console.log('count error', error);
 
@@ -105,7 +105,7 @@ export class UtilForChat {
     setImages: React.Dispatch<SetStateAction<string>>
   ) => {
     const file = e.target.files;
-    if (file) {
+    if (file && file !== undefined) {
       this.handleImageUpload(file[0], setImages);
     }
     if (!file) console.log('다시 시도');
@@ -116,20 +116,22 @@ export class UtilForChat {
     file: File,
     setImages: React.Dispatch<SetStateAction<string>>
   ) => {
-    const { data, error } = await supabase.storage
-      .from('images')
-      .upload(`messages/${uuid()}`, file, {
-        contentType: file.type
-      });
+    if (file !== undefined) {
+      const { data, error } = await supabase.storage
+        .from('images')
+        .upload(`messages/${uuid()}`, file);
 
-    if (error) {
-      console.error('파일 업로드 실패:', error);
+      if (error) {
+        console.error('파일 업로드 실패:', error);
+        return;
+      }
+
+      // 에러가 아니라면 스토리지에서 방금 올린 이미지의 publicURL을 받아와서 image state에 set
+      const res = supabase.storage.from('images').getPublicUrl(data.path);
+      setImages(res.data.publicUrl);
+    } else {
       return;
     }
-
-    // 에러가 아니라면 스토리지에서 방금 올린 이미지의 publicURL을 받아와서 image state에 set
-    const res = supabase.storage.from('images').getPublicUrl(data.path);
-    setImages(res.data.publicUrl);
   };
 
   // 실시간으로 구독 중인 DB 관리하는 함수

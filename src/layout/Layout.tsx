@@ -1,12 +1,67 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import { Outlet, useLocation } from 'react-router';
+import { Outlet, useLocation, useNavigate } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
+import { supabase } from '../api/supabase/supabaseClient';
+import { userId } from '../util/getUserId';
+import styled from 'styled-components';
+import { IoIosClose } from 'react-icons/io';
+
+const StModalContainer = styled.div`
+  width: 300px;
+  height: 250px;
+  padding: 1.5rem;
+  position: absolute;
+  top: 5%;
+  right: 0;
+  z-index: 3;
+  transform: translateX(-10%);
+  background-color: var(--3-gray);
+  border-radius: 1.2rem;
+`;
+
+const StAlertBox = styled.div`
+  width: 100%;
+  font-size: 1.4rem;
+  height: 36px;
+  line-height: 2.2;
+  color: var(--opc-100);
+  border-bottom: 0.1rem solid var(--6-gray);
+
+  :hover {
+    background-color: var(--opc-100);
+    color: var(--3-gray);
+    cursor: pointer;
+  }
+`;
+
+const StAlertCloseBtn = styled(IoIosClose)`
+  font-size: 2rem;
+  width: fit-content;
+  display: block;
+  margin-left: auto;
+  cursor: pointer;
+`;
 
 const Layout = () => {
   const location = useLocation();
   const [showTopbutton, setShowTopButton] = useState(false);
+
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [newAlert, setAlert] = useState<any[]>([]);
+  const [userChatRooms, setUserChatRoom] = useState<string[]>([]);
+  const navi = useNavigate();
+
+  const handleHideAlert = () => {
+    setShowAlert(false);
+  };
+
+  const handleClickAlert = () => {
+    navi('/chat');
+    handleHideAlert();
+    setAlert([]);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,8 +92,58 @@ const Layout = () => {
     };
   }, [location.pathname]);
 
+  // 메세지 실시간 알림 받기
+  useEffect(() => {
+    const getUserChatRoom = async () => {
+      const { data: chatRooms, error } = await supabase
+        .from('user')
+        .select('*')
+        .eq('uid', userId);
+      if (chatRooms) {
+        setUserChatRoom(chatRooms[0].chat_rooms);
+      }
+    };
+
+    getUserChatRoom();
+
+    const chatMessages = supabase
+      .channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'chat_messages' },
+        (payload: any) => {
+          if (
+            userChatRooms.includes(payload.new.chat_room_id) &&
+            payload.new.sender_id !== userId
+          ) {
+            console.log('Change received!', payload.new);
+            setShowAlert(true);
+            setAlert((prev: any) => [payload.new, ...prev]);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      chatMessages.unsubscribe();
+    };
+  }, [location]);
+
   return (
     <>
+      {newAlert.length > 0 && showAlert && (
+        <StModalContainer>
+          <StAlertCloseBtn onClick={handleHideAlert} />
+          {newAlert.map((alert) => {
+            return (
+              <StAlertBox onClick={handleClickAlert} key={alert.timeStamp}>
+                <h1>새로운 메세지가 있습니다</h1>
+              </StAlertBox>
+            );
+          })}
+        </StModalContainer>
+      )}
+
       <Header />
       <Outlet />
       {showTopbutton && <ScrollTopButton />}

@@ -5,9 +5,8 @@ import { User } from '@supabase/supabase-js';
 import { MessageType, RoomType } from '../../../components/chat/types';
 import { BsThreeDots } from 'react-icons/bs';
 import { UtilForChat } from '../chat_utils/functions';
-import { FaArrowLeft } from 'react-icons/fa';
-import { IoIosArrowBack } from 'react-icons/io';
 import { useNavigate } from 'react-router';
+import styled from 'styled-components';
 
 interface ChatHeaderPropsType {
   showMene: boolean;

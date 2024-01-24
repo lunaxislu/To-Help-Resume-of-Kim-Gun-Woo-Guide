@@ -30,7 +30,7 @@ const ChatRoomList: React.FC<Props> = ({
   const updateToRead = async (room_id: string) => {
     await supabase
       .from('chat_messages')
-      .update({ isNew: true })
+      .update({ isNew: false })
       .eq('chat_room_id', room_id)
       .select();
   };
@@ -170,9 +170,8 @@ const ChatRoomList: React.FC<Props> = ({
           return (
             <St.StListRoom
               onClick={(e) => {
-                if (findMatchMessage(room.id) > 0) {
-                  updateToRead(room.id);
-                }
+                updateToRead(room.id);
+
                 handleCurClicked(e);
                 handleBoardPosition();
               }}

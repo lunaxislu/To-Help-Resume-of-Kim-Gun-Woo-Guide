@@ -9,9 +9,6 @@ import * as St from '../styles/headerStyle/HeaderStyle';
 import { BiWon } from 'react-icons/bi';
 import { BiSolidHeart } from 'react-icons/bi';
 import { BiSolidBell } from 'react-icons/bi';
-import { userId } from '../util/getUserId';
-import { Bounce, toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 interface User {
   username: string;
@@ -25,9 +22,6 @@ const Header = () => {
   const { isLogin } = useAppSelector((state) => state.auth);
   const location = useLocation();
   const dispatch = useAppDispatch();
-
-  const [newAlert, setAlert] = useState<any[]>([]);
-  const [userChatRooms, setUserChatRoom] = useState<string[]>([]);
 
   const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
 
@@ -121,126 +115,76 @@ const Header = () => {
     getAuth();
   }, []);
 
-  const getUserChatRoom = async () => {
-    const { data: chatRooms, error } = await supabase
-      .from('user')
-      .select('*')
-      .eq('uid', userId);
-    if (chatRooms) {
-      setUserChatRoom(chatRooms[0].chat_rooms);
-    }
-  };
-
-  console.log(newAlert);
-  // 메세지 실시간 알림 받기
-  useEffect(() => {
-    const chatMessages = supabase
-      .channel('custom-all-channel')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'chat_messages' },
-        (payload: any) => {
-          if (
-            userChatRooms.includes(payload.new.chat_room_id) &&
-            payload.new.sender_id !== userId
-          ) {
-            setAlert((prev: any) => [payload.new, ...prev]);
-
-            console.log('Change received!', payload);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      chatMessages.unsubscribe();
-    };
-  });
-
-  useEffect(() => {
-    getUserChatRoom();
-  }, []);
-
   return (
-    <>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        closeOnClick={true}
-        transition={Bounce}
-        theme="dark"
-      />
-      <St.HeaderContainer>
-        <St.HeaderSection>
-          <St.Logo
-            src="/assets/logo2.png"
-            alt="작업자들"
-            onClick={handleLogoClick}
-          />
-          <St.ButtonContainer>
-            <St.Sell onClick={handleSellbuttonClick}>
-              <BiWon className="sellbtn" />
-              <p>판매하기</p>
-            </St.Sell>
-            {isLogin ? (
-              <St.Likes>
-                <BiSolidHeart className="mylikes" />
-                <p>찜</p>
-              </St.Likes>
-            ) : (
-              ''
-            )}
-            {isLogin ? (
-              <St.Alert>
-                <BiSolidBell className="myAlarm" />
-                <p>알림</p>
-              </St.Alert>
-            ) : (
-              ''
-            )}
-            {isLogin ? (
-              <>
-                <St.UserIcon
-                  src={`${avatarUrl}`}
-                  onClick={handleMyPageButtonClick}
-                />
-                <St.MobileSearchIcon
-                  src="/assets/mobile_search.svg"
-                  onClick={handleShowSearchComp}
-                />
-                <St.HamburgerMenu src="/assets/hamburger.svg" />
-              </>
-            ) : (
-              <St.Button onClick={handleNavigateToLogin}>
-                로그인/회원가입
-              </St.Button>
-            )}
-          </St.ButtonContainer>
-        </St.HeaderSection>
-        <St.NavSection>
-          <St.NavBar>
-            {/* <St.NavButton to="/introduce">서비스 소개</St.NavButton> */}
-            <St.NavButton to="/products" onClick={handlePageChange}>
-              중고거래
-            </St.NavButton>
-            <St.NavButton to="/community" onClick={handlePageChange}>
-              커뮤니티
-            </St.NavButton>
-            {isLogin ? (
-              <St.LogOut onClick={handleLogOutButtonClick}>로그아웃</St.LogOut>
-            ) : (
-              ''
-            )}
-          </St.NavBar>
+    <St.HeaderContainer>
+      <St.HeaderSection>
+        <St.Logo
+          src="/assets/logo2.png"
+          alt="작업자들"
+          onClick={handleLogoClick}
+        />
+        <St.ButtonContainer>
+          <St.Sell onClick={handleSellbuttonClick}>
+            <BiWon className="sellbtn" />
+            <p>판매하기</p>
+          </St.Sell>
+          {isLogin ? (
+            <St.Likes>
+              <BiSolidHeart className="mylikes" />
+              <p>찜</p>
+            </St.Likes>
+          ) : (
+            ''
+          )}
+          {isLogin ? (
+            <St.Alert>
+              <BiSolidBell className="myAlarm" />
+              <p>알림</p>
+            </St.Alert>
+          ) : (
+            ''
+          )}
+          {isLogin ? (
+            <>
+              <St.UserIcon
+                src={`${avatarUrl}`}
+                onClick={handleMyPageButtonClick}
+              />
+              <St.MobileSearchIcon
+                src="/assets/mobile_search.svg"
+                onClick={handleShowSearchComp}
+              />
+              <St.HamburgerMenu src="/assets/hamburger.svg" />
+            </>
+          ) : (
+            <St.Button onClick={handleNavigateToLogin}>
+              로그인/회원가입
+            </St.Button>
+          )}
+        </St.ButtonContainer>
+      </St.HeaderSection>
+      <St.NavSection>
+        <St.NavBar>
+          {/* <St.NavButton to="/introduce">서비스 소개</St.NavButton> */}
+          <St.NavButton to="/products" onClick={handlePageChange}>
+            중고거래
+          </St.NavButton>
+          <St.NavButton to="/community" onClick={handlePageChange}>
+            커뮤니티
+          </St.NavButton>
+          {isLogin ? (
+            <St.LogOut onClick={handleLogOutButtonClick}>로그아웃</St.LogOut>
+          ) : (
+            ''
+          )}
+        </St.NavBar>
 
-          <SearchBar
-            showSearchComp={showSearchComp}
-            setShowSearchComp={setShowSearchComp}
-          />
-        </St.NavSection>
-      </St.HeaderContainer>
-    </>
+        <SearchBar
+          showSearchComp={showSearchComp}
+          setShowSearchComp={setShowSearchComp}
+        />
+      </St.NavSection>
+    </St.HeaderContainer>
   );
 };
 

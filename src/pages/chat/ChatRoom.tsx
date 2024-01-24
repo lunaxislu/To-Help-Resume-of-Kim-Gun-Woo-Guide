@@ -122,6 +122,7 @@ export default function ChatRoom() {
   const checkWindowSize = () => {
     if (window.innerWidth <= 768) {
       setIsMobile(true);
+      window.scrollTo({ top: 0 });
     } else {
       setIsMobile(false);
     }
@@ -129,11 +130,9 @@ export default function ChatRoom() {
 
   useEffect(() => {
     checkWindowSize();
-    window.addEventListener('DOMContentLoaded', checkWindowSize);
     window.addEventListener('resize', checkWindowSize);
 
     return () => {
-      window.removeEventListener('DOMContentLoaded', checkWindowSize);
       window.removeEventListener('resize', checkWindowSize);
     };
   });
