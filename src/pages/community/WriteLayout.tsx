@@ -176,7 +176,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
           editor?.insertEmbed(range?.index || 0, 'image', postImageUrl);
           setFormValues((prevValues) => ({
             ...prevValues,
-            mainImage: '이미지있음'
+            mainImage: postImageUrl
           }));
           editor?.setSelection((range?.index || 0) + 1, 0);
           console.log('가져왔다');
@@ -221,23 +221,30 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         <St.LayoutCategoryContainer>
           <St.LayoutValueText>
             분류<span>*</span>
-          </St.LayoutValueText>
-          {categoryArray.map((item, index) => {
-            return index !== 0 ? (
-              <label key={item}>
-                <St.CheckBoxs
-                  type="checkbox"
-                  name={formValues.category}
-                  value={item}
-                  onChange={(e) => {
-                    setFormValues({ ...formValues, category: e.target.value });
-                  }}
-                  defaultChecked={isEdit ? posts![0].category === item : false}
-                />
-                {item}
-              </label>
-            ) : null;
-          })}
+          </St.LayoutValueText>{' '}
+          <St.CategoryGrid>
+            {categoryArray.map((item, index) => {
+              return index !== 0 ? (
+                <label key={item}>
+                  <St.CheckBoxs
+                    type="checkbox"
+                    name={formValues.category}
+                    value={item}
+                    onChange={(e) => {
+                      setFormValues({
+                        ...formValues,
+                        category: e.target.value
+                      });
+                    }}
+                    defaultChecked={
+                      isEdit ? posts![0].category === item : false
+                    }
+                  />
+                  {item}
+                </label>
+              ) : null;
+            })}{' '}
+          </St.CategoryGrid>
         </St.LayoutCategoryContainer>
         <St.LayoutTitleContainer>
           <St.LayoutValueText>

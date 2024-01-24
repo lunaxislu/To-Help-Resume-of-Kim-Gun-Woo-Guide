@@ -1,17 +1,44 @@
 import { BsChatRightFill } from 'react-icons/bs';
 import { FaRegThumbsUp } from 'react-icons/fa6';
 import styled from 'styled-components';
-export const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+export const Container = styled.ul`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 2.4rem;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
 `;
-export const Posts = styled.div`
+export const MainImg = styled.div`
+  width: 6.6rem;
+  height: 6.6rem;
+
+  & img {
+    width: 6.6rem;
+    height: 6.6rem;
+    border-radius: 0.5rem;
+  }
+  @media screen and (max-width: 768px) {
+    width: 4rem;
+    height: 4rem;
+    & img {
+      width: 4rem;
+      height: 4rem;
+      border-radius: 0.5rem;
+    }
+  }
+`;
+export const ContentsContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+`;
+export const Posts = styled.li`
   display: flex;
   flex-direction: column;
   font-size: 2rem;
   padding: 3rem;
-  width: 54.6rem;
+  max-width: 54.6rem;
   height: 19.5rem;
   gap: 1.6rem;
   border: none;
@@ -22,25 +49,35 @@ export const Posts = styled.div`
   cursor: pointer;
   & h2 {
     font-size: var(--fontSize-H4);
-    font-weight: var(--fontWeight-semiBold);
+    font-weight: var(--fontWeight-medium);
     margin-bottom: 1.6rem;
     overflow: hidden;
-    /* white-space: nowrap; */
-    text-overflow: ellipsis;
     width: 100%;
     max-width: 40rem;
     color: var(--12-gray);
+    height: 1.8rem;
+  }
+  @media screen and (max-width: 768px) {
+    height: 13.3rem;
+    padding: 1.5rem;
+    max-width: none;
+    & h2 {
+      font-size: var(--fontSize-H5);
+    }
   }
 `;
 export const ContentArea = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 48.6rem;
   height: 6.6rem;
   font-size: var(--fontSize-H5);
   font-weight: var(--fontWeight-medium);
   line-height: 2.2rem;
   color: var(--9-gray);
+  @media screen and (max-width: 768px) {
+    height: 3.8rem;
+    font-size: var(--fontSize-H6);
+  }
 `;
 export const RightSide = styled.div`
   display: flex;
@@ -50,7 +87,7 @@ export const RightSide = styled.div`
 `;
 export const CommentArea = styled.div`
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   gap: 0.6rem;
   color: var(--8-gray);
   & img {

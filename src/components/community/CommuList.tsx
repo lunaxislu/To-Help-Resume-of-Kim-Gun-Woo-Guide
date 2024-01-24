@@ -45,21 +45,26 @@ const CommuList: React.FC<CommuListProps> = ({
             >
               <div>
                 {' '}
-                <h2>
-                  {post.title}
-                  {/* {post.main_image ? <img src="/assets/imageIcon.png" /> : ''} */}
-                </h2>
-                <div>
+                <h2>{post.title}</h2>
+                <St.ContentsContainer>
+                  {post.main_image ? (
+                    <St.MainImg>
+                      <img src={post.main_image} />{' '}
+                    </St.MainImg>
+                  ) : (
+                    ''
+                  )}
+
                   <St.ContentArea>{handleText(post.content)}</St.ContentArea>
-                </div>
+                </St.ContentsContainer>
               </div>
               <St.RightSide>
                 {' '}
                 <St.CommentArea>
-                  <St.CommentIcon />
-                  <p>{post.comment?.length}</p>
                   <St.LikesIcon />
                   <p>{post.likes}</p>
+                  <St.CommentIcon />
+                  <p>{post.comment?.length}</p>
                 </St.CommentArea>
                 <div>
                   <p>{parseDate(post.created_at)}</p>

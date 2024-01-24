@@ -19,7 +19,7 @@ const CommuDetail: React.FC = () => {
   const navigate = useNavigate();
   const [isEditState, setIsEditState] = useState(false);
   const [userId, setUserId] = useState('');
-
+  const [editToolOpen, setEditToolOpen] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -65,7 +65,12 @@ const CommuDetail: React.FC = () => {
     <St.Container>
       {isEditState ? (
         <St.WriteWrap>
-          <h1>게시글 수정</h1>
+          <St.TitleTopper>
+            <button onClick={() => navigate('/community')}>{`<`}</button>
+            <h1>게시글 수정</h1>
+            <p>*필수항목</p>
+          </St.TitleTopper>
+
           <WriteLayout
             profile={undefined}
             isEdit={true}
@@ -82,11 +87,17 @@ const CommuDetail: React.FC = () => {
                   <div>
                     <St.MainTopper>
                       <St.TitleCategory>
+                        <button
+                          onClick={() => navigate('/community')}
+                        >{`<`}</button>
                         <h1>{post.title}</h1>
                         <St.Category>{post.category}</St.Category>
                       </St.TitleCategory>
-
-                      <St.Report>신고</St.Report>
+                      {posts![0].post_user === userId ? (
+                        ''
+                      ) : (
+                        <St.Report>신고</St.Report>
+                      )}
                     </St.MainTopper>
 
                     <St.SubTopper>
@@ -96,7 +107,25 @@ const CommuDetail: React.FC = () => {
                         </St.NameP>
                         <St.TimeP>{parseDate(post.created_at)}</St.TimeP>
                       </St.TitleCategory>
-
+                      <St.Dots onClick={() => setEditToolOpen(!editToolOpen)} />
+                      {editToolOpen && (
+                        <St.EditDropdown>
+                          {posts[0].post_user === userId ? (
+                            <>
+                              <St.DropdownItem
+                                onClick={() => setIsEditState(true)}
+                              >
+                                수정하기
+                              </St.DropdownItem>
+                              <St.DropdownItem onClick={deletePost}>
+                                삭제하기
+                              </St.DropdownItem>
+                            </>
+                          ) : (
+                            <St.DropdownItem>신고하기</St.DropdownItem>
+                          )}
+                        </St.EditDropdown>
+                      )}
                       <St.FeatureArea>
                         {posts![0].post_user === userId ? (
                           <St.IconContainer>

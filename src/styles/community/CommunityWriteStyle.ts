@@ -2,13 +2,25 @@ import ReactQuill from 'react-quill';
 import styled from 'styled-components';
 export const LayoutContentArea = styled.div`
   display: flex;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 export const LayoutFileArea = styled.div`
   display: flex;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 export const LayoutAnonArea = styled.div`
   display: flex;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 export const LayoutValueText = styled.div`
@@ -18,6 +30,9 @@ export const LayoutValueText = styled.div`
   align-items: center;
   & span {
     color: var(--opc-100);
+  }
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
   }
 `;
 export const LayoutTitleContainer = styled.div`
@@ -32,10 +47,22 @@ export const LayoutTitleContainer = styled.div`
     border-radius: 5px;
     padding-left: 16px;
     color: var(--12-gray);
-
+    font-family: 'Pretendard-Medium';
+    font-size: var(--fontSize-H6);
     &::placeholder {
       color: var(--5-gray);
       font-size: var(--fontSize-H5);
+    }
+  }
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    & input {
+      height: 3rem;
+
+      &::placeholder {
+        font-size: var(--fontSize-H6);
+      }
     }
   }
 `;
@@ -62,8 +89,8 @@ export const LayoutBottom = styled.div`
   & button {
     border: none;
     border-radius: 1rem;
-    width: 10.3rem;
-    height: 4.8rem;
+    width: 10rem;
+    height: 4rem;
     background-color: var(--opc-100);
     font-size: var(--fontSize-H5);
     font-weight: var(--fontWeight-bold);
@@ -73,6 +100,16 @@ export const LayoutBottom = styled.div`
     align-items: center;
     font-size: var(--fontSize-H5);
   }
+  @media screen and (max-width: 768px) {
+    & button {
+      width: 6.5rem;
+      height: 3rem;
+      font-size: var(--fontSize-H6);
+    }
+    & label {
+      font-size: var(--fontSize-H6);
+    }
+  }
 `;
 export const LayoutContentContainer = styled.div`
   display: flex;
@@ -80,14 +117,6 @@ export const LayoutContentContainer = styled.div`
   gap: 20px;
   width: 100%;
 
-  & select {
-    width: 100px;
-    height: 40px;
-  }
-  & button {
-    width: 100px;
-    height: 40px;
-  }
   & h1 {
     font-size: 30px;
     margin-top: 50px;
@@ -95,17 +124,42 @@ export const LayoutContentContainer = styled.div`
   }
 `;
 export const LayoutCategoryContainer = styled.div`
-  height: 30px;
+  /* height: 30px; */
   display: flex;
   align-items: center;
-
   font-size: var(--fontSize-H5);
+
   & label {
     display: flex;
     align-items: center;
     gap: 0.7rem;
     margin-right: 3rem;
     cursor: pointer;
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: var(--fontSize-H6);
+    & label {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+    & div {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+`;
+export const CategoryGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr 1fr 1fr;
   }
 `;
 
@@ -124,6 +178,11 @@ export const LayoutFileUploader = styled.label`
   & input {
     display: none;
   }
+  @media screen and (max-width: 768px) {
+    height: 3rem;
+
+    font-size: var(--fontSize-H6);
+  }
 `;
 export const LayoutQuillEditor = styled(ReactQuill)`
   background-color: #1f1f1f;
@@ -135,7 +194,8 @@ export const LayoutQuillEditor = styled(ReactQuill)`
     height: 70rem;
     overflow: scroll;
     border: none;
-
+    font-family: 'Pretendard-Medium';
+    font-size: var(--fontSize-H6);
     scrollbar-width: none;
 
     &::-webkit-scrollbar {
@@ -158,7 +218,20 @@ export const LayoutQuillEditor = styled(ReactQuill)`
   .ql-editor p {
     display: flex;
     line-height: 30px;
-    font-size: 16px;
+    font-size: var(--fontSize-body);
+  }
+  @media screen and (max-width: 768px) {
+    .ql-container {
+      height: 15rem;
+    }
+    & img {
+      max-width: 80%;
+    }
+    .ql-editor p {
+      display: flex;
+      line-height: 30px;
+      font-size: var(--fontSize-H6);
+    }
   }
 `;
 export const CheckBoxs = styled.input`
@@ -196,19 +269,35 @@ export const ContentContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   max-width: 1066px;
-  width: 80%;
-  & select {
-    width: 100px;
-    height: 40px;
-  }
+  width: 90%;
+`;
+
+export const Topper = styled.div`
+  display: flex;
+  margin-top: 50px;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--4-gray);
+  gap: 1rem;
   & button {
-    width: 100px;
-    height: 40px;
+    font-size: var(--fontSize-H1);
+    background-color: transparent;
+    border: none;
+    color: var(--opc-100);
+  }
+  & p {
+    font-size: var(--fontSize-H6);
+    color: var(--opc-100);
   }
   & h1 {
-    font-size: 30px;
-    margin-top: 50px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--4-gray);
+    font-size: var(--fontSize-H1);
+  }
+  @media screen and (max-width: 768px) {
+    & h1 {
+      font-size: var(--fontSize-H5);
+    }
+    & p {
+      font-size: 1rem;
+    }
   }
 `;
