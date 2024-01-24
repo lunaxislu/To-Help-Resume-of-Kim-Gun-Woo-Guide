@@ -7,8 +7,6 @@ import {
   setSearchQuery,
   setSearchResults
 } from '../../../redux/modules/searchSlice';
-import { supabase } from '../../../api/supabase/supabaseClient';
-import { Communityy, UsedItem } from '../../../pages/home/usedtypes';
 import {
   ResearchResults,
   researchItems
@@ -29,15 +27,15 @@ const SearchBar: React.FC = () => {
       return;
     }
 
-    const results: ResearchResults | undefined = await researchItems(
+    const rresults: ResearchResults | undefined = await researchItems(
       searchQuery
     );
-    if (!results) {
+    if (!rresults) {
       console.error('수파베이스에 요청 중 실패:');
       return;
     }
 
-    const { usedItemsWithImages, communityItemsWithImages } = results;
+    const { usedItemsWithImages, communityItemsWithImages } = rresults;
 
     dispatch(
       setSearchResults({

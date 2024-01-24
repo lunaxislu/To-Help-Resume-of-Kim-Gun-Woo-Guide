@@ -130,22 +130,26 @@ const Home = () => {
               to={`/community/detail/${item.post_id}`}
             >
               <ComunityList>
-                <div className="commupic">
-                  {item.image_Url ? (
-                    <img
-                      className="community-pic"
-                      src={item.image_Url}
-                      alt="Community Post"
-                    />
-                  ) : (
-                    <img
-                      className="nopicture"
-                      src={process.env.PUBLIC_URL + '/assets/commudefault.png'}
-                      alt="Default User"
-                    />
-                  )}
-                  <div className="commucontent">
+                <div className="commucontent">
+                  <div className="ttitle">
                     <h3>{item.title}</h3>
+                  </div>
+                  <div className="commupic">
+                    {item.image_Url ? (
+                      <img
+                        className="community-pic"
+                        src={item.image_Url}
+                        alt="Community Post"
+                      />
+                    ) : (
+                      <img
+                        className="nopicture"
+                        src={
+                          process.env.PUBLIC_URL + '/assets/commudefault.png'
+                        }
+                        alt="Default User"
+                      />
+                    )}
                     <p>{handleText(item.content)}</p>{' '}
                   </div>
                 </div>
@@ -204,6 +208,10 @@ const HomeContainer = styled.section`
     width: 100%;
     margin: 0px auto;
   }
+  @media screen and (max-width: 320px) {
+    max-width: 32rem;
+    max-height: 192rem;
+  }
 `;
 
 const CarouselWrapper = styled.div`
@@ -212,24 +220,28 @@ const CarouselWrapper = styled.div`
   @media screen and (max-width: 1024px) {
     width: 100%;
   }
+  @media screen and (max-width: 320px) {
+    max-width: 100%;
+  }
 `;
 const HomeSection = styled.div`
   width: 111.6rem;
   margin: 0 auto;
   margin-top: 4rem;
-
+  @media screen and (max-width: 320px) {
+    max-width: 100%;
+    margin-top: 2rem;
+  }
   .one {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin: 0 auto;
     font-size: var(--fontSize-H3);
-  }
-
-  h2 {
-    text-align: left;
-    margin-top: 2rem;
-    margin-left: 1rem;
+    @media screen and (max-width: 320px) {
+      font-size: var(--fontSize-H5);
+      margin: 0 1.5rem;
+    }
   }
 `;
 
@@ -239,6 +251,9 @@ const LinktoProducts = styled(Link)`
   align-items: center;
   gap: 0.8rem;
   text-decoration: none;
+  @media screen and (max-width: 320px) {
+    max-width: 100%;
+  }
   cursor: pointer;
   width: 8.3rem;
   height: 3.2rem;
@@ -247,6 +262,13 @@ const LinktoProducts = styled(Link)`
   font-size: var(--fontSize-H6);
   font-weight: var(--fontWeight-medium);
   color: var(--11-gray);
+  @media screen and (max-width: 320px) {
+    background: none;
+    max-width: 4.5rem;
+    line-height: 191.2%;
+    font-size: 9px;
+    gap: 4px;
+  }
   &:hover {
     background-color: #83ad2e;
     color: #101d1c;
@@ -254,6 +276,11 @@ const LinktoProducts = styled(Link)`
   svg {
     width: 1rem;
     height: 0.9rem;
+    @media screen and (max-width: 320px) {
+      width: 0.9rem;
+      height: 0.8rem;
+      color: var(--opc-100);
+    }
   }
 `;
 
@@ -265,6 +292,13 @@ const SupabaseListContainer = styled.ul`
   /* justify-content: space-between; */
   margin-top: 2rem;
   gap: 1.5rem;
+
+  @media screen and (max-width: 320px) {
+    max-width: 100%;
+    height: 36.7%;
+    margin: 0 1.5rem;
+    margin-top: 2rem;
+  }
 `;
 const SupabaseList = styled.li`
   display: inline-block;
@@ -272,9 +306,17 @@ const SupabaseList = styled.li`
   height: 31.5rem;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 320px) {
+    max-width: 100%;
+    width: 50%;
+    max-height: 66.6%;
+  }
+
   div {
     object-fit: cover;
     justify-content: center;
+    @media screen and (max-width: 320px) {
+    }
   }
   img {
     width: 20.8rem;
@@ -282,6 +324,24 @@ const SupabaseList = styled.li`
     object-fit: cover;
     border-style: none;
     border-radius: 0.6rem;
+    @media screen and (max-width: 320px) {
+      max-width: 14rem;
+      max-height: 14rem;
+      border-radius: 0.6rem;
+    }
+  }
+  svg {
+    width: 208px;
+    height: 208px;
+    fill: #f8f8f8;
+    border-radius: 6px;
+    object-fit: cover;
+
+    @media screen and (max-width: 320px) {
+      width: 14rem;
+      height: 14rem;
+      border-radius: 0.6rem;
+    }
   }
   h1 {
     width: 9rem;
@@ -293,11 +353,31 @@ const SupabaseList = styled.li`
     margin-top: 1rem;
     font-size: var(--fontSize-H6);
     font-weight: var(--fontWeight-bold);
+    @media screen and (max-width: 320px) {
+      margin-top: 1rem;
+      max-width: 4.7rem;
+      max-height: 1.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      line-height: 191.2%;
+      text-align: center;
+      background-color: var(--opc-100);
+      color: var(--2-gray);
+      padding: 0;
+    }
   }
   h3 {
     font-size: var(--fontSize-body);
     color: var(--11-gray);
     margin-top: 1rem;
+    @media screen and (max-width: 320px) {
+      width: 14rem;
+      margin-top: 0.6rem;
+      color: var(--11-gray, #f8f8f8);
+      font-weight: var(--fontWeight-medium);
+      font-size: var(--fontSize-H6);
+      /* line-height: 191.2%; */
+    }
   }
 
   p {
@@ -306,12 +386,22 @@ const SupabaseList = styled.li`
     color: var(--11-gray);
     margin-top: 1rem;
     text-align: left;
+    @media screen and (max-width: 320px) {
+      width: 6rem;
+      height: 2.3rem;
+      font-weight: var(--fontWeight-bold);
+      font-size: var(--fontSize-H6);
+    }
   }
 `;
 const TousedItemDetailPage = styled(Link)`
   text-decoration: none;
   cursor: pointer;
   color: black;
+  @media screen and (max-width: 320px) {
+    max-width: 43.8%;
+    max-height: 21.3rem;
+  }
 `;
 
 const ComunityContainer = styled.div`
@@ -320,6 +410,11 @@ const ComunityContainer = styled.div`
   flex-wrap: wrap;
   margin: 0 auto;
   margin-top: 8rem;
+  @media screen and (max-width: 320px) {
+    max-width: 100%;
+    height: 60rem;
+    margin-top: 4rem;
+  }
 `;
 
 const Communitytitle = styled.div`
@@ -327,8 +422,23 @@ const Communitytitle = styled.div`
   width: 100%;
   justify-content: space-between;
   align-items: center;
+
+  @media screen and (max-width: 320px) {
+    margin: 0 1.5rem;
+    height: 2.7rem;
+    margin-bottom: 1rem;
+  }
+
   h2 {
     font-size: var(--fontSize-H3);
+    @media screen and (max-width: 320px) {
+      width: 20.8rem;
+      height: 2.7rem;
+      font-size: var(--fontSize-H5);
+      font-weight: var(--fontWeight-medium);
+      vertical-align: baseline;
+      padding-top: 0.63rem;
+    }
   }
 `;
 const CommunityLink = styled(Link)`
@@ -346,13 +456,30 @@ const CommunityLink = styled(Link)`
   font-size: var(--fontSize-H6);
   font-weight: var(--fontWeight-medium);
   color: var(--11-gray);
+  @media screen and (max-width: 320px) {
+    display: flex;
+    background: none;
+    max-width: 4.5rem;
+    font-size: 0.9rem;
+    gap: 0.4rem;
+  }
   &:hover {
     background-color: #83ad2e;
     color: #101d1c;
   }
+  p {
+    @media screen and (max-width: 320px) {
+      line-height: 50%;
+    }
+  }
   svg {
     width: 1rem;
     height: 0.9rem;
+    @media screen and (max-width: 320px) {
+      width: 9px;
+      height: 8px;
+      color: var(--opc-100);
+    }
   }
 `;
 
@@ -364,12 +491,23 @@ const ComunityWrapper = styled.ul`
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 2rem;
+  @media screen and (max-width: 320px) {
+    max-width: 100%;
+    max-height: 58rem;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    margin-top: 2rem;
+    margin: 0 1.5rem;
+  }
 `;
 
 const ToCommunityDetailPage = styled(Link)`
   text-decoration: none;
   cursor: pointer;
   font-weight: var(--fontWeight-bold);
+  @media screen and (max-width: 320px) {
+    max-width: 100%;
+  }
 `;
 
 const ComunityList = styled.li`
@@ -382,54 +520,86 @@ const ComunityList = styled.li`
   border-radius: 1rem;
   background-color: #1f1f1f;
   padding: 2rem;
+  @media screen and (max-width: 320px) {
+    width: 100%;
+    height: 13.3rem;
+    padding: 1.5rem;
+  }
 
   .nopicture {
     width: 6.6rem;
     height: 6.6rem;
     object-fit: cover;
+    @media screen and (max-width: 320px) {
+      width: 4rem;
+      height: 4rem;
+    }
   }
+
   .commupic {
     display: flex;
+    gap: 1.2rem;
+    @media screen and (max-width: 320px) {
+    }
   }
   .commucontent {
     margin-left: 1.5rem;
     /* margin-bottom: 3rem; */
     /* gap: 10px; */
   }
+  .community-pic {
+    width: 6.6rem;
+    height: 6.6rem;
+    object-fit: cover;
+    @media screen and (max-width: 320px) {
+      width: 4rem;
+      height: 4rem;
+    }
+  }
   h3 {
     color: var(--11-gray);
-    font-size: var(--fontSize-H4);
+    font-size: var(--fontSize-H3);
     margin-bottom: 1.6rem;
     font-weight: var(--fontWeight-bold);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     max-width: 48rem;
+    @media screen and (max-width: 320px) {
+      font-size: var(--fontSize-H5);
+      font-weight: var(--fontWeight-bold);
+      width: 20rem;
+    }
   }
 
   p {
     overflow: hidden;
-    font-size: var(--fontSize-H5);
+    font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-medium);
     color: var(--8-gray);
-    max-width: 48.6rem;
+    max-width: 41rem;
     height: 6.6rem;
     line-height: 2.2rem;
+
+    @media screen and (max-width: 320px) {
+      font-size: var(--fontSize-H6);
+      line-height: 1.92rem;
+      height: 4rem;
+    }
   }
 
-  h4 {
-    position: absolute;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    color: var(--6, #717171);
-    font-size: var(--fontSize-H6);
-  }
   .thumbs {
     position: absolute;
     bottom: 1.4rem;
     left: 2rem;
     width: 2rem;
     height: 2rem;
+    @media screen and (max-width: 320px) {
+      width: 1.3rem;
+      height: 1.2rem;
+      left: 3rem;
+      bottom: 1.5rem;
+    }
   }
   .likescount {
     position: absolute;
@@ -437,13 +607,23 @@ const ComunityList = styled.li`
     bottom: 1.4rem;
     left: 5rem;
     color: var(--6, #717171);
+    @media screen and (max-width: 320px) {
+      font-size: 1.1rem;
+      left: 5.5rem;
+    }
   }
   .commentss {
     position: absolute;
     bottom: 1.4rem;
-    left: 10rem;
+    left: 1rem;
     width: 2rem;
     height: 2rem;
+    @media screen and (max-width: 320px) {
+      width: 1.3rem;
+      height: 1.2rem;
+      left: 8.5rem;
+      bottom: 1.5rem;
+    }
   }
 
   span {
@@ -452,5 +632,20 @@ const ComunityList = styled.li`
     bottom: 1.4rem;
     left: 13rem;
     color: var(--6, #717171);
+    @media screen and (max-width: 320px) {
+      font-size: 1.1rem;
+      left: 11rem;
+    }
+  }
+  h4 {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    color: var(--6, #717171);
+    font-size: var(--fontSize-H6);
+    @media screen and (max-width: 320px) {
+      font-size: 1rem;
+      right: 1.5rem;
+    }
   }
 `;

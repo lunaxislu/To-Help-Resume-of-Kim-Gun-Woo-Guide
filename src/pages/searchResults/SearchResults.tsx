@@ -261,7 +261,7 @@ const LinktoUsedProducts = styled(Link)`
 `;
 const UsedItemsList = styled.ul<{ usedItemCount: number }>`
   width: 111.6rem;
-  height: ${({ usedItemCount }) => (usedItemCount === 0 ? '10rem' : '32rem')};
+  height: ${({ usedItemCount }) => (usedItemCount === 0 ? '6rem' : '32rem')};
   display: flex;
   flex-wrap: wrap;
   margin-top: 2rem;

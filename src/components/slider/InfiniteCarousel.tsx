@@ -20,13 +20,20 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
+    // autoplay: true,
     autoplaySpeed: 8000,
     draggable: true,
     arrows: false,
     responsive: [
       {
         breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 320,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1
@@ -91,14 +98,26 @@ const CarouselContainer = styled.div`
     max-width: 1024px;
     max-height: 285px;
   }
+  @media screen and (max-width: 320px) {
+    max-width: 320px;
+    max-height: 153px;
+  }
+  .slick-list {
+    @media screen and (max-width: 320px) {
+      max-width: 320px;
+      max-height: 153px;
+    }
+  }
 
   .dots_custom {
     display: inline-block;
-    vertical-align: middle;
+    /* vertical-align: middle; */
     margin: auto 0;
     padding: 0;
     @media screen and (max-width: 1024px) {
       margin-bottom: 10rem;
+    }
+    @media screen and (max-width: 320px) {
     }
   }
 
@@ -109,6 +128,9 @@ const CarouselContainer = styled.div`
     margin: 0 0.6rem;
     padding: 0;
     @media screen and (max-width: 1024px) {
+    }
+    @media screen and (max-width: 320px) {
+      margin: 0 4px;
     }
   }
 
@@ -122,6 +144,10 @@ const CarouselContainer = styled.div`
     width: 0.8rem;
     border-radius: 100%;
     padding: 0;
+    @media screen and (max-width: 320px) {
+      width: 4px;
+      height: 4px;
+    }
   }
 
   .dots_custom li.slick-active button {
@@ -137,6 +163,11 @@ const CarouselImage = styled.img`
   @media screen and (max-width: 1024px) {
     max-width: 100%;
   }
+  @media screen and (max-width: 320px) {
+    object-fit: fill;
+    max-width: 320px;
+    max-height: 153px;
+  }
 `;
 const CarouselButtons = styled.div`
   position: absolute;
@@ -149,7 +180,14 @@ const CarouselButtons = styled.div`
   box-sizing: border-box;
   @media screen and (max-width: 1024px) {
     max-width: 100%;
-    padding: 0 3rem;
+    padding: 0 4rem;
+  }
+  @media screen and (max-width: 320px) {
+    max-width: 320px;
+    padding: 0;
+    width: 100%;
+    marin: auto;
+    align-items: center;
   }
 `;
 
@@ -161,6 +199,10 @@ const ArrowButton = styled.button`
   @media screen and (max-width: 1024px) {
     max-width: 76%;
     max-height: 76%;
+  }
+  @media screen and (max-width: 320px) {
+    max-width: 48%;
+    max-height: 48%;
   }
 `;
 const ColoredIcon = styled.div`
@@ -174,6 +216,10 @@ const ColoredIcon = styled.div`
     max-width: 76%;
     max-height: 76%;
   }
+  @media screen and (max-width: 320px) {
+    max-width: 48%;
+    max-height: 48%;
+  }
 
   svg {
     position: absolute;
@@ -184,5 +230,9 @@ const ColoredIcon = styled.div`
     width: 2rem;
     height: 2rem;
     cursor: pointer;
+    @media screen and (max-width: 320px) {
+      max-width: 48%;
+      max-height: 48%;
+    }
   }
 `;
