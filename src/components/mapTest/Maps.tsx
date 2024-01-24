@@ -1,5 +1,5 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
-import { Map, MapInfoWindow, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 
 type CoderResult = {
@@ -27,12 +27,17 @@ const StModalContainer = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media screen and (max-width: 768px) {
+    width: 90%;
+    top: 15%;
+  }
 `;
 
 const StButtonBox = styled.div`
   width: 100%;
   padding: 1rem;
-  background-color: #ffffff;
+  background-color: var(--2-gray);
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -44,8 +49,9 @@ const Buttons = styled.button`
   border-radius: 9px;
   outline: none;
   border: none;
-  background-color: #ffe5d7;
+  background-color: var(--3-gray);
   cursor: pointer;
+  color: var(--opc-100);
 
   a {
     text-decoration: none;
@@ -53,8 +59,8 @@ const Buttons = styled.button`
   }
 
   &:hover {
-    background-color: var(--primary-color);
-    color: white;
+    background-color: var(--opc-100);
+    color: var(--3-gray);
 
     a {
       color: white;
@@ -81,15 +87,12 @@ const Maps = ({ searchAddress }: AddressValue) => {
     geocoder.addressSearch(
       searchAddress,
       (result: CoderResult[], status: kakao.maps.services.Status) => {
-        console.log(status);
-        console.log(result);
         if (result.length > 0 && status === 'OK') {
           const { x, y } = result[0];
           setCoord({
             lat: Number(y),
             lng: Number(x)
           });
-          console.log(coord);
         }
       }
     );

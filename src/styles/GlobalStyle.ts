@@ -117,6 +117,7 @@ body {
     background-color: #131313;
     font-family: 'Pretendard-Medium';
     color: #F8F8F8;
+    overflow-x: hidden;
     /* margin: 0 auto; */
 }
 ol, ul {
@@ -136,9 +137,7 @@ table {
 }
 
 html {
-
     font-size: 62.5%;
-
 }
 
 * {
