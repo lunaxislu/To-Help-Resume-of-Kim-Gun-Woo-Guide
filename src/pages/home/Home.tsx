@@ -210,7 +210,7 @@ const HomeContainer = styled.section`
   }
   @media screen and (max-width: 320px) {
     max-width: 32rem;
-    max-height: 192rem;
+    max-height: 210rem;
   }
 `;
 
@@ -224,6 +224,7 @@ const CarouselWrapper = styled.div`
     max-width: 100%;
   }
 `;
+
 const HomeSection = styled.div`
   width: 111.6rem;
   margin: 0 auto;
@@ -413,7 +414,7 @@ const ComunityContainer = styled.div`
   @media screen and (max-width: 320px) {
     max-width: 100%;
     height: 60rem;
-    margin-top: 4rem;
+    margin-top: 3rem;
   }
 `;
 
@@ -590,8 +591,8 @@ const ComunityList = styled.li`
 
   .thumbs {
     position: absolute;
-    bottom: 1.4rem;
-    left: 2rem;
+    bottom: 1.5rem;
+    left: 3.5rem;
     width: 2rem;
     height: 2rem;
     @media screen and (max-width: 320px) {
@@ -604,8 +605,8 @@ const ComunityList = styled.li`
   .likescount {
     position: absolute;
     text-decoration: none;
-    bottom: 1.4rem;
-    left: 5rem;
+    bottom: 1.5rem;
+    left: 7rem;
     color: var(--6, #717171);
     @media screen and (max-width: 320px) {
       font-size: 1.1rem;
@@ -614,8 +615,8 @@ const ComunityList = styled.li`
   }
   .commentss {
     position: absolute;
-    bottom: 1.4rem;
-    left: 1rem;
+    bottom: 1.5rem;
+    left: 12rem;
     width: 2rem;
     height: 2rem;
     @media screen and (max-width: 320px) {
@@ -629,8 +630,8 @@ const ComunityList = styled.li`
   span {
     position: absolute;
     text-decoration: none;
-    bottom: 1.4rem;
-    left: 13rem;
+    bottom: 1.5rem;
+    left: 15rem;
     color: var(--6, #717171);
     @media screen and (max-width: 320px) {
       font-size: 1.1rem;

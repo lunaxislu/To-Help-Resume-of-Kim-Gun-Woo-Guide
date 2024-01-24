@@ -4,7 +4,7 @@ export const FooterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* width: 144rem; */
+  width: 144rem;
   height: 23.8rem;
   position: relative;
   font-size: var(--fontSize-body);
@@ -12,7 +12,7 @@ export const FooterContainer = styled.div`
   color: var(--9-gray);
   background-color: var(--2-gray);
   line-height: 2.24rem;
-  /* margin: auto; */
+  margin: 0 auto;
   padding: 3rem 15rem;
 
   @media screen and (max-width: 768px) {

@@ -1,47 +1,74 @@
 import { BiEdit } from "react-icons/bi";
+import { BiWon } from "react-icons/bi";
 import styled, { css } from "styled-components";
 
 // ProductsList(page)
 export const EntireContainer = styled.div`
-  width: 144rem;
+  max-width: 144rem;
   display: flex;
   margin: auto;
   margin-bottom: 15rem;
+  @media screen and (max-width: 768px) {
+    max-width: 76.8rem;
+    min-width: 3.5rem;
+  }
 `
 export const ContentsContainer = styled.div`
-  width: 111.6rem;
+  max-width: 111.6rem;
   margin: auto;
+  @media screen and (max-width: 768px) {
+    max-width: 90%;
+  }
 `
 
 export const Title = styled.h1`
   font-size: var(--fontSize-H3);
   margin: 4rem 0 2.6rem 0;
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H5);
+    margin: 2rem 0 1.4rem 0;
+  }
 `
 
 export const BarContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 `
 
-export const TagsContainer = styled.div`
+export const CategoryContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 3rem;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 2rem;
+  }
 `
 
-export const TagsWrapper = styled.div`
+export const CategoryWrapper = styled.div`
+  width: 75%;
   display: flex;
   flex-direction: row;
   list-style: none;
   gap: 0.9rem;
+  @media screen and (max-width: 768px) {
+    gap: 0.6rem;
+    overflow-x: scroll;
+    scrollbar-width:none;
+    &::-webkit-scrollbar {
+      display:none /* Chrome , Safari , Opera */
+    }
+  }
 `
 
-interface TagsProps {
+interface CategoryProps {
   $selectCategory: string
 }
 
-export const Tags = styled.p<TagsProps>`
+export const Category = styled.p<CategoryProps>`
   width: fit-content;
   padding: 0 1.5rem;
   text-align: center;
@@ -50,6 +77,7 @@ export const Tags = styled.p<TagsProps>`
   border-radius: 5.6rem;
   color: var(--6-gray);
   background-color: var(--opc-10);
+  white-space: nowrap;
   &:hover {
     cursor: pointer;
   }
@@ -70,27 +98,43 @@ export const Tags = styled.p<TagsProps>`
       `;
     }
   }}
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    padding: 0 0.8rem;
+  }
 `
 
 export const PostsWriteBtn = styled.div`
-  width: 8.5rem;
+  width: 9.5rem;
   height: 3.1rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   border-radius: 7rem;
-  gap: 0.8rem;
+  gap: 0.5rem;
   background-color: var(--opc-10);
+  white-space: nowrap;
   &:hover {
     cursor: pointer;
   }
+  @media screen and (max-width: 768px) {
+    width: 8.1rem;
+    height: 2rem;
+    border-radius: 5.6rem;
+    gap: 0.5rem;
+    font-size: var(--fontSize-H6);
+  }
 `
 
-export const WriteIcon = styled(BiEdit)`
-  color: #dbff00;
+export const SellWriteIcon = styled(BiWon)`
+  color: var(--opc-100);
   width: 1.5rem;
   height: 1.5rem;
+  @media screen and (max-width: 768px) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 `;
 
 export const SearchBarContainer = styled.div`
@@ -98,6 +142,9 @@ export const SearchBarContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 2.4rem;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 1.6rem;
+  }
 `
 
 // ProductsSearchBar
@@ -120,11 +167,36 @@ export const SearchBarInput = styled.input`
 
 // ProductsList(components)
 export const ProductsListContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  place-items: center;
+  margin: auto;
   column-gap: 1.9rem;
   row-gap: 4rem;
+  @media screen and (max-width: 1220px) {
+    column-gap: 1.5rem;
+    row-gap: 1.8rem;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media screen and (max-width: 950px) {
+    column-gap: 1.5rem;
+    row-gap: 1.8rem;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 768px) {
+    column-gap: 1.5rem;
+    row-gap: 1.8rem;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media screen and (max-width: 670px) {
+    column-gap: 1.5rem;
+    row-gap: 1.8rem;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 520px) {
+    row-gap: 1.8rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
 `
 
 export const ProductsCardContainer = styled.div`
@@ -138,6 +210,10 @@ export const ProductsCardContainer = styled.div`
   &:hover {
     cursor: pointer;
   }
+  @media screen and (max-width: 768px) {
+    width: 14rem;
+    height: 21.3rem;
+  }
 `
 
 export const CardImageWrapper = styled.div`
@@ -145,6 +221,11 @@ export const CardImageWrapper = styled.div`
   height: 20.8rem;
   margin-bottom: 2rem;
   border-radius: 0.6rem;
+  @media screen and (max-width: 768px) {
+    width: 14rem;
+    height: 14rem;
+    margin-bottom: 1rem;
+  }
 `
 
 export const CardImage = styled.img`
@@ -164,12 +245,25 @@ export const CardQuality = styled.li`
   background-color: var(--opc-20);
   color: var(--10-gray);
   margin-bottom: 0.6rem;
+  @media screen and (max-width: 768px) {
+    padding: 0 0.5rem;
+    font-size: 0.8rem;
+    line-height: 2.1;
+    background-color: rgba(219, 255, 0, 0.80);
+    color: var(--2-gray);
+  }
 `
 export const CardTitle = styled.h2`
   margin-bottom: 0.4rem;
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
 `
 
 export const CardPrice = styled.h2`
   font-weight: var(--fontWeight-bold);
-  columns: var(--12-gray);
+  color: var(--12-gray);
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
 `

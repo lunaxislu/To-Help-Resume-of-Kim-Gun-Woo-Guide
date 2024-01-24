@@ -39,7 +39,6 @@ const Profile = () => {
     queryFn: () => getUserProfile(userId)
   });
 
-  console.log(user);
   // profile 수정 버튼
   const editProfileHandler = () => {
     setIsEditing(true);
@@ -53,6 +52,13 @@ const Profile = () => {
   // nickname input onChange
   const onChangeNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserNickname(e.target.value);
+  };
+
+  // auth에 있는 avatar_url 변경
+  const updateAuthAvatarHandler = async () => {
+    const { data, error } = await supabase.auth.updateUser({
+      data: { avatar_url: profileImage }
+    });
   };
 
   // 사진 업로드 버튼 클릭
@@ -88,6 +94,7 @@ const Profile = () => {
         id: userId
       });
     }
+    updateAuthAvatarHandler();
     setIsEditing(false);
   };
 
@@ -165,13 +172,22 @@ const Profile = () => {
 
             <StProfileContentsContainer key={user.id}>
               <StContent>닉네임</StContent>
+
               {isEditing ? (
-                <StNicknameInput
-                  defaultValue={user.nickname}
-                  onChange={onChangeNickname}
-                />
+                <>
+                  <StNicknameInput
+                    defaultValue={
+                      !user.nickname ? user.username : user.nickname
+                    }
+                    onChange={onChangeNickname}
+                    placeholder="최대 8자"
+                    maxLength={8}
+                  />
+                </>
               ) : (
-                <StContent>{user.nickname}</StContent>
+                <StContent>
+                  {!user.nickname ? user.username : user.nickname}
+                </StContent>
               )}
 
               <StContent>이름</StContent>

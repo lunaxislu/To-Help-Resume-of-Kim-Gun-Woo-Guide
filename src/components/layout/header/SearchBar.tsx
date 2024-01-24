@@ -1,6 +1,12 @@
-import React, { ChangeEvent, KeyboardEvent, useEffect } from 'react';
+import React, {
+  ChangeEvent,
+  KeyboardEvent,
+  SetStateAction,
+  useEffect,
+  useState
+} from 'react';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store/store';
 import {
@@ -11,11 +17,26 @@ import {
   ResearchResults,
   researchItems
 } from '../../../pages/searchResults/researchItem';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { IoIosArrowBack } from 'react-icons/io';
 
-const SearchBar: React.FC = () => {
+type SearchBarProps = {
+  showSearchComp: boolean;
+  setShowSearchComp: React.Dispatch<SetStateAction<boolean>>;
+};
+
+const SearchBar: React.FC<SearchBarProps> = ({
+  showSearchComp,
+  setShowSearchComp
+}) => {
   const { searchQuery } = useSelector((state: RootState) => state.search);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  const handleHideSearchComp = () => {
+    setShowSearchComp(false);
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setSearchQuery(e.target.value));
@@ -50,35 +71,101 @@ const SearchBar: React.FC = () => {
       e.preventDefault();
       navigate(`/search-results?q=${encodeURIComponent(searchQuery)}`);
       handleSearch();
+      setShowSearchComp(false);
     }
   };
 
-  return (
-    <SearchInputContainer>
-      <SearchInputBar
-        type="text"
-        placeholder="검색어를 입력하세요."
-        value={searchQuery}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-      />
+  const checkWindowSize = () => {
+    if (window.innerWidth <= 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
 
-      <SearchBtn onClick={handleSearch}>
-        <SearchBtnImg src={'/assets/searchbtn.png'} alt="searchbutton" />
-      </SearchBtn>
+  useEffect(() => {
+    checkWindowSize();
+    window.addEventListener('DOMContentLoaded', checkWindowSize);
+    window.addEventListener('resize', checkWindowSize);
+
+    return () => {
+      window.removeEventListener('DOMContentLoaded', checkWindowSize);
+      window.removeEventListener('resize', checkWindowSize);
+    };
+  });
+
+  return (
+    <SearchInputContainer $position={showSearchComp}>
+      <div
+        style={{
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center'
+        }}
+      >
+        {isMobile && (
+          <IoIosArrowBack
+            style={{
+              color: 'var(--opc-100)',
+              fontSize: '2.2rem',
+              cursor: 'pointer'
+            }}
+            onClick={handleHideSearchComp}
+          />
+        )}
+
+        <SearchInputBar
+          type="text"
+          placeholder="검색어를 입력하세요."
+          value={searchQuery}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+        />
+
+        <SearchBtn onClick={handleSearch}>
+          {isMobile && <StMagnifyGlass />}
+          {!isMobile && (
+            <SearchBtnImg src={'/assets/searchbtn.png'} alt="searchbutton" />
+          )}
+        </SearchBtn>
+      </div>
     </SearchInputContainer>
   );
 };
 
 export default SearchBar;
 
-const SearchInputContainer = styled.div`
+type MobileProps = {
+  $position: boolean;
+};
+
+const SearchInputContainer = styled.div<MobileProps>`
   /* display: flex; */
   align-items: center;
   position: relative;
-
   @media screen and (max-width: 768px) {
-    display: none;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    transition: all 0.3s ease;
+    ${(props) => {
+      if (props.$position === true) {
+        return css`
+          opacity: 1;
+          transform: translateX(0%);
+        `;
+      } else {
+        return css`
+          opacity: 0;
+          transform: translateX(100%);
+        `;
+      }
+    }};
+    background-color: var(--3-gray);
+    padding: 2rem;
   }
 `;
 
@@ -94,6 +181,22 @@ const SearchInputBar = styled.input`
   font-weight: var(--fontWeight-medium);
   line-height: 2.4856rem;
   outline: none;
+
+  @media screen and (max-width: 768px) {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    background-color: var(--2-gray);
+  }
+`;
+
+const StMagnifyGlass = styled(FaMagnifyingGlass)`
+  position: absolute;
+  top: 32%;
+  right: 55%;
+  z-index: 3;
+  color: var(--opc-100);
 `;
 
 const SearchBtn = styled.button`

@@ -12,12 +12,20 @@ export const HeaderContainer = styled.header`
     color: var(--bgColor);
   } */
 
-  width: 100%;
+  width: 144rem;
+  display: flex;
+  flex-shrink: 0;
   padding: 3rem 15rem;
+  flex-direction: column;
+  margin: 0 auto;
+  background-color: {
+    color: var(--bgColor);
+  }
 
   @media screen and (max-width: 768px) {
+    align-items: center;
     width: 100%;
-    height: 5rem;
+    height: 10rem;
     padding: 3rem;
   }
   @media screen and (max-width: 320px) {
@@ -69,7 +77,7 @@ export const ButtonContainer = styled.div`
   /* width: 24rem; */
   height: 3.5rem;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   user-select: none;
   margin: auto 0;
 
