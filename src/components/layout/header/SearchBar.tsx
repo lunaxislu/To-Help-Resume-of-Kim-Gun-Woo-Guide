@@ -114,6 +114,10 @@ const SearchInputContainer = styled.div`
   /* display: flex; */
   align-items: center;
   position: relative;
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const SearchInputBar = styled.input`

@@ -24,6 +24,8 @@ export interface Community {
   content: string;
   created_at: string;
   images: string;
+  post_id: string;
+  comment: [];
 }
 
 interface CommunityCardProps {
@@ -98,6 +100,13 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
     setIsLoading(false);
   };
 
+  const handleText = (content: string): string => {
+    // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
+    const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
+
+    return textOnly;
+  };
+
   useEffect(() => {
     if (isInView) {
       loadMorePosts(offset);
@@ -109,24 +118,28 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
     getCurrentUserCommunityPosts();
   }, []);
 
+  console.log(communityPosts);
+
   return (
     <StPostContainer ref={containerRef}>
       {activeTab === 3 &&
         communityPosts.map((post) => {
+          console.log(post);
           return (
-            <StPostWrapper key={post.id} to={`/community/detail/${post.id}`}>
+            <StPostWrapper
+              key={post.id}
+              to={`/community/detail/${post.post_id}`}
+            >
               <StPostTitle>{post.title}</StPostTitle>
               <StPostContentsWrapper>
                 {!post.images ? '' : <StPostImage src={post.images} />}
-                <StPostContent>{post.content}</StPostContent>
+                <StPostContent>{handleText(post.content)}</StPostContent>
               </StPostContentsWrapper>
 
               <StIconAndDateWrapper>
                 <StIconContainer>
-                  <span>좋아요</span>
-                  <span>41</span>
-                  <span>댓글</span>
-                  <span>15</span>
+                  <img src="/assets/thabong.png" />
+                  <span>{post.comment?.length}</span>
                 </StIconContainer>
 
                 <StPostDate>{parseDate(post.created_at)}</StPostDate>
