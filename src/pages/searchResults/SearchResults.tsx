@@ -7,21 +7,43 @@ import styled from 'styled-components';
 import parseDate from '../../util/getDate';
 import { setSearchResults } from '../../redux/modules/searchSlice';
 import { FaArrowRight } from 'react-icons/fa';
-
+import { researchItems, ResearchResults } from './researchItem';
 const SearchResults: React.FC = () => {
   const { usedItemResults, communityResults } = useSelector(
     (state: RootState) => state.search.searchResults
   );
-  const searchQuery = useSelector(
-    (state: RootState) => state.search.searchQuery
-  );
+  const dispatch = useDispatch();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
   const newSearchQuery = new URLSearchParams(location.search).get('q') || '';
 
   useEffect(() => {
-    // 검색 수행
-  }, [newSearchQuery]);
-  const dispatch = useDispatch();
+    async function fetchData() {
+      if (!newSearchQuery.trim()) {
+        return;
+      }
+      setIsLoading(true);
+      const results: ResearchResults | undefined = await researchItems(
+        newSearchQuery
+      );
+      if (!results) {
+        console.error('수파베이스에 요청 중 실패:');
+        return;
+      }
+
+      const { usedItemsWithImages, communityItemsWithImages } = results;
+
+      dispatch(
+        setSearchResults({
+          usedItemResults: usedItemsWithImages || [],
+          communityResults: communityItemsWithImages || []
+        })
+      );
+      setIsLoading(false);
+    }
+
+    fetchData();
+  }, [newSearchQuery, dispatch]);
 
   const usedItemCount = usedItemResults.length;
   const communityCount = communityResults.length;
@@ -36,7 +58,9 @@ const SearchResults: React.FC = () => {
       <SearchResultsCountContainer>
         <CheckImage src="/assets/checkresults.png" alt="검색결과" />
         <FullCounts>
-          {usedItemCount === 0 && communityCount === 0
+          {isLoading
+            ? '검색 중...'
+            : usedItemCount === 0 && communityCount === 0
             ? '해당 검색어에 대한 결과를 찾을 수 없어요'
             : `${usedItemCount + communityCount}개의 결과가 검색되었어요`}
         </FullCounts>
