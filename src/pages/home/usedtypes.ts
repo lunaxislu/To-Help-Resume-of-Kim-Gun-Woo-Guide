@@ -22,6 +22,8 @@ export interface UsedItem {
   image_url: string;
   image_Url: string;
   publicURL: string;
+  publicUrL: string;
+  images: string;
   error: string;
 }
 
@@ -45,4 +47,5 @@ export interface Communityy {
   image_Url: string;
   publicURL: string;
   images: string;
+  publicUrL: string;
 }

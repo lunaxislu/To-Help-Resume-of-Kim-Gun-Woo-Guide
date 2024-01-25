@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Product } from '../../pages/productsDetail/types';
 import styled from 'styled-components';
 import { StFadeAni } from '../../pages/chat/style';
@@ -13,6 +13,7 @@ type BodyInfo = {
 
 const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
   const [isHover, setIsHover] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
   const showQuality = () => {
     setIsHover(true);
   };
@@ -24,6 +25,24 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
   const handleShowMap = () => {
     setShowMap(true);
   };
+
+  const checkWindowSize = () => {
+    if (window.innerWidth <= 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('DOMContentLoaded', checkWindowSize);
+    window.addEventListener('resize', checkWindowSize);
+
+    return () => {
+      window.removeEventListener('DOMContentLoaded', checkWindowSize);
+      window.removeEventListener('resize', checkWindowSize);
+    };
+  });
 
   return (
     <>
@@ -40,23 +59,23 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
             {isHover && (
               <StQualityInfoBox>
                 <p>
-                  <span>새 상품</span>: &nbsp;사용하지 않은 새 상품이에요
+                  <span>새 상품</span> &nbsp;사용하지 않은 새 상품이에요
                 </p>
                 <p>
-                  <span>사용감 없음</span>: &nbsp;사용은 했지만 눈에 띄는
+                  <span>사용감 없음</span> &nbsp;사용은 했지만 눈에 띄는
                   흔적이나 얼룩이 없어요 / 아주 조금 사용했어요
                 </p>
 
                 <p>
-                  <span>사용감 적음</span>: &nbsp;눈에 띄는 흔적이나 얼룩이 약간
+                  <span>사용감 적음</span> &nbsp;눈에 띄는 흔적이나 얼룩이 약간
                   있어요 / 절반정도 사용했어요
                 </p>
                 <p>
-                  <span>사용감 많음</span>: &nbsp;눈에 띄는 흔적이나 얼룩이 많이
+                  <span>사용감 많음</span> &nbsp;눈에 띄는 흔적이나 얼룩이 많이
                   있어요 / 많이 사용했어요
                 </p>
                 <p>
-                  <span>고장 / 파손 상품</span>: &nbsp;기능 이상이나 외관 손상
+                  <span>고장 / 파손 상품</span> &nbsp;기능 이상이나 외관 손상
                   등으로 수리가 필요해요{' '}
                 </p>
               </StQualityInfoBox>
@@ -67,7 +86,9 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
       {productInfo[i] !== data.quality && productInfo[i] === data.address && (
         <StRowValue>
           {productInfo[i]}
-          <StMapButton onClick={handleShowMap}>지도로 확인하기</StMapButton>
+          <StMapButton onClick={handleShowMap}>
+            {isMobile ? '지도 보기' : '지도로 확인하기'}
+          </StMapButton>
         </StRowValue>
       )}
 
@@ -86,6 +107,10 @@ const StRowValue = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 `;
 
 const StValueParagraph = styled.div`
@@ -130,6 +155,21 @@ const StQualityInfoBox = styled.div`
     color: var(--opc-100);
     font-weight: 500;
   }
+
+  @media screen and (max-width: 768px) {
+    font-size: 0.9rem;
+    left: -300px;
+
+    p {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    span {
+      margin-bottom: 0.3rem;
+      margin-left: 0.3rem;
+    }
+  }
 `;
 
 const StMapButton = styled.button.attrs({
@@ -142,6 +182,10 @@ const StMapButton = styled.button.attrs({
   color: var(--8-gray);
   text-decoration: underline;
   cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 export default ProductDetail;

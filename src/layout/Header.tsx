@@ -9,6 +9,7 @@ import * as St from '../styles/headerStyle/HeaderStyle';
 import { BiWon } from 'react-icons/bi';
 import { BiSolidHeart } from 'react-icons/bi';
 import { BiSolidBell } from 'react-icons/bi';
+
 interface User {
   username: string;
 }
@@ -21,6 +22,14 @@ const Header = () => {
   const { isLogin } = useAppSelector((state) => state.auth);
   const location = useLocation();
   const dispatch = useAppDispatch();
+
+  const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
+
+  // 반응형 대응 서치 컴포넌트 두두둥장
+  const handleShowSearchComp = () => {
+    setShowSearchComp((prev) => !prev);
+  };
+
   // 페이지 이동 시 검색어 초기화 함수
   const handlePageChange = () => {
     dispatch(setSearchQuery('')); // 검색어 초기화
@@ -66,6 +75,8 @@ const Header = () => {
       // 사용자 정보 초기화
       setUser(false);
       setAvatarUrl(undefined);
+      // 이락균이 추가함 //
+      navigate('/');
     }
     if (error) {
       console.log(error);
@@ -139,7 +150,10 @@ const Header = () => {
                 src={`${avatarUrl}`}
                 onClick={handleMyPageButtonClick}
               />
-              <St.MobileSearchIcon src="/assets/mobile_search.svg" />
+              <St.MobileSearchIcon
+                src="/assets/mobile_search.svg"
+                onClick={handleShowSearchComp}
+              />
               <St.HamburgerMenu src="/assets/hamburger.svg" />
             </>
           ) : (
@@ -165,7 +179,10 @@ const Header = () => {
           )}
         </St.NavBar>
 
-        <SearchBar />
+        <SearchBar
+          showSearchComp={showSearchComp}
+          setShowSearchComp={setShowSearchComp}
+        />
       </St.NavSection>
     </St.HeaderContainer>
   );

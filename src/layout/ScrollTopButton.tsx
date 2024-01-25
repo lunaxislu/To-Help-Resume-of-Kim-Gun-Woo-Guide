@@ -27,14 +27,25 @@ const TopButton = styled.button`
   cursor: pointer;
   transition: opacity 0.5s;
   background-color: transparent;
+  @media screen and (max-width: 320px) {
+    padding: 0;
+    right: 0.3rem;
+  }
 
   img {
     width: 60px;
     height: 60px;
+    @media screen and (max-width: 320px) {
+      width: 33%;
+      height: 33%;
+    }
   }
 
   &:hover {
     opacity: 0.8;
+    @media screen and (max-width: 320px) {
+      opacity: 0.5;
+    }
   }
 `;
 

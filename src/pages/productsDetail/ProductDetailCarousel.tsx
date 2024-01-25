@@ -8,7 +8,7 @@ interface InfiniteCarouselProps {
   carouselImages: string[];
 }
 
-const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
+const ProductDetail_Carousel: React.FC<InfiniteCarouselProps> = ({
   carouselImages
 }) => {
   const slickRef = useRef<Slider | null>(null);
@@ -20,20 +20,13 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // autoplay: true,
+    autoplay: true,
     autoplaySpeed: 8000,
     draggable: true,
     arrows: false,
     responsive: [
       {
         breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      },
-      {
-        breakpoint: 320,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1
@@ -59,7 +52,7 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
 
   return (
     <CarouselContainer>
-      <Slider {...settings} ref={slickRef}>
+      <StSlider {...settings} ref={slickRef}>
         {carouselImages.map((image, index) => (
           <CarouselImage
             key={index}
@@ -67,7 +60,7 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
             alt={`Carousel ${index + 1}`}
           />
         ))}
-      </Slider>
+      </StSlider>
       <CarouselButtons>
         <ArrowButton onClick={previous}>
           <ColoredIcon>
@@ -84,41 +77,23 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
   );
 };
 
-export default InfiniteCarousel;
+export default ProductDetail_Carousel;
 
 const CarouselContainer = styled.div`
   position: relative;
-  width: 144rem;
-  height: 40.1rem;
+  width: 100%;
+  max-width: 550px;
+  height: 600px;
+  max-height: 100%;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
   overflow: hidden;
-  @media screen and (max-width: 1024px) {
-    max-width: 1024px;
-    max-height: 285px;
-  }
-  @media screen and (max-width: 320px) {
-    max-width: 320px;
-    max-height: 153px;
-  }
-  .slick-list {
-    @media screen and (max-width: 320px) {
-      max-width: 320px;
-      max-height: 153px;
-    }
-  }
-
   .dots_custom {
     display: inline-block;
-    /* vertical-align: middle; */
+    vertical-align: middle;
     margin: auto 0;
     padding: 0;
-    @media screen and (max-width: 1024px) {
-      margin-bottom: 10rem;
-    }
-    @media screen and (max-width: 320px) {
-    }
   }
 
   .dots_custom li {
@@ -127,11 +102,6 @@ const CarouselContainer = styled.div`
     display: inline-block;
     margin: 0 0.6rem;
     padding: 0;
-    @media screen and (max-width: 1024px) {
-    }
-    @media screen and (max-width: 320px) {
-      margin: 0 4px;
-    }
   }
 
   .dots_custom li button {
@@ -144,10 +114,6 @@ const CarouselContainer = styled.div`
     width: 0.8rem;
     border-radius: 100%;
     padding: 0;
-    @media screen and (max-width: 320px) {
-      width: 4px;
-      height: 4px;
-    }
   }
 
   .dots_custom li.slick-active button {
@@ -155,19 +121,15 @@ const CarouselContainer = styled.div`
   }
 `;
 
-const CarouselImage = styled.img`
+const StSlider = styled(Slider)`
+  height: 100%;
   width: 100%;
-  max-height: 40.1rem;
+  overflow: hidden;
+`;
+
+const CarouselImage = styled.img`
   object-fit: cover;
-  box-sizing: border-box;
-  @media screen and (max-width: 1024px) {
-    max-width: 100%;
-  }
-  @media screen and (max-width: 320px) {
-    object-fit: fill;
-    max-width: 320px;
-    max-height: 153px;
-  }
+  width: 100%;
 `;
 const CarouselButtons = styled.div`
   position: absolute;
@@ -176,19 +138,7 @@ const CarouselButtons = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 0 2rem;
-  box-sizing: border-box;
-  @media screen and (max-width: 1024px) {
-    max-width: 100%;
-    padding: 0 4rem;
-  }
-  @media screen and (max-width: 320px) {
-    max-width: 320px;
-    padding: 0;
-    width: 100%;
-    marin: auto;
-    align-items: center;
-  }
+  padding: 0 1rem;
 `;
 
 const ArrowButton = styled.button`
@@ -196,30 +146,16 @@ const ArrowButton = styled.button`
   border: none;
   width: 5rem;
   height: 5rem;
-  @media screen and (max-width: 1024px) {
-    max-width: 76%;
-    max-height: 76%;
-  }
-  @media screen and (max-width: 320px) {
-    max-width: 48%;
-    max-height: 48%;
-  }
 `;
+
 const ColoredIcon = styled.div`
   display: inline-block;
   position: relative;
   width: 5rem;
   height: 5rem;
   background-color: rgba(255, 255, 255, 0.6);
+
   border-radius: 50%;
-  @media screen and (max-width: 1024px) {
-    max-width: 76%;
-    max-height: 76%;
-  }
-  @media screen and (max-width: 320px) {
-    max-width: 48%;
-    max-height: 48%;
-  }
 
   svg {
     position: absolute;
@@ -227,12 +163,8 @@ const ColoredIcon = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     fill: var(--opc-100);
-    width: 2rem;
+    width: 2rem; /* 아이콘의 전체 크기를 설정합니다. */
     height: 2rem;
     cursor: pointer;
-    @media screen and (max-width: 320px) {
-      max-width: 48%;
-      max-height: 48%;
-    }
   }
 `;

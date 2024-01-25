@@ -2,7 +2,7 @@ export interface Product {
   id: string;
   post_user_uid: string;
   created_at: string;
-  post_user: string;
+  post_user_name: string;
   nickname: string;
   title: string;
   contents: string;
