@@ -82,9 +82,8 @@ const ChatHeader = ({
         </St.StMenuBox>
       )}
       <St.StChatBoardHeaderName>
-        {isMobile && (
-          <St.StHeaderArrow onClick={() => handleHideBoardPosition()} />
-        )}
+        <St.StHeaderArrow onClick={() => handleHideBoardPosition()} />
+
         <St.StListUserProfile
           $url={targetUser && targetUser[0]?.avatar_url}
         ></St.StListUserProfile>

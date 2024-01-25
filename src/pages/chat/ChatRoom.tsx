@@ -16,9 +16,13 @@ const StChatRoomBar = styled.div`
   max-width: 768px;
   padding: 1rem 0.4rem;
   gap: 1rem;
-  display: flex;
+  display: none;
   align-items: center;
   border-bottom: 0.1rem solid var(--3-gray);
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+  }
 `;
 
 const StHeaderArrow = styled(IoIosArrowBack)`
@@ -26,6 +30,11 @@ const StHeaderArrow = styled(IoIosArrowBack)`
   height: max-content;
   color: var(--opc-100);
   cursor: pointer;
+  display: none;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
 `;
 
 export default function ChatRoom() {
@@ -176,12 +185,10 @@ export default function ChatRoom() {
       )}
 
       <St.StChatContainer>
-        {isMobile && (
-          <StChatRoomBar>
-            <StHeaderArrow onClick={() => navi(-1)} />
-            채팅목록
-          </StChatRoomBar>
-        )}
+        <StChatRoomBar>
+          <StHeaderArrow onClick={() => navi(-1)} />
+          채팅목록
+        </StChatRoomBar>
         <St.StChatList onClick={() => setShowFileInput(false)}>
           <ChatRoomList
             handleBoardPosition={handleBoardPosition}

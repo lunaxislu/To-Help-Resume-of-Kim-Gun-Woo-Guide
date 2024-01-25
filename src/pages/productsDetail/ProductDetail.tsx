@@ -608,6 +608,7 @@ const ProductDetail = () => {
   const checkWindowSize = () => {
     if (window.matchMedia('(max-width: 768px)').matches) {
       setIsMobile(true);
+      window.scrollTo({ top: 0 });
     } else {
       setIsMobile(false);
     }
