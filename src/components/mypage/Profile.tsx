@@ -1,13 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  StMobileCancelButton,
+  StMobileEditButton,
   StMobileNav,
+  StMobileSaveButton,
   StNicknameAndButton,
   StProfileButtonWrapper,
   StProfileContainer,
   StProfileContent,
   StProfileContentContainer,
   StProfileContentWrapper,
-  StProfileImageWrapper
+  StProfileEditButtonWrapper,
+  StProfileImageWrapper,
+  StSaveButton
 } from '../../styles/mypageStyle/ProfileStyle';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { v4 as uuidv4 } from 'uuid';
@@ -126,14 +131,23 @@ const Profile = () => {
   return (
     <StProfileContainer>
       <StMobileNav>
-        <h2>마이페이지</h2>
+        <div>
+          <img src="/assets/back.svg" alt="뒤로가기 아이콘" />
+          <p>마이페이지</p>
+        </div>
         {isEditing ? (
           <StProfileButtonWrapper>
-            <button onClick={cancelEditHandler}>취소</button>
-            <button onClick={clickUpdateProfile}>저장</button>
+            <StMobileCancelButton onClick={cancelEditHandler}>
+              취소
+            </StMobileCancelButton>
+            <StMobileSaveButton onClick={clickUpdateProfile}>
+              저장
+            </StMobileSaveButton>
           </StProfileButtonWrapper>
         ) : (
-          <button onClick={clickEditHandler}>수정하기</button>
+          <StMobileEditButton onClick={clickEditHandler}>
+            수정하기
+          </StMobileEditButton>
         )}
       </StMobileNav>
 
@@ -174,10 +188,15 @@ const Profile = () => {
                 {isEditing ? (
                   <StProfileButtonWrapper>
                     <button onClick={cancelEditHandler}>취소</button>
-                    <button onClick={clickUpdateProfile}>저장</button>
+                    <StSaveButton onClick={clickUpdateProfile}>
+                      저장
+                    </StSaveButton>
                   </StProfileButtonWrapper>
                 ) : (
-                  <button onClick={clickEditHandler}>수정하기</button>
+                  <StProfileEditButtonWrapper>
+                    <img src="/assets/pen.svg" alt="프로필 수정 아이콘" />
+                    <button onClick={clickEditHandler}>수정하기</button>
+                  </StProfileEditButtonWrapper>
                 )}
               </StNicknameAndButton>
 
