@@ -46,6 +46,7 @@ export const StProfileButtons = styled.a`
 export const StProfileSaveButton = styled.a`
   color: var(--opc-100);
   cursor: pointer;
+
   &:hover {
     color: var(--opc-90);
   }

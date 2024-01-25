@@ -733,7 +733,9 @@ const ProductDetail = () => {
                   style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
                 >
                   <St.StUserImage>
-                    <St.StProfileImages></St.StProfileImages>
+                    <St.StProfileImages
+                      $url={target?.avatar_url}
+                    ></St.StProfileImages>
                   </St.StUserImage>
                   <St.StUserNickname>{data.post_user_name}</St.StUserNickname>
                 </div>

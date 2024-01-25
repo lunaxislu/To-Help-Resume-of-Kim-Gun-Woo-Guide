@@ -42,6 +42,7 @@ export default function ChatRoom() {
 
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [boardPosition, setboardPosition] = useState<number>(100);
+  const isShow = useRef(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const navi = useNavigate();
@@ -49,6 +50,7 @@ export default function ChatRoom() {
   const utilFunctions = new UtilForChat();
 
   const handleBoardPosition = () => {
+    window.history.pushState(null, '', '');
     setboardPosition(0);
   };
   const handleHideBoardPosition = () => {
@@ -136,6 +138,23 @@ export default function ChatRoom() {
       window.removeEventListener('resize', checkWindowSize);
     };
   });
+
+  useEffect(() => {
+    const handleClickBrowserBackBtn = () => {
+      // 뒤로가기 누르면 쌓였던 스택이 하나씩 빠진다
+      if (boardPosition === 0) {
+        handleHideBoardPosition();
+      } else {
+        navi(-1);
+      }
+    };
+
+    window.addEventListener('popstate', handleClickBrowserBackBtn);
+
+    return () => {
+      window.removeEventListener('popstate', handleClickBrowserBackBtn);
+    };
+  }, [boardPosition]);
 
   return (
     <St.StChatWrapper>

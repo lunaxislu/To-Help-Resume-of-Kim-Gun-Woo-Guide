@@ -4,6 +4,7 @@ export interface LikeUser {
 }
 export interface Product {
   id: string;
+  nickname: string;
   quality: string;
   title: string;
   price: number;

@@ -1,6 +1,7 @@
 import { FaHeart } from 'react-icons/fa';
 import { AiFillAlert } from 'react-icons/ai';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+import { CustomUser } from './types';
 
 export const StFadeAni = keyframes`
   from{
@@ -92,10 +93,15 @@ const StUserImage = styled.div`
   width: fit-content;
 `;
 
-const StProfileImages = styled.div`
+type ImageProps = {
+  $url: string | undefined;
+};
+
+const StProfileImages = styled.div<ImageProps>`
   width: 22px;
   height: 22px;
-  background-color: #eee;
+  background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
+  background-size: cover;
   border-radius: 50%;
 
   @media screen and (max-width: 768px) {
