@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router';
 const StChatRoomBar = styled.div`
   width: 100%;
   max-width: 768px;
-  padding: 0.6rem 0.3rem;
+  padding: 1rem 0.4rem;
   gap: 1rem;
   display: flex;
   align-items: center;
@@ -22,7 +22,7 @@ const StChatRoomBar = styled.div`
 `;
 
 const StHeaderArrow = styled(IoIosArrowBack)`
-  font-size: 3rem;
+  font-size: 2rem;
   height: max-content;
   color: var(--opc-100);
   cursor: pointer;
@@ -49,6 +49,7 @@ export default function ChatRoom() {
   const utilFunctions = new UtilForChat();
 
   const handleBoardPosition = () => {
+    window.history.pushState(null, '', '');
     setboardPosition(0);
   };
   const handleHideBoardPosition = () => {
@@ -135,7 +136,24 @@ export default function ChatRoom() {
     return () => {
       window.removeEventListener('resize', checkWindowSize);
     };
-  });
+  }, []);
+
+  useEffect(() => {
+    const handleClickBrowserBackBtn = () => {
+      // 뒤로가기 누르면 쌓였던 스택이 하나씩 빠진다
+      if (boardPosition === 0) {
+        handleHideBoardPosition();
+      } else {
+        navi(-1);
+      }
+    };
+
+    window.addEventListener('popstate', handleClickBrowserBackBtn);
+
+    return () => {
+      window.removeEventListener('popstate', handleClickBrowserBackBtn);
+    };
+  }, [boardPosition]);
 
   return (
     <St.StChatWrapper>

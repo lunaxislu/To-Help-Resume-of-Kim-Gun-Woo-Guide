@@ -1,6 +1,7 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useEffect } from 'react';
 import styled from 'styled-components';
 import type { MessageCompProps, MessageType } from './types';
+import { useNavigate } from 'react-router';
 
 const ChatMessages = ({
   messages,
@@ -12,6 +13,8 @@ const ChatMessages = ({
     setShowImage(true);
     setClickedImages(e.currentTarget.src);
   };
+
+  if (messages.length === 0) return <div>로딩중</div>;
 
   return (
     <>

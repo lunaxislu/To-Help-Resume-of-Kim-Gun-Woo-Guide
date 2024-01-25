@@ -22,7 +22,7 @@ type AddressValue = {
 
 const StModalContainer = styled.div`
   width: 60%;
-  height: 500px;
+  height: 400px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -30,7 +30,8 @@ const StModalContainer = styled.div`
 
   @media screen and (max-width: 768px) {
     width: 90%;
-    top: 15%;
+    top: 55%;
+    left: 50%;
   }
 `;
 

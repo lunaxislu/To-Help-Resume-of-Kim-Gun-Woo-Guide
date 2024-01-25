@@ -387,11 +387,15 @@ const StUserProfile = styled.div<ChatProfileType>`
 `;
 
 const StHeaderArrow = styled(IoIosArrowBack)`
-  font-size: 3rem;
+  font-size: 2.5rem;
   height: max-content;
-  margin-right: 1rem;
+  margin-right: 0.5rem;
   color: var(--opc-100);
   cursor: pointer;
+
+  @media only screen and (max-width: 768px) {
+    display: block;
+  }
 `;
 
 export {

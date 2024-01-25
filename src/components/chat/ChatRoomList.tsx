@@ -5,6 +5,7 @@ import { MessageType, RoomType } from './types';
 import parseDate from '../../util/getDate';
 import styled from 'styled-components';
 import { Product } from '../../api/supabase/products';
+import { useNavigate } from 'react-router';
 
 type Props = {
   rooms: RoomType[] | null | undefined;
@@ -26,6 +27,7 @@ const ChatRoomList: React.FC<Props> = ({
   const [products, setProducts] = useState<Product[]>([]);
   const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const updateToRead = async (room_id: string) => {
     await supabase
@@ -117,6 +119,23 @@ const ChatRoomList: React.FC<Props> = ({
     getAllMessage();
     getProductsforRoom();
   }, []);
+
+  const checkWindowSize = () => {
+    if (window.innerWidth <= 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  useEffect(() => {
+    checkWindowSize();
+    window.addEventListener('DOMContentLoaded', checkWindowSize);
+
+    return () => {
+      window.removeEventListener('DOMContentLoaded', checkWindowSize);
+    };
+  });
 
   return (
     <St.StChatListItem>

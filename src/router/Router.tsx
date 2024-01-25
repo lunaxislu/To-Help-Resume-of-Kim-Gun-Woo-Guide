@@ -1,4 +1,10 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes
+} from 'react-router-dom';
 import Layout from '../layout/Layout';
 import ChatRoom from '../pages/chat/ChatRoom';
 import CommuDetail from '../pages/community/CommuDetail';
@@ -13,10 +19,8 @@ import ProductDetail from '../pages/productsDetail/ProductDetail';
 import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
 import { useAppSelector } from '../redux/reduxHooks/reduxBase';
-import { useState } from 'react';
 
 const Router = () => {
-  const [alert, setAlert] = useState<any>([]);
   const { isLogin } = useAppSelector((state) => state.auth);
 
   console.log(isLogin);
