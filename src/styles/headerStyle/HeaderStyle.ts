@@ -24,13 +24,15 @@ export const HeaderContainer = styled.header`
 
   @media screen and (max-width: 768px) {
     align-items: center;
-    width: 100%;
+    width: 76.8rem;
     height: 10rem;
-    padding: 3rem;
+    padding: 3rem 2rem;
   }
-  @media screen and (max-width: 320px) {
+  @media screen and (max-width: 530px) {
     width: 100%;
-    height: 60px;
+  }
+  @media screen and (max-width: 349px) {
+    width: 100%;
   }
 `;
 
@@ -45,11 +47,8 @@ export const HeaderSection = styled.section`
 
   @media screen and (max-width: 768px) {
     width: 100%;
-    @media screen and (max-width: 320px) {
-      max-width: 100%;
-      /* padding: 0 1rem; */
-      justify-content: space-between;
-      margin: 0 13px;
+    @media screen and (max-width: 530px) {
+      width: 100%;
     }
   }
 `;
@@ -62,13 +61,12 @@ export const Logo = styled.img`
   margin: auto 0;
 
   @media screen and (max-width: 768px) {
-    width: 4.7rem;
-    height: 1.1rem;
+    width: 8rem;
+    height: 2rem;
   }
-  @media screen and (max-width: 320px) {
-    width: 4.7rem;
-    height: 1.1rem;
-    margin: 0;
+  @media screen and (max-width: 530px) {
+    width: 7rem;
+    height: 2rem;
   }
 `;
 
