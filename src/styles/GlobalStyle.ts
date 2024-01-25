@@ -114,7 +114,7 @@ body {
     /* max-width: 1200px ; */
 	line-height: 1;
     font-size: 1.6rem;
-    background-color: #131313;
+    background-color: #0b0b0b;
     font-family: 'Pretendard-Medium';
     color: #F8F8F8;
     overflow-x: hidden;

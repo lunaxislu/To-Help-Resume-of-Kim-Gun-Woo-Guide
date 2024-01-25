@@ -1,3 +1,4 @@
+// searchSlice.ts
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Communityy, UsedItem } from '../../pages/home/usedtypes';
 
