@@ -8,7 +8,7 @@ export type Post = {
   nickname: string;
   comment: Comments | null;
   likes: number | null;
-  like_user: { uid: string }[];
+  like_user: string[];
   files: [];
   main_image: string;
   anon: boolean;
@@ -74,6 +74,7 @@ export type WriteLayoutProps = {
 export type CommentProps = {
   userId: string;
   paramId: string | undefined;
+  likes: number | undefined;
 };
 export type CommentUpload = {
   updateData: {
@@ -89,3 +90,14 @@ export type Comments = {
   time: string;
   anon: boolean;
 }[];
+export type LikesObject = {
+  updateData: {
+    likes: number;
+    likes_user: string;
+  };
+  paramId: string | undefined;
+};
+export type PageBtnProps = {
+  $currentPage: number;
+  pageNumber: number;
+};
