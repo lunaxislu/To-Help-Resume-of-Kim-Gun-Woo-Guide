@@ -121,7 +121,7 @@ const ChatRoomList: React.FC<Props> = ({
   }, []);
 
   const checkWindowSize = () => {
-    if (window.matchMedia('(max-width:768px)').matches) {
+    if (window.innerWidth <= 768) {
       setIsMobile(true);
     } else {
       setIsMobile(false);
@@ -130,10 +130,10 @@ const ChatRoomList: React.FC<Props> = ({
 
   useEffect(() => {
     checkWindowSize();
-    window.addEventListener('resize', checkWindowSize);
+    window.addEventListener('DOMContentLoaded', checkWindowSize);
 
     return () => {
-      window.removeEventListener('resize', checkWindowSize);
+      window.removeEventListener('DOMContentLoaded', checkWindowSize);
     };
   });
 

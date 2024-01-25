@@ -42,7 +42,6 @@ export default function ChatRoom() {
 
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [boardPosition, setboardPosition] = useState<number>(100);
-  const isShow = useRef(false);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const navi = useNavigate();
@@ -137,7 +136,7 @@ export default function ChatRoom() {
     return () => {
       window.removeEventListener('resize', checkWindowSize);
     };
-  });
+  }, []);
 
   useEffect(() => {
     const handleClickBrowserBackBtn = () => {

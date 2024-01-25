@@ -616,11 +616,9 @@ const ProductDetail = () => {
   useEffect(() => {
     checkWindowSize();
     window.addEventListener('DOMContentLoaded', checkWindowSize);
-    window.addEventListener('resize', checkWindowSize);
 
     return () => {
       window.removeEventListener('DOMContentLoaded', checkWindowSize);
-      window.removeEventListener('resize', checkWindowSize);
     };
   });
 
