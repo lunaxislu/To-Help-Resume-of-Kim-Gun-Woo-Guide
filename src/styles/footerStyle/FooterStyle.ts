@@ -4,7 +4,7 @@ export const FooterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 144rem;
+  width: 100vw;
   height: 23.8rem;
   position: relative;
   font-size: var(--fontSize-body);

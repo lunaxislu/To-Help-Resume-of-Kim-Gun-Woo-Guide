@@ -19,8 +19,6 @@ const Router = () => {
   const [alert, setAlert] = useState<any>([]);
   const { isLogin } = useAppSelector((state) => state.auth);
 
-  console.log(isLogin);
-
   return (
     <BrowserRouter>
       <GlobalStyles />

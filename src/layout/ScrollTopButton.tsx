@@ -27,7 +27,7 @@ const TopButton = styled.button`
   cursor: pointer;
   transition: opacity 0.5s;
   background-color: transparent;
-  @media screen and (max-width: 320px) {
+  @media screen and (max-width: 768px) {
     padding: 0;
     right: 0.3rem;
   }
@@ -35,8 +35,10 @@ const TopButton = styled.button`
   img {
     width: 60px;
     height: 60px;
-    @media screen and (max-width: 320px) {
-      width: 33%;
+    @media screen and (max-width: 768px) {
+      max-width: 30px;
+      max-height: 30px;
+      width: 100%;
       height: 33%;
     }
   }
