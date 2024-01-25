@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
-export const TabsContainer = styled.ul`
+export const StTabsContainer = styled.ul`
   width: 111.6rem;
   display: flex;
   cursor: pointer;
   border-radius: 0.8rem;
   margin: 5rem auto;
   gap: 3.5rem;
+  white-space: nowrap;
 
   @media screen and (max-width: 1024px) {
     width: 100%;
@@ -16,9 +17,7 @@ export const TabsContainer = styled.ul`
   }
 `;
 
-export const Tab = styled.li<{ active: number }>`
-  font-weight: ${(props) =>
-    props.active === props.tabIndex ? 'bold' : 'normal'};
-  color: ${(props) =>
-    props.active === props.tabIndex ? 'var(--opc-100)' : 'var(--10-gray)'};
+export const StTab = styled.li<{ active: boolean }>`
+  font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
+  color: ${(props) => (props.active ? 'var(--opc-100)' : 'var(--10-gray)')};
 `;
