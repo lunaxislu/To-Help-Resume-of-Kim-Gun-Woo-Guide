@@ -21,9 +21,7 @@ export const MyPageCommunityCard: React.FC<MyPageCommunityCardProps> = ({
   likes
 }) => {
   const handleText = (content: string): string => {
-    // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
-
     return textOnly;
   };
 
@@ -37,7 +35,7 @@ export const MyPageCommunityCard: React.FC<MyPageCommunityCardProps> = ({
 
       <StIconAndDateWrapper>
         <StIconContainer>
-          <img src="/assets/thabong.png" />
+          <img src="/assets/thumbsup.svg" />
           <span>{likes}</span>
           <img src="/assets/comments.svg" />
           <span>{comment?.length}</span>

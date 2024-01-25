@@ -31,6 +31,10 @@ export const StMobileNav = styled.div`
     gap: 1rem;
     align-items: center;
     white-space: nowrap;
+
+    & img {
+      cursor: pointer;
+    }
   }
 
   & p {

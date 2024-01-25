@@ -6,10 +6,7 @@ import SkeletonProductCard from '../../skeleton/SkeletonProductCard';
 import { Product, ProductCardProps } from '../../../api/supabase/products';
 import { userId } from '../../../util/getUserId';
 import MyPageItemCard from './MyPageItemCard';
-import {
-  useAppDispatch,
-  useAppSelector
-} from '../../../redux/reduxHooks/reduxBase';
+import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
 import {
   setFavItem,
   setMyItem,

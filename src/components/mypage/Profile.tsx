@@ -24,6 +24,7 @@ import {
   updateUserNickname
 } from '../../api/supabase/profile';
 import { userId } from '../../util/getUserId';
+import { unstable_HistoryRouter, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -31,6 +32,7 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState<string | null>();
   const [imagePath, setImagePath] = useState<string>();
   const fileInput = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const queryClient = useQueryClient();
 
@@ -132,7 +134,11 @@ const Profile = () => {
     <StProfileContainer>
       <StMobileNav>
         <div>
-          <img src="/assets/back.svg" alt="뒤로가기 아이콘" />
+          <img
+            src="/assets/back.svg"
+            alt="뒤로가기 아이콘"
+            onClick={() => navigate(-1)}
+          />
           <p>마이페이지</p>
         </div>
         {isEditing ? (
