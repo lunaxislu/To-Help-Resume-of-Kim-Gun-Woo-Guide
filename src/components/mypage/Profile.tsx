@@ -1,18 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  StContent,
-  StFileUploadInput,
-  StNicknameInput,
-  StProfileButton,
-  StProfileButtonContainer,
+  StMobileNav,
+  StNicknameAndButton,
   StProfileButtonWrapper,
-  StProfileButtons,
   StProfileContainer,
-  StProfileContentsContainer,
-  StProfileEntireContainer,
-  StProfileImage,
-  StProfileImageWrapper,
-  StProfileSaveButton
+  StProfileContent,
+  StProfileContentContainer,
+  StProfileContentWrapper,
+  StProfileImageWrapper
 } from '../../styles/mypageStyle/ProfileStyle';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { v4 as uuidv4 } from 'uuid';
@@ -34,13 +29,13 @@ const Profile = () => {
 
   const queryClient = useQueryClient();
 
-  const { data: user } = useQuery({
-    queryKey: ['user'],
+  const { data: userData } = useQuery({
+    queryKey: ['userData'],
     queryFn: () => getUserProfile(userId)
   });
 
   // profile 수정 버튼
-  const editProfileHandler = () => {
+  const clickEditHandler = () => {
     setIsEditing(true);
   };
 
@@ -70,13 +65,13 @@ const Profile = () => {
 
   const { mutate: updateNickname } = useMutation(updateUserNickname, {
     onSuccess: () => {
-      queryClient.invalidateQueries('user');
+      queryClient.invalidateQueries('userData');
     }
   });
 
   const { mutate: updateProfileImage } = useMutation(updateUserImage, {
     onSuccess: () => {
-      queryClient.invalidateQueries('user');
+      queryClient.invalidateQueries('userData');
     }
   });
 
@@ -129,53 +124,43 @@ const Profile = () => {
   };
 
   return (
-    <StProfileEntireContainer>
-      <StProfileButtonContainer>
+    <StProfileContainer>
+      <StMobileNav>
+        <h2>마이페이지</h2>
         {isEditing ? (
           <StProfileButtonWrapper>
-            <StProfileButtons onClick={cancelEditHandler}>
-              취소
-            </StProfileButtons>
-            <StProfileSaveButton onClick={clickUpdateProfile}>
-              저장
-            </StProfileSaveButton>
+            <button onClick={cancelEditHandler}>취소</button>
+            <button onClick={clickUpdateProfile}>저장</button>
           </StProfileButtonWrapper>
         ) : (
-          <StProfileButtons onClick={editProfileHandler}>
-            <img src="/assets/pen.svg" alt="" />
-            프로필 수정하기
-          </StProfileButtons>
+          <button onClick={clickEditHandler}>수정하기</button>
         )}
-      </StProfileButtonContainer>
+      </StMobileNav>
 
-      {user?.map((user) => {
+      {userData?.map((user) => {
         return (
-          <StProfileContainer key={user.id}>
+          <StProfileContentContainer key={user.id}>
             <StProfileImageWrapper>
-              <StProfileImage
+              <img
                 src={!profileImage ? user.avatar_url : profileImage}
-                alt=""
+                alt="사용자 프로필 사진"
               />
-              <StFileUploadInput
+              <input
                 type="file"
                 ref={fileInput}
                 onChange={(e) => uploadProfileImage(e)}
               />
               {isEditing ? (
-                <StProfileButton onClick={clickUploadProfileImage}>
-                  사진업로드
-                </StProfileButton>
+                <button onClick={clickUploadProfileImage}>사진 업로드</button>
               ) : (
                 ''
               )}
             </StProfileImageWrapper>
 
-            <StProfileContentsContainer key={user.id}>
-              <StContent>닉네임</StContent>
-
-              {isEditing ? (
-                <>
-                  <StNicknameInput
+            <StProfileContentWrapper>
+              <StNicknameAndButton>
+                {isEditing ? (
+                  <input
                     defaultValue={
                       !user.nickname ? user.username : user.nickname
                     }
@@ -183,23 +168,30 @@ const Profile = () => {
                     placeholder="최대 8자"
                     maxLength={8}
                   />
-                </>
-              ) : (
-                <StContent>
-                  {!user.nickname ? user.username : user.nickname}
-                </StContent>
-              )}
+                ) : (
+                  <h2>{!user.nickname ? user.username : user.nickname}</h2>
+                )}
+                {isEditing ? (
+                  <StProfileButtonWrapper>
+                    <button onClick={cancelEditHandler}>취소</button>
+                    <button onClick={clickUpdateProfile}>저장</button>
+                  </StProfileButtonWrapper>
+                ) : (
+                  <button onClick={clickEditHandler}>수정하기</button>
+                )}
+              </StNicknameAndButton>
 
-              <StContent>이름</StContent>
-              <StContent>{user.username}</StContent>
-
-              <StContent>이메일</StContent>
-              <StContent>{user.email}</StContent>
-            </StProfileContentsContainer>
-          </StProfileContainer>
+              <StProfileContent>
+                <span>이름</span>
+                <span>{user.username}</span>
+                <span>이메일</span>
+                <span>{user.email}</span>
+              </StProfileContent>
+            </StProfileContentWrapper>
+          </StProfileContentContainer>
         );
       })}
-    </StProfileEntireContainer>
+    </StProfileContainer>
   );
 };
 

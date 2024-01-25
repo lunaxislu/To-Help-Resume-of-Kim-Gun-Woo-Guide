@@ -3,7 +3,7 @@ import { StPostContainer } from '../../../styles/mypageStyle/CommunityCardStyle'
 import 'react-loading-skeleton/dist/skeleton.css';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import { debounce } from 'lodash';
-import SkeletonCommunityCard from '../../card/SkeletonCommunityCard';
+import SkeletonCommunityCard from '../../skeleton/SkeletonCommunityCard';
 import { userId } from '../../../util/getUserId';
 import { Community, CommunityActive } from '../../../api/supabase/community';
 import { MyPageCommunityCard } from './MyPageCommunityCard';
