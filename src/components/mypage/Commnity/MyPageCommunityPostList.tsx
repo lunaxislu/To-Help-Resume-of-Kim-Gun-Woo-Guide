@@ -1,40 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  StIconAndDateWrapper,
-  StIconContainer,
-  StPostContainer,
-  StPostContent,
-  StPostContentsWrapper,
-  StPostDate,
-  StPostImage,
-  StPostTitle,
-  StPostWrapper
-} from '../../styles/mypageStyle/CommunityCardStyle';
-
+import { StPostContainer } from '../../../styles/mypageStyle/CommunityCardStyle';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { supabase } from '../../api/supabase/supabaseClient';
+import { supabase } from '../../../api/supabase/supabaseClient';
 import { debounce } from 'lodash';
-import SkeletonCommunityCard from '../card/SkeletonCommunityCard';
-import { userId } from '../../util/getUserId';
-import parseDate from '../../util/getDate';
+import SkeletonCommunityCard from '../../skeleton/SkeletonCommunityCard';
+import { userId } from '../../../util/getUserId';
+import { Community, CommunityActive } from '../../../api/supabase/community';
+import { MyPageCommunityCard } from './MyPageCommunityCard';
+import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
+import { setFavPost, setMyPost } from '../../../redux/modules/countSlice';
 
-export interface Community {
-  id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  images: string;
-  post_id: string;
-  comment: [];
-  likes: number;
-}
-
-interface CommunityCardProps {
-  // list: Community[];
-  activeTab: number;
-}
-
-const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
+const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
   const containerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,6 +19,7 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
   const [communityPosts, setCommunityPosts] = useState<Community[]>([]);
   const [favCommunityPosts, setFavCommunityPosts] = useState<Community[]>([]);
 
+  const dispatch = useAppDispatch();
   const getCurrentUserCommunityPosts = async () => {
     let { data: communityPosts, error } = await supabase
       .from('community')
@@ -52,6 +29,7 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
 
     if (communityPosts && communityPosts.length > 0) {
       setCommunityPosts(communityPosts);
+      dispatch(setMyPost(communityPosts));
     }
   };
 
@@ -78,6 +56,7 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
         .map((item) => item);
 
       setFavCommunityPosts(filteredFavProducts);
+      dispatch(setFavPost(filteredFavProducts));
     }
   };
 
@@ -145,54 +124,32 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
       {activeTab === 3 &&
         communityPosts.map((post) => {
           return (
-            <StPostWrapper
-              key={post.id}
-              to={`/community/detail/${post.post_id}`}
-            >
-              <StPostTitle>{post.title}</StPostTitle>
-              <StPostContentsWrapper>
-                {!post.images ? '' : <StPostImage src={post.images} />}
-                <StPostContent>{handleText(post.content)}</StPostContent>
-              </StPostContentsWrapper>
-
-              <StIconAndDateWrapper>
-                <StIconContainer>
-                  <img src="/assets/thabong.png" />
-                  <span>{post.likes}</span>
-                  <img src="/assets/comments.svg" />
-                  <span>{post.comment?.length}</span>
-                </StIconContainer>
-
-                <StPostDate>{parseDate(post.created_at)}</StPostDate>
-              </StIconAndDateWrapper>
-            </StPostWrapper>
+            <MyPageCommunityCard
+              id={post.id}
+              title={post.title}
+              content={post.content}
+              created_at={post.created_at}
+              // images={post.main_image}
+              post_id={post.post_id}
+              comment={post.comment}
+              likes={post.likes}
+            />
           );
         })}
 
-      {activeTab === 5 &&
+      {activeTab === 4 &&
         favCommunityPosts.map((post) => {
           return (
-            <StPostWrapper
-              key={post.id}
-              to={`/community/detail/${post.post_id}`}
-            >
-              <StPostTitle>{post.title}</StPostTitle>
-              <StPostContentsWrapper>
-                {!post.images ? '' : <StPostImage src={post.images} />}
-                <StPostContent>{handleText(post.content)}</StPostContent>
-              </StPostContentsWrapper>
-
-              <StIconAndDateWrapper>
-                <StIconContainer>
-                  <img src="/assets/thabong.png" />
-                  <span>{post.likes}</span>
-                  <img src="/assets/comments.svg" />
-                  <span>{post.comment?.length}</span>
-                </StIconContainer>
-
-                <StPostDate>{parseDate(post.created_at)}</StPostDate>
-              </StIconAndDateWrapper>
-            </StPostWrapper>
+            <MyPageCommunityCard
+              id={post.id}
+              title={post.title}
+              content={post.content}
+              created_at={post.created_at}
+              // images={post.main_image}
+              post_id={post.post_id}
+              comment={post.comment}
+              likes={post.likes}
+            />
           );
         })}
 
@@ -201,4 +158,4 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
   );
 };
 
-export default CommunityPost;
+export default MyPageCommunityPostList;
