@@ -19,7 +19,7 @@ const CommuDetail: React.FC = () => {
   const navigate = useNavigate();
   const [isEditState, setIsEditState] = useState(false);
   const [userId, setUserId] = useState('');
-
+  const [editToolOpen, setEditToolOpen] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,7 +27,6 @@ const CommuDetail: React.FC = () => {
           data: { user }
         } = await supabase.auth.getUser();
         setUserId(user!.id);
-        console.log(userId);
       } catch (error: any) {
         console.log(error.message);
       }
@@ -50,6 +49,7 @@ const CommuDetail: React.FC = () => {
   const deletePost = async () => {
     if (window.confirm(`정말로"${posts![0].title}" 글을 삭제하시겠습니까?`)) {
       deleteMutation.mutate(param.id);
+      setEditToolOpen(!editToolOpen);
       navigate('/community');
     }
   };
@@ -65,7 +65,12 @@ const CommuDetail: React.FC = () => {
     <St.Container>
       {isEditState ? (
         <St.WriteWrap>
-          <h1>게시글 수정</h1>
+          <St.TitleTopper>
+            <button onClick={() => navigate('/community')}>{`<`}</button>
+            <h1>게시글 수정</h1>
+            <p>*필수항목</p>
+          </St.TitleTopper>
+
           <WriteLayout
             profile={undefined}
             isEdit={true}
@@ -75,21 +80,75 @@ const CommuDetail: React.FC = () => {
         </St.WriteWrap>
       ) : (
         <St.ContentsContainer>
-          <div>
+          <St.DetailBody>
             {posts?.map((post) => {
               return (
                 <div key={post.post_id}>
-                  <St.Topper>
-                    <St.TopperLeft>
-                      <h1>{post.title}</h1>
-                      <p>{!!post.anon ? '익명의 작업자' : post.nickname}</p>
-                    </St.TopperLeft>
+                  <div>
+                    <St.MainTopper>
+                      <St.TitleCategory>
+                        <button
+                          onClick={() => navigate('/community')}
+                        >{`<`}</button>
+                        <h1>{post.title}</h1>
+                        <St.Category>{post.category}</St.Category>
+                      </St.TitleCategory>
+                      {posts![0].post_user === userId ? (
+                        ''
+                      ) : (
+                        <St.Report>신고</St.Report>
+                      )}
+                    </St.MainTopper>
 
-                    <St.TopperRight>
-                      <p>{parseDate(post.created_at)}</p>
-                    </St.TopperRight>
-                  </St.Topper>{' '}
-                  <St.Category>{post.category}</St.Category>
+                    <St.SubTopper>
+                      <St.TitleCategory>
+                        <St.NameP>
+                          {!!post.anon ? '익명의 작업자' : post.nickname}
+                        </St.NameP>
+                        <St.TimeP>{parseDate(post.created_at)}</St.TimeP>
+                      </St.TitleCategory>
+                      <St.Dots onClick={() => setEditToolOpen(!editToolOpen)} />
+                      {editToolOpen && (
+                        <St.EditDropdown>
+                          {posts[0].post_user === userId ? (
+                            <>
+                              <St.DropdownItem
+                                onClick={() => {
+                                  setIsEditState(true);
+                                  setEditToolOpen(!editToolOpen);
+                                }}
+                              >
+                                수정하기
+                              </St.DropdownItem>
+                              <St.DropdownItem onClick={deletePost}>
+                                삭제하기
+                              </St.DropdownItem>
+                            </>
+                          ) : (
+                            <St.DropdownItem>신고하기</St.DropdownItem>
+                          )}
+                        </St.EditDropdown>
+                      )}
+                      <St.FeatureArea>
+                        {posts![0].post_user === userId ? (
+                          <St.IconContainer>
+                            <St.PenIcon />
+                            <St.BtnStyle
+                              onClick={() => {
+                                setIsEditState(true);
+                              }}
+                            >
+                              수정
+                            </St.BtnStyle>
+                            <St.TrachIcon />
+                            <St.BtnStyle onClick={deletePost}>삭제</St.BtnStyle>
+                          </St.IconContainer>
+                        ) : (
+                          ''
+                        )}
+                      </St.FeatureArea>
+                    </St.SubTopper>
+                  </div>{' '}
                   <St.Content>{parse(post.content)}</St.Content>
                   {post.files && post.files.length > 0 && (
                     <div>
@@ -109,30 +168,18 @@ const CommuDetail: React.FC = () => {
                       ))}
                     </div>
                   )}{' '}
-                  <St.FeatureArea>
-                    {posts![0].post_user === userId ? (
-                      <div>
-                        <St.BtnStyle
-                          onClick={() => {
-                            setIsEditState(true);
-                          }}
-                        >
-                          수정
-                        </St.BtnStyle>
-                        <St.BtnStyle onClick={deletePost}>삭제</St.BtnStyle>
-                      </div>
-                    ) : (
-                      ''
-                    )}
-                  </St.FeatureArea>
-                  <p>{`${post.comment.length}개의 댓글`}</p>
                 </div>
               );
             })}{' '}
-          </div>
+          </St.DetailBody>
+          <St.NoticeLike>글이 마음에 든다면 추천을 눌러보세요!</St.NoticeLike>
 
           <div>
-            <Comment userId={userId} paramId={param.id} />
+            <Comment
+              userId={userId}
+              paramId={param.id}
+              likes={posts![0].likes}
+            />
           </div>
         </St.ContentsContainer>
       )}

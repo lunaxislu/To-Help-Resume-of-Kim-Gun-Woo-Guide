@@ -14,26 +14,28 @@ import {
   ProfileObject
 } from '../../pages/community/model';
 import parseDate from '../../util/getDate';
-const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
+const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
   const queryClient = useQueryClient();
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const { data: profiles, error } = await supabase
-          .from('user')
-          .select('*')
-          .eq('id', userId);
-        console.log(profiles);
-        if (error) {
-          console.log(error);
-        }
+      if (userId) {
+        try {
+          const { data: user, error } = await supabase
+            .from('user')
+            .select('*')
+            .eq('id', userId);
+          console.log(user);
+          if (error) {
+            console.log(error);
+          }
 
-        if (profiles != null) {
-          setProfile(profiles);
-          console.log(profiles);
+          if (user != null) {
+            setProfile(user);
+            console.log(user);
+          }
+        } catch (error: any) {
+          console.log(error.message);
         }
-      } catch (error: any) {
-        console.log(error.message);
       }
     };
     fetchData();
@@ -54,10 +56,43 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
     null
   ); // 수정 중인 댓글의 인덱스
   const [anon, setAnon] = useState(false);
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => {
+    // 사용자가 이미 좋아요를 했는지 확인
+    const userLiked = posts?.[0]?.likes_user?.includes(userId);
+    if (userLiked) {
+      setLiked(true);
+    }
+  }, [posts, userId]);
+
+  const toggleLike = async () => {
+    const newLikedStatus = !liked;
+    setLiked(newLikedStatus);
+
+    // 기본값으로 빈 배열 설정
+    const currentLikeUsers = posts![0]?.likes_user || [];
+
+    const updatedLikes = newLikedStatus ? likes! + 1 : likes! - 1;
+    let updatedLikeUsers;
+    if (newLikedStatus) {
+      updatedLikeUsers = [...currentLikeUsers, userId];
+    } else {
+      updatedLikeUsers = currentLikeUsers.filter((id: string) => id !== userId);
+    }
+
+    const likesUpdate = {
+      updateData: {
+        likes: updatedLikes,
+        likes_user: updatedLikeUsers
+      },
+      paramId
+    };
+    upsertMutation.mutate(likesUpdate);
+  };
   useEffect(() => {
     if (!isLoading && posts) {
       setComments(posts[0].comment);
-      console.log(comment);
     }
   }, [isLoading, posts]);
   const upsertMutation = useMutation(updatePostMutation, {
@@ -145,17 +180,28 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
   return (
     <St.Container>
       <St.CountDivTop>
-        {' '}
-        <St.CommentIcon />
-        {`${comments.length}`}
+        <div onClick={toggleLike}>
+          {liked ? <St.LikesIconOn /> : <St.LikesIcon className="likes" />}
+        </div>
+        <p>{likes}</p>
+
+        <St.CommentIcon className="comment" />
+        <p>{`${comments.length}개의 댓글`}</p>
       </St.CountDivTop>
 
       <St.Form onSubmit={updateComment}>
-        <St.CommentInput
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="댓글을 입력하세요"
-        />
+        <div>
+          <St.CommentInput
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="댓글을 입력하세요"
+          />
+
+          <button type="submit">
+            <St.SendIcon />
+          </button>
+        </div>
+
         <St.AnonLabel>
           <St.CheckBoxs
             type="checkbox"
@@ -164,19 +210,18 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
           />
           익명
         </St.AnonLabel>
-        <button type="submit">추가</button>
       </St.Form>
-      <St.CountDiv>{`${comments.length}개의 댓글`}</St.CountDiv>
+      {/* <St.CountDiv>{`${comments.length}개의 댓글`}</St.CountDiv> */}
       {comments?.map((comment, index) => {
         const parseTime = parseDate(comment.time);
         return (
           <St.CommentContainer key={index}>
-            <div>
+            <St.LeftCommentSide>
               <St.LeftSide>
                 <St.Name>
                   {comment.anon ? '익명의 작업자' : comment.nickname}
                 </St.Name>
-                <p>{parseTime}</p>
+                <St.Time>{parseTime}</St.Time>
               </St.LeftSide>
               {isEdit && editedCommentIndex === index ? (
                 <input
@@ -186,7 +231,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId }) => {
               ) : (
                 <St.CommentContent>{comment.comment}</St.CommentContent>
               )}
-            </div>{' '}
+            </St.LeftCommentSide>{' '}
             <St.UpdateBtnContainer>
               {profile.length > 0 && comment.comment_user === profile[0].id ? (
                 isEdit && editedCommentIndex === index ? (

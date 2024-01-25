@@ -143,6 +143,7 @@ const QuillEditor = styled(ReactQuill)`
   border-radius: 5px;
   width: 100%;
   max-width: 1116px;
+
   .ql-container {
     min-height: 600px;
     border: none;
