@@ -53,6 +53,7 @@ export default function ChatRoom() {
       window.history.pushState(null, '', '');
       setboardPosition(0);
     } else {
+      window.history.pushState(null, '', '');
       setboardPosition(0);
     }
   };
