@@ -14,8 +14,6 @@ const ChatMessages = ({
     setClickedImages(e.currentTarget.src);
   };
 
-  if (messages.length === 0) return <div>로딩중</div>;
-
   return (
     <>
       {messages

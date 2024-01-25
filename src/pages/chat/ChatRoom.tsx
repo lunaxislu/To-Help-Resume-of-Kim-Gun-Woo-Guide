@@ -49,8 +49,12 @@ export default function ChatRoom() {
   const utilFunctions = new UtilForChat();
 
   const handleBoardPosition = () => {
-    window.history.pushState(null, '', '');
-    setboardPosition(0);
+    if (window.innerWidth <= 768) {
+      window.history.pushState(null, '', '');
+      setboardPosition(0);
+    } else {
+      setboardPosition(0);
+    }
   };
   const handleHideBoardPosition = () => {
     setboardPosition(100);
