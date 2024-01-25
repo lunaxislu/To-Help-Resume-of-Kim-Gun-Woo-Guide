@@ -28,6 +28,10 @@ export const HeaderContainer = styled.header`
     height: 10rem;
     padding: 3rem;
   }
+  @media screen and (max-width: 320px) {
+    width: 100%;
+    height: 60px;
+  }
 `;
 
 export const HeaderSection = styled.section`
@@ -41,6 +45,12 @@ export const HeaderSection = styled.section`
 
   @media screen and (max-width: 768px) {
     width: 100%;
+    @media screen and (max-width: 320px) {
+      max-width: 100%;
+      /* padding: 0 1rem; */
+      justify-content: space-between;
+      margin: 0 13px;
+    }
   }
 `;
 
@@ -55,6 +65,11 @@ export const Logo = styled.img`
     width: 4.7rem;
     height: 1.1rem;
   }
+  @media screen and (max-width: 320px) {
+    width: 4.7rem;
+    height: 1.1rem;
+    margin: 0;
+  }
 `;
 
 export const ButtonContainer = styled.div`
@@ -65,6 +80,7 @@ export const ButtonContainer = styled.div`
   gap: 2rem;
   user-select: none;
   margin: auto 0;
+  white-space: nowrap;
 
   @media screen and (max-width: 768px) {
     justify-content: space-between;

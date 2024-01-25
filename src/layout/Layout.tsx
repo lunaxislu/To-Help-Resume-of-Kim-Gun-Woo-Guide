@@ -75,7 +75,7 @@ const Layout = () => {
         (['/', '/community_write', '/productsposts'].includes(
           location.pathname
         ) &&
-          scrollPercentage >= 60) ||
+          scrollPercentage >= 50) ||
         (['/mypage', '/products', '/community', '/search-results'].includes(
           location.pathname
         ) &&
@@ -153,3 +153,13 @@ const Layout = () => {
 };
 
 export default Layout;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
+
+const ContentWrapper = styled.div`
+  flex: 1;
+`;

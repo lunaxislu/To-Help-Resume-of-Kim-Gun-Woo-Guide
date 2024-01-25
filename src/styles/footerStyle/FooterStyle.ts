@@ -6,6 +6,7 @@ export const FooterContainer = styled.div`
   justify-content: center;
   width: 144rem;
   height: 23.8rem;
+  position: relative;
   font-size: var(--fontSize-body);
   font-weight: var(--fontWeight-regular);
   color: var(--9-gray);
