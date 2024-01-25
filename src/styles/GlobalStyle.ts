@@ -118,6 +118,8 @@ body {
     font-family: 'Pretendard-Medium';
     color: #F8F8F8;
     overflow-x: hidden;
+
+
     /* margin: 0 auto; */
 }
 ol, ul {
@@ -144,5 +146,6 @@ html {
     padding: 0;
     margin: 0 ;
     box-sizing: border-box;
+
 }
 `;

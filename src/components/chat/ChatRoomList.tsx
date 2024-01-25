@@ -26,6 +26,7 @@ const ChatRoomList: React.FC<Props> = ({
   const [products, setProducts] = useState<Product[]>([]);
   const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const updateToRead = async (room_id: string) => {
     await supabase
@@ -117,6 +118,23 @@ const ChatRoomList: React.FC<Props> = ({
     getAllMessage();
     getProductsforRoom();
   }, []);
+
+  const checkWindowSize = () => {
+    if (window.matchMedia('(max-width:768px)').matches) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  };
+
+  useEffect(() => {
+    checkWindowSize();
+    window.addEventListener('resize', checkWindowSize);
+
+    return () => {
+      window.removeEventListener('resize', checkWindowSize);
+    };
+  });
 
   return (
     <St.StChatListItem>

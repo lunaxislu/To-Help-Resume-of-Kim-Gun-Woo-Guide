@@ -231,5 +231,6 @@ export const MobileSearchIcon = styled.img`
 
   @media screen and (max-width: 768px) {
     display: block;
+    margin-right: 1.5rem;
   }
 `;

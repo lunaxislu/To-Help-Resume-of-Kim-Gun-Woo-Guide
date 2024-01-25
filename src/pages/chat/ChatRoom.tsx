@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router';
 const StChatRoomBar = styled.div`
   width: 100%;
   max-width: 768px;
-  padding: 0.6rem 0.3rem;
+  padding: 1rem 0.4rem;
   gap: 1rem;
   display: flex;
   align-items: center;
@@ -22,7 +22,7 @@ const StChatRoomBar = styled.div`
 `;
 
 const StHeaderArrow = styled(IoIosArrowBack)`
-  font-size: 3rem;
+  font-size: 2rem;
   height: max-content;
   color: var(--opc-100);
   cursor: pointer;

@@ -109,6 +109,9 @@ const StUserNickname = styled.h4`
   font-size: 1.4rem;
   font-weight: 500;
   line-height: 191.2%; /* 26.768px */
+  @media screen and (max-width: 768px) {
+    width: 100px;
+  }
 `;
 
 const StAlertButton = styled.button`

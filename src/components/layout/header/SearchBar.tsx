@@ -16,7 +16,7 @@ import {
 import { supabase } from '../../../api/supabase/supabaseClient';
 import { Communityy, UsedItem } from '../../../pages/home/usedtypes';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
-import { IoIosArrowBack } from 'react-icons/io';
+import { IoIosArrowBack, IoIosClose } from 'react-icons/io';
 
 type SearchBarProps = {
   showSearchComp: boolean;
@@ -114,7 +114,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   const checkWindowSize = () => {
-    if (window.innerWidth <= 768) {
+    if (window.matchMedia('(max-width:768px)').matches) {
       setIsMobile(true);
     } else {
       setIsMobile(false);
@@ -123,11 +123,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
 
   useEffect(() => {
     checkWindowSize();
-    window.addEventListener('DOMContentLoaded', checkWindowSize);
     window.addEventListener('resize', checkWindowSize);
 
     return () => {
-      window.removeEventListener('DOMContentLoaded', checkWindowSize);
       window.removeEventListener('resize', checkWindowSize);
     };
   });
@@ -142,16 +140,15 @@ const SearchBar: React.FC<SearchBarProps> = ({
         }}
       >
         {isMobile && (
-          <IoIosArrowBack
+          <IoIosClose
             style={{
               color: 'var(--opc-100)',
-              fontSize: '2.2rem',
+              fontSize: '3rem',
               cursor: 'pointer'
             }}
             onClick={handleHideSearchComp}
           />
         )}
-
         <SearchInputBar
           type="text"
           placeholder="검색어를 입력하세요."
@@ -181,7 +178,7 @@ const SearchInputContainer = styled.div<MobileProps>`
   /* display: flex; */
   align-items: center;
   position: relative;
-  @media screen and (max-width: 768px) {
+  @media only screen and (max-width: 768px) {
     width: 100%;
     height: 100vh;
     position: absolute;
@@ -192,11 +189,13 @@ const SearchInputContainer = styled.div<MobileProps>`
     ${(props) => {
       if (props.$position === true) {
         return css`
+          display: block;
           opacity: 1;
           transform: translateX(0%);
         `;
       } else {
         return css`
+          display: none;
           opacity: 0;
           transform: translateX(100%);
         `;
@@ -222,9 +221,9 @@ const SearchInputBar = styled.input`
 
   @media screen and (max-width: 768px) {
     position: relative;
-    left: 50%;
+    left: 46%;
     transform: translateX(-50%);
-    width: 90%;
+    width: 85%;
     background-color: var(--2-gray);
   }
 `;
@@ -245,6 +244,10 @@ const SearchBtn = styled.button`
   width: 37px;
   height: 37px;
   cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    position: relative;
+  }
 `;
 
 const SearchBtnImg = styled.img`
