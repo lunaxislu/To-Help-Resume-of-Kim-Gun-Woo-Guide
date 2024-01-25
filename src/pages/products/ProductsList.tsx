@@ -29,24 +29,24 @@ const ProductsList = () => {
           {productsPosts?`${productsPosts?.length}개의 물품이 거래되고 있어요` : `0개의 물품이 거래되고 있어요`}
         </St.Title>
       <St.BarContainer>
-        <St.TagsContainer>
-          <St.TagsWrapper>
+        <St.CategoryContainer>
+          <St.CategoryWrapper>
             {major.map(major => 
               <li>
-                <St.Tags key={major} onClick={() => setSelectCategory(major)}
+                <St.Category key={major} onClick={() => setSelectCategory(major)}
                   $selectCategory={selectCategory}
-                  >{major}</St.Tags>
+                  >{major}</St.Category>
               </li>
             )}
-          </St.TagsWrapper>
+          </St.CategoryWrapper>
           <St.PostsWriteBtn onClick={() => navigate('/productsposts')}>
-            <St.WriteIcon/> 글쓰기
+            <St.SellWriteIcon/> 판매하기
           </St.PostsWriteBtn>
-        </St.TagsContainer>
-        <St.SearchBarContainer>
-          {/* <ProductsSearchBar /> */}
-          {/* <ProductsSortBtn /> */}
-        </St.SearchBarContainer>
+        </St.CategoryContainer>
+        {/* <St.SearchBarContainer>
+          <ProductsSearchBar />
+          <ProductsSortBtn />
+        </St.SearchBarContainer> */}
       </St.BarContainer>
       <ProductList selectCategory={selectCategory} />
       </St.ContentsContainer>

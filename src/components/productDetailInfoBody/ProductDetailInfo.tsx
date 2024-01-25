@@ -52,11 +52,20 @@ const StProductRow = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
+
 const StRowLabel = styled.div`
   width: 150px;
   font-family: 'Pretendard-Medium';
   color: #878787;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    width: 120px;
+  }
 `;
 
 const StModalBackDrop = styled.div`
@@ -76,6 +85,12 @@ const StMapModal = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    width: 100%;
+    max-width: 768px;
+  }
 `;
 
 export default ProductDetailInfo;

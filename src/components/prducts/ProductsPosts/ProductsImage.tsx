@@ -11,32 +11,28 @@ interface Props {
 const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
   const [files, setFiles] = useState<File[]>([]);
 
-  // 이미지 클릭 시 순서 맨 앞으로
-  const handleImageOrder = (e: MouseEvent<HTMLElement>) => {
-    const url = e.currentTarget.id;
-
-    // 클릭된 아이템 인덱스 번호
-    const clickedItem = uploadedFileUrl.indexOf(url);
-    // 클릭 된 아이템을 제외한 배열
-    const updatedArr = uploadedFileUrl.filter(item => item !== uploadedFileUrl[clickedItem])
-    // 클릭 된 아이템을 맨 앞으로 해서 state를 변경하는 부분
-    setUploadedFileUrl([uploadedFileUrl[clickedItem], ...updatedArr])
-  }
-
   // 웹 페이지에서 파일 등록하기
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
     if (fileList) {
       const filesArray = Array.from(fileList);
+      // if (uploadedFileUrl.length + filesArray.length > 12) {
+      //   alert('이미지는 최대 12개까지 업로드 가능합니다.');
+      //   return;
+      // }
       filesArray.forEach((file) => {
         handleAddImages(file);
       });
     }
   };
-
+  
+  
   // 업로드된 파일이 12개가 초과되면 그 뒤에 들어오는 파일은 없앰
-  if (uploadedFileUrl.length > 12 && files.length > 12)
+  if (uploadedFileUrl.length > 12 && files.length > 12) {
     uploadedFileUrl.pop() && files.pop();
+    alert('이미지는 최대 12개까지 업로드 가능합니다.')
+  }
+  
 
   const handleAddImages = async (file: File) => {
     try {
@@ -59,28 +55,46 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
       );
     }
   };
+  
+  // 이미지 클릭 시 순서 맨 앞으로
+  const handleImageOrder = (e: MouseEvent<HTMLElement>) => {
+    const url = e.currentTarget.id;
+
+    // 클릭된 아이템 인덱스 번호
+    const clickedItem = uploadedFileUrl.indexOf(url);
+    // 클릭 된 아이템을 제외한 배열
+    const updatedArr = uploadedFileUrl.filter(item => item !== uploadedFileUrl[clickedItem])
+    // 클릭 된 아이템을 맨 앞으로 해서 state를 변경하는 부분
+    setUploadedFileUrl([uploadedFileUrl[clickedItem], ...updatedArr])
+  }
 
   // X 버튼 클릭 시 이미지 삭제
-  const handleDeleteImage = (id: any) => {
-    setUploadedFileUrl(uploadedFileUrl.filter((_, index) => index !== id));
-    setFiles(files.filter((_, index) => index !== id));
+  const handleDeleteImage = (idx: any) => {
+    setUploadedFileUrl(uploadedFileUrl.filter((_, index) => index !== idx));
+    setFiles(files.filter((_, index) => index !== idx));
   };
 
   // useEffect(() => {
   //   console.log(files);
   // },[files])
 
+
   return (
     <St.UpLoadImageContainer>
       <St.SemiTitle>사진
         <St.Required>*</St.Required>
-        <St.CountText>{files.length}/12</St.CountText>
+        <St.ImgCount>{uploadedFileUrl.length}/12</St.ImgCount>
       </St.SemiTitle>
       <St.ImageWrapper>
+        <St.ImageOrderWrapper>
+          <St.ImageOrder>대표사진</St.ImageOrder>
+        </St.ImageOrderWrapper>
         {uploadedFileUrl.map((img:string, idx:number) => 
-          <St.ImageCard onClick={handleImageOrder} id={img} key={idx}>
-            <St.Image src={img} alt={`${img}-${idx}`} />
-            {/* <St.ImageDeleteBtn type='button' onClick={() => handleDeleteImage(idx)}>X</St.ImageDeleteBtn> */}
+          <St.ImageCard id={img} key={idx}>
+            <St.Image id={img} onClick={handleImageOrder} src={img} alt={`${img}-${idx}`} />
+              <St.ImageDeleteBtn onClick={() => handleDeleteImage(idx)}>
+                <St.ImageDeleteIcon />
+              </St.ImageDeleteBtn>
           </St.ImageCard>
         )}
         {uploadedFileUrl.length >= 12 ? (

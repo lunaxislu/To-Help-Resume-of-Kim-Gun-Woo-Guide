@@ -3,7 +3,7 @@ export type AddressValueType = {
   detailAddress: string
 }
 
-export type ProductsPostType = {
+export type ProductsPostsType = {
   id:string,
   title: string,
   category: string[],
@@ -47,4 +47,22 @@ export type ProductsInputType = {
   tags: string, 
   agreement: boolean,
   image_url: string
+};
+
+export type ProductsInputFinalType = {
+  title: string,
+  category: string[],
+  price: number,
+  shipping_cost: string,
+  count: number, 
+  deal_type: string,
+  address: string,
+  detailAddress: string,
+  quality: string,
+  changable: string,
+  exchange_product: string,
+  contents: string,
+  tags: string[], 
+  agreement: boolean,
+  image_url: string[]
 };
