@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
 
   return (
     <St.FooterContainer>
-      {/* <St.FooterArea> */}
+      <St.FooterArea>
       <St.Logo>
         <img src="/assets/logo2.png" alt="로고" />
       </St.Logo>
@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
         </h2>
         <p>Copyright 2024. All Rights Reserved.</p>
       </St.TextArea>
-      {/* </St.FooterArea> */}
+      </St.FooterArea>
     </St.FooterContainer>
   );
 };

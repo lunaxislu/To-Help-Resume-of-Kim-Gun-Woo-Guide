@@ -4,7 +4,7 @@ export const FooterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 144rem;
+  width: 100vw;
   height: 23.8rem;
   position: relative;
   font-size: var(--fontSize-body);
@@ -21,9 +21,8 @@ export const FooterContainer = styled.div`
   }
 `;
 export const FooterArea = styled.div`
-  margin-left: 16.2rem;
-  margin-top: 5rem;
-  gap: 2.3rem;
+  width: 1116px;
+  margin: auto;
 `;
 
 export const Logo = styled.div`
