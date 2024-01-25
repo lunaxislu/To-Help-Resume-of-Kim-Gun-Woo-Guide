@@ -44,24 +44,7 @@ const CommuList: React.FC<CommuListProps> = ({
     return textOnly;
   };
   const posts = postInfo?.data;
-
-  const renderPagination = () => {
-    const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-    return (
-      <St.PageNumber>
-        {pages.map((number) => (
-          <St.PageBtn
-            $currentPage={currentPage}
-            pageNumber={number}
-            key={number}
-            onClick={() => setCurrentPage(number)}
-          >
-            {number}
-          </St.PageBtn>
-        ))}
-      </St.PageNumber>
-    );
-  };
+  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
     <div>
@@ -109,7 +92,18 @@ const CommuList: React.FC<CommuListProps> = ({
             );
           })}
       </St.Container>
-      {renderPagination()}
+      <St.PageNumber>
+        {pages.map((number) => (
+          <St.PageBtn
+            $currentPage={currentPage}
+            pageNumber={number}
+            key={number}
+            onClick={() => setCurrentPage(number)}
+          >
+            {number}
+          </St.PageBtn>
+        ))}
+      </St.PageNumber>
     </div>
   );
 };

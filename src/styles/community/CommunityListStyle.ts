@@ -66,6 +66,7 @@ export const Posts = styled.li`
     max-width: none;
     & h2 {
       font-size: var(--fontSize-H5);
+      height: 1.4rem;
     }
   }
 `;
@@ -115,6 +116,9 @@ export const PageNumber = styled.div`
   display: flex;
   justify-content: center;
   gap: 5rem;
+  @media screen and (max-width: 768px) {
+    gap: 2rem;
+  }
 `;
 export const PageBtn = styled.button<PageBtnProps>`
   background-color: transparent;
