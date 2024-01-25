@@ -7,6 +7,8 @@ import SkeletonCommunityCard from '../../skeleton/SkeletonCommunityCard';
 import { userId } from '../../../util/getUserId';
 import { Community, CommunityActive } from '../../../api/supabase/community';
 import { MyPageCommunityCard } from './MyPageCommunityCard';
+import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
+import { setFavPost, setMyPost } from '../../../redux/modules/countSlice';
 
 const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
@@ -17,6 +19,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   const [communityPosts, setCommunityPosts] = useState<Community[]>([]);
   const [favCommunityPosts, setFavCommunityPosts] = useState<Community[]>([]);
 
+  const dispatch = useAppDispatch();
   const getCurrentUserCommunityPosts = async () => {
     let { data: communityPosts, error } = await supabase
       .from('community')
@@ -26,6 +29,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
 
     if (communityPosts && communityPosts.length > 0) {
       setCommunityPosts(communityPosts);
+      dispatch(setMyPost(communityPosts));
     }
   };
 
@@ -52,6 +56,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
         .map((item) => item);
 
       setFavCommunityPosts(filteredFavProducts);
+      dispatch(setFavPost(filteredFavProducts));
     }
   };
 

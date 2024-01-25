@@ -7,6 +7,7 @@ export const StTabsContainer = styled.ul`
   border-radius: 0.8rem;
   margin: 5rem auto;
   gap: 3.5rem;
+  white-space: nowrap;
 
   @media screen and (max-width: 1024px) {
     width: 100%;

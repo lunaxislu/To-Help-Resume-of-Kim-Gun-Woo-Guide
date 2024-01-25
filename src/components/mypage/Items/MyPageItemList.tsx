@@ -6,6 +6,15 @@ import SkeletonProductCard from '../../skeleton/SkeletonProductCard';
 import { Product, ProductCardProps } from '../../../api/supabase/products';
 import { userId } from '../../../util/getUserId';
 import MyPageItemCard from './MyPageItemCard';
+import {
+  useAppDispatch,
+  useAppSelector
+} from '../../../redux/reduxHooks/reduxBase';
+import {
+  setFavItem,
+  setMyItem,
+  setPurchasedItem
+} from '../../../redux/modules/countSlice';
 
 const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
@@ -13,10 +22,11 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [offset, setOffset] = useState(1);
   const [isInView, setIsInView] = useState(false);
-
   const [myItems, setMyItems] = useState<Product[]>([]);
   const [purchasedItems, setPurchasedItems] = useState<Product[]>([]);
   const [favItems, setFavItems] = useState<Product[]>([]);
+
+  const dispatch = useAppDispatch();
 
   const getCurrentUserProducts = async () => {
     let { data: products, error } = await supabase
@@ -27,6 +37,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
 
     if (products && products.length > 0) {
       setMyItems(products);
+      dispatch(setMyItem(products));
     }
   };
 
@@ -39,6 +50,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
 
     if (purchasedProducts && purchasedProducts.length > 0) {
       setPurchasedItems(purchasedProducts);
+      dispatch(setPurchasedItem(purchasedProducts));
     }
   };
 
@@ -55,6 +67,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
           )
         )
         .map((product) => product);
+      dispatch(setFavItem(filteredFavProducts));
       setFavItems(filteredFavProducts);
     }
   };
