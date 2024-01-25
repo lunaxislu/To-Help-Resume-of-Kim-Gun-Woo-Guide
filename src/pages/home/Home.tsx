@@ -278,10 +278,10 @@ const ProductsLink = styled(Link)`
   color: var(--11-gray);
   @media screen and (max-width: 768px) {
     background: none;
-    width: 4.5rem;
-    line-height: 191.2%;
-    font-size: 9px;
-    gap: 4px;
+    width: 6rem;
+    /* line-height: 191.2%; */
+    font-size: 1.1rem;
+    gap: 0.3rem;
   }
   &:hover {
     background-color: #83ad2e;
@@ -291,8 +291,8 @@ const ProductsLink = styled(Link)`
     width: 1rem;
     height: 0.9rem;
     @media screen and (max-width: 768px) {
-      width: 0.9rem;
-      height: 0.8rem;
+      width: 1rem;
+      height: 0.9rem;
       color: var(--opc-100);
     }
   }
@@ -333,7 +333,7 @@ const ProductsListContainer = styled.ul`
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media screen and (max-width: 350px) {
+  @media screen and (max-width: 349px) {
     grid-template-columns: repeat(1, 1fr);
   }
 `;
@@ -501,9 +501,9 @@ const CommunityLink = styled(Link)`
   @media screen and (max-width: 768px) {
     display: flex;
     background: none;
-    max-width: 4.5rem;
-    font-size: 0.9rem;
-    gap: 0.4rem;
+    width: 6rem;
+    font-size: 1.1rem;
+    gap: 0.3rem;
   }
   &:hover {
     background-color: #83ad2e;
@@ -569,6 +569,10 @@ const ComunityList = styled.li`
   background-color: #1f1f1f;
   padding: 2rem;
   @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: 1rem;
+  }
+  @media screen and (max-width: 520px) {
     width: 100%;
     padding: 1rem;
   }

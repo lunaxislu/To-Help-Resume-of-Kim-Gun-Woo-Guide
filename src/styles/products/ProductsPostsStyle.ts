@@ -22,11 +22,14 @@ export const ContentsContainer = styled.div`
   }
 `;
 export const BackBtnBox = styled.div`
-  width: 2rem;
-  height: 1.5rem;
   display: none;
   @media screen and (max-width: 768px) {
     display: block;
+    width: 2rem;
+    height: 1.5rem;
+    :hover {
+      cursor: pointer;
+    }
   }
 `;
 export const BackIcon = styled(GoChevronLeft)`
