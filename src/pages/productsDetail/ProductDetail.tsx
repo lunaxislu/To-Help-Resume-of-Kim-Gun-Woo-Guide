@@ -606,7 +606,7 @@ const ProductDetail = () => {
   }, []);
 
   const checkWindowSize = () => {
-    if (window.innerWidth <= 768) {
+    if (window.matchMedia('(max-width: 768px)').matches) {
       setIsMobile(true);
     } else {
       setIsMobile(false);
@@ -616,9 +616,11 @@ const ProductDetail = () => {
   useEffect(() => {
     checkWindowSize();
     window.addEventListener('DOMContentLoaded', checkWindowSize);
+    window.addEventListener('resize', checkWindowSize);
 
     return () => {
       window.removeEventListener('DOMContentLoaded', checkWindowSize);
+      window.removeEventListener('resize', checkWindowSize);
     };
   });
 

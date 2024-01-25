@@ -131,9 +131,11 @@ const ChatRoomList: React.FC<Props> = ({
   useEffect(() => {
     checkWindowSize();
     window.addEventListener('DOMContentLoaded', checkWindowSize);
+    window.addEventListener('resize', checkWindowSize);
 
     return () => {
       window.removeEventListener('DOMContentLoaded', checkWindowSize);
+      window.removeEventListener('resize', checkWindowSize);
     };
   });
 
@@ -189,8 +191,9 @@ const ChatRoomList: React.FC<Props> = ({
           return (
             <St.StListRoom
               onClick={(e) => {
-                updateToRead(room.id);
-
+                if (findMatchMessage(room.id) > 0) {
+                  updateToRead(room.id);
+                }
                 handleCurClicked(e);
                 handleBoardPosition();
               }}

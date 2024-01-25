@@ -121,7 +121,10 @@ export default function ChatRoom() {
   }, [messages]);
 
   const checkWindowSize = () => {
-    if (window.innerWidth <= 768) {
+    if (
+      window.innerWidth <= 768 ||
+      window.matchMedia('(max-width: 768px)').matches
+    ) {
       setIsMobile(true);
       window.scrollTo({ top: 0 });
     } else {
@@ -132,9 +135,11 @@ export default function ChatRoom() {
   useEffect(() => {
     checkWindowSize();
     window.addEventListener('resize', checkWindowSize);
+    window.addEventListener('DOMContentLoaded', checkWindowSize);
 
     return () => {
       window.removeEventListener('resize', checkWindowSize);
+      window.removeEventListener('DOMContentLoaded', checkWindowSize);
     };
   }, []);
 
