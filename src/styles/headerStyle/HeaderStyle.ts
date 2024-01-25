@@ -80,6 +80,7 @@ export const ButtonContainer = styled.div`
   gap: 2rem;
   user-select: none;
   margin: auto 0;
+  white-space: nowrap;
 
   @media screen and (max-width: 768px) {
     justify-content: space-between;

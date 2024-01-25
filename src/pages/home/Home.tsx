@@ -293,7 +293,12 @@ const SupabaseListContainer = styled.ul`
   /* justify-content: space-between; */
   margin-top: 2rem;
   gap: 1.5rem;
-
+  @media screen and (max-width: 768px) {
+    max-width: 100%;
+    height: 36.7%;
+    margin: 0 1.5rem;
+    margin-top: 2rem;
+  }
   @media screen and (max-width: 320px) {
     max-width: 100%;
     height: 36.7%;

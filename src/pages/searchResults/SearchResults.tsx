@@ -191,8 +191,9 @@ const SearchResultsContainer = styled.div`
   background-color: var(--1, #0b0b0b);
   @media screen and (max-width: 1024px) {
     max-width: 100%;
-    margin: 0 auto;
-    flex-direction: column;
+  }
+  @media screen and (max-width: 320px) {
+    max-width: 100%;
   }
 `;
 
@@ -208,11 +209,17 @@ const CheckImage = styled.img`
   margin: 0 auto;
   width: 6.6rem;
   height: 6.6rem;
+  @media screen and (max-width: 320px) {
+    display: none;
+  }
 `;
 const FullCounts = styled.div`
   margin-top: 2rem;
   font-size: var(--fontSize-H1);
   font-weight: var(--fontWeight-bold);
+  @media screen and (max-width: 320px) {
+    display: none;
+  }
 `;
 const ResultListContainer = styled.div`
   display: flex;
