@@ -114,9 +114,9 @@ body {
     /* max-width: 1200px ; */
 	line-height: 1;
     font-size: 1.6rem;
-    background-color: #131313;
+    background-color: var(--1-gray);
     font-family: 'Pretendard-Medium';
-    color: #F8F8F8;
+    color: var(--11-gray);
     /* margin: 0 auto; */
 }
 ol, ul {
