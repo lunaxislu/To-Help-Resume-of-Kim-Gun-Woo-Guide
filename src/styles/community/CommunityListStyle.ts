@@ -1,5 +1,4 @@
-import { BsChatRightFill } from 'react-icons/bs';
-import { FaRegThumbsUp } from 'react-icons/fa6';
+import { FaComment, FaThumbsUp } from 'react-icons/fa';
 import styled from 'styled-components';
 import { PageBtnProps } from '../../pages/community/model';
 export const Container = styled.ul`
@@ -88,6 +87,10 @@ export const RightSide = styled.div`
   justify-content: space-between;
   font-size: var(--fontSize-H6);
   color: var(--6-gray);
+  font-weight: var(--fontWeight-medium);
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 export const CommentArea = styled.div`
   display: flex;
@@ -98,11 +101,12 @@ export const CommentArea = styled.div`
     margin-top: 0.3rem;
   }
 `;
-export const CommentIcon = styled(BsChatRightFill)`
+export const CommentIcon = styled(FaComment)`
   color: #dbff00;
   opacity: 50%;
+  transform: scaleX(-1);
 `;
-export const LikesIcon = styled(FaRegThumbsUp)`
+export const LikesIcon = styled(FaThumbsUp)`
   color: #dbff00;
   opacity: 50%;
 `;
@@ -124,5 +128,5 @@ export const PageBtn = styled.button<PageBtnProps>`
   background-color: transparent;
   border: none;
   color: ${(props) =>
-    props.$currentPage === props.pageNumber ? 'var(--opc-100)' : '#f8f8f8'};
+    props.$currentPage === props.$pageNumber ? 'var(--opc-100)' : '#f8f8f8'};
 `;

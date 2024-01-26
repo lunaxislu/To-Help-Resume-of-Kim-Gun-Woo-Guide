@@ -39,7 +39,9 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     data: posts,
     isLoading,
     isError
-  } = useQuery(['posts', paramId], () => fetchDetailPost(paramId));
+  } = useQuery(['posts', paramId], () => fetchDetailPost(paramId), {
+    staleTime: 30000
+  });
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -55,6 +57,36 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     anon: isEdit ? posts![0].anon : false,
     mainImage: isEdit ? posts![0].mainImage : ''
   });
+  const [errors, setErrors] = useState({
+    title: '',
+    category: '',
+    content: ''
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      title: '',
+      category: '',
+      content: ''
+    };
+
+    if (!formValues.title) {
+      newErrors.title = '제목은 필수입니다';
+      isValid = false;
+    }
+    if (!formValues.category) {
+      newErrors.category = '카테고리는 필수입니다';
+      isValid = false;
+    }
+    if (!formValues.content) {
+      newErrors.content = '내용은 필수입니다';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
@@ -107,6 +139,9 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   }));
 
   const addPost = async () => {
+    if (!validateForm()) {
+      return;
+    }
     const insertData = {
       title: formValues.title,
       content: formValues.content,
@@ -130,6 +165,9 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   });
 
   const updatePost = () => {
+    if (!validateForm()) {
+      return;
+    }
     const postData = {
       updateData: {
         title: formValues.title,
@@ -246,6 +284,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             })}{' '}
           </St.CategoryGrid>
         </St.LayoutCategoryContainer>
+        {errors.category && <St.Validate>{errors.category}</St.Validate>}
         <St.LayoutTitleContainer>
           <St.LayoutValueText>
             제목<span>*</span>
@@ -259,7 +298,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             placeholder="제목을 입력해주세요(30자)"
           />
         </St.LayoutTitleContainer>
-
+        {errors.title && <St.Validate>{errors.title}</St.Validate>}
         {/* <CategoryContainer>
           {categoryArray.map((item, index) => {
             return index !== 0 ? (
@@ -300,6 +339,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             placeholder="내용을 입력해주세요"
           />
         </St.LayoutContentArea>
+        {errors.content && <St.Validate>{errors.content}</St.Validate>}
         <St.LayoutFileArea>
           <St.LayoutValueText>파일</St.LayoutValueText>
           <St.LayoutFileUploader>

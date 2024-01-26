@@ -7,6 +7,7 @@ import { categoryArray } from './WritePost';
 import { fetchPosts } from './commuQuery';
 const CommunityMain: React.FC = () => {
   const [selectCategory, setSelectCategory] = useState('전체');
+  const [editToolOpen, setEditToolOpen] = useState(false);
   const navigate = useNavigate();
   const { data: posts, isLoading, isError } = useQuery('posts', fetchPosts);
 
@@ -22,7 +23,6 @@ const CommunityMain: React.FC = () => {
             ? `${posts?.length}개의 이야기를 확인해보세요`
             : '0개의 이야기를 확인해보세요'}
         </St.Title>
-
         <St.FeatureBar>
           <St.Categorys>
             {categoryArray.map((category) => {
@@ -48,7 +48,33 @@ const CommunityMain: React.FC = () => {
           >
             <St.WriteIcon /> 글쓰기
           </St.WriteBtn>
-        </St.FeatureBar>
+        </St.FeatureBar>{' '}
+        <St.Topper2>
+          <div>
+            <St.SearchBar placeholder="검색어를 입력하세요" />
+          </div>
+          <St.WriteBtn2
+            onClick={() => {
+              navigate('/community_write');
+            }}
+          >
+            <St.WriteIcon /> 글쓰기
+          </St.WriteBtn2>
+          <St.SortBar
+            onClick={() => {
+              setEditToolOpen(!editToolOpen);
+            }}
+          >
+            최신순
+            <St.DropIcon />
+          </St.SortBar>
+          {editToolOpen && (
+            <St.EditDropdown>
+              <St.DropdownItem>최신순</St.DropdownItem>
+              <St.DropdownItem>인기순</St.DropdownItem>
+            </St.EditDropdown>
+          )}
+        </St.Topper2>
         <CommuList selectCategory={selectCategory} />
       </St.Post_container>
     </St.Container>

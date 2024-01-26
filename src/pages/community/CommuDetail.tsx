@@ -93,10 +93,14 @@ const CommuDetail: React.FC = () => {
                         <h1>{post.title}</h1>
                         <St.Category>{post.category}</St.Category>
                       </St.TitleCategory>
+                      <St.Dots onClick={() => setEditToolOpen(!editToolOpen)} />
                       {posts![0].post_user === userId ? (
                         ''
                       ) : (
-                        <St.Report>신고</St.Report>
+                        <St.ReportArea>
+                          <St.AlertIcon />
+                          <p>신고하기</p>
+                        </St.ReportArea>
                       )}
                     </St.MainTopper>
 
@@ -107,7 +111,7 @@ const CommuDetail: React.FC = () => {
                         </St.NameP>
                         <St.TimeP>{parseDate(post.created_at)}</St.TimeP>
                       </St.TitleCategory>
-                      <St.Dots onClick={() => setEditToolOpen(!editToolOpen)} />
+
                       {editToolOpen && (
                         <St.EditDropdown>
                           {posts[0].post_user === userId ? (

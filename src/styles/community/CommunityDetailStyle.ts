@@ -1,3 +1,4 @@
+import { AiFillAlert } from 'react-icons/ai';
 import { BsThreeDots } from 'react-icons/bs';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiBallPenLine } from 'react-icons/ri';
@@ -13,6 +14,10 @@ export const Content = styled.div`
   font-weight: var(--fontWeight-medium);
   & img {
     max-width: 100%;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+    line-height: 2rem;
   }
 `;
 export const Container = styled.div`
@@ -89,22 +94,12 @@ export const Category = styled.p`
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
   @media screen and (max-width: 768px) {
     font-size: 1rem;
   }
 `;
-export const Report = styled.p`
-  /* margin-left: 1.5rem;
-  width: 3.7rem;
-  height: 2.3rem; */
-  font-size: var(--fontSize-H6);
-  color: var(--6-gray);
-  border-radius: 5.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0.5rem;
-`;
+
 export const MainTopper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -142,6 +137,27 @@ export const TitleCategory = styled.div`
     }
   }
 `;
+export const AlertIcon = styled(AiFillAlert)`
+  color: var(--opc-50);
+  margin-left: 1rem;
+  font-size: 1.5rem;
+`;
+export const ReportArea = styled.div`
+  display: flex;
+  align-items: start;
+  & p {
+    font-size: var(--fontSize-H6);
+    color: var(--6-gray);
+    border-radius: 5.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem;
+  }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
 export const TrachIcon = styled(IoTrashOutline)`
   color: var(--opc-50);
   margin-left: 1rem;
@@ -159,8 +175,11 @@ export const NameP = styled.p`
 `;
 export const TimeP = styled.p`
   font-size: var(--fontSize-H5);
-  font-weight: var(--fontWeight-semiBold);
+  font-weight: var(--fontWeight-medium);
   color: var(--6-gray);
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
 `;
 
 export const NoticeLike = styled.p`
@@ -228,7 +247,6 @@ export const EditDropdown = styled.div`
   }
 `;
 
-// 드롭다운 메뉴 아이템 스타일링
 export const DropdownItem = styled.div`
   display: none;
   @media screen and (max-width: 768px) {

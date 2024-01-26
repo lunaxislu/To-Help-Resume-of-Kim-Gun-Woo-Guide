@@ -18,13 +18,18 @@ const CommuList: React.FC<CommuListProps> = ({
     data: postInfo,
     isLoading,
     isError
-  } = useQuery(['posts', currentPage], () => fetchRangePosts(currentPage), {
-    onSuccess: (data) => {
-      if (data.count) {
-        setTotalPages(Math.ceil(data.count / RANGE_POST_NUMBER));
+  } = useQuery(
+    ['posts', currentPage, selectCategory],
+    () => fetchRangePosts(currentPage, selectCategory),
+    {
+      onSuccess: (data) => {
+        if (data.count) {
+          setTotalPages(Math.ceil(data.count / RANGE_POST_NUMBER));
+        }
       }
+      // staleTime: 300000
     }
-  });
+  );
   useEffect(() => {
     setCurrentPage(1); // 카테고리가 바뀔 때마다 첫 페이지로 리셋
   }, [selectCategory]);
@@ -45,19 +50,19 @@ const CommuList: React.FC<CommuListProps> = ({
   };
   const posts = postInfo?.data;
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-
+  console.log(pages);
   return (
     <div>
       <St.Container>
         {posts
-          ?.filter((post) => {
-            if (selectCategory === '전체') {
-              return posts;
-            } else {
-              return post.category === selectCategory;
-            }
-          })
-          .map((post: Post) => {
+          // ?.filter((post) => {
+          //   if (selectCategory === '전체') {
+          //     return posts;
+          //   } else {
+          //     return post.category === selectCategory;
+          //   }
+          // })
+          ?.map((post: Post) => {
             return (
               <St.Posts
                 key={post.post_id}
@@ -96,7 +101,7 @@ const CommuList: React.FC<CommuListProps> = ({
         {pages.map((number) => (
           <St.PageBtn
             $currentPage={currentPage}
-            pageNumber={number}
+            $pageNumber={number}
             key={number}
             onClick={() => setCurrentPage(number)}
           >
