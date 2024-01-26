@@ -54,6 +54,7 @@ const StImageWrapper = styled.div`
   width: 100%;
   max-width: 510px;
   height: 43.5rem;
+  max-height: 100%;
   border-radius: 12px;
   overflow: hidden;
   background-color: aliceblue;
@@ -62,6 +63,8 @@ const StImageWrapper = styled.div`
   @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 768px;
+    height: 100%;
+    max-height: 43.5rem;
     margin-bottom: 1.5rem;
     border-radius: 0;
   }

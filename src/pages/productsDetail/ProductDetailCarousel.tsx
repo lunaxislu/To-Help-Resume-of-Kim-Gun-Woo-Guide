@@ -82,8 +82,6 @@ export default ProductDetail_Carousel;
 const CarouselContainer = styled.div`
   position: relative;
   width: 100%;
-  max-width: 550px;
-  height: 600px;
   max-height: 100%;
   justify-content: center;
   align-items: center;
@@ -119,17 +117,29 @@ const CarouselContainer = styled.div`
   .dots_custom li.slick-active button {
     background-color: #08c1ce;
   }
+
+  @media screen and (max-width: 768px) {
+    height: 100%;
+    width: 100%;
+  }
 `;
 
 const StSlider = styled(Slider)`
-  height: 100%;
   width: 100%;
-  overflow: hidden;
+  height: 43.5rem;
 `;
 
 const CarouselImage = styled.img`
   object-fit: cover;
   width: 100%;
+  height: 100%;
+  max-height: 43.5rem;
+  height: 100vh;
+
+  @media screen and (max-width: 768px) {
+    height: 100vh;
+    max-height: 43.5rem;
+  }
 `;
 const CarouselButtons = styled.div`
   position: absolute;
