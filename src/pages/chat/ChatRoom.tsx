@@ -85,13 +85,19 @@ export default function ChatRoom() {
     // 유저가 소속된 채팅방을 가져오는 부분
     if (curUser) {
       utilFunctions.getRoomsforUser(curUser, setRooms, clicked, setMessages);
-      utilFunctions.handleRealtime(clicked, setMessages, curUser, setRooms);
+      utilFunctions.handleRealtime(
+        clicked,
+        setMessages,
+        curUser,
+        setRooms,
+        messages
+      );
     }
 
     // 해당 채팅방에 해당하는 메세지를 가져오고
     if (clicked) {
       setMessages([]);
-      utilFunctions.getMessages(clicked, setMessages);
+      utilFunctions.getMessages(clicked, setMessages, messages);
       utilFunctions.handleTargetUser(rooms, clicked, setTargetUser);
     }
   }, [clicked, curUser]);
@@ -102,11 +108,18 @@ export default function ChatRoom() {
       clicked,
       setMessages,
       curUser,
-      setRooms
+      setRooms,
+      messages
     );
-    utilFunctions.handleRealtime(clicked, setMessages, curUser, setRooms);
+    utilFunctions.handleRealtime(
+      clicked,
+      setMessages,
+      curUser,
+      setRooms,
+      messages
+    );
 
-    utilFunctions.getMessages(clicked, setMessages);
+    utilFunctions.getMessages(clicked, setMessages, messages);
     utilFunctions.getUserData(setCurUser);
 
     // unmount 시 구독 해제하기
@@ -134,27 +147,22 @@ export default function ChatRoom() {
     }
   }, [messages]);
 
-  const checkWindowSize = () => {
-    if (
-      window.innerWidth <= 768 ||
-      window.matchMedia('(max-width: 768px)').matches
-    ) {
-      setIsMobile(true);
-      window.scrollTo({ top: 0 });
-    } else {
-      setIsMobile(false);
-    }
+  const checkDevice = (agent: string) => {
+    const mobileRegex = [
+      /Android/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i
+    ];
+
+    return mobileRegex.some((mobile) => agent.match(mobile));
   };
 
   useEffect(() => {
-    checkWindowSize();
-    window.addEventListener('resize', checkWindowSize);
-    window.addEventListener('DOMContentLoaded', checkWindowSize);
-
-    return () => {
-      window.removeEventListener('resize', checkWindowSize);
-      window.removeEventListener('DOMContentLoaded', checkWindowSize);
-    };
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
   }, []);
 
   useEffect(() => {

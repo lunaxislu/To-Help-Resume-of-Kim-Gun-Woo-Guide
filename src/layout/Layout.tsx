@@ -12,13 +12,20 @@ const StModalContainer = styled.div`
   width: 300px;
   height: 250px;
   padding: 1.5rem;
-  position: absolute;
+  position: fixed;
   top: 5%;
-  right: 0;
+  left: 5%;
   z-index: 3;
   transform: translateX(-10%);
   background-color: var(--3-gray);
   border-radius: 1.2rem;
+  overflow-y: scroll;
+
+  @media screen and (max-width: 768px) {
+    width: 220px;
+    height: 200px;
+    overflow-y: scroll;
+  }
 `;
 
 const StAlertBox = styled.div`
@@ -100,7 +107,11 @@ const Layout = () => {
         .select('*')
         .eq('uid', userId);
       if (chatRooms) {
-        setUserChatRoom(chatRooms[0].chat_rooms);
+        setUserChatRoom(chatRooms[0]?.chat_rooms);
+      }
+
+      if (error) {
+        console.log('no chatRooms', error);
       }
     };
 

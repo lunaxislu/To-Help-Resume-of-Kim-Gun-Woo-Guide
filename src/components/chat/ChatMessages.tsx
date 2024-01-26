@@ -1,7 +1,8 @@
 import React, { MouseEvent, useEffect } from 'react';
 import styled from 'styled-components';
-import type { MessageCompProps, MessageType } from './types';
+import type { MessageCompProps, MessageType, RoomType } from './types';
 import { useNavigate } from 'react-router';
+import { supabase } from '../../api/supabase/supabaseClient';
 
 const ChatMessages = ({
   messages,
@@ -13,6 +14,24 @@ const ChatMessages = ({
     setShowImage(true);
     setClickedImages(e.currentTarget.src);
   };
+  const navi = useNavigate();
+
+  const findChatRoom = async (e: MouseEvent<HTMLDivElement>) => {
+    const id = e.currentTarget.id;
+
+    const { data: room, error } = await supabase
+      .from('chat_room')
+      .select('about')
+      .eq('id', id);
+
+    if (room) {
+      handleNaviToProduct(room[0].about);
+    }
+  };
+
+  const handleNaviToProduct = (id: string) => {
+    navi(`/products/detail/${id}`);
+  };
 
   return (
     <>
@@ -23,21 +42,37 @@ const ChatMessages = ({
         )
         .map((msg: any) => {
           return msg.sender_id === curUser?.id ? (
-            <div key={msg.id}>
-              {msg.image_url && (
-                <StMyImageballoon
-                  onClick={handleShowImage}
-                  src={msg.image_url}
-                  alt=""
-                />
+            <>
+              {msg.isFirst ? (
+                <div
+                  key={msg.id}
+                  id={msg.chat_room_id}
+                  onClick={(e) => findChatRoom(e)}
+                >
+                  <StMyChatballoon style={{ cursor: 'pointer' }} key={msg.id}>
+                    <p style={{ textDecoration: 'underline', color: 'blue' }}>
+                      {msg.content === null ? null : msg.content}
+                    </p>
+                  </StMyChatballoon>
+                </div>
+              ) : (
+                <div key={msg.id}>
+                  {msg.image_url && (
+                    <StMyImageballoon
+                      onClick={handleShowImage}
+                      src={msg.image_url}
+                      alt=""
+                    />
+                  )}
+                  {msg.content === null && null}
+                  {msg.content !== null && (
+                    <StMyChatballoon key={msg.id}>
+                      {msg.content === null ? null : msg.content}
+                    </StMyChatballoon>
+                  )}
+                </div>
               )}
-              {msg.content === null && null}
-              {msg.content !== null && (
-                <StMyChatballoon key={msg.id}>
-                  {msg.content === null ? null : msg.content}
-                </StMyChatballoon>
-              )}
-            </div>
+            </>
           ) : (
             <div key={msg.id} style={{ cursor: 'pointer' }}>
               {msg.image_url && <StImageballoon src={msg.image_url} alt="" />}

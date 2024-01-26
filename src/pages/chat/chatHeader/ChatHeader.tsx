@@ -6,7 +6,6 @@ import { MessageType, RoomType } from '../../../components/chat/types';
 import { BsThreeDots } from 'react-icons/bs';
 import { UtilForChat } from '../chat_utils/functions';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 
 interface ChatHeaderPropsType {
   showMene: boolean;
@@ -43,38 +42,41 @@ const ChatHeader = ({
     setShowMenu((prev) => !prev);
   };
 
-  const checkWindowSize = () => {
-    if (window.matchMedia('(max-width:768px)').matches) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
+  const checkDevice = (agent: string) => {
+    const mobileRegex = [
+      /Android/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i
+    ];
+
+    return mobileRegex.some((mobile) => agent.match(mobile));
   };
 
   useEffect(() => {
-    checkWindowSize();
-    window.addEventListener('resize', checkWindowSize);
-
-    return () => {
-      window.removeEventListener('resize', checkWindowSize);
-    };
-  });
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
+  }, []);
 
   return (
     <St.StChatBoardHeader>
       {showMene && (
         <St.StMenuBox>
           <St.StMenu
-            onClick={() =>
+            onClick={() => {
               supaService.handleOutChatRoom(
                 clicked,
                 curUser,
                 targetUser,
                 setRooms,
                 setMessages,
-                setClicked
-              )
-            }
+                setClicked,
+                handleHideBoardPosition
+              );
+              setShowMenu(false);
+            }}
           >
             채팅방 나가기
           </St.StMenu>

@@ -31,7 +31,8 @@ export class UtilForChat {
   // 어느 채팅방을 클릭 시 해당 채팅방과 연결 된 메세지 가져오는 함수
   getMessages = async (
     clicked: string | undefined,
-    setMessages: React.Dispatch<SetStateAction<MessageType[]>>
+    setMessages: React.Dispatch<SetStateAction<MessageType[]>>,
+    messeages: MessageType[]
   ) => {
     let { data: chat_messages, error } = await supabase
       .from('chat_messages')
@@ -139,7 +140,8 @@ export class UtilForChat {
     clicked: string | undefined,
     setMessages: React.Dispatch<SetStateAction<MessageType[]>>,
     curUser: User | null | undefined,
-    setRooms: React.Dispatch<SetStateAction<RoomType[] | null | undefined>>
+    setRooms: React.Dispatch<SetStateAction<RoomType[] | null | undefined>>,
+    messages: MessageType[]
   ) => {
     // 채팅방 테이블 구독
     const chatRooms = supabase
@@ -148,7 +150,7 @@ export class UtilForChat {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'chat_room' },
         (payload) => {
-          this.getMessages(clicked, setMessages);
+          this.getMessages(clicked, setMessages, messages);
           this.getRoomsforUser(curUser, setRooms, clicked, setMessages);
         }
       )
@@ -162,7 +164,7 @@ export class UtilForChat {
         (payload) => {
           // 변경사항이 발생하면 해당 채팅방의 메시지를 다시 불러옴
           if (clicked) {
-            this.getMessages(clicked, setMessages);
+            this.getMessages(clicked, setMessages, messages);
           }
         }
       )

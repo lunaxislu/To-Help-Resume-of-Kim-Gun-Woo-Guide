@@ -120,24 +120,23 @@ const ChatRoomList: React.FC<Props> = ({
     getProductsforRoom();
   }, []);
 
-  const checkWindowSize = () => {
-    if (window.innerWidth <= 768) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
+  const checkDevice = (agent: string) => {
+    const mobileRegex = [
+      /Android/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i
+    ];
+
+    return mobileRegex.some((mobile) => agent.match(mobile));
   };
 
   useEffect(() => {
-    checkWindowSize();
-    window.addEventListener('DOMContentLoaded', checkWindowSize);
-    window.addEventListener('resize', checkWindowSize);
-
-    return () => {
-      window.removeEventListener('DOMContentLoaded', checkWindowSize);
-      window.removeEventListener('resize', checkWindowSize);
-    };
-  });
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
+  }, []);
 
   return (
     <St.StChatListItem>

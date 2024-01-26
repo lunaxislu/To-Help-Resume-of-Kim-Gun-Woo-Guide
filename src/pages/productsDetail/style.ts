@@ -156,8 +156,8 @@ const StHeaderTitle = styled.div`
 
   @media screen and (max-width: 768px) {
     font-size: 1.4rem;
-    padding: 0 1.5rem;
-    margin-block: 0.6rem;
+    padding: 0rem 1.5rem;
+    margin-block: 0.3rem;
   }
 `;
 const StHeaderPriceWrapper = styled.div`
@@ -344,7 +344,6 @@ const StCategoryTag = styled.li`
   color: #4f4f4f;
   list-style: none;
   border-radius: 6px;
-  cursor: pointer;
 `;
 
 export {
