@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import * as St from '../style';
 import { SupabaseAPI } from '../supabaseChat/supabase_chat';
 import { User } from '@supabase/supabase-js';
@@ -44,14 +44,14 @@ const ChatHeader = ({
   };
 
   const checkWindowSize = () => {
-    if (window.innerWidth <= 768) {
+    if (window.matchMedia('(max-width:768px)').matches) {
       setIsMobile(true);
     } else {
       setIsMobile(false);
     }
   };
 
-  useState(() => {
+  useEffect(() => {
     checkWindowSize();
     window.addEventListener('resize', checkWindowSize);
 

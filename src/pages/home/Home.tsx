@@ -16,6 +16,7 @@ type UsedItemsCountData = {
 
 const Home = () => {
   const carouselImages: string[] = [
+    process.env.PUBLIC_URL + '/assets/carouselmain.png',
     process.env.PUBLIC_URL + '/assets/carousel0.png',
     process.env.PUBLIC_URL + '/assets/carousel1.png',
     process.env.PUBLIC_URL + '/assets/carousel2.png',
