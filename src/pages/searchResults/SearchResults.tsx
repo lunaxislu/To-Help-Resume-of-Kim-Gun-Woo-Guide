@@ -128,10 +128,16 @@ const SearchResults: React.FC = () => {
           {isMobile ? (
             <CountBar>
               <CountPost>
-                <ProductsCount onClick={() => handleTabClick('중고물품')}>
+                <ProductsCount
+                  showClickedList={showClickedList}
+                  onClick={() => handleTabClick('중고물품')}
+                >
                   중고거래({usedItemCount})
                 </ProductsCount>
-                <CommunityCount onClick={() => handleTabClick('커뮤니티')}>
+                <CommunityCount
+                  showClickedList={showClickedList}
+                  onClick={() => handleTabClick('커뮤니티')}
+                >
                   커뮤니티({communityCount})
                 </CommunityCount>
               </CountPost>
@@ -293,9 +299,17 @@ const SearchResultsContainer = styled.div`
   margin-bottom: 15rem;
   color: var(--12, #f8f8f8);
   background-color: var(--1, #0b0b0b);
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 1300px) {
     width: 100%;
-    max-width: 102.4rem;
+    max-width: 130rem;
+  }
+  @media screen and (max-width: 1100px) {
+    width: 100%;
+    max-width: 110rem;
+  }
+  @media screen and (max-width: 900px) {
+    width: 100%;
+    max-width: 90rem;
   }
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -305,6 +319,11 @@ const SearchResultsContainer = styled.div`
   @media screen and (max-width: 530px) {
     width: 100%;
     max-width: 53rem;
+    min-width: 32rem;
+  }
+  @media screen and (max-width: 349px) {
+    width: 100%;
+    max-width: 34.9rem;
     min-width: 32rem;
   }
 `;
@@ -377,16 +396,24 @@ const CountPost = styled.div`
   }
 `;
 
-const ProductsCount = styled.h1`
+const ProductsCount = styled.h1<{
+  showClickedList: boolean;
+}>`
   width: 10rem;
   cursor: pointer;
+  font-weight: ${({ showClickedList }) =>
+    !showClickedList ? 'var(--fontWeight-bold)' : 'var(--fontWeight-medium)'};
   @media screen and (max-width: 768px) {
     width: 100%;
   }
 `;
-const CommunityCount = styled.h1`
+const CommunityCount = styled.h1<{
+  showClickedList: boolean;
+}>`
   width: 10rem;
   cursor: pointer;
+  font-weight: ${({ showClickedList }) =>
+    showClickedList ? 'var(--fontWeight-bold)' : 'var(--fontWeight-medium)'};
   @media screen and (max-width: 768px) {
     width: 100%;
   }
@@ -456,29 +483,29 @@ const UsedItemsList = styled.ul<{
 
   @media screen and (max-width: 1160px) {
     grid-template-columns: repeat(4, 1fr);
-    /* height: ${({ usedItemCount }) =>
-      usedItemCount === 0 ? '6rem' : '35rem'}; */
+    margin-top: ${({ usedItemCount }) =>
+      usedItemCount !== 0 ? '4rem' : '2rem'};
   }
 
   @media screen and (max-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
-    /* height: ${({ usedItemCount }) =>
-      usedItemCount === 0 ? '0rem' : '6rem'}; */
+    margin-top: ${({ usedItemCount }) =>
+      usedItemCount !== 0 ? '4rem' : '2rem'};
   }
 
   @media screen and (max-width: 768px) {
     column-gap: 1.5rem;
     row-gap: 1.8rem;
     grid-template-columns: repeat(3, 1fr);
-    /* height: ${({ usedItemCount }) =>
-      usedItemCount === 0 ? '0rem' : '6rem'}; */
+    margin-top: ${({ usedItemCount }) =>
+      usedItemCount !== 0 ? '10rem' : '2rem'};
   }
   @media screen and (max-width: 670px) {
     column-gap: 1.5rem;
     row-gap: 1.8rem;
     grid-template-columns: repeat(2, 1fr);
-    /* height: ${({ usedItemCount }) =>
-      usedItemCount === 0 ? '0rem' : '6rem'}; */
+    margin-top: ${({ usedItemCount }) =>
+      usedItemCount !== 0 ? '10rem' : '2rem'};
   }
   @media screen and (max-width: 520px) {
     row-gap: 1.8rem;
