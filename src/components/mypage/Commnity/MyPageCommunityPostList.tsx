@@ -9,6 +9,7 @@ import { Community, CommunityActive } from '../../../api/supabase/community';
 import { MyPageCommunityCard } from './MyPageCommunityCard';
 import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
 import { setFavPost, setMyPost } from '../../../redux/modules/countSlice';
+import Nothing from '../Nothing';
 
 const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
@@ -120,7 +121,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   }, []);
 
   return (
-    <StPostContainer ref={containerRef}>
+    <StPostContainer ref={containerRef} list={communityPosts.length}>
       {activeTab === 3 &&
         communityPosts.map((post) => {
           return (
@@ -137,6 +138,17 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
           );
         })}
 
+      {communityPosts.length === 0 && activeTab !== 4 && (
+        <Nothing
+          type={'글쓰기'}
+          content={`아직 작성한 글이 없어요. \n
+           커뮤니티에 작업자들과 이야기를 나눠보세요!`}
+          icon={'/assets/write.svg'}
+          to={'/community_write'}
+          show={true}
+        />
+      )}
+
       {activeTab === 4 &&
         favCommunityPosts.map((post) => {
           return (
@@ -152,7 +164,15 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
             />
           );
         })}
-
+      {favCommunityPosts.length === 0 && activeTab !== 3 && (
+        <Nothing
+          type={''}
+          content={`추천하신 글이 없습니다.`}
+          icon={''}
+          to={''}
+          show={false}
+        />
+      )}
       {isLoading && <SkeletonCommunityCard cards={10} />}
     </StPostContainer>
   );
