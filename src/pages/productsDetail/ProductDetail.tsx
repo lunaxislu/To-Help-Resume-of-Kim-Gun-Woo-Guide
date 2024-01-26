@@ -528,7 +528,7 @@ const ProductDetail = () => {
         .eq('id', buyerChatId);
 
       if (buyUser) {
-        const currentBuyProducts = buyUser;
+        const currentBuyProducts = buyUser[0].buyProduct;
         const newList = [...currentBuyProducts, id];
         const { data: res, error: sellError } = await supabase
           .from('user')
@@ -678,7 +678,7 @@ const ProductDetail = () => {
     <>
       {showChatList && (
         <StSelectChatBg onClick={() => setShowChatList(false)}>
-          <StChatList>
+          <StChatList onClick={(e) => e.stopPropagation()}>
             <h1
               style={{
                 textAlign: 'center',

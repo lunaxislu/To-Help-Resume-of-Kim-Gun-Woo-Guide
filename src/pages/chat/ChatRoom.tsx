@@ -203,6 +203,7 @@ export default function ChatRoom() {
             rooms={rooms}
             handleCurClicked={handleCurClicked}
             unread={unread}
+            curUser={curUser}
           />
         </St.StChatList>
         <St.StChatBoard $position={boardPosition}>

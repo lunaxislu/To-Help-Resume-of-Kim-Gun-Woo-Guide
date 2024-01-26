@@ -5,6 +5,8 @@ import { MessageType, RoomType } from './types';
 import parseDate from '../../util/getDate';
 import styled from 'styled-components';
 import { Product } from '../../api/supabase/products';
+import { UtilForChat } from '../../pages/chat/chat_utils/functions';
+import { User } from '@supabase/supabase-js';
 
 type Props = {
   rooms: RoomType[] | null | undefined;
@@ -12,6 +14,7 @@ type Props = {
   clicked: string | undefined;
   unread: any[] | null;
   handleBoardPosition: any;
+  curUser: User | null | undefined;
 };
 
 const ChatRoomList: React.FC<Props> = ({
@@ -19,7 +22,8 @@ const ChatRoomList: React.FC<Props> = ({
   handleCurClicked,
   clicked,
   unread,
-  handleBoardPosition
+  handleBoardPosition,
+  curUser
 }: Props) => {
   const [newMsg, setNewMsg] = useState<any | null>(null);
   const [allMessage, setAllMessage] = useState<MessageType[] | null>(null);
@@ -27,6 +31,8 @@ const ChatRoomList: React.FC<Props> = ({
   const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  const util = new UtilForChat();
 
   const updateToRead = async (room_id: string) => {
     await supabase
@@ -117,7 +123,7 @@ const ChatRoomList: React.FC<Props> = ({
     handleRealtime();
     getAllMessage();
     getProductsforRoom();
-  }, []);
+  }, [unread]);
 
   const checkDevice = (agent: string) => {
     const mobileRegex = [
@@ -145,7 +151,7 @@ const ChatRoomList: React.FC<Props> = ({
             <St.StListRoom
               onClick={(e) => {
                 updateToRead(room.id);
-
+                util.unreadCount(room.id, curUser);
                 handleCurClicked(e);
               }}
               $current={clicked}
@@ -188,6 +194,7 @@ const ChatRoomList: React.FC<Props> = ({
           return (
             <St.StListRoom
               onClick={(e) => {
+                util.unreadCount(room.id, curUser);
                 updateToRead(room.id);
                 handleCurClicked(e);
                 handleBoardPosition();

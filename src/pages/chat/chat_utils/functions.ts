@@ -9,8 +9,6 @@ import { User } from '@supabase/gotrue-js';
 import { v4 as uuid } from 'uuid';
 
 export class UtilForChat {
-  constructor() {}
-
   handleTargetUser = async (
     rooms: RoomType[] | null | undefined,
     clicked: string | undefined,
@@ -48,7 +46,7 @@ export class UtilForChat {
   };
 
   // 안 읽은 메세지를 count 해주는 함수
-  unreadCount = async (room_id: string, curUser: User) => {
+  unreadCount = async (room_id: string, curUser: User | null | undefined) => {
     let { data: chat_messages, error } = await supabase
       .from('chat_messages')
       .select()
@@ -58,7 +56,7 @@ export class UtilForChat {
     if (error) console.log('count error', error);
 
     return chat_messages?.filter(
-      (msg: MessageType) => msg.sender_id !== curUser.id
+      (msg: MessageType) => msg.sender_id !== curUser?.id
     ).length;
   };
 
