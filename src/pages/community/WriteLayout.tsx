@@ -1,6 +1,8 @@
+import { ImageActions } from '@xeger/quill-image-actions';
+import { ImageFormats } from '@xeger/quill-image-formats';
 import React, { useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router';
 import { v4 as uuid } from 'uuid';
@@ -13,21 +15,8 @@ import {
   updatePostMutation
 } from './commuQuery';
 import { WriteLayoutProps } from './model';
-// Quill.register('modules/imageActions', ImageActions);
-// Quill.register('modules/imageFormats', ImageFormats);
-const formats = [
-  'header',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'video',
-  'image',
-  'color',
-  'background',
-  'height',
-  'width'
-];
+Quill.register('modules/imageActions', ImageActions);
+Quill.register('modules/imageFormats', ImageFormats);
 
 const WriteLayout: React.FC<WriteLayoutProps> = ({
   profile,
@@ -76,7 +65,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       isValid = false;
     }
     if (!formValues.category) {
-      newErrors.category = '카테고리는 필수입니다';
+      newErrors.category = '분류는 필수입니다';
       isValid = false;
     }
     if (!formValues.content) {
@@ -210,13 +199,13 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         if (response.data) {
           const postImageUrl = response.data.publicUrl;
           const editor = quillRef.current?.getEditor();
-          const range = editor?.getSelection(true);
+          const range = editor?.getSelection();
           editor?.insertEmbed(range?.index || 0, 'image', postImageUrl);
           setFormValues((prevValues) => ({
             ...prevValues,
             mainImage: postImageUrl
           }));
-          editor?.setSelection((range?.index || 0) + 1, 0);
+          // editor?.setSelection((range?.index || 0) + 1, 0);
           console.log('가져왔다');
         } else {
           console.error('No public URL found in response data.');
@@ -229,8 +218,8 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
 
   const modules = useMemo(
     () => ({
-      imageActions: {},
-      imageFormats: {},
+      // imageActions: {},
+      // imageFormats: {},
       toolbar: {
         container: [
           // [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -248,6 +237,19 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     }),
     []
   );
+  const formats = [
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'video',
+    'image',
+    'color',
+    'background',
+    'height',
+    'width'
+  ];
 
   if (isError) {
     return <div>Error loading posts</div>;

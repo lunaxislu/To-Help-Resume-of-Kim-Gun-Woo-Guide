@@ -19,6 +19,7 @@ export const MainImg = styled.div`
     width: 6.6rem;
     height: 6.6rem;
     border-radius: 0.5rem;
+    object-fit: cover;
   }
   @media screen and (max-width: 768px) {
     width: 4rem;
@@ -127,6 +128,7 @@ export const PageNumber = styled.div`
 export const PageBtn = styled.button<PageBtnProps>`
   background-color: transparent;
   border: none;
+  cursor: pointer;
   color: ${(props) =>
     props.$currentPage === props.$pageNumber ? 'var(--opc-100)' : '#f8f8f8'};
 `;

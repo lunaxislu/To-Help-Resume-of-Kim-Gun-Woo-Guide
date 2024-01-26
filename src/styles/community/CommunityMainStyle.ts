@@ -45,7 +45,11 @@ export const WriteBtn = styled.button`
   font-family: 'Pretendard-Medium';
   cursor: pointer;
   @media screen and (max-width: 768px) {
-    display: none;
+    /* display: none; */ //검색창 잇을떄
+    margin-top: 1.5rem;
+    font-size: var(--fontSize-H6);
+    background-color: transparent;
+    width: 5rem;
   }
 `;
 export const WriteIcon = styled(BiEdit)`
@@ -136,7 +140,7 @@ export const DropdownItem = styled.div`
 `;
 export const DropIcon = styled(IoIosArrowDown)`
   color: var(--opc-100);
-  font-size: var(--fontSize-H3);
+  font-size: var(--fontSize-H4);
 `;
 export const SearchBar = styled.input`
   border: none;
@@ -145,6 +149,13 @@ export const SearchBar = styled.input`
   font-family: 'Pretendard-Medium';
   padding-left: 1.6rem;
   background-color: var(--3-gray);
+  width: 31.6rem;
+  margin-right: 1.2rem;
+
+  @media screen and (max-width: 768px) {
+    height: 2.8rem;
+    width: 16.4rem;
+  }
 `;
 export const Topper2 = styled.div`
   display: flex;
@@ -154,6 +165,13 @@ export const Topper2 = styled.div`
   color: var(--7-gray);
   font-family: 'Pretendard-Medium';
   justify-content: space-between;
+  white-space: nowrap;
+  & div {
+    display: flex;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
 `;
 export const SortBar = styled.div`
   display: flex;

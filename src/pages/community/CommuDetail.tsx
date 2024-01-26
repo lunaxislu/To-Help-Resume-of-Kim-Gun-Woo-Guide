@@ -54,19 +54,31 @@ const CommuDetail: React.FC = () => {
     }
   };
   if (isLoading) {
-    return <div></div>;
+    // return <SkeletonCommunityDetail />;
+    return <></>;
   }
 
   if (isError) {
     return <div>Error loading posts</div>;
   }
+  const handleOnClickBack = () => {
+    const confirm = window.confirm(
+      '수정한 글이 적용되지 않습니다. 그래도 페이지를 떠나시겠습니까?'
+    );
+    if (confirm) {
+      navigate(-1);
+    }
+  };
 
   return (
     <St.Container>
       {isEditState ? (
         <St.WriteWrap>
           <St.TitleTopper>
-            <button onClick={() => navigate('/community')}>{`<`}</button>
+            <St.BackBtnBox>
+              <St.BackIcon onClick={handleOnClickBack} />
+            </St.BackBtnBox>
+
             <h1>게시글 수정</h1>
             <p>*필수항목</p>
           </St.TitleTopper>
@@ -87,9 +99,9 @@ const CommuDetail: React.FC = () => {
                   <div>
                     <St.MainTopper>
                       <St.TitleCategory>
-                        <button
-                          onClick={() => navigate('/community')}
-                        >{`<`}</button>
+                        <St.BackBtnBox>
+                          <St.BackIcon onClick={() => navigate(-1)} />
+                        </St.BackBtnBox>
                         <h1>{post.title}</h1>
                         <St.Category>{post.category}</St.Category>
                       </St.TitleCategory>

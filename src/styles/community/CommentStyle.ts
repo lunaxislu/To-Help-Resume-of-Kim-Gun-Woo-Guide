@@ -113,6 +113,7 @@ export const Form = styled.form`
     padding-bottom: 1.5rem;
   }
   @media screen and (max-width: 768px) {
+    width: 100%;
     position: fixed;
     bottom: 0;
     margin: 0;

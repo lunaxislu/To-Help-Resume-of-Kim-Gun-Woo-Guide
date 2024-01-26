@@ -1,5 +1,6 @@
 import { AiFillAlert } from 'react-icons/ai';
 import { BsThreeDots } from 'react-icons/bs';
+import { GoChevronLeft } from 'react-icons/go';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiBallPenLine } from 'react-icons/ri';
 import styled from 'styled-components';
@@ -13,11 +14,15 @@ export const Content = styled.div`
   font-size: var(--fontSize-body);
   font-weight: var(--fontWeight-medium);
   & img {
-    max-width: 100%;
+    max-width: 40rem;
+    width: 60%;
   }
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
     line-height: 2rem;
+    & img {
+      max-width: 28rem;
+    }
   }
 `;
 export const Container = styled.div`
@@ -203,12 +208,12 @@ export const TitleTopper = styled.div`
   border-bottom: 1px solid var(--4-gray);
   margin-bottom: 2rem;
   gap: 1rem;
-  & button {
+  /* & button {
     font-size: var(--fontSize-H1);
     background-color: transparent;
     border: none;
     color: var(--opc-100);
-  }
+  } */
   & p {
     font-size: var(--fontSize-H6);
     color: var(--opc-100);
@@ -254,5 +259,37 @@ export const DropdownItem = styled.div`
     padding: 12px 12px;
     font-size: var(--fontSize-H6);
     cursor: pointer;
+  }
+`;
+// export const BackIcon = styled(GoChevronLeft)`
+//   color: var(--opc-100);
+//   display: none;
+//   width: 2rem;
+//   height: 1.5rem;
+//   :hover {
+//     cursor: pointer;
+//   }
+//   @media screen and (max-width: 768px) {
+//     display: block;
+//   }
+// `;
+export const BackBtnBox = styled.div`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+    width: 2rem;
+    height: 1.5rem;
+    :hover {
+      cursor: pointer;
+    }
+  }
+`;
+export const BackIcon = styled(GoChevronLeft)`
+  width: 100%;
+  height: 100%;
+  color: var(--opc-100);
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
   }
 `;

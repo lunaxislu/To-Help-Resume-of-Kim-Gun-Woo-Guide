@@ -65,7 +65,9 @@ const Write: React.FC = () => {
     <St.Container>
       <St.ContentContainer>
         <St.Topper>
-          <St.BackIcon onClick={handleOnClickBack} />
+          <St.BackBtnBox>
+            <St.BackIcon onClick={handleOnClickBack} />
+          </St.BackBtnBox>
           <h1>글쓰기</h1>
           <p>* 필수항목</p>
         </St.Topper>

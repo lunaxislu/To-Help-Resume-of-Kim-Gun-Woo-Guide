@@ -49,17 +49,20 @@ const CommunityMain: React.FC = () => {
             <St.WriteIcon /> 글쓰기
           </St.WriteBtn>
         </St.FeatureBar>{' '}
-        <St.Topper2>
+        {/* <St.Topper2> 검색잇을 때
           <div>
-            <St.SearchBar placeholder="검색어를 입력하세요" />
+            <div>
+              <St.SearchBar placeholder="검색어를 입력하세요" />
+            </div>
+            <St.WriteBtn2
+              onClick={() => {
+                navigate('/community_write');
+              }}
+            >
+              <St.WriteIcon /> 글쓰기
+            </St.WriteBtn2>
           </div>
-          <St.WriteBtn2
-            onClick={() => {
-              navigate('/community_write');
-            }}
-          >
-            <St.WriteIcon /> 글쓰기
-          </St.WriteBtn2>
+
           <St.SortBar
             onClick={() => {
               setEditToolOpen(!editToolOpen);
@@ -74,7 +77,7 @@ const CommunityMain: React.FC = () => {
               <St.DropdownItem>인기순</St.DropdownItem>
             </St.EditDropdown>
           )}
-        </St.Topper2>
+        </St.Topper2> */}
         <CommuList selectCategory={selectCategory} />
       </St.Post_container>
     </St.Container>

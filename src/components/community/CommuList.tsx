@@ -35,7 +35,8 @@ const CommuList: React.FC<CommuListProps> = ({
   }, [selectCategory]);
 
   if (isLoading) {
-    return <St.Title>Loading...</St.Title>;
+    // return <SkeletonCommunityCard cards={2} />;
+    return <></>;
   }
 
   if (isError) {
@@ -50,52 +51,44 @@ const CommuList: React.FC<CommuListProps> = ({
   };
   const posts = postInfo?.data;
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-  console.log(pages);
+
   return (
     <div>
       <St.Container>
-        {posts
-          // ?.filter((post) => {
-          //   if (selectCategory === '전체') {
-          //     return posts;
-          //   } else {
-          //     return post.category === selectCategory;
-          //   }
-          // })
-          ?.map((post: Post) => {
-            return (
-              <St.Posts
-                key={post.post_id}
-                onClick={() => navigate(`/community/detail/${post.post_id}`)}
-              >
-                <div>
-                  {' '}
-                  <h2>{post.title}</h2>
-                  <St.ContentsContainer>
-                    {post.main_image && (
-                      <St.MainImg>
-                        <img src={post.main_image} alt="Main" />
-                      </St.MainImg>
-                    )}
+        {posts?.map((post: Post) => {
+          return (
+            <St.Posts
+              key={post.post_id}
+              onClick={() => navigate(`/community/detail/${post.post_id}`)}
+            >
+              <div>
+                {' '}
+                <h2>{post.title}</h2>
+                <St.ContentsContainer>
+                  {post.main_image && (
+                    <St.MainImg>
+                      <img src={post.main_image} alt="Main" />
+                    </St.MainImg>
+                  )}
 
-                    <St.ContentArea>{handleText(post.content)}</St.ContentArea>
-                  </St.ContentsContainer>
+                  <St.ContentArea>{handleText(post.content)}</St.ContentArea>
+                </St.ContentsContainer>
+              </div>
+              <St.RightSide>
+                {' '}
+                <St.CommentArea>
+                  <St.LikesIcon />
+                  <p>{post.likes}</p>
+                  <St.CommentIcon />
+                  <p>{post.comment?.length}</p>
+                </St.CommentArea>
+                <div>
+                  <p>{parseDate(post.created_at)}</p>
                 </div>
-                <St.RightSide>
-                  {' '}
-                  <St.CommentArea>
-                    <St.LikesIcon />
-                    <p>{post.likes}</p>
-                    <St.CommentIcon />
-                    <p>{post.comment?.length}</p>
-                  </St.CommentArea>
-                  <div>
-                    <p>{parseDate(post.created_at)}</p>
-                  </div>
-                </St.RightSide>
-              </St.Posts>
-            );
-          })}
+              </St.RightSide>
+            </St.Posts>
+          );
+        })}
       </St.Container>
       <St.PageNumber>
         {pages.map((number) => (
@@ -103,7 +96,10 @@ const CommuList: React.FC<CommuListProps> = ({
             $currentPage={currentPage}
             $pageNumber={number}
             key={number}
-            onClick={() => setCurrentPage(number)}
+            onClick={() => {
+              setCurrentPage(number);
+              window.scrollTo({ top: 0 });
+            }}
           >
             {number}
           </St.PageBtn>

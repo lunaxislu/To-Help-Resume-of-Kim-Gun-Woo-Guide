@@ -50,7 +50,7 @@ export const LayoutTitleContainer = styled.div`
     padding-left: 16px;
     color: var(--12-gray);
     font-family: 'Pretendard-Medium';
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-body);
     &::placeholder {
       color: var(--5-gray);
       font-size: var(--fontSize-H5);
@@ -61,7 +61,7 @@ export const LayoutTitleContainer = styled.div`
     gap: 1rem;
     & input {
       height: 3rem;
-
+      font-size: var(--fontSize-H6);
       &::placeholder {
         font-size: var(--fontSize-H6);
       }
@@ -177,7 +177,7 @@ export const LayoutFileUploader = styled.label`
   width: 100%;
   max-width: 90.6rem;
   color: var(--5-gray);
-
+  margin-bottom: 1.5rem;
   & input {
     display: none;
   }
@@ -223,6 +223,9 @@ export const LayoutQuillEditor = styled(ReactQuill)`
     display: flex;
     line-height: 30px;
     font-size: var(--fontSize-body);
+  }
+  .ql-editor img {
+    width: 60%;
   }
   @media screen and (max-width: 768px) {
     .ql-container {
@@ -305,20 +308,42 @@ export const Validate = styled.p`
   font-size: var(--fontSize-H6);
   font-weight: var(--fontWeight-regular);
   margin-bottom: 2rem;
+  margin-left: 18%;
 
   @media screen and (max-width: 768px) {
     font-size: 1rem;
+    margin-left: 0;
   }
 `;
 
+// export const BackIcon = styled(GoChevronLeft)`
+//   color: var(--opc-100);
+//   display: none;
+//   width: 2rem;
+//   height: 1.5rem;
+//   :hover {
+//     cursor: pointer;
+//   }
+//   @media screen and (max-width: 768px) {
+//     display: block;
+//   }
+// `;
+export const BackBtnBox = styled.div`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+    width: 2rem;
+    height: 1.5rem;
+    :hover {
+      cursor: pointer;
+    }
+  }
+`;
 export const BackIcon = styled(GoChevronLeft)`
+  width: 100%;
+  height: 100%;
   color: var(--opc-100);
   display: none;
-  width: 2rem;
-  height: 1.5rem;
-  :hover {
-    cursor: pointer;
-  }
   @media screen and (max-width: 768px) {
     display: block;
   }
