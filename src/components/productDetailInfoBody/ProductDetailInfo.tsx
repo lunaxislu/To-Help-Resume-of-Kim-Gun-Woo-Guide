@@ -82,7 +82,7 @@ const StMapModal = styled.div`
   position: absolute;
   width: 100%;
   height: 300px;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
 
@@ -90,6 +90,7 @@ const StMapModal = styled.div`
     font-size: 1rem;
     width: 100%;
     max-width: 768px;
+    top: 55%;
   }
 `;
 

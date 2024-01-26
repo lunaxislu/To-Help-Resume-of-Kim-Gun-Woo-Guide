@@ -43,7 +43,7 @@ export class UtilForChat {
       setMessages(chat_messages as MessageType[]);
     }
 
-    if (error) console.log('failed set message', error);
+    if (error) return;
   };
 
   // 안 읽은 메세지를 count 해주는 함수
