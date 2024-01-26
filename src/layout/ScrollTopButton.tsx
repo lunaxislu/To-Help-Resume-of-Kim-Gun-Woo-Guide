@@ -20,11 +20,12 @@ const ScrollTopButton = () => {
 
 const TopButton = styled.button`
   position: fixed;
-  bottom: 100px;
+  bottom: 130px;
   right: 10px;
   padding: 10px;
   border: none;
   cursor: pointer;
+  z-index: 10;
   transition: opacity 0.5s;
   background-color: transparent;
   @media screen and (max-width: 768px) {

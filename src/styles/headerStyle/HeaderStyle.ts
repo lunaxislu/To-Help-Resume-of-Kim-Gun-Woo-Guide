@@ -2,16 +2,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const HeaderContainer = styled.header`
-  /* width: 144rem;
-  height: 14.8rem;
-  display: flex;
-  flex-shrink: 0;
-  flex-direction: column;
-  margin: 0 auto;
-  background-color: {
-    color: var(--bgColor);
-  } */
-
   width: 144rem;
   display: flex;
   flex-shrink: 0;
@@ -37,10 +27,6 @@ export const HeaderContainer = styled.header`
 `;
 
 export const HeaderSection = styled.section`
-  /* 
-  margin: 0 10rem;
-  margin-top: 3.4rem; */
-
   display: flex;
   justify-content: space-between;
   align-items: center;

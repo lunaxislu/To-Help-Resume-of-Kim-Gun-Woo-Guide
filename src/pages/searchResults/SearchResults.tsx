@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { supabase } from '../../api/supabase/supabaseClient';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/store';
 import styled from 'styled-components';
@@ -8,14 +7,58 @@ import parseDate from '../../util/getDate';
 import { setSearchResults } from '../../redux/modules/searchSlice';
 import { FaArrowRight } from 'react-icons/fa';
 import { researchItems, ResearchResults } from './researchItem';
+import DropDown from '../../styles/searchresults/Dropdown';
+
+interface ListCount {
+  usedItemCount: number;
+  communityCount: number;
+}
+
 const SearchResults: React.FC = () => {
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
   const { usedItemResults, communityResults } = useSelector(
     (state: RootState) => state.search.searchResults
   );
   const dispatch = useDispatch();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
+
+  //드롭다운메뉴 조건부렌더링
+  const [productsSort, setProductsSort] = useState<
+    '최신순' | '낮은가격순' | '높은가격순'
+  >('최신순');
+  const [communitySort, setCommunitySort] = useState<'최신순' | '인기순'>(
+    '최신순'
+  );
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [clickMenu, setClickMenu] = useState('최신순');
+
+  const handleProductsSort = (sort: '최신순' | '낮은가격순' | '높은가격순') => {
+    setProductsSort(sort);
+    setClickMenu(sort);
+  };
+  const handleCommunitySort = (sort: '최신순' | '인기순') => {
+    setCommunitySort(sort);
+    setClickMenu(sort);
+  };
+
   const newSearchQuery = new URLSearchParams(location.search).get('q') || '';
+
+  const checkWindowSize = () => {
+    setIsMobile(window.innerWidth <= 768);
+  };
+
+  useEffect(() => {
+    checkWindowSize();
+    window.removeEventListener('DOMContentLoaded', checkWindowSize);
+    window.addEventListener('resize', checkWindowSize);
+
+    return () => {
+      window.removeEventListener('DOMContentLoaded', checkWindowSize);
+      window.removeEventListener('resize', checkWindowSize);
+    };
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -67,13 +110,42 @@ const SearchResults: React.FC = () => {
       </SearchResultsCountContainer>
       <ResultListContainer>
         <UsedItemResultsContainer>
-          <CountBar>
-            <CountList>{usedItemCount}개의 상품이 거래되고 있어요</CountList>
-            <LinktoUsedProducts to="/products">
-              <p>전체보기</p>
-              <FaArrowRight />
-            </LinktoUsedProducts>
-          </CountBar>
+          {isMobile ? (
+            <CountBar>
+              <CountPost>
+                <ProductsCount
+                  onClick={() => {
+                    handleProductsSort('최신순');
+                  }}
+                >
+                  중고거래({usedItemCount})
+                </ProductsCount>
+                <CommunityCount
+                  onClick={() => {
+                    handleCommunitySort('최신순');
+                  }}
+                >
+                  커뮤니티({communityCount})
+                </CommunityCount>
+              </CountPost>
+              <DropDown
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                clickMenu={clickMenu}
+                setClickMenu={setClickMenu}
+              />
+            </CountBar>
+          ) : (
+            <CountBar>
+              <CountList>{usedItemCount}개의 상품이 거래되고 있어요</CountList>
+              <LinktoUsedProducts to="/products">
+                <p>전체보기</p>
+
+                <FaArrowRight />
+              </LinktoUsedProducts>
+            </CountBar>
+          )}
+
           <UsedItemsList usedItemCount={usedItemCount}>
             {usedItemResults.slice(0, 5).map((item) => (
               <ToProductsPage key={item.id} to={`/products/detail/${item.id}`}>
@@ -102,13 +174,13 @@ const SearchResults: React.FC = () => {
           </UsedItemsList>
         </UsedItemResultsContainer>
         <CommunityResultsContainer>
-          <CountBar>
+          <CommunityTitle>
             <CountList>{communityCount}개의 이야기가 있어요</CountList>
             <LinktoCommunityPosts to="/community">
               <p>전체보기</p>
               <FaArrowRight />
             </LinktoCommunityPosts>
-          </CountBar>
+          </CommunityTitle>
           <CommunityPostsList>
             {communityResults.slice(0, 6).map((item) => (
               <ToCommunityPage
@@ -116,24 +188,26 @@ const SearchResults: React.FC = () => {
                 to={`/community/detail/${item.post_id}`}
               >
                 <PostList>
-                  <div className="commupic">
-                    {item.image_Url ? (
-                      <img
-                        className="community-pic"
-                        src={item.image_Url}
-                        alt="Community Post"
-                      />
-                    ) : (
-                      <img
-                        className="nopicture"
-                        src={
-                          process.env.PUBLIC_URL + '/assets/commudefault.png'
-                        }
-                        alt="Default User"
-                      />
-                    )}
-                    <div className="commucontent">
+                  <div className="commucontent">
+                    <div className="ttitle">
                       <h3>{item.title}</h3>
+                    </div>
+                    <div className="commupic">
+                      {item.image_Url ? (
+                        <img
+                          className="community-pic"
+                          src={item.image_Url}
+                          alt="Community Post"
+                        />
+                      ) : (
+                        <img
+                          className="nopicture"
+                          src={
+                            process.env.PUBLIC_URL + '/assets/commudefault.png'
+                          }
+                          alt="Default User"
+                        />
+                      )}
                       <p>{handleText(item.content)}</p>{' '}
                     </div>
                   </div>
@@ -153,6 +227,7 @@ const SearchResults: React.FC = () => {
                       />
                     </svg>
                     <span className="likescount">{item.likes}</span>
+
                     <svg
                       className="commentss"
                       width="12"
@@ -167,7 +242,7 @@ const SearchResults: React.FC = () => {
                         fillOpacity="0.7"
                       />
                     </svg>
-                    <span className="mycomments">{item.comment.length}</span>
+                    <span>{item.comment.length}</span>
                     <h4>{parseDate(item.created_at)}</h4>
                   </div>
                 </PostList>
@@ -186,14 +261,19 @@ const SearchResultsContainer = styled.div`
   display: flex;
   width: 144rem;
   flex-direction: column;
+  min-height: 100vh;
   margin: 0 auto;
+  margin-bottom: 13rem;
   color: var(--12, #f8f8f8);
   background-color: var(--1, #0b0b0b);
   @media screen and (max-width: 1024px) {
-    max-width: 100%;
+    width: 100%;
+    max-width: 102.4rem;
   }
-  @media screen and (max-width: 320px) {
-    max-width: 100%;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: 76.8rem;
+    min-width: 32rem;
   }
 `;
 
@@ -202,14 +282,16 @@ const SearchResultsCountContainer = styled.div`
   margin-top: 6rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
 `;
 const CheckImage = styled.img`
   margin: 0 auto;
   width: 6.6rem;
   height: 6.6rem;
-  @media screen and (max-width: 320px) {
+  @media screen and (max-width: 768px) {
+    width: 4.4rem;
+    height: 4.4rem;
     display: none;
   }
 `;
@@ -217,30 +299,74 @@ const FullCounts = styled.div`
   margin-top: 2rem;
   font-size: var(--fontSize-H1);
   font-weight: var(--fontWeight-bold);
-  @media screen and (max-width: 320px) {
+  @media screen and (max-width: 768px) {
     display: none;
   }
 `;
 const ResultListContainer = styled.div`
+  width: 111.6rem;
   display: flex;
   flex-direction: column;
   border-top: 1px solid #717171;
-  margin: 6rem 16.2rem;
-  margin-bottom: 13rem;
+  margin: 0 auto;
+  margin-top: 3rem;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 const UsedItemResultsContainer = styled.div`
   margin-top: 2rem;
   width: 100%;
+  margin-bottom: 4rem;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 const CountBar = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  @media screen and (max-width: 768px) {
+    padding: 0 1.5rem;
+  }
+`;
+const CountPost = styled.div`
+  display: flex;
+  width: 100%;
+  font-size: var(--fontSize-H3);
+  align-items: center;
+  gap: 3rem;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    gap: 1rem;
+    font-size: var(--fontSize-H5);
+  }
+`;
+
+const ProductsCount = styled.h1`
+  width: 10rem;
+  cursor: pointer;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`;
+const CommunityCount = styled.h1`
+  width: 10rem;
+  cursor: pointer;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const CountList = styled.h1`
   display: flex;
   font-size: var(--fontSize-H3);
   align-items: center;
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H5);
+  }
 `;
 const LinktoUsedProducts = styled(Link)`
   display: flex;
@@ -249,6 +375,7 @@ const LinktoUsedProducts = styled(Link)`
   width: 8.3rem;
   height: 3.2rem;
   text-decoration: none;
+
   cursor: pointer;
   font-weight: var(--fontWeight-bold);
   gap: 0.8rem;
@@ -257,6 +384,12 @@ const LinktoUsedProducts = styled(Link)`
   font-size: var(--fontSize-H6);
   font-weight: var(--fontWeight-medium);
   color: var(--11-gray);
+  @media screen and (max-width: 768px) {
+    background: none;
+    width: 6rem;
+    font-size: 1.1rem;
+    gap: 0.3rem;
+  }
   &:hover {
     background-color: #83ad2e;
     color: #101d1c;
@@ -264,15 +397,57 @@ const LinktoUsedProducts = styled(Link)`
   svg {
     width: 1rem;
     height: 0.9rem;
+    @media screen and (max-width: 768px) {
+      width: 1rem;
+      height: 0.9rem;
+      color: var(--opc-100);
+    }
   }
 `;
 const UsedItemsList = styled.ul<{ usedItemCount: number }>`
-  width: 111.6rem;
-  height: ${({ usedItemCount }) => (usedItemCount === 0 ? '6rem' : '32rem')};
-  display: flex;
-  flex-wrap: wrap;
+  width: 100%;
+  height: ${({ usedItemCount }) => (usedItemCount === 0 ? '6rem' : '35rem')};
+  display: grid;
+  margin: auto;
+
+  grid-template-columns: repeat(5, 1fr);
   margin-top: 2rem;
-  gap: 1.5rem;
+  row-gap: 1.5rem;
+  column-gap: 1.8rem;
+  align-items: flex-start;
+  justify-content: center;
+  place-items: center;
+  margin-top: 2rem;
+
+  @media screen and (max-width: 1160px) {
+    grid-template-columns: repeat(4, 1fr);
+    height: 100vh;
+  }
+
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+    height: 100vh;
+  }
+
+  @media screen and (max-width: 768px) {
+    column-gap: 1.5rem;
+    row-gap: 1.8rem;
+    grid-template-columns: repeat(3, 1fr);
+    height: 100vh;
+  }
+  @media screen and (max-width: 670px) {
+    column-gap: 1.5rem;
+    row-gap: 1.8rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 520px) {
+    row-gap: 1.8rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (max-width: 349px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 const ToProductsPage = styled(Link)`
   text-decoration: none;
@@ -280,20 +455,41 @@ const ToProductsPage = styled(Link)`
   color: var(--11-gray);
 `;
 const ProductList = styled.li`
-  display: inline-block;
   width: 20.8rem;
-  height: 31.5rem;
+  /* height: 31.5rem; */
+  display: flex;
   flex-direction: column;
-  div {
-    object-fit: cover;
-    justify-content: center;
+  @media screen and (max-width: 768px) {
+    width: 100%;
   }
-  img {
+  @media screen and (max-width: 520px) {
+    width: 100%;
+  }
+  div {
     width: 20.8rem;
     height: 20.8rem;
     object-fit: cover;
-    border-style: none;
+    justify-content: center;
     border-radius: 0.6rem;
+    @media screen and (max-width: 768px) {
+      width: 14rem;
+      height: 14rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  img {
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.6rem;
+    border-style: none;
+    @media screen and (max-width: 768px) {
+      width: 14rem;
+      height: 14rem;
+      border-radius: 0.6rem;
+    }
   }
   h1 {
     width: 9rem;
@@ -305,11 +501,30 @@ const ProductList = styled.li`
     margin-top: 1rem;
     font-size: var(--fontSize-H6);
     font-weight: var(--fontWeight-bold);
+    @media screen and (max-width: 768px) {
+      margin-top: 1rem;
+      width: 6.5rem;
+      height: 2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      line-height: 191.2%;
+      text-align: center;
+      background-color: var(--opc-100);
+      color: var(--2-gray);
+      padding: 0;
+    }
   }
   h3 {
     font-size: var(--fontSize-body);
     color: var(--11-gray);
     margin-top: 1rem;
+    @media screen and (max-width: 768px) {
+      width: 14rem;
+      margin-top: 0.6rem;
+      color: var(--11-gray, #f8f8f8);
+      font-weight: var(--fontWeight-medium);
+      font-size: var(--fontSize-H5);
+    }
   }
 
   p {
@@ -318,12 +533,37 @@ const ProductList = styled.li`
     color: var(--11-gray);
     margin-top: 1rem;
     text-align: left;
+    @media screen and (max-width: 768px) {
+      width: 6rem;
+      height: 2.3rem;
+      font-weight: var(--fontWeight-bold);
+      font-size: var(--fontSize-H5);
+    }
   }
 `;
+
 const CommunityResultsContainer = styled.div`
   width: 111.6rem;
-  height: 71.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 0 auto;
   margin-top: 8rem;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin-top: 3rem;
+  }
+`;
+const CommunityTitle = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 1rem;
+  }
 `;
 const LinktoCommunityPosts = styled(Link)`
   text-decoration: none;
@@ -343,6 +583,13 @@ const LinktoCommunityPosts = styled(Link)`
   font-size: var(--fontSize-H6);
   font-weight: var(--fontWeight-medium);
   color: var(--11-gray);
+  @media screen and (max-width: 768px) {
+    display: flex;
+    background: none;
+    width: 6rem;
+    font-size: 1.1rem;
+    gap: 0.3rem;
+  }
   &:hover {
     background-color: #83ad2e;
     color: #101d1c;
@@ -350,45 +597,90 @@ const LinktoCommunityPosts = styled(Link)`
   svg {
     width: 1rem;
     height: 0.9rem;
+    @media screen and (max-width: 768px) {
+      width: 9px;
+      height: 8px;
+      color: var(--opc-100);
+    }
   }
 `;
 const CommunityPostsList = styled.ul`
-  width: 111.6rem;
-  margin-top: 2.2rem;
+  width: 100%;
+  margin-top: 2.2rem auto;
   background-color: transparent;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: 1fr;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
+
+  @media screen and (max-width: 520px) {
+    gap: 1rem;
+  }
 `;
 const ToCommunityPage = styled(Link)`
   text-decoration: none;
   cursor: pointer;
   color: var(--11-gray);
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 const PostList = styled.li`
   width: 54.6rem;
   height: 19.5rem;
   display: inline-block;
   position: relative;
-  height: 19.5rem;
   align-items: center;
   border-radius: 1rem;
   background-color: #1f1f1f;
   padding: 2rem;
+  margin-bottom: 2rem;
 
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: 1rem;
+  }
+  @media screen and (max-width: 520px) {
+    width: 100%;
+    padding: 1rem;
+  }
   .nopicture {
     width: 6.6rem;
     height: 6.6rem;
     object-fit: cover;
+    @media screen and (max-width: 768px) {
+      width: 4rem;
+      height: 4rem;
+    }
   }
   .commupic {
     display: flex;
+    gap: 1.2rem;
+    @media screen and (max-width: 768px) {
+    }
   }
   .commucontent {
     margin-left: 1.5rem;
     /* margin-bottom: 3rem; */
     /* gap: 10px; */
+  }
+  .community-pic {
+    width: 6.6rem;
+    height: 6.6rem;
+    object-fit: cover;
+    @media screen and (max-width: 768px) {
+      width: 4rem;
+      height: 4rem;
+    }
   }
   h3 {
     color: var(--11-gray);
@@ -399,51 +691,88 @@ const PostList = styled.li`
     white-space: nowrap;
     text-overflow: ellipsis;
     max-width: 48rem;
+    @media screen and (max-width: 768px) {
+      margin-top: 1rem;
+      font-size: var(--fontSize-H5);
+      font-weight: var(--fontWeight-bold);
+      width: 20rem;
+    }
   }
 
   p {
     overflow: hidden;
-    font-size: var(--fontSize-H5);
+    font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-medium);
     color: var(--8-gray);
-    max-width: 48.6rem;
+    max-width: 41rem;
     height: 6.6rem;
-    line-height: 2.2rem;
+    line-height: 19rem;
+
+    @media screen and (max-width: 768px) {
+      font-size: var(--fontSize-H6);
+      line-height: 1.92rem;
+      height: 6rem;
+    }
   }
 
+  .thumbs {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 3.5rem;
+    width: 2rem;
+    height: 2rem;
+    @media screen and (max-width: 768px) {
+      width: 1.3rem;
+      height: 1.2rem;
+      left: 3rem;
+      bottom: 1.5rem;
+    }
+  }
+  .likescount {
+    position: absolute;
+    text-decoration: none;
+    bottom: 1.5rem;
+    left: 7rem;
+    color: var(--6, #717171);
+    @media screen and (max-width: 768px) {
+      font-size: 1.1rem;
+      left: 5.5rem;
+    }
+  }
+  .commentss {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 12rem;
+    width: 2rem;
+    height: 2rem;
+    @media screen and (max-width: 768px) {
+      width: 1.3rem;
+      height: 1.2rem;
+      left: 8.5rem;
+      bottom: 1.5rem;
+    }
+  }
+
+  span {
+    position: absolute;
+    text-decoration: none;
+    bottom: 1.5rem;
+    left: 15rem;
+    color: var(--6, #717171);
+    @media screen and (max-width: 768px) {
+      font-size: 1.1rem;
+      left: 11rem;
+    }
+  }
   h4 {
     position: absolute;
     bottom: 1.5rem;
     right: 1.5rem;
     color: var(--6, #717171);
     font-size: var(--fontSize-H6);
-  }
-  .thumbs {
-    position: absolute;
-    bottom: 1.4rem;
-    left: 2rem;
-    width: 2rem;
-    height: 2rem;
-  }
-  .likescount {
-    position: absolute;
-    text-decoration: none;
-    bottom: 1.4rem;
-    left: 5rem;
-    color: var(--6, #717171);
-  }
-  .commentss {
-    position: absolute;
-    bottom: 1.4rem;
-    left: 8rem;
-    width: 2rem;
-    height: 2rem;
-  }
-  .mycomments {
-    position: absolute;
-    text-decoration: none;
-    bottom: 1.4rem;
-    left: 11rem;
-    color: var(--6, #717171);
+    @media screen and (max-width: 768px) {
+      font-size: 1rem;
+      right: 1.5rem;
+    }
   }
 `;

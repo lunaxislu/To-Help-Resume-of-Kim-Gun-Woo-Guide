@@ -400,9 +400,9 @@ const ProductsList = styled.li`
     font-weight: var(--fontWeight-bold);
     @media screen and (max-width: 768px) {
       margin-top: 1rem;
-      width: 4.7rem;
-      height: 1.5rem;
-      font-size: 0.8rem;
+      width: 6.5rem;
+      height: 2rem;
+      font-size: 1rem;
       font-weight: 500;
       line-height: 191.2%;
       text-align: center;
@@ -420,7 +420,7 @@ const ProductsList = styled.li`
       margin-top: 0.6rem;
       color: var(--11-gray, #f8f8f8);
       font-weight: var(--fontWeight-medium);
-      font-size: var(--fontSize-H6);
+      font-size: var(--fontSize-H5);
       /* line-height: 191.2%; */
     }
   }
@@ -435,7 +435,7 @@ const ProductsList = styled.li`
       width: 6rem;
       height: 2.3rem;
       font-weight: var(--fontWeight-bold);
-      font-size: var(--fontSize-H6);
+      font-size: var(--fontSize-H5);
     }
   }
 `;
@@ -563,7 +563,6 @@ const ComunityList = styled.li`
   height: 19.5rem;
   display: inline-block;
   position: relative;
-  height: 19.5rem;
   align-items: center;
   border-radius: 1rem;
   background-color: #1f1f1f;
@@ -619,6 +618,7 @@ const ComunityList = styled.li`
     text-overflow: ellipsis;
     max-width: 48rem;
     @media screen and (max-width: 768px) {
+      margin-top: 1rem;
       font-size: var(--fontSize-H5);
       font-weight: var(--fontWeight-bold);
       width: 20rem;
@@ -632,12 +632,12 @@ const ComunityList = styled.li`
     color: var(--8-gray);
     max-width: 41rem;
     height: 6.6rem;
-    line-height: 2.2rem;
+    line-height: 19rem;
 
     @media screen and (max-width: 768px) {
       font-size: var(--fontSize-H6);
       line-height: 1.92rem;
-      height: 4rem;
+      height: 6rem;
     }
   }
 
