@@ -58,15 +58,14 @@ export default function ChatRoom() {
   const utilFunctions = new UtilForChat();
 
   const handleBoardPosition = () => {
-    if (window.innerWidth <= 768) {
+    if (isMobile) {
       window.history.pushState(null, '', '');
       setboardPosition(0);
     } else {
-      window.history.pushState(null, '', '');
       setboardPosition(0);
     }
   };
-  const handleHideBoardPosition = () => {
+  const handleHideBoardPosition = (): void => {
     setboardPosition(100);
   };
 
@@ -162,7 +161,7 @@ export default function ChatRoom() {
 
   useEffect(() => {
     if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
-    if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
+    if (!checkDevice(window.navigator.userAgent)) setIsMobile(false);
   }, []);
 
   useEffect(() => {

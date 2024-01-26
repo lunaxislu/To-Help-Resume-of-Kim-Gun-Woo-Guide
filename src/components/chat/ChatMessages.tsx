@@ -42,7 +42,7 @@ const ChatMessages = ({
         )
         .map((msg: any) => {
           return msg.sender_id === curUser?.id ? (
-            <>
+            <div key={msg.id}>
               {msg.isFirst ? (
                 <div
                   key={msg.id}
@@ -72,7 +72,7 @@ const ChatMessages = ({
                   )}
                 </div>
               )}
-            </>
+            </div>
           ) : (
             <div key={msg.id} style={{ cursor: 'pointer' }}>
               {msg.image_url && <StImageballoon src={msg.image_url} alt="" />}

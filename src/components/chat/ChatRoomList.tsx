@@ -5,7 +5,6 @@ import { MessageType, RoomType } from './types';
 import parseDate from '../../util/getDate';
 import styled from 'styled-components';
 import { Product } from '../../api/supabase/products';
-import { useNavigate } from 'react-router';
 
 type Props = {
   rooms: RoomType[] | null | undefined;
