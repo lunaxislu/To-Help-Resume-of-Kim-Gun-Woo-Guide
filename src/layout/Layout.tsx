@@ -100,7 +100,11 @@ const Layout = () => {
         .select('*')
         .eq('uid', userId);
       if (chatRooms) {
-        setUserChatRoom(chatRooms[0].chat_rooms);
+        setUserChatRoom(chatRooms[0]?.chat_rooms);
+      }
+      // 임시 에러처리
+      if (error) {
+        return;
       }
     };
 
