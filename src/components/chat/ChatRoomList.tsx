@@ -40,6 +40,8 @@ const ChatRoomList: React.FC<Props> = ({
       .update({ isNew: false })
       .eq('chat_room_id', clicked)
       .eq('isNew', true);
+
+    await util.unreadCount(room_id, curUser);
   };
 
   const handleRealtime = () => {
@@ -123,7 +125,8 @@ const ChatRoomList: React.FC<Props> = ({
     handleRealtime();
     getAllMessage();
     getProductsforRoom();
-  }, [unread]);
+    updateToRead(clicked as string);
+  }, []);
 
   const checkDevice = (agent: string) => {
     const mobileRegex = [
@@ -151,7 +154,6 @@ const ChatRoomList: React.FC<Props> = ({
             <St.StListRoom
               onClick={(e) => {
                 updateToRead(room.id);
-                util.unreadCount(room.id, curUser);
                 handleCurClicked(e);
               }}
               $current={clicked}
@@ -194,10 +196,9 @@ const ChatRoomList: React.FC<Props> = ({
           return (
             <St.StListRoom
               onClick={(e) => {
-                util.unreadCount(room.id, curUser);
-                updateToRead(room.id);
                 handleCurClicked(e);
                 handleBoardPosition();
+                updateToRead(room.id);
               }}
               $current={clicked}
               id={room.id}
