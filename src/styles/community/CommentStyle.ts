@@ -37,15 +37,18 @@ export const CommentIcon = styled(FaComment)`
 export const LikesIcon = styled(FaRegThumbsUp)`
   color: var(--opc-100);
   font-size: 1.7rem;
+  cursor: pointer;
 `;
 export const LikesIconOn = styled(FaThumbsUp)`
   color: var(--opc-100);
   font-size: 1.7rem;
+  cursor: pointer;
 `;
 export const SendIcon = styled(BsArrowReturnLeft)`
   color: var(--opc-100);
   font-size: 1.9rem;
   font-weight: var(--fontWeight-semiBold);
+  cursor: pointer;
   @media screen and (max-width: 768px) {
     font-size: 1rem;
     font-weight: var(--fontWeight-bold);
