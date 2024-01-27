@@ -9,20 +9,22 @@ const SkeletonCommunityDetail: React.FC = () => {
       <div>
         <SkeletonTheme baseColor="#ebebeb" highlightColor="#cccccc">
           <StPostSkeletonContainer>
-            <Skeleton width={300} />
+            <StPostSkeletonArea>
+              <Skeleton width={300} />
+              <Skeleton width={100} />
+              <StPostSkeletonWrapper>
+                {/* <Skeleton width={70} height={70} /> */}
+                <StPostSkeletonContentWrapper>
+                  <Skeleton width={300} />
+                  <Skeleton width={400} height={300} />
+                </StPostSkeletonContentWrapper>
+              </StPostSkeletonWrapper>
 
-            <StPostSkeletonWrapper>
-              {/* <Skeleton width={70} height={70} /> */}
-              <StPostSkeletonContentWrapper>
+              <StPostSkeletonIconAndDate>
                 <Skeleton width={300} />
                 <Skeleton width={300} />
-              </StPostSkeletonContentWrapper>
-            </StPostSkeletonWrapper>
-
-            <StPostSkeletonIconAndDate>
-              <Skeleton width={100} />
-              <Skeleton width={100} />
-            </StPostSkeletonIconAndDate>
+              </StPostSkeletonIconAndDate>
+            </StPostSkeletonArea>
           </StPostSkeletonContainer>
         </SkeletonTheme>
       </div>
@@ -34,15 +36,20 @@ export default SkeletonCommunityDetail;
 
 const StPostSkeletonContainer = styled.div`
   /* background-color: #e2e2e288; */
-  width: 90%;
-  max-width: 111.6rem;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  /* align-items: center; */
-  gap: 1.5rem;
+  align-items: center;
+
   border-radius: 1rem;
   padding: 3rem;
+`;
+const StPostSkeletonArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 111.6rem;
+  gap: 1.5rem;
 `;
 
 const StPostSkeletonWrapper = styled.div`
