@@ -1,18 +1,21 @@
-import React, { useEffect } from 'react'
-import * as St from '../../styles/products/ProductsListStyle'
+import React, { useEffect } from 'react';
+import * as St from '../../styles/products/ProductsListStyle';
 
 interface Props {
   totalPages: number;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  selectCategory: string[]
+  selectCategory: string[];
 }
 
-const Pagination = ({totalPages, currentPage, setCurrentPage, selectCategory}: Props) => {
-
+const Pagination = ({
+  totalPages,
+  currentPage,
+  setCurrentPage,
+  selectCategory
+}: Props) => {
   //const pageList = [];
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-  console.log(pages);
   // useEffect(() => {
   //   setCurrentPage(1); // 카테고리가 바뀔 때마다 첫 페이지로 리셋
   // }, [selectCategory]);
@@ -29,27 +32,41 @@ const Pagination = ({totalPages, currentPage, setCurrentPage, selectCategory}: P
   // }
 
   const goToPrevPage = () => {
-    setCurrentPage(currentPage - 1)
-  }
+    setCurrentPage(currentPage - 1);
+  };
 
   const goToNextPage = () => {
-    setCurrentPage(currentPage + 1)
-  }
+    setCurrentPage(currentPage + 1);
+  };
 
   if (totalPages === 1) {
-    return null
+    return null;
   }
-
 
   return (
     <St.PageNumberStyle>
-      <St.PrevNextButton onClick={goToPrevPage} disabled={currentPage === 1}><St.PrevIcon/></St.PrevNextButton>
-      {pages.map((page) => 
-        <St.PageButton key={page} onClick={() => setCurrentPage(page)} className={currentPage === page ? "page" : ""} $currentPage={currentPage} pageNumber={page} >{page}</St.PageButton>
-      )}
-      <St.PrevNextButton onClick={goToNextPage} disabled={currentPage === pages.length}><St.NextIcon/></St.PrevNextButton>
+      <St.PrevNextButton onClick={goToPrevPage} disabled={currentPage === 1}>
+        <St.PrevIcon />
+      </St.PrevNextButton>
+      {pages.map((page) => (
+        <St.PageButton
+          key={page}
+          onClick={() => setCurrentPage(page)}
+          className={currentPage === page ? 'page' : ''}
+          $currentPage={currentPage}
+          pageNumber={page}
+        >
+          {page}
+        </St.PageButton>
+      ))}
+      <St.PrevNextButton
+        onClick={goToNextPage}
+        disabled={currentPage === pages.length}
+      >
+        <St.NextIcon />
+      </St.PrevNextButton>
     </St.PageNumberStyle>
-  )
-}
+  );
+};
 
-export default Pagination
+export default Pagination;

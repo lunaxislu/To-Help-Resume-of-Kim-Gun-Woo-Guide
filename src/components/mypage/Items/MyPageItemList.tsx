@@ -170,6 +170,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
         purchasedItems.map((item) => {
           return (
             <MyPageItemCard
+              key={item.id}
               id={item.id}
               image_url={item.image_url}
               user={item.user}

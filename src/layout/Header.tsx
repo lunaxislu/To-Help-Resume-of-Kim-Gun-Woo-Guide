@@ -120,86 +120,88 @@ const Header = () => {
   }, []);
 
   return (
-    <St.HeaderContainer>
-      <St.HeaderSection>
-        <St.Logo
-          src="/assets/logo2.png"
-          alt="작업자들"
-          onClick={handleLogoClick}
-        />
-        <St.ButtonContainer>
-          <St.Sell onClick={handleSellbuttonClick}>
-            <BiWon className="sellbtn" />
-            <p>판매하기</p>
-          </St.Sell>
-          {isLogin ? (
-            <St.Likes>
-              <BiSolidHeart className="mylikes" />
-              <p>찜</p>
-            </St.Likes>
-          ) : (
-            ''
-          )}
-          {isLogin ? (
-            <St.Alert>
-              <BiSolidBell className="myAlarm" />
-              <p>알림</p>
-            </St.Alert>
-          ) : (
-            ''
-          )}
-          {isLogin ? (
-            <>
-              <St.UserIcon
-                src={`${avatarUrl}`}
-                onClick={handleMyPageButtonClick}
-              />
-              <St.MobileSearchIcon
-                src="/assets/mobile_search.svg"
-                onClick={handleShowSearchComp}
-              />
-              <St.HamburgerMenu
-                src="/assets/hamburger.svg"
-                onClick={handlShowSearchBurger}
-              />
-              <Hamburger
-                isOpen={showHamburger}
-                onClose={() => setShowHamburger(false)}
-                onLogout={handleLogOutButtonClick}
-                user={user}
-                setUser={() => setUser(false)}
-                avatarUrl={avatarUrl}
-              />
-            </>
-          ) : (
-            <St.Button onClick={handleNavigateToLogin}>
-              로그인/회원가입
-            </St.Button>
-          )}
-        </St.ButtonContainer>
-      </St.HeaderSection>
-      <St.NavSection>
-        <St.NavBar>
-          {/* <St.NavButton to="/introduce">서비스 소개</St.NavButton> */}
-          <St.NavButton to="/products" onClick={handlePageChange}>
-            중고거래
-          </St.NavButton>
-          <St.NavButton to="/community" onClick={handlePageChange}>
-            커뮤니티
-          </St.NavButton>
-          {isLogin ? (
-            <St.LogOut onClick={handleLogOutButtonClick}>로그아웃</St.LogOut>
-          ) : (
-            ''
-          )}
-        </St.NavBar>
+    <>
+      <Hamburger
+        isOpen={showHamburger}
+        onClose={() => setShowHamburger(false)}
+        onLogout={handleLogOutButtonClick}
+        user={user}
+        setUser={() => setUser(false)}
+        avatarUrl={avatarUrl}
+      />
+      <St.HeaderContainer>
+        <St.HeaderSection>
+          <St.Logo
+            src="/assets/logo2.png"
+            alt="작업자들"
+            onClick={handleLogoClick}
+          />
+          <St.ButtonContainer>
+            <St.Sell onClick={handleSellbuttonClick}>
+              <BiWon className="sellbtn" />
+              <p>판매하기</p>
+            </St.Sell>
+            {isLogin ? (
+              <St.Likes>
+                <BiSolidHeart className="mylikes" />
+                <p>찜</p>
+              </St.Likes>
+            ) : (
+              ''
+            )}
+            {isLogin ? (
+              <St.Alert>
+                <BiSolidBell className="myAlarm" />
+                <p>알림</p>
+              </St.Alert>
+            ) : (
+              ''
+            )}
+            {isLogin ? (
+              <>
+                <St.UserIcon
+                  src={`${avatarUrl}`}
+                  onClick={handleMyPageButtonClick}
+                />
+                <St.MobileSearchIcon
+                  src="/assets/mobile_search.svg"
+                  onClick={handleShowSearchComp}
+                />
+                <St.HamburgerMenu
+                  src="/assets/hamburger.svg"
+                  onClick={handlShowSearchBurger}
+                />
+              </>
+            ) : (
+              <St.Button onClick={handleNavigateToLogin}>
+                로그인/회원가입
+              </St.Button>
+            )}
+          </St.ButtonContainer>
+        </St.HeaderSection>
+        <St.NavSection>
+          <St.NavBar>
+            {/* <St.NavButton to="/introduce">서비스 소개</St.NavButton> */}
+            <St.NavButton to="/products" onClick={handlePageChange}>
+              중고거래
+            </St.NavButton>
+            <St.NavButton to="/community" onClick={handlePageChange}>
+              커뮤니티
+            </St.NavButton>
+            {isLogin ? (
+              <St.LogOut onClick={handleLogOutButtonClick}>로그아웃</St.LogOut>
+            ) : (
+              ''
+            )}
+          </St.NavBar>
 
-        <SearchBar
-          showSearchComp={showSearchComp}
-          setShowSearchComp={setShowSearchComp}
-        />
-      </St.NavSection>
-    </St.HeaderContainer>
+          <SearchBar
+            showSearchComp={showSearchComp}
+            setShowSearchComp={setShowSearchComp}
+          />
+        </St.NavSection>
+      </St.HeaderContainer>
+    </>
   );
 };
 
