@@ -131,7 +131,7 @@ const ProductListCard = ({ selectCategory }: Props) => {
               <St.CardQuality key={condition}>{condition}</St.CardQuality>
             ))}
             <St.CardTitle>{posts.title}</St.CardTitle>
-            <St.CardPrice>{posts.price}원</St.CardPrice>
+            <St.CardPrice>{posts.price.toLocaleString('kr-KO')}원</St.CardPrice>
           </St.ProductsCardContainer>
         ))}
       </St.ProductsListContainer>
