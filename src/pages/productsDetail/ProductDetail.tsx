@@ -528,7 +528,7 @@ const ProductDetail = () => {
         .eq('id', buyerChatId);
 
       if (buyUser) {
-        const currentBuyProducts = buyUser;
+        const currentBuyProducts = buyUser[0].buyProduct;
         const newList = [...currentBuyProducts, id];
         const { data: res, error: sellError } = await supabase
           .from('user')
@@ -640,7 +640,9 @@ const ProductDetail = () => {
     data.quality,
     data.deal_type,
     data.address,
-    data.exchange_product
+    data.exchange_product,
+    data.changable,
+    data.shipping_cost
   ];
 
   if (isSoldOut === true) {
@@ -678,7 +680,7 @@ const ProductDetail = () => {
     <>
       {showChatList && (
         <StSelectChatBg onClick={() => setShowChatList(false)}>
-          <StChatList>
+          <StChatList onClick={(e) => e.stopPropagation()}>
             <h1
               style={{
                 textAlign: 'center',
@@ -738,9 +740,15 @@ const ProductDetail = () => {
                   style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
                 >
                   <St.StUserImage>
-                    <St.StProfileImages
-                      $url={target?.avatar_url}
-                    ></St.StProfileImages>
+                    {product[0].post_user_uid === curUser?.id ? (
+                      <St.StProfileImages
+                        $url={curUser?.avatar_url}
+                      ></St.StProfileImages>
+                    ) : (
+                      <St.StProfileImages
+                        $url={target?.avatar_url}
+                      ></St.StProfileImages>
+                    )}
                   </St.StUserImage>
                   <St.StUserNickname>{data.post_user_name}</St.StUserNickname>
                 </div>

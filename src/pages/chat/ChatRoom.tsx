@@ -136,7 +136,7 @@ export default function ChatRoom() {
         setUnread(counts as number[]);
       });
     }
-  }, [rooms]);
+  }, [rooms]); // 여기 의심
 
   // 채팅방 로드 시 스크롤 최하단으로
   useEffect(() => {
@@ -203,6 +203,7 @@ export default function ChatRoom() {
             rooms={rooms}
             handleCurClicked={handleCurClicked}
             unread={unread}
+            curUser={curUser}
           />
         </St.StChatList>
         <St.StChatBoard $position={boardPosition}>
