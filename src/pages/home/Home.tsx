@@ -221,17 +221,30 @@ const HomeContainer = styled.section`
 const CarouselWrapper = styled.div`
   width: 100%;
   cursor: pointer;
+  @media screen and (max-width: 1116px) {
+    max-width: 111.6rem;
+    width: 100%;
+  }
   @media screen and (max-width: 1024px) {
+    max-width: 102.4rem;
     width: 100%;
   }
   @media screen and (max-width: 768px) {
+    max-width: 76.8rem;
+    width: 100%;
+  }
+  @media screen and (max-width: 530px) {
+    max-width: 53rem;
     width: 100%;
   }
 `;
 const AllCardContainer = styled.div`
   width: 100%;
+  @media screen and (max-width: 1300px) {
+    width: 130rem;
+  }
   @media screen and (max-width: 1024px) {
-    width: 100%;
+    width: 10;
   }
   @media screen and (max-width: 768px) {
     width: 100%;

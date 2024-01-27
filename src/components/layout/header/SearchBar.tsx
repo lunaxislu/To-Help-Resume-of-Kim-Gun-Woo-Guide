@@ -186,6 +186,7 @@ const SearchInputBar = styled.input`
   @media screen and (max-width: 1100px) {
     width: 40rem;
   }
+
   @media screen and (max-width: 900px) {
     width: 30rem;
   }

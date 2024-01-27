@@ -42,10 +42,12 @@ const ChatForm = ({
   return (
     <St.StChatForm ref={formRef}>
       {showFileInput && (
-        <St.ImageInput
-          onChange={(e) => UtilFunctions.handleImage(e, setImages)}
-          placeholder="이미지 보내기"
-        />
+        <>
+          <St.ImageInput
+            onChange={(e) => UtilFunctions.handleImage(e, setImages)}
+            placeholder="이미지 보내기"
+          />
+        </>
       )}
       <div style={{ display: 'flex' }}>
         <St.StChatInput

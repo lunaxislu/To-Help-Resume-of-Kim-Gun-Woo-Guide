@@ -13,7 +13,7 @@ export interface Product {
   like_user: { user_id: string; user_name: string }[];
   likes: number;
   quality: string;
-  changable: boolean;
+  changable: string;
   shipping_cost: boolean;
   agreement: boolean;
   exchange_product: string;

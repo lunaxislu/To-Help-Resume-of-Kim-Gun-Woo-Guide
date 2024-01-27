@@ -8,7 +8,6 @@ export const EntireContainer = styled.div`
   max-width: 144rem;
   display: flex;
   margin: auto;
-  margin-bottom: 15rem;
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;
     min-width: 3.5rem;

@@ -1,4 +1,6 @@
 import { BiEdit } from "react-icons/bi";
+import { GoChevronLeft } from "react-icons/go";
+import { GoChevronRight } from "react-icons/go";
 import { BiWon } from "react-icons/bi";
 import styled, { css } from "styled-components";
 
@@ -7,17 +9,16 @@ export const EntireContainer = styled.div`
   max-width: 144rem;
   display: flex;
   margin: auto;
-  margin-bottom: 15rem;
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;
-    min-width: 3.5rem;
+    min-width: 30rem;
   }
 `
 export const ContentsContainer = styled.div`
-  max-width: 111.6rem;
+  width: 95%;
   margin: auto;
   @media screen and (max-width: 768px) {
-    max-width: 90%;
+    max-width: 93%;
   }
 `
 
@@ -49,7 +50,7 @@ export const CategoryContainer = styled.div`
 `
 
 export const CategoryWrapper = styled.div`
-  width: 75%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   list-style: none;
@@ -65,7 +66,7 @@ export const CategoryWrapper = styled.div`
 `
 
 interface CategoryProps {
-  $selectCategory: string
+  $selectCategory: string[]
 }
 
 export const Category = styled.p<CategoryProps>`
@@ -98,6 +99,10 @@ export const Category = styled.p<CategoryProps>`
       `;
     }
   }}
+  @media screen and (max-width: 820px) {
+    font-size: var(--fontSize-H5);
+    padding: 0 1.3rem;
+  }
   @media screen and (max-width: 768px) {
     font-size: 1rem;
     padding: 0 0.8rem;
@@ -106,7 +111,8 @@ export const Category = styled.p<CategoryProps>`
 
 export const PostsWriteBtn = styled.div`
   width: 9.5rem;
-  height: 3.1rem;
+  height: fit-content;
+  line-height: 175%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -118,12 +124,60 @@ export const PostsWriteBtn = styled.div`
   &:hover {
     cursor: pointer;
   }
+  @media screen and (max-width: 930px) {
+    display: none;
+  }
+  /* @media screen and (max-width: 768px) {
+    width: 8.1rem;
+    height: 2rem;
+    border-radius: 5.6rem;
+    gap: 0.5rem;
+    font-size: var(--fontSize-H6);
+  } */
+`
+export const MobilePostsWriteBtn = styled.div`
+  display: none;
+  /* margin: 4rem 0 2.6rem 0;
+  width: 9.5rem;
+  height: fit-content;
+  line-height: 175%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7rem;
+  gap: 0.5rem;
+  background-color: var(--opc-10);
+  white-space: nowrap;
+  &:hover {
+    cursor: pointer;
+  } */
+  @media screen and (max-width: 930px) {
+    margin: 4rem 0 2.6rem 0;
+    width: 9.5rem;
+    height: fit-content;
+    line-height: 175%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7rem;
+    gap: 0.5rem;
+    background-color: var(--opc-10);
+    white-space: nowrap;
+    &:hover {
+      cursor: pointer;
+    }
+  }
   @media screen and (max-width: 768px) {
     width: 8.1rem;
     height: 2rem;
     border-radius: 5.6rem;
     gap: 0.5rem;
     font-size: var(--fontSize-H6);
+  }
+  @media screen and (max-width: 768px) {
+    margin: 1.8rem 0 1.4rem 0;
   }
 `
 
@@ -174,13 +228,11 @@ export const ProductsListContainer = styled.div`
   column-gap: 1.9rem;
   row-gap: 4rem;
   @media screen and (max-width: 1220px) {
-    column-gap: 1.5rem;
-    row-gap: 1.8rem;
+    row-gap: 3rem;
     grid-template-columns: repeat(4, 1fr);
   }
   @media screen and (max-width: 950px) {
-    column-gap: 1.5rem;
-    row-gap: 1.8rem;
+    row-gap: 2.5rem;
     grid-template-columns: repeat(3, 1fr);
   }
   @media screen and (max-width: 768px) {
@@ -189,19 +241,16 @@ export const ProductsListContainer = styled.div`
     grid-template-columns: repeat(4, 1fr);
   }
   @media screen and (max-width: 670px) {
-    column-gap: 1.5rem;
-    row-gap: 1.8rem;
     grid-template-columns: repeat(3, 1fr);
   }
   @media screen and (max-width: 520px) {
-    row-gap: 1.8rem;
     grid-template-columns: repeat(2, 1fr);
   }
 `
 
 export const ProductsCardContainer = styled.div`
-  width: 20.8rem;
-  height: 31.5rem;
+  width: 100%;
+  aspect-ratio: 1/1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -210,20 +259,14 @@ export const ProductsCardContainer = styled.div`
   &:hover {
     cursor: pointer;
   }
-  @media screen and (max-width: 768px) {
-    width: 14rem;
-    height: 21.3rem;
-  }
 `
 
 export const CardImageWrapper = styled.div`
-  width: 20.8rem;
-  height: 20.8rem;
+  width: 100%;
+  aspect-ratio: 1/1;
   margin-bottom: 2rem;
   border-radius: 0.6rem;
   @media screen and (max-width: 768px) {
-    width: 14rem;
-    height: 14rem;
     margin-bottom: 1rem;
   }
 `
@@ -232,7 +275,7 @@ export const CardImage = styled.img`
   object-fit: cover;
   object-position: center;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1/1;
   border-radius: 0.6rem;
 `
 
@@ -265,5 +308,53 @@ export const CardPrice = styled.h2`
   color: var(--12-gray);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
+  }
+`
+export const PageNumberStyle = styled.div`
+  text-align: center;
+  margin-top: 8rem;
+  display: flex;
+  justify-content: center;
+  gap: 5.6rem;
+  :hover {
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    margin-top: 4rem;
+    gap: 2.6rem;
+  }
+`;
+export const PrevNextButton = styled.button`
+  background-color: transparent;
+  border: none;
+`
+export const PrevIcon = styled(GoChevronLeft)`
+  width: 100%;
+  height: 100%;
+  color: var(--opc-100);
+`;
+export const NextIcon = styled(GoChevronRight)`
+  width: 100%;
+  height: 100%;
+  color: var(--opc-100);
+`;
+interface PageBtnProps {
+  $currentPage: number;
+  pageNumber: number;
+};
+export const PageButton = styled.button<PageBtnProps>`
+  background-color: transparent;
+  border: none;
+  color: ${(props) =>
+    props.$currentPage === props.pageNumber ? 'var(--opc-100)' : 'var(--11-gray)'};
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
+`
+export const LoadingStyle = styled.div`
+  text-align: center;
+  font-size: var(--fontSize-H3);
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H5);
   }
 `

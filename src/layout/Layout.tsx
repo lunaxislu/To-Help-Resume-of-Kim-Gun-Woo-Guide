@@ -113,7 +113,6 @@ const Layout = () => {
       if (chatRooms) {
         setUserChatRoom(chatRooms[0]?.chat_rooms);
       }
-
       if (error) {
         console.log('no chatRooms', error);
       }

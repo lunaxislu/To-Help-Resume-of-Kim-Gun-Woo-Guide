@@ -106,6 +106,7 @@ const StProfileImages = styled.div<ImageProps>`
   background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
   background-size: cover;
   border-radius: 50%;
+  background-repeat: no-repeat;
 
   @media screen and (max-width: 768px) {
     width: 16px;
@@ -349,6 +350,75 @@ const StCategoryTag = styled.li`
   border-radius: 6px;
 `;
 
+const StSelectChatBg = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #1d1d1d90;
+  z-index: 2;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+  }
+`;
+
+const StChatList = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36rem;
+  height: 25rem;
+  background: var(--3-gray);
+  color: var(--opc-100);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  @media screen and (max-width: 768px) {
+    position: absolute;
+  }
+`;
+
+const StChatListItem = styled.div`
+  padding: 2rem 1rem;
+  height: 100%;
+
+  cursor: pointer;
+
+  &:hover {
+    color: var(--3-gray);
+    background-color: var(--opc-100);
+  }
+`;
+
+const StConfirmSellBtn = styled.button`
+  padding: 1rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  background-color: var(--opc-80);
+  border-radius: 0.8rem;
+  margin-block: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--opc-100);
+    color: var(--3-gray);
+  }
+
+  span {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+`;
+
 export {
   StDetailContainer,
   StDetailInfoSection,
@@ -373,5 +443,9 @@ export {
   StProductCategory,
   StCategoryTag,
   StAlertIcon,
-  FaHeartIcon
+  FaHeartIcon,
+  StSelectChatBg,
+  StChatList,
+  StChatListItem,
+  StConfirmSellBtn
 };

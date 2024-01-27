@@ -17,6 +17,9 @@ export const HeaderContainer = styled.header`
   @media screen and (max-width: 1100px) {
     width: 110rem;
   }
+  @media screen and (max-width: 1000px) {
+    width: 100rem;
+  }
   @media screen and (max-width: 900px) {
     width: 90rem;
   }

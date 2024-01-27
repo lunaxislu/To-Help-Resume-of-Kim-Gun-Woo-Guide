@@ -14,6 +14,7 @@ export const FooterContainer = styled.div`
   line-height: 2.24rem;
   margin: 0 auto;
   padding: 3rem 15rem;
+  margin-top: 15rem;
 
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;
