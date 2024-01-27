@@ -13,7 +13,6 @@ export const StContainer = styled.div`
     font-size: var(--fontSize-H1);
     font-weight: var(--fontWeight-bold);
     text-align: center;
-    line-height: 1.5;
     white-space: pre-line;
 
     @media screen and (max-width: 768px) {

@@ -14,8 +14,8 @@ export const Content = styled.div`
   font-size: var(--fontSize-body);
   font-weight: var(--fontWeight-medium);
   & img {
-    max-width: 40rem;
     width: 60%;
+    max-width: 40rem;
   }
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
@@ -68,6 +68,7 @@ export const BtnStyle = styled.button`
   color: var(--8-gray);
   font-weight: var(--fontWeight-semiBold);
   margin: 0.5rem;
+  cursor: pointer;
 `;
 export const Topper = styled.div`
   margin-top: 1rem;
@@ -146,6 +147,7 @@ export const AlertIcon = styled(AiFillAlert)`
   color: var(--opc-50);
   margin-left: 1rem;
   font-size: 1.5rem;
+  cursor: pointer;
 `;
 export const ReportArea = styled.div`
   display: flex;
@@ -167,11 +169,13 @@ export const TrachIcon = styled(IoTrashOutline)`
   color: var(--opc-50);
   margin-left: 1rem;
   font-size: 1.5rem;
+  cursor: pointer;
 `;
 export const PenIcon = styled(RiBallPenLine)`
   color: var(--opc-50);
   margin-left: 1rem;
   font-size: 1.5rem;
+  cursor: pointer;
 `;
 export const NameP = styled.p`
   font-size: var(--fontSize-H5);
@@ -233,6 +237,7 @@ export const TitleTopper = styled.div`
 `;
 export const Dots = styled(BsThreeDots)`
   display: none;
+  cursor: pointer;
   @media screen and (max-width: 768px) {
     display: block;
     color: var(--9-gray);
@@ -291,5 +296,6 @@ export const BackIcon = styled(GoChevronLeft)`
   display: none;
   @media screen and (max-width: 768px) {
     display: block;
+    cursor: pointer;
   }
 `;

@@ -40,6 +40,8 @@ const ChatRoomList: React.FC<Props> = ({
       .update({ isNew: false })
       .eq('chat_room_id', clicked)
       .eq('isNew', true);
+
+    await util.unreadCount(room_id, curUser);
   };
 
   const handleRealtime = () => {
@@ -119,11 +121,20 @@ const ChatRoomList: React.FC<Props> = ({
     }
   };
 
+  const buyerImg = (room: RoomType) => {
+    const buyerImg = room.participants.filter((part) => {
+      return part.user_id !== curUser?.id;
+    });
+
+    return buyerImg[0];
+  };
+
   useEffect(() => {
     handleRealtime();
     getAllMessage();
     getProductsforRoom();
-  }, [unread]);
+    updateToRead(clicked as string);
+  }, []);
 
   const checkDevice = (agent: string) => {
     const mobileRegex = [
@@ -151,7 +162,6 @@ const ChatRoomList: React.FC<Props> = ({
             <St.StListRoom
               onClick={(e) => {
                 updateToRead(room.id);
-                util.unreadCount(room.id, curUser);
                 handleCurClicked(e);
               }}
               $current={clicked}
@@ -159,19 +169,29 @@ const ChatRoomList: React.FC<Props> = ({
               key={room.id}
             >
               {/* onClick={handleBoardPosition} 완료 상품 관련 채팅을 띄워줘야할지,,, 고민즁... */}
-              <StStatusOveray>
+              <StStatusOveray onClick={handleBoardPosition}>
                 <StOverayText>판매 완료 상품입니다</StOverayText>
               </StStatusOveray>
               <St.StListUpper>
                 <St.StUserInfoBox>
                   <St.StListUserProfile
                     $url={
-                      room?.participants[0].avatar_url === null
-                        ? ''
-                        : room?.participants[0].avatar_url
+                      buyerImg(room).avatar_url ? '' : buyerImg(room).avatar_url
                     }
                   ></St.StListUserProfile>
-                  <p>{room.room_name}</p>
+                  <div>
+                    <p>{`${buyerImg(room).user_name}`}</p>
+                    <p
+                      style={{
+                        fontSize: '1.2rem',
+                        fontWeight: '400',
+                        marginTop: '.5rem',
+                        color: 'var(--opc-100)'
+                      }}
+                    >
+                      {room.room_name}
+                    </p>
+                  </div>
                 </St.StUserInfoBox>
                 <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
               </St.StListUpper>
@@ -194,10 +214,9 @@ const ChatRoomList: React.FC<Props> = ({
           return (
             <St.StListRoom
               onClick={(e) => {
-                util.unreadCount(room.id, curUser);
-                updateToRead(room.id);
                 handleCurClicked(e);
                 handleBoardPosition();
+                updateToRead(room.id);
               }}
               $current={clicked}
               id={room.id}
@@ -207,12 +226,22 @@ const ChatRoomList: React.FC<Props> = ({
                 <St.StUserInfoBox>
                   <St.StListUserProfile
                     $url={
-                      room?.participants[0].avatar_url === null
-                        ? ''
-                        : room?.participants[0].avatar_url
+                      buyerImg(room).avatar_url ? '' : buyerImg(room).avatar_url
                     }
                   ></St.StListUserProfile>
-                  <p>{room.room_name}</p>
+                  <div>
+                    <p>{`${buyerImg(room).user_name}`}</p>
+                    <p
+                      style={{
+                        fontSize: '1.2rem',
+                        fontWeight: '400',
+                        marginTop: '.5rem',
+                        color: 'var(--opc-100)'
+                      }}
+                    >
+                      {room.room_name}
+                    </p>
+                  </div>
                 </St.StUserInfoBox>
                 <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
               </St.StListUpper>

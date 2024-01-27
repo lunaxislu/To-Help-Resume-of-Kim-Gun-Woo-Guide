@@ -39,6 +39,7 @@ const DropDownMenu: React.FC<DropdownProps> = ({
           onClick={() => {
             currentClickMenu('낮은가격순');
             toggleDropdownButton();
+            alert('개발 중인 기능입니다...!');
           }}
         >
           낮은가격순

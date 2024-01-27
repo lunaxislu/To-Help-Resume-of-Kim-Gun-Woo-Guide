@@ -1,8 +1,8 @@
-import { BiEdit } from "react-icons/bi";
-import { GoChevronLeft } from "react-icons/go";
-import { GoChevronRight } from "react-icons/go";
-import { BiWon } from "react-icons/bi";
-import styled, { css } from "styled-components";
+import { BiEdit } from 'react-icons/bi';
+import { GoChevronLeft } from 'react-icons/go';
+import { GoChevronRight } from 'react-icons/go';
+import { BiWon } from 'react-icons/bi';
+import styled, { css } from 'styled-components';
 
 // ProductsList(page)
 export const EntireContainer = styled.div`
@@ -12,15 +12,16 @@ export const EntireContainer = styled.div`
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;
     min-width: 30rem;
+    padding: 0;
   }
-`
+`;
 export const ContentsContainer = styled.div`
   width: 95%;
   margin: auto;
   @media screen and (max-width: 768px) {
     max-width: 93%;
   }
-`
+`;
 
 export const Title = styled.h1`
   font-size: var(--fontSize-H3);
@@ -29,14 +30,14 @@ export const Title = styled.h1`
     font-size: var(--fontSize-body);
     margin: 2rem 0 1.4rem 0;
   }
-`
+`;
 
 export const BarContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-`
+`;
 
 export const CategoryContainer = styled.div`
   width: 100%;
@@ -47,7 +48,7 @@ export const CategoryContainer = styled.div`
   @media screen and (max-width: 768px) {
     margin-bottom: 2rem;
   }
-`
+`;
 
 export const CategoryWrapper = styled.div`
   width: 100%;
@@ -58,15 +59,15 @@ export const CategoryWrapper = styled.div`
   @media screen and (max-width: 768px) {
     gap: 0.6rem;
     overflow-x: scroll;
-    scrollbar-width:none;
+    scrollbar-width: none;
     &::-webkit-scrollbar {
-      display:none /* Chrome , Safari , Opera */
+      display: none; /* Chrome , Safari , Opera */
     }
   }
-`
+`;
 
 interface CategoryProps {
-  $selectCategory: string[]
+  $selectCategory: string[];
 }
 
 export const Category = styled.p<CategoryProps>`
@@ -107,7 +108,7 @@ export const Category = styled.p<CategoryProps>`
     font-size: 1rem;
     padding: 0 0.8rem;
   }
-`
+`;
 
 export const PostsWriteBtn = styled.div`
   width: 9.5rem;
@@ -134,7 +135,7 @@ export const PostsWriteBtn = styled.div`
     gap: 0.5rem;
     font-size: var(--fontSize-H6);
   } */
-`
+`;
 export const MobilePostsWriteBtn = styled.div`
   display: none;
   /* margin: 4rem 0 2.6rem 0;
@@ -179,7 +180,7 @@ export const MobilePostsWriteBtn = styled.div`
   }
   @media screen and (max-width: 768px) {
   }
-`
+`;
 
 export const SellWriteIcon = styled(BiWon)`
   color: var(--opc-100);
@@ -199,7 +200,7 @@ export const SearchBarContainer = styled.div`
   @media screen and (max-width: 768px) {
     margin-bottom: 1.6rem;
   }
-`
+`;
 
 // ProductsSearchBar
 export const SearchBarInput = styled.input`
@@ -214,7 +215,7 @@ export const SearchBarInput = styled.input`
   &::placeholder {
     color: var(--6-gray);
   }
-`
+`;
 
 // ProductsSortBtn
 // 목록 정렬바 스타일링 해야함
@@ -246,7 +247,7 @@ export const ProductsListContainer = styled.div`
   @media screen and (max-width: 520px) {
     grid-template-columns: repeat(2, 1fr);
   }
-`
+`;
 
 export const ProductsCardContainer = styled.div`
   width: 100%;
@@ -259,7 +260,7 @@ export const ProductsCardContainer = styled.div`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
 export const CardImageWrapper = styled.div`
   width: 100%;
@@ -269,7 +270,7 @@ export const CardImageWrapper = styled.div`
   @media screen and (max-width: 768px) {
     margin-bottom: 1rem;
   }
-`
+`;
 
 export const CardImage = styled.img`
   object-fit: cover;
@@ -277,7 +278,7 @@ export const CardImage = styled.img`
   width: 100%;
   aspect-ratio: 1/1;
   border-radius: 0.6rem;
-`
+`;
 
 export const CardQuality = styled.li`
   width: fit-content;
@@ -292,10 +293,10 @@ export const CardQuality = styled.li`
     padding: 0 0.5rem;
     font-size: 0.8rem;
     line-height: 2.1;
-    background-color: rgba(219, 255, 0, 0.80);
+    background-color: rgba(219, 255, 0, 0.8);
     color: var(--2-gray);
   }
-`
+`;
 export const CardTitle = styled.h2`
   width: 100%;
   margin-bottom: 0.4rem;
@@ -306,7 +307,7 @@ export const CardTitle = styled.h2`
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
   }
-`
+`;
 
 export const CardPrice = styled.h2`
   font-weight: var(--fontWeight-bold);
@@ -314,7 +315,7 @@ export const CardPrice = styled.h2`
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
   }
-`
+`;
 export const PageNumberStyle = styled.div`
   text-align: center;
   margin-top: 8rem;
@@ -332,7 +333,7 @@ export const PageNumberStyle = styled.div`
 export const PrevNextButton = styled.button`
   background-color: transparent;
   border: none;
-`
+`;
 export const PrevIcon = styled(GoChevronLeft)`
   width: 100%;
   height: 100%;
@@ -346,20 +347,22 @@ export const NextIcon = styled(GoChevronRight)`
 interface PageBtnProps {
   $currentPage: number;
   pageNumber: number;
-};
+}
 export const PageButton = styled.button<PageBtnProps>`
   background-color: transparent;
   border: none;
   color: ${(props) =>
-    props.$currentPage === props.pageNumber ? 'var(--opc-100)' : 'var(--11-gray)'};
+    props.$currentPage === props.pageNumber
+      ? 'var(--opc-100)'
+      : 'var(--11-gray)'};
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
   }
-`
+`;
 export const LoadingStyle = styled.div`
   text-align: center;
   font-size: var(--fontSize-H3);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
   }
-`
+`;

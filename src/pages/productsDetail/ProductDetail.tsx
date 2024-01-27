@@ -6,15 +6,31 @@ import 'react-toastify/dist/ReactToastify.css';
 import ProductDetailInfo from '../../components/productDetailInfoBody/ProductDetailInfo';
 import * as St from './style';
 import type { CustomUser, Product } from './types';
-import { RoomType } from '../../components/chat/types';
+import { Participants, RoomType } from '../../components/chat/types';
 import parseDate from '../../util/getDate';
 import { FaHeart } from 'react-icons/fa';
 import { v4 as uuid } from 'uuid';
-import styled from 'styled-components';
 import ProductDetailCarousel from './ProductDetailCarousel';
 import { FaPencil, FaTrash } from 'react-icons/fa6';
+import styled from 'styled-components';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
+
+const StBackButton = styled.button.attrs({ type: 'button' })`
+  margin-top: 1.2rem;
+  padding: 0.6rem;
+  border-radius: 0.8rem;
+  background: var(--3-gray);
+  outline: none;
+  border: none;
+  color: var(--opc-100);
+  cursor: pointer;
+
+  &:hover {
+    background: var(--opc-100);
+    color: var(--3-gray);
+  }
+`;
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -90,36 +106,42 @@ const ProductDetail = () => {
     curUser: CustomUser,
     target: CustomUser
   ) => {
-    const roomForm = [
-      {
-        id: uuid(),
-        room_name: `${target.username}`,
-        about: `${id}`,
-        participants: [
-          {
-            user_id: target.uid,
-            user_name: target.username,
-            avatar_url: target.avatar_url
-          },
-          {
-            user_id: curUser.uid,
-            user2_name: curUser.username,
-            avatar_url: curUser.avatar_url
-          }
-        ]
+    if (product) {
+      const roomForm = [
+        {
+          id: uuid(),
+          room_name: `${product![0].title}`,
+          about: `${id}`,
+          participants: [
+            {
+              about: `${id}`,
+              isSeller: true,
+              user_id: target.uid,
+              user_name: target.username,
+              avatar_url: target.avatar_url
+            },
+            {
+              about: `${id}`,
+              isSeller: false,
+              user_id: curUser.uid,
+              user_name: curUser.username,
+              avatar_url: curUser.avatar_url
+            }
+          ]
+        }
+      ];
+
+      const { data: chatRoom, error } = await supabase
+        .from('chat_room')
+        .insert(roomForm);
+
+      if (error) {
+        console.log('생성 실패', error);
+        return false;
       }
-    ];
 
-    const { data: chatRoom, error } = await supabase
-      .from('chat_room')
-      .insert(roomForm);
-
-    if (error) {
-      console.log('생성 실패');
-      return false;
+      await sendFirstMessage();
     }
-
-    await sendFirstMessage();
   };
 
   // 유저가 속한 채팅방 찾기
@@ -314,6 +336,10 @@ const ProductDetail = () => {
         .update({ likes: likesField[0].likes + 1 })
         .eq('id', id);
 
+      setLikesCount((prevLikesCount) =>
+        prevLikesCount ? prevLikesCount + 1 : 1
+      );
+
       // 배열인지, 배열이면 길이가 0이상인지 확인
       const like_userList =
         existingData && Array.isArray(existingData) && existingData.length > 0
@@ -376,7 +402,6 @@ const ProductDetail = () => {
         transition: Bounce
       });
     }
-    setLikesCount((prev: number | null) => prev && prev + 1);
     isLikedProduct();
   };
 
@@ -430,6 +455,10 @@ const ProductDetail = () => {
         .from('products')
         .update({ likes: likesField[0].likes - 1 })
         .eq('id', id);
+
+      setLikesCount((prevLikesCount) =>
+        prevLikesCount ? prevLikesCount - 1 : 1
+      );
 
       // 배열인지, 배열이면 길이가 0이상인지 확인
       const like_userList =
@@ -491,7 +520,6 @@ const ProductDetail = () => {
       });
     }
     isLikedProduct();
-    setLikesCount((prev: number | null) => prev && prev - 1);
   };
 
   const handleLoadChatRooms = async () => {
@@ -517,18 +545,14 @@ const ProductDetail = () => {
       window.confirm(`${selectedUser}님 에게 물품 판매를 완료하시겠습니까?`) ===
       true
     ) {
-      const { data: sellRes, error: sellErr } = await supabase
-        .from('products')
-        .update({ isSell: true })
-        .eq('id', id);
-
       const { data: buyUser, error } = await supabase
         .from('user')
         .select('*')
-        .eq('id', buyerChatId);
+        .eq('uid', buyerChatId);
+      console.log(buyUser);
 
       if (buyUser) {
-        const currentBuyProducts = buyUser[0].buyProduct;
+        const currentBuyProducts = buyUser[0].buyProduct || [];
         const newList = [...currentBuyProducts, id];
         const { data: res, error: sellError } = await supabase
           .from('user')
@@ -538,6 +562,11 @@ const ProductDetail = () => {
         if (sellError) {
           console.log('list update fail at user table');
         }
+
+        const { data: sellRes, error: sellErr } = await supabase
+          .from('products')
+          .update({ isSell: true })
+          .eq('id', id);
 
         alert('판매가 완료되었습니다');
         navi('/');
@@ -608,12 +637,12 @@ const ProductDetail = () => {
 
   useEffect(() => {
     handleGetLikeCount();
+    window.scrollTo({ top: 0 });
   }, []);
 
   const checkWindowSize = () => {
     if (window.matchMedia('(max-width: 768px)').matches) {
       setIsMobile(true);
-      window.scrollTo({ top: 0 });
     } else {
       setIsMobile(false);
     }
@@ -670,6 +699,13 @@ const ProductDetail = () => {
             }}
           >
             <h1>판매 완료 된 상품입니다!</h1>
+            <StBackButton
+              onClick={() => {
+                navi(-1);
+              }}
+            >
+              뒤로가기
+            </StBackButton>
           </div>
         </div>
       </div>
@@ -710,7 +746,13 @@ const ProductDetail = () => {
                   <>
                     <St.StChatListItem
                       key={room.id}
-                      id={room.participants[0].user_id}
+                      id={
+                        room.participants.filter(
+                          (part: Partial<Participants>) => {
+                            return part.user_id !== curUser?.id;
+                          }
+                        )[0].user_id
+                      }
                       onClick={(e) => {
                         handleSetBuyer(e);
                         handleSelectedUser(e);
@@ -731,7 +773,11 @@ const ProductDetail = () => {
       <St.StDetailContainer>
         <St.StDetailInfoSection>
           <St.StImageWrapper>
-            <ProductDetailCarousel carouselImages={product[0].image_url} />
+            <ProductDetailCarousel
+              carouselImages={
+                product[0]?.image_url === null ? [] : product[0]?.image_url
+              }
+            />
           </St.StImageWrapper>
           <St.StProductInfo>
             <St.StProductInfoHeader>
@@ -833,7 +879,7 @@ const ProductDetail = () => {
               <St.ButtonWrapper>
                 <St.Button
                   $role="chat"
-                  onClick={() => {
+                  onClick={(e) => {
                     handleLoadChatRooms();
                     handleShowChatList();
                   }}

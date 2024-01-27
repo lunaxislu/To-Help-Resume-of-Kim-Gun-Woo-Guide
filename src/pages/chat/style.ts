@@ -24,6 +24,7 @@ const StChatWrapper = styled.div`
     width: 100%;
     max-width: 768px;
     overflow: hidden;
+    padding: 0 1rem;
   }
 `;
 
@@ -240,10 +241,12 @@ const StListLower = styled.div`
     font-size: 1.2rem;
     font-weight: 500;
     margin-left: 3rem;
+    width: 100%;
   }
   span {
     color: var(--6-gray);
     font-size: 1.2rem;
+    white-space: nowrap;
   }
 `;
 
