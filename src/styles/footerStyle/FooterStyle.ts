@@ -16,8 +16,17 @@ export const FooterContainer = styled.div`
   padding: 3rem 15rem;
 
   @media screen and (max-width: 768px) {
+    max-width: 76.8rem;
     width: 100%;
     padding: 3rem 2rem;
+  }
+  @media screen and (max-width: 530px) {
+    width: 100%;
+    padding: 3rem 2rem;
+  }
+  @media screen and (max-width: 349px) {
+    width: 100%;
+    padding: 3rem 1rem;
   }
 `;
 export const FooterArea = styled.div`
@@ -36,6 +45,10 @@ export const Logo = styled.div`
       width: 8rem;
       height: 2rem;
     }
+    @media screen and (max-width: 530px) {
+      width: 7rem;
+      height: 2rem;
+    }
   }
 `;
 
@@ -44,6 +57,10 @@ export const TextArea = styled.div`
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
   }
+  @media screen and (max-width: 530px) {
+    font-size: var(--fontSize-H6);
+  }
+
   span {
     cursor: pointer;
     user-select: none;

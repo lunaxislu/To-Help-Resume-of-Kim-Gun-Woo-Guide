@@ -181,7 +181,7 @@ const Layout = () => {
   }, []);
 
   return (
-    <>
+    <Wrapper>
       {newAlert.length > 0 && showAlert && (
         <StModalContainer>
           <StAlertCloseBtn onClick={handleHideAlert} />
@@ -194,12 +194,13 @@ const Layout = () => {
           })}
         </StModalContainer>
       )}
-
       <Header />
-      <Outlet />
+      <ContentWrapper>
+        <Outlet />
+      </ContentWrapper>
       {showTopbutton && <ScrollTopButton />}
       <Footer />
-    </>
+    </Wrapper>
   );
 };
 
