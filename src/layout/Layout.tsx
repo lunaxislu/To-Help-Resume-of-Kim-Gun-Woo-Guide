@@ -144,41 +144,6 @@ const Layout = () => {
     };
   }, [location]);
 
-  // const handlePushNotification = (data: any) => {
-  //   // 푸시 알림을 보내는 코드 작성
-  //   const options = {
-  //     body: data.text
-  //     // 기타 옵션들을 설정할 수 있습니다.
-  //   };
-
-  //   if ('serviceWorker' in navigator && 'PushManager' in window) {
-  //     navigator.serviceWorker.ready.then((registration) => {
-  //       registration.showNotification('새 메세지가 있습니다.', options);
-  //     });
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // 사용자에게 알림 권한을 요청
-  //   Notification.requestPermission().then((permission) => {
-  //     if (permission === 'granted') {
-  //       console.log('Notification permission granted!');
-  //     }
-  //   });
-
-  //   navigator.serviceWorker
-  //     .register('../service-worker.ts')
-  //     .then((registration) => {
-  //       console.log(
-  //         'Service Worker registered with scope:',
-  //         registration.scope
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       console.error('Service Worker registration failed:', error);
-  //     });
-  // }, []);
-
   return (
     <Wrapper>
       {newAlert.length > 0 && showAlert && (
@@ -206,7 +171,6 @@ const Layout = () => {
 export default Layout;
 
 const Wrapper = styled.div`
-  /* max-width: 144rem; */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
