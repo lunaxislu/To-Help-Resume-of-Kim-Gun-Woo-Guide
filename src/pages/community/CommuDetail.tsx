@@ -7,6 +7,7 @@ import * as St from '../../styles/community/CommunityDetailStyle';
 
 import { supabase } from '../../api/supabase/supabaseClient';
 import Comment from '../../components/community/Comment';
+import SkeletonCommunityDetail from '../../components/skeleton/SkeletonCommunityDetail';
 import parseDate from '../../util/getDate';
 import WriteLayout from './WriteLayout';
 import { deletePostMutation, fetchDetailPost } from './commuQuery';
@@ -54,8 +55,8 @@ const CommuDetail: React.FC = () => {
     }
   };
   if (isLoading) {
-    // return <SkeletonCommunityDetail />;
-    return <></>;
+    return <SkeletonCommunityDetail />;
+    // return <></>;
   }
 
   if (isError) {

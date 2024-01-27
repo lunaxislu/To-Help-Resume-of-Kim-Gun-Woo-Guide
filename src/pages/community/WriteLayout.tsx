@@ -268,14 +268,16 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
                 <label key={item}>
                   <St.CheckBoxs
                     type="checkbox"
-                    name={formValues.category}
+                    name="category"
                     value={item}
                     onChange={(e) => {
+                      // 체크박스가 선택되면, formValues의 category 값을 업데이트합니다.
                       setFormValues({
                         ...formValues,
-                        category: e.target.value
+                        category: e.target.checked ? item : ''
                       });
                     }}
+                    checked={formValues.category === item}
                     defaultChecked={
                       isEdit ? posts![0].category === item : false
                     }
@@ -283,7 +285,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
                   {item}
                 </label>
               ) : null;
-            })}{' '}
+            })}
           </St.CategoryGrid>
         </St.LayoutCategoryContainer>
         {errors.category && <St.Validate>{errors.category}</St.Validate>}

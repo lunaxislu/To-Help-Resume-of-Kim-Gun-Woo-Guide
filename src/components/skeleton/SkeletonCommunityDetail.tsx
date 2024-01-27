@@ -39,7 +39,7 @@ const StPostSkeletonContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  align-items: center;
+  /* align-items: center; */
   gap: 1.5rem;
   border-radius: 1rem;
   padding: 3rem;
