@@ -33,7 +33,11 @@ export const MyPageCommunityCard: React.FC<MyPageCommunityCardProps> = ({
       <StPostContentsWrapper>
         {main_image && <StPostImage src={main_image} alt={title} />}
 
-        <StPostContent>{handleText(content)}</StPostContent>
+        <StPostContent>
+          {handleText(
+            content.length >= 70 ? `${content.substring(0, 70)}...` : content
+          )}
+        </StPostContent>
       </StPostContentsWrapper>
 
       <StIconAndDateWrapper>
