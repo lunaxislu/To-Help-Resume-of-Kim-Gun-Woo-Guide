@@ -4,6 +4,12 @@ export const StLoginContainer = styled.div`
   width: 400px;
   margin: 2rem auto;
   padding: 2rem 0;
+  @media screen and (max-width: 768px) {
+    width: 40rem;
+  }
+  @media screen and (max-width: 530px) {
+    width: 35rem;
+  }
 `;
 
 export const StLoginTitle = styled.h1`

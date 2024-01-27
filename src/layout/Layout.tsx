@@ -113,7 +113,6 @@ const Layout = () => {
       if (chatRooms) {
         setUserChatRoom(chatRooms[0]?.chat_rooms);
       }
-
       if (error) {
         console.log('no chatRooms', error);
       }
@@ -181,7 +180,7 @@ const Layout = () => {
   }, []);
 
   return (
-    <>
+    <Wrapper>
       {newAlert.length > 0 && showAlert && (
         <StModalContainer>
           <StAlertCloseBtn onClick={handleHideAlert} />
@@ -194,12 +193,13 @@ const Layout = () => {
           })}
         </StModalContainer>
       )}
-
       <Header />
-      <Outlet />
+      <ContentWrapper>
+        <Outlet />
+      </ContentWrapper>
       {showTopbutton && <ScrollTopButton />}
       <Footer />
-    </>
+    </Wrapper>
   );
 };
 
