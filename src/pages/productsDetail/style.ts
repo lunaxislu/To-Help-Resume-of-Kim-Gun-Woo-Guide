@@ -54,6 +54,7 @@ const StImageWrapper = styled.div`
   width: 100%;
   max-width: 510px;
   height: 43.5rem;
+  max-height: 100%;
   border-radius: 12px;
   overflow: hidden;
   background-color: aliceblue;
@@ -62,6 +63,8 @@ const StImageWrapper = styled.div`
   @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 768px;
+    height: 100%;
+    max-height: 43.5rem;
     margin-bottom: 1.5rem;
     border-radius: 0;
   }
@@ -103,6 +106,7 @@ const StProfileImages = styled.div<ImageProps>`
   background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
   background-size: cover;
   border-radius: 50%;
+  background-repeat: no-repeat;
 
   @media screen and (max-width: 768px) {
     width: 16px;
@@ -117,6 +121,7 @@ const StUserNickname = styled.h4`
   line-height: 191.2%; /* 26.768px */
   @media screen and (max-width: 768px) {
     width: 100px;
+    white-space: nowrap;
   }
 `;
 
@@ -155,8 +160,8 @@ const StHeaderTitle = styled.div`
 
   @media screen and (max-width: 768px) {
     font-size: 1.4rem;
-    padding: 0 1.5rem;
-    margin-block: 0.6rem;
+    padding: 0rem 1.5rem;
+    margin-block: 0.3rem;
   }
 `;
 const StHeaderPriceWrapper = styled.div`
@@ -343,7 +348,75 @@ const StCategoryTag = styled.li`
   color: #4f4f4f;
   list-style: none;
   border-radius: 6px;
+`;
+
+const StSelectChatBg = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #1d1d1d90;
+  z-index: 2;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+  }
+`;
+
+const StChatList = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36rem;
+  height: 25rem;
+  background: var(--3-gray);
+  color: var(--opc-100);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  @media screen and (max-width: 768px) {
+    position: absolute;
+  }
+`;
+
+const StChatListItem = styled.div`
+  padding: 2rem 1rem;
+  height: 100%;
+
   cursor: pointer;
+
+  &:hover {
+    color: var(--3-gray);
+    background-color: var(--opc-100);
+  }
+`;
+
+const StConfirmSellBtn = styled.button`
+  padding: 1rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  background-color: var(--opc-80);
+  border-radius: 0.8rem;
+  margin-block: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--opc-100);
+    color: var(--3-gray);
+  }
+
+  span {
+    font-size: 2rem;
+    font-weight: 600;
+  }
 `;
 
 export {
@@ -370,5 +443,9 @@ export {
   StProductCategory,
   StCategoryTag,
   StAlertIcon,
-  FaHeartIcon
+  FaHeartIcon,
+  StSelectChatBg,
+  StChatList,
+  StChatListItem,
+  StConfirmSellBtn
 };

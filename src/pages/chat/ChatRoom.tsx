@@ -16,9 +16,13 @@ const StChatRoomBar = styled.div`
   max-width: 768px;
   padding: 1rem 0.4rem;
   gap: 1rem;
-  display: flex;
+  display: none;
   align-items: center;
   border-bottom: 0.1rem solid var(--3-gray);
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+  }
 `;
 
 const StHeaderArrow = styled(IoIosArrowBack)`
@@ -26,6 +30,11 @@ const StHeaderArrow = styled(IoIosArrowBack)`
   height: max-content;
   color: var(--opc-100);
   cursor: pointer;
+  display: none;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
 `;
 
 export default function ChatRoom() {
@@ -49,10 +58,14 @@ export default function ChatRoom() {
   const utilFunctions = new UtilForChat();
 
   const handleBoardPosition = () => {
-    window.history.pushState(null, '', '');
-    setboardPosition(0);
+    if (isMobile) {
+      window.history.pushState(null, '', '');
+      setboardPosition(0);
+    } else {
+      setboardPosition(0);
+    }
   };
-  const handleHideBoardPosition = () => {
+  const handleHideBoardPosition = (): void => {
     setboardPosition(100);
   };
 
@@ -71,13 +84,19 @@ export default function ChatRoom() {
     // 유저가 소속된 채팅방을 가져오는 부분
     if (curUser) {
       utilFunctions.getRoomsforUser(curUser, setRooms, clicked, setMessages);
-      utilFunctions.handleRealtime(clicked, setMessages, curUser, setRooms);
+      utilFunctions.handleRealtime(
+        clicked,
+        setMessages,
+        curUser,
+        setRooms,
+        messages
+      );
     }
 
     // 해당 채팅방에 해당하는 메세지를 가져오고
     if (clicked) {
       setMessages([]);
-      utilFunctions.getMessages(clicked, setMessages);
+      utilFunctions.getMessages(clicked, setMessages, messages);
       utilFunctions.handleTargetUser(rooms, clicked, setTargetUser);
     }
   }, [clicked, curUser]);
@@ -88,11 +107,18 @@ export default function ChatRoom() {
       clicked,
       setMessages,
       curUser,
-      setRooms
+      setRooms,
+      messages
     );
-    utilFunctions.handleRealtime(clicked, setMessages, curUser, setRooms);
+    utilFunctions.handleRealtime(
+      clicked,
+      setMessages,
+      curUser,
+      setRooms,
+      messages
+    );
 
-    utilFunctions.getMessages(clicked, setMessages);
+    utilFunctions.getMessages(clicked, setMessages, messages);
     utilFunctions.getUserData(setCurUser);
 
     // unmount 시 구독 해제하기
@@ -120,22 +146,22 @@ export default function ChatRoom() {
     }
   }, [messages]);
 
-  const checkWindowSize = () => {
-    if (window.innerWidth <= 768) {
-      setIsMobile(true);
-      window.scrollTo({ top: 0 });
-    } else {
-      setIsMobile(false);
-    }
+  const checkDevice = (agent: string) => {
+    const mobileRegex = [
+      /Android/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i
+    ];
+
+    return mobileRegex.some((mobile) => agent.match(mobile));
   };
 
   useEffect(() => {
-    checkWindowSize();
-    window.addEventListener('resize', checkWindowSize);
-
-    return () => {
-      window.removeEventListener('resize', checkWindowSize);
-    };
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
+    if (!checkDevice(window.navigator.userAgent)) setIsMobile(false);
   }, []);
 
   useEffect(() => {
@@ -166,12 +192,10 @@ export default function ChatRoom() {
       )}
 
       <St.StChatContainer>
-        {isMobile && (
-          <StChatRoomBar>
-            <StHeaderArrow onClick={() => navi(-1)} />
-            채팅목록
-          </StChatRoomBar>
-        )}
+        <StChatRoomBar>
+          <StHeaderArrow onClick={() => navi(-1)} />
+          채팅목록
+        </StChatRoomBar>
         <St.StChatList onClick={() => setShowFileInput(false)}>
           <ChatRoomList
             handleBoardPosition={handleBoardPosition}
@@ -179,6 +203,7 @@ export default function ChatRoom() {
             rooms={rooms}
             handleCurClicked={handleCurClicked}
             unread={unread}
+            curUser={curUser}
           />
         </St.StChatList>
         <St.StChatBoard $position={boardPosition}>

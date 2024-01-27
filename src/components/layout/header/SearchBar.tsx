@@ -120,10 +120,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
         />
 
         <SearchBtn onClick={handleSearch}>
-          {isMobile && <StMagnifyGlass />}
-          {!isMobile && (
-            <SearchBtnImg src={'/assets/searchbtn.png'} alt="searchbutton" />
-          )}
+          <StMagnifyGlass />
+
+          <SearchBtnImg src={'/assets/searchbtn.png'} alt="searchbutton" />
         </SearchBtn>
       </div>
     </SearchInputContainer>
@@ -196,6 +195,11 @@ const StMagnifyGlass = styled(FaMagnifyingGlass)`
   right: 55%;
   z-index: 3;
   color: var(--opc-100);
+  display: none;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
 `;
 
 const SearchBtn = styled.button`
@@ -215,4 +219,7 @@ const SearchBtn = styled.button`
 const SearchBtnImg = styled.img`
   width: 3.7rem;
   height: 3.7rem;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;

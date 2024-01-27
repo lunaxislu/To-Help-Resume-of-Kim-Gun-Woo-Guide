@@ -140,6 +140,7 @@ const ProductDetail = () => {
           (participant: any) => participant.user_id === target.uid
         );
       });
+
       return filtered;
     }
   };
@@ -191,17 +192,21 @@ const ProductDetail = () => {
       if (foundRoom) {
         const InitMessage = [
           {
-            sender_id: curUser.uid,
+            id: uuid(),
+            sender_id: curUser?.uid,
             content: `제목: ${product[0].title}`,
-            chat_room_id: foundRoom[0]?.id
+            chat_room_id: foundRoom[0]?.id,
+            isFirst: true
           },
           {
-            sender_id: curUser.uid,
+            id: uuid(),
+            sender_id: curUser?.uid,
             content: `${product[0].price}원`,
             chat_room_id: foundRoom[0]?.id
           },
           {
-            sender_id: curUser.uid,
+            id: uuid(),
+            sender_id: curUser?.uid,
             content: '상품에 관심 있어요!',
             chat_room_id: foundRoom[0]?.id
           }
@@ -523,7 +528,7 @@ const ProductDetail = () => {
         .eq('id', buyerChatId);
 
       if (buyUser) {
-        const currentBuyProducts = buyUser;
+        const currentBuyProducts = buyUser[0].buyProduct;
         const newList = [...currentBuyProducts, id];
         const { data: res, error: sellError } = await supabase
           .from('user')
@@ -606,8 +611,9 @@ const ProductDetail = () => {
   }, []);
 
   const checkWindowSize = () => {
-    if (window.innerWidth <= 768) {
+    if (window.matchMedia('(max-width: 768px)').matches) {
       setIsMobile(true);
+      window.scrollTo({ top: 0 });
     } else {
       setIsMobile(false);
     }
@@ -616,15 +622,17 @@ const ProductDetail = () => {
   useEffect(() => {
     checkWindowSize();
     window.addEventListener('DOMContentLoaded', checkWindowSize);
+    window.addEventListener('resize', checkWindowSize);
 
     return () => {
       window.removeEventListener('DOMContentLoaded', checkWindowSize);
+      window.removeEventListener('resize', checkWindowSize);
     };
   });
 
   if (product === null) return <div>로딩 중</div>;
 
-  const labels = ['수량', '상태', '거래 방식', '직거래 장소', '교환', '배송비'];
+  const labels = ['수량', '상태', '거래 방식', '직거래 장소', '교환'];
 
   const data = product[0];
   const productInfo = [
@@ -633,6 +641,7 @@ const ProductDetail = () => {
     data.deal_type,
     data.address,
     data.exchange_product,
+    data.changable,
     data.shipping_cost
   ];
 
@@ -670,8 +679,8 @@ const ProductDetail = () => {
   return (
     <>
       {showChatList && (
-        <StSelectChatBg onClick={() => setShowChatList(false)}>
-          <StChatList>
+        <St.StSelectChatBg onClick={() => setShowChatList(false)}>
+          <St.StChatList onClick={(e) => e.stopPropagation()}>
             <h1
               style={{
                 textAlign: 'center',
@@ -699,7 +708,7 @@ const ProductDetail = () => {
               createdChatList.map((room: RoomType) => {
                 return (
                   <>
-                    <StChatListItem
+                    <St.StChatListItem
                       key={room.id}
                       id={room.participants[0].user_id}
                       onClick={(e) => {
@@ -708,15 +717,15 @@ const ProductDetail = () => {
                       }}
                     >
                       <div>{room.participants[0].user_name}</div>
-                    </StChatListItem>
-                    <StConfirmSellBtn onClick={handleSellComplete}>
+                    </St.StChatListItem>
+                    <St.StConfirmSellBtn onClick={handleSellComplete}>
                       <span>{selectedUser}</span> 님에게 판매 완료하기
-                    </StConfirmSellBtn>
+                    </St.StConfirmSellBtn>
                   </>
                 );
               })}
-          </StChatList>
-        </StSelectChatBg>
+          </St.StChatList>
+        </St.StSelectChatBg>
       )}
       <ToastContainer />
       <St.StDetailContainer>
@@ -731,9 +740,15 @@ const ProductDetail = () => {
                   style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
                 >
                   <St.StUserImage>
-                    <St.StProfileImages
-                      $url={target?.avatar_url}
-                    ></St.StProfileImages>
+                    {product[0].post_user_uid === curUser?.id ? (
+                      <St.StProfileImages
+                        $url={curUser?.avatar_url}
+                      ></St.StProfileImages>
+                    ) : (
+                      <St.StProfileImages
+                        $url={target?.avatar_url}
+                      ></St.StProfileImages>
+                    )}
                   </St.StUserImage>
                   <St.StUserNickname>{data.post_user_name}</St.StUserNickname>
                 </div>
@@ -886,74 +901,5 @@ const ProductDetail = () => {
     </>
   );
 };
-
-const StSelectChatBg = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #1d1d1d90;
-  z-index: 2;
-
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-  }
-`;
-
-const StChatList = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 36rem;
-  height: 25rem;
-  background: var(--3-gray);
-  color: var(--opc-100);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-  @media screen and (max-width: 768px) {
-    position: absolute;
-  }
-`;
-
-const StChatListItem = styled.div`
-  padding: 2rem 1rem;
-  height: 100%;
-
-  cursor: pointer;
-
-  &:hover {
-    color: var(--3-gray);
-    background-color: var(--opc-100);
-  }
-`;
-
-const StConfirmSellBtn = styled.button`
-  padding: 1rem;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  background-color: var(--opc-80);
-  border-radius: 0.8rem;
-  margin-block: 1rem;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--opc-100);
-    color: var(--3-gray);
-  }
-
-  span {
-    font-size: 2rem;
-    font-weight: 600;
-  }
-`;
 
 export default ProductDetail;

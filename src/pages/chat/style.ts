@@ -392,6 +392,7 @@ const StHeaderArrow = styled(IoIosArrowBack)`
   margin-right: 0.5rem;
   color: var(--opc-100);
   cursor: pointer;
+  display: none;
 
   @media only screen and (max-width: 768px) {
     display: block;
