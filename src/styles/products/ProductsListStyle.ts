@@ -224,7 +224,6 @@ export const SearchBarInput = styled.input`
 export const ProductsListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  place-items: center;
   margin: auto;
   column-gap: 1.9rem;
   row-gap: 4rem;
@@ -301,9 +300,11 @@ export const CardTitle = styled.h2`
   width: 100%;
   margin-bottom: 0.4rem;
   overflow: hidden;
-  white-space: wrap;
-  text-overflow: ellipsis;
-  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+  line-height: 1.3;
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
   }
