@@ -18,19 +18,25 @@ const CommuList: React.FC<CommuListProps> = ({
     data: postInfo,
     isLoading,
     isError
-  } = useQuery(['posts', currentPage], () => fetchRangePosts(currentPage), {
-    onSuccess: (data) => {
-      if (data.count) {
-        setTotalPages(Math.ceil(data.count / RANGE_POST_NUMBER));
+  } = useQuery(
+    ['posts', currentPage, selectCategory],
+    () => fetchRangePosts(currentPage, selectCategory),
+    {
+      onSuccess: (data) => {
+        if (data.count) {
+          setTotalPages(Math.ceil(data.count / RANGE_POST_NUMBER));
+        }
       }
+      // staleTime: 300000
     }
-  });
+  );
   useEffect(() => {
     setCurrentPage(1); // 카테고리가 바뀔 때마다 첫 페이지로 리셋
   }, [selectCategory]);
 
   if (isLoading) {
-    return <St.Title>Loading...</St.Title>;
+    // return <SkeletonCommunityCard cards={2} />;
+    return <></>;
   }
 
   if (isError) {
@@ -49,56 +55,54 @@ const CommuList: React.FC<CommuListProps> = ({
   return (
     <div>
       <St.Container>
-        {posts
-          ?.filter((post) => {
-            if (selectCategory === '전체') {
-              return posts;
-            } else {
-              return post.category === selectCategory;
-            }
-          })
-          .map((post: Post) => {
-            return (
-              <St.Posts
-                key={post.post_id}
-                onClick={() => navigate(`/community/detail/${post.post_id}`)}
-              >
-                <div>
-                  {' '}
-                  <h2>{post.title}</h2>
-                  <St.ContentsContainer>
-                    {post.main_image && (
-                      <St.MainImg>
-                        <img src={post.main_image} alt="Main" />
-                      </St.MainImg>
-                    )}
+        {posts?.map((post: Post) => {
+          return (
+            <St.Posts
+              key={post.post_id}
+              onClick={() => {
+                navigate(`/community/detail/${post.post_id}`);
+                window.scrollTo({ top: 0 });
+              }}
+            >
+              <div>
+                {' '}
+                <h2>{post.title}</h2>
+                <St.ContentsContainer>
+                  {post.main_image && (
+                    <St.MainImg>
+                      <img src={post.main_image} alt="Main" />
+                    </St.MainImg>
+                  )}
 
-                    <St.ContentArea>{handleText(post.content)}</St.ContentArea>
-                  </St.ContentsContainer>
+                  <St.ContentArea>{handleText(post.content)}</St.ContentArea>
+                </St.ContentsContainer>
+              </div>
+              <St.RightSide>
+                {' '}
+                <St.CommentArea>
+                  <St.LikesIcon />
+                  <p>{post.likes}</p>
+                  <St.CommentIcon />
+                  <p>{post.comment?.length}</p>
+                </St.CommentArea>
+                <div>
+                  <p>{parseDate(post.created_at)}</p>
                 </div>
-                <St.RightSide>
-                  {' '}
-                  <St.CommentArea>
-                    <St.LikesIcon />
-                    <p>{post.likes}</p>
-                    <St.CommentIcon />
-                    <p>{post.comment?.length}</p>
-                  </St.CommentArea>
-                  <div>
-                    <p>{parseDate(post.created_at)}</p>
-                  </div>
-                </St.RightSide>
-              </St.Posts>
-            );
-          })}
+              </St.RightSide>
+            </St.Posts>
+          );
+        })}
       </St.Container>
       <St.PageNumber>
         {pages.map((number) => (
           <St.PageBtn
             $currentPage={currentPage}
-            pageNumber={number}
+            $pageNumber={number}
             key={number}
-            onClick={() => setCurrentPage(number)}
+            onClick={() => {
+              setCurrentPage(number);
+              window.scrollTo({ top: 0 });
+            }}
           >
             {number}
           </St.PageBtn>

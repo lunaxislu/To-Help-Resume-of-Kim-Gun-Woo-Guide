@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const StPostContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+export const StPostContainer = styled.div<{ list: number }>`
+  display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
 
   @media screen and (max-width: 1024px) {
@@ -22,7 +22,8 @@ export const StPostWrapper = styled(Link)`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  height: 19.5rem;
+  height: 20rem;
+  flex: 1 1 40%;
   gap: 1.5rem;
   background: var(--2-gray);
   border-radius: 1rem;

@@ -1,4 +1,6 @@
+import { AiFillAlert } from 'react-icons/ai';
 import { BsThreeDots } from 'react-icons/bs';
+import { GoChevronLeft } from 'react-icons/go';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiBallPenLine } from 'react-icons/ri';
 import styled from 'styled-components';
@@ -12,7 +14,15 @@ export const Content = styled.div`
   font-size: var(--fontSize-body);
   font-weight: var(--fontWeight-medium);
   & img {
-    max-width: 100%;
+    width: 60%;
+    max-width: 40rem;
+  }
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+    line-height: 2rem;
+    & img {
+      max-width: 28rem;
+    }
   }
 `;
 export const Container = styled.div`
@@ -58,6 +68,7 @@ export const BtnStyle = styled.button`
   color: var(--8-gray);
   font-weight: var(--fontWeight-semiBold);
   margin: 0.5rem;
+  cursor: pointer;
 `;
 export const Topper = styled.div`
   margin-top: 1rem;
@@ -89,22 +100,12 @@ export const Category = styled.p`
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
   @media screen and (max-width: 768px) {
     font-size: 1rem;
   }
 `;
-export const Report = styled.p`
-  /* margin-left: 1.5rem;
-  width: 3.7rem;
-  height: 2.3rem; */
-  font-size: var(--fontSize-H6);
-  color: var(--6-gray);
-  border-radius: 5.6rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0.5rem;
-`;
+
 export const MainTopper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -142,15 +143,39 @@ export const TitleCategory = styled.div`
     }
   }
 `;
+export const AlertIcon = styled(AiFillAlert)`
+  color: var(--opc-50);
+  margin-left: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+`;
+export const ReportArea = styled.div`
+  display: flex;
+  align-items: start;
+  & p {
+    font-size: var(--fontSize-H6);
+    color: var(--6-gray);
+    border-radius: 5.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem;
+  }
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
 export const TrachIcon = styled(IoTrashOutline)`
   color: var(--opc-50);
   margin-left: 1rem;
   font-size: 1.5rem;
+  cursor: pointer;
 `;
 export const PenIcon = styled(RiBallPenLine)`
   color: var(--opc-50);
   margin-left: 1rem;
   font-size: 1.5rem;
+  cursor: pointer;
 `;
 export const NameP = styled.p`
   font-size: var(--fontSize-H5);
@@ -159,8 +184,11 @@ export const NameP = styled.p`
 `;
 export const TimeP = styled.p`
   font-size: var(--fontSize-H5);
-  font-weight: var(--fontWeight-semiBold);
+  font-weight: var(--fontWeight-medium);
   color: var(--6-gray);
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
 `;
 
 export const NoticeLike = styled.p`
@@ -184,12 +212,12 @@ export const TitleTopper = styled.div`
   border-bottom: 1px solid var(--4-gray);
   margin-bottom: 2rem;
   gap: 1rem;
-  & button {
+  /* & button {
     font-size: var(--fontSize-H1);
     background-color: transparent;
     border: none;
     color: var(--opc-100);
-  }
+  } */
   & p {
     font-size: var(--fontSize-H6);
     color: var(--opc-100);
@@ -209,6 +237,7 @@ export const TitleTopper = styled.div`
 `;
 export const Dots = styled(BsThreeDots)`
   display: none;
+  cursor: pointer;
   @media screen and (max-width: 768px) {
     display: block;
     color: var(--9-gray);
@@ -228,13 +257,45 @@ export const EditDropdown = styled.div`
   }
 `;
 
-// 드롭다운 메뉴 아이템 스타일링
 export const DropdownItem = styled.div`
   display: none;
   @media screen and (max-width: 768px) {
     display: block;
     padding: 12px 12px;
     font-size: var(--fontSize-H6);
+    cursor: pointer;
+  }
+`;
+// export const BackIcon = styled(GoChevronLeft)`
+//   color: var(--opc-100);
+//   display: none;
+//   width: 2rem;
+//   height: 1.5rem;
+//   :hover {
+//     cursor: pointer;
+//   }
+//   @media screen and (max-width: 768px) {
+//     display: block;
+//   }
+// `;
+export const BackBtnBox = styled.div`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+    width: 2rem;
+    height: 1.5rem;
+    :hover {
+      cursor: pointer;
+    }
+  }
+`;
+export const BackIcon = styled(GoChevronLeft)`
+  width: 100%;
+  height: 100%;
+  color: var(--opc-100);
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
     cursor: pointer;
   }
 `;

@@ -7,13 +7,14 @@ import {
 } from './model';
 //쿼리 넘 많다..
 const PAGE_POST_NUMBER = 12;
-export const fetchRangePosts = async (page: number) => {
+export const fetchRangePosts = async (page: number, selectCategory: string) => {
   const startIndex = (page - 1) * PAGE_POST_NUMBER;
   const endIndex = startIndex + PAGE_POST_NUMBER - 1; // 수정된 부분
   const { data, count, error } = await supabase
     .from('community')
     .select('*', { count: 'exact' })
     .order('post_id', { ascending: false })
+    .ilike('category', selectCategory === '전체' ? '%' : selectCategory)
     .range(startIndex, endIndex); // 수정된 부분
   if (error) {
     throw error;

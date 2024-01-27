@@ -9,6 +9,7 @@ import * as St from '../styles/headerStyle/HeaderStyle';
 import { BiWon } from 'react-icons/bi';
 import { BiSolidHeart } from 'react-icons/bi';
 import { BiSolidBell } from 'react-icons/bi';
+import Hamburger from '../components/layout/header/Hamburger';
 
 interface User {
   username: string;
@@ -24,12 +25,15 @@ const Header = () => {
   const dispatch = useAppDispatch();
 
   const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
-
+  const [showHamburger, setShowHamburger] = useState<boolean>(false);
   // 반응형 대응 서치 컴포넌트 두두둥장
   const handleShowSearchComp = () => {
     setShowSearchComp((prev) => !prev);
   };
-
+  // 반응형 대응 햄버거 버튼
+  const handlShowSearchBurger = () => {
+    setShowHamburger((prev) => !prev);
+  };
   // 페이지 이동 시 검색어 초기화 함수
   const handlePageChange = () => {
     dispatch(setSearchQuery('')); // 검색어 초기화
@@ -154,7 +158,18 @@ const Header = () => {
                 src="/assets/mobile_search.svg"
                 onClick={handleShowSearchComp}
               />
-              <St.HamburgerMenu src="/assets/hamburger.svg" />
+              <St.HamburgerMenu
+                src="/assets/hamburger.svg"
+                onClick={handlShowSearchBurger}
+              />
+              <Hamburger
+                isOpen={showHamburger}
+                onClose={() => setShowHamburger(false)}
+                onLogout={handleLogOutButtonClick}
+                user={user}
+                setUser={() => setUser(false)}
+                avatarUrl={avatarUrl}
+              />
             </>
           ) : (
             <St.Button onClick={handleNavigateToLogin}>

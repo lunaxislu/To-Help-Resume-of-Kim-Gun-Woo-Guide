@@ -1,5 +1,5 @@
-import { BsArrowReturnLeft, BsChatRightFill } from 'react-icons/bs';
-import { FaThumbsUp } from 'react-icons/fa';
+import { BsArrowReturnLeft } from 'react-icons/bs';
+import { FaComment, FaThumbsUp } from 'react-icons/fa';
 import { FaRegThumbsUp } from 'react-icons/fa6';
 import styled from 'styled-components';
 export const Name = styled.p`
@@ -15,6 +15,7 @@ export const Time = styled.p`
     font-size: 1rem;
   }
 `;
+
 export const CommentContent = styled.p`
   font-size: var(--fontSize-H6);
   max-width: 45rem;
@@ -28,22 +29,26 @@ export const LeftCommentSide = styled.div`
   flex-direction: column;
   width: fit-content;
 `;
-export const CommentIcon = styled(BsChatRightFill)`
+export const CommentIcon = styled(FaComment)`
   color: var(--opc-100);
+  transform: scaleX(-1);
+  font-size: 1.7rem;
 `;
 export const LikesIcon = styled(FaRegThumbsUp)`
   color: var(--opc-100);
-
   font-size: 1.7rem;
+  cursor: pointer;
 `;
 export const LikesIconOn = styled(FaThumbsUp)`
   color: var(--opc-100);
   font-size: 1.7rem;
+  cursor: pointer;
 `;
 export const SendIcon = styled(BsArrowReturnLeft)`
   color: var(--opc-100);
   font-size: 1.9rem;
   font-weight: var(--fontWeight-semiBold);
+  cursor: pointer;
   @media screen and (max-width: 768px) {
     font-size: 1rem;
     font-weight: var(--fontWeight-bold);
@@ -111,6 +116,7 @@ export const Form = styled.form`
     padding-bottom: 1.5rem;
   }
   @media screen and (max-width: 768px) {
+    width: 100%;
     position: fixed;
     bottom: 0;
     margin: 0;
@@ -135,12 +141,14 @@ export const CommentInput = styled.input`
   background-color: transparent;
   border: none;
   color: var(--12-gray);
+  font-size: var(--fontSize-body);
   &::placeholder {
     color: var(--5-gray);
-    font-size: 16px;
+    font-size: var(--fontSize-body);
   }
   @media screen and (max-width: 768px) {
     height: 24px;
+    font-size: var(--fontSize-H6);
     &::placeholder {
       font-size: var(--fontSize-H6);
     }

@@ -9,8 +9,6 @@ import { User } from '@supabase/gotrue-js';
 import { v4 as uuid } from 'uuid';
 
 export class UtilForChat {
-  constructor() {}
-
   handleTargetUser = async (
     rooms: RoomType[] | null | undefined,
     clicked: string | undefined,

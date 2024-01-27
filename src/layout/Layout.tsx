@@ -4,9 +4,10 @@ import Footer from './Footer';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
 import { supabase } from '../api/supabase/supabaseClient';
-import { userId } from '../util/getUserId';
+
 import styled from 'styled-components';
 import { IoIosClose } from 'react-icons/io';
+const userId = localStorage.getItem('userId');
 
 const StModalContainer = styled.div`
   width: 300px;
@@ -112,7 +113,6 @@ const Layout = () => {
       if (chatRooms) {
         setUserChatRoom(chatRooms[0]?.chat_rooms);
       }
-
       if (error) {
         console.log('no chatRooms', error);
       }
@@ -180,7 +180,7 @@ const Layout = () => {
   }, []);
 
   return (
-    <>
+    <Wrapper>
       {newAlert.length > 0 && showAlert && (
         <StModalContainer>
           <StAlertCloseBtn onClick={handleHideAlert} />
@@ -193,12 +193,13 @@ const Layout = () => {
           })}
         </StModalContainer>
       )}
-
       <Header />
-      <Outlet />
+      <ContentWrapper>
+        <Outlet />
+      </ContentWrapper>
       {showTopbutton && <ScrollTopButton />}
       <Footer />
-    </>
+    </Wrapper>
   );
 };
 

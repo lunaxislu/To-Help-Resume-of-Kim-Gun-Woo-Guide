@@ -20,15 +20,15 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // autoplay: true,
+    autoplay: true,
     autoplaySpeed: 8000,
     draggable: true,
     arrows: false,
     responsive: [
       {
-        breakpoint: 480,
+        breakpoint: 780,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1
         }
       },
@@ -95,29 +95,36 @@ const CarouselContainer = styled.div`
   margin: 0 auto;
   overflow: hidden;
   @media screen and (max-width: 1024px) {
-    max-width: 1024px;
-    max-height: 285px;
+    width: 100%;
   }
-  @media screen and (max-width: 320px) {
-    max-width: 320px;
-    max-height: 153px;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+  @media screen and (max-width: 530px) {
+    width: 100%;
+  }
+  @media screen and (max-width: 400px) {
+    width: 100%;
   }
   .slick-list {
-    @media screen and (max-width: 320px) {
-      max-width: 320px;
-      max-height: 153px;
+    @media screen and (max-width: 530px) {
+      width: 100%;
     }
   }
 
   .dots_custom {
     display: inline-block;
-    /* vertical-align: middle; */
+    vertical-align: middle;
     margin: auto 0;
     padding: 0;
     @media screen and (max-width: 1024px) {
-      margin-bottom: 10rem;
     }
-    @media screen and (max-width: 320px) {
+    @media screen and (max-width: 768px) {
+    }
+    @media screen and (max-width: 400px) {
     }
   }
 
@@ -129,8 +136,8 @@ const CarouselContainer = styled.div`
     padding: 0;
     @media screen and (max-width: 1024px) {
     }
-    @media screen and (max-width: 320px) {
-      margin: 0 4px;
+    @media screen and (max-width: 768px) {
+      margin: 0 0.6rem;
     }
   }
 
@@ -144,7 +151,7 @@ const CarouselContainer = styled.div`
     width: 0.8rem;
     border-radius: 100%;
     padding: 0;
-    @media screen and (max-width: 320px) {
+    @media screen and (max-width: 768px) {
       width: 4px;
       height: 4px;
     }
@@ -163,10 +170,10 @@ const CarouselImage = styled.img`
   @media screen and (max-width: 1024px) {
     max-width: 100%;
   }
-  @media screen and (max-width: 320px) {
-    object-fit: fill;
-    max-width: 320px;
-    max-height: 153px;
+  @media screen and (max-width: 768px) {
+    object-fit: cover;
+    width: 100%;
+    max-height: 21rem;
   }
 `;
 const CarouselButtons = styled.div`
@@ -179,15 +186,10 @@ const CarouselButtons = styled.div`
   padding: 0 2rem;
   box-sizing: border-box;
   @media screen and (max-width: 1024px) {
-    max-width: 100%;
-    padding: 0 4rem;
-  }
-  @media screen and (max-width: 320px) {
-    max-width: 320px;
-    padding: 0;
     width: 100%;
-    marin: auto;
-    align-items: center;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
   }
 `;
 

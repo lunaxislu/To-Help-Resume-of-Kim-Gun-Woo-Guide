@@ -10,7 +10,7 @@ import Comment from '../../components/community/Comment';
 import parseDate from '../../util/getDate';
 import WriteLayout from './WriteLayout';
 import { deletePostMutation, fetchDetailPost } from './commuQuery';
-import { FilesObject } from './model';
+import { FilesObject, ProfileObject } from './model';
 // Quill.register('modules/imageActions', ImageActions);
 // Quill.register('modules/imageFormats', ImageFormats);
 
@@ -20,6 +20,7 @@ const CommuDetail: React.FC = () => {
   const [isEditState, setIsEditState] = useState(false);
   const [userId, setUserId] = useState('');
   const [editToolOpen, setEditToolOpen] = useState(false);
+  const [postUser, setPostUser] = useState<ProfileObject[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -41,6 +42,32 @@ const CommuDetail: React.FC = () => {
     isLoading,
     isError
   } = useQuery(['posts', param.id], () => fetchDetailPost(param.id));
+
+  useEffect(() => {
+    const getPostUser = async () => {
+      // posts 데이터가 로드되었는지 확인
+      if (!isLoading && posts && posts.length > 0) {
+        try {
+          const { data: post_user, error } = await supabase
+            .from('user')
+            .select('*')
+            .eq('id', posts[0].post_user);
+
+          if (error) {
+            throw error;
+          }
+
+          if (post_user) {
+            setPostUser(post_user);
+          }
+        } catch (error: any) {
+          console.log(error.message);
+        }
+      }
+    };
+
+    getPostUser();
+  }, [isLoading, posts]);
   const deleteMutation = useMutation(deletePostMutation, {
     onSuccess: () => {
       queryClient.invalidateQueries('posts');
@@ -54,19 +81,31 @@ const CommuDetail: React.FC = () => {
     }
   };
   if (isLoading) {
-    return <div></div>;
+    // return <SkeletonCommunityDetail />;
+    return <></>;
   }
 
   if (isError) {
     return <div>Error loading posts</div>;
   }
+  const handleOnClickBack = () => {
+    const confirm = window.confirm(
+      '수정한 글이 적용되지 않습니다. 그래도 페이지를 떠나시겠습니까?'
+    );
+    if (confirm) {
+      navigate(-1);
+    }
+  };
 
   return (
     <St.Container>
       {isEditState ? (
         <St.WriteWrap>
           <St.TitleTopper>
-            <button onClick={() => navigate('/community')}>{`<`}</button>
+            <St.BackBtnBox>
+              <St.BackIcon onClick={handleOnClickBack} />
+            </St.BackBtnBox>
+
             <h1>게시글 수정</h1>
             <p>*필수항목</p>
           </St.TitleTopper>
@@ -87,27 +126,35 @@ const CommuDetail: React.FC = () => {
                   <div>
                     <St.MainTopper>
                       <St.TitleCategory>
-                        <button
-                          onClick={() => navigate('/community')}
-                        >{`<`}</button>
+                        <St.BackBtnBox>
+                          <St.BackIcon onClick={() => navigate(-1)} />
+                        </St.BackBtnBox>
                         <h1>{post.title}</h1>
                         <St.Category>{post.category}</St.Category>
                       </St.TitleCategory>
+                      <St.Dots onClick={() => setEditToolOpen(!editToolOpen)} />
                       {posts![0].post_user === userId ? (
                         ''
                       ) : (
-                        <St.Report>신고</St.Report>
+                        <St.ReportArea>
+                          <St.AlertIcon />
+                          <p>신고하기</p>
+                        </St.ReportArea>
                       )}
                     </St.MainTopper>
 
                     <St.SubTopper>
                       <St.TitleCategory>
                         <St.NameP>
-                          {!!post.anon ? '익명의 작업자' : post.nickname}
+                          {!!post.anon
+                            ? '익명의 작업자'
+                            : postUser[0]?.nickname
+                            ? postUser[0]?.nickname
+                            : postUser[0]?.username}
                         </St.NameP>
                         <St.TimeP>{parseDate(post.created_at)}</St.TimeP>
                       </St.TitleCategory>
-                      <St.Dots onClick={() => setEditToolOpen(!editToolOpen)} />
+
                       {editToolOpen && (
                         <St.EditDropdown>
                           {posts[0].post_user === userId ? (

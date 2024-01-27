@@ -15,8 +15,6 @@ export const StCardContainer = styled.div`
     justify-content: center; */
     width: 100%;
     max-height: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
 `;
@@ -39,7 +37,8 @@ export const StCardWrapper = styled(Link)`
   }
 
   @media screen and (max-width: 768px) {
-    width: 100%;
+    /* width: 100%; */
+    flex: 1 1 40%;
   }
 `;
 
@@ -89,4 +88,10 @@ export const StProductPrice = styled.p`
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
   }
+`;
+
+export const StNothingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

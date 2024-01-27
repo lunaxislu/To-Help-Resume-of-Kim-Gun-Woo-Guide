@@ -679,8 +679,8 @@ const ProductDetail = () => {
   return (
     <>
       {showChatList && (
-        <StSelectChatBg onClick={() => setShowChatList(false)}>
-          <StChatList onClick={(e) => e.stopPropagation()}>
+        <St.StSelectChatBg onClick={() => setShowChatList(false)}>
+          <St.StChatList onClick={(e) => e.stopPropagation()}>
             <h1
               style={{
                 textAlign: 'center',
@@ -708,7 +708,7 @@ const ProductDetail = () => {
               createdChatList.map((room: RoomType) => {
                 return (
                   <>
-                    <StChatListItem
+                    <St.StChatListItem
                       key={room.id}
                       id={room.participants[0].user_id}
                       onClick={(e) => {
@@ -717,15 +717,15 @@ const ProductDetail = () => {
                       }}
                     >
                       <div>{room.participants[0].user_name}</div>
-                    </StChatListItem>
-                    <StConfirmSellBtn onClick={handleSellComplete}>
+                    </St.StChatListItem>
+                    <St.StConfirmSellBtn onClick={handleSellComplete}>
                       <span>{selectedUser}</span> 님에게 판매 완료하기
-                    </StConfirmSellBtn>
+                    </St.StConfirmSellBtn>
                   </>
                 );
               })}
-          </StChatList>
-        </StSelectChatBg>
+          </St.StChatList>
+        </St.StSelectChatBg>
       )}
       <ToastContainer />
       <St.StDetailContainer>
@@ -901,74 +901,5 @@ const ProductDetail = () => {
     </>
   );
 };
-
-const StSelectChatBg = styled.div`
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #1d1d1d90;
-  z-index: 2;
-
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-  }
-`;
-
-const StChatList = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 36rem;
-  height: 25rem;
-  background: var(--3-gray);
-  color: var(--opc-100);
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-
-  @media screen and (max-width: 768px) {
-    position: absolute;
-  }
-`;
-
-const StChatListItem = styled.div`
-  padding: 2rem 1rem;
-  height: 100%;
-
-  cursor: pointer;
-
-  &:hover {
-    color: var(--3-gray);
-    background-color: var(--opc-100);
-  }
-`;
-
-const StConfirmSellBtn = styled.button`
-  padding: 1rem;
-  background-color: transparent;
-  border: none;
-  outline: none;
-  background-color: var(--opc-80);
-  border-radius: 0.8rem;
-  margin-block: 1rem;
-  cursor: pointer;
-
-  &:hover {
-    background-color: var(--opc-100);
-    color: var(--3-gray);
-  }
-
-  span {
-    font-size: 2rem;
-    font-weight: 600;
-  }
-`;
 
 export default ProductDetail;

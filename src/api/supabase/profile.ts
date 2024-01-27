@@ -13,7 +13,6 @@ export const getUserProfile = async (id: string | null) => {
   let { data: profile } = await supabase.from('user').select('*').eq('id', id);
   return profile;
 };
-
 // 현재 사용자 닉네임 수정
 export const updateUserNickname = async ({
   nickname,
