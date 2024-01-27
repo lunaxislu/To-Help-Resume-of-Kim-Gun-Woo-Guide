@@ -429,9 +429,17 @@ const ProductsList = styled.li`
     font-size: var(--fontSize-body);
     color: var(--11-gray);
     margin-top: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.2;
     @media screen and (max-width: 768px) {
       width: 14rem;
       margin-top: 0.6rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
       color: var(--11-gray, #f8f8f8);
       font-weight: var(--fontWeight-medium);
       font-size: var(--fontSize-H5);
@@ -446,7 +454,6 @@ const ProductsList = styled.li`
     margin-top: 1rem;
     text-align: left;
     @media screen and (max-width: 768px) {
-      width: 6rem;
       height: 2.3rem;
       font-weight: var(--fontWeight-bold);
       font-size: var(--fontSize-H5);

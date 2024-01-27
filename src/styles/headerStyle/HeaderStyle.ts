@@ -1,31 +1,35 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+export const HeaderTopContainer = styled.div`
+  max-width: 144rem;
+  display: flex;
+  justify-content: center;
+`;
+
 export const HeaderContainer = styled.header`
-  width: 144rem;
+  width: 111.6rem;
   display: flex;
   flex-shrink: 0;
-  padding: 3rem 15rem;
+  padding: 3rem 0;
   flex-direction: column;
   margin: 0 auto;
-  background-color: {
-    color: var(--bgColor);
-  }
-  @media screen and (max-width: 1300px) {
-    width: 120rem;
-  }
-  @media screen and (max-width: 1100px) {
-    width: 110rem;
+
+  @media screen and (max-width: 1200px) {
+    max-width: 110rem;
   }
   @media screen and (max-width: 1000px) {
-    width: 100rem;
+    max-width: 100rem;
+    width: 100%;
   }
   @media screen and (max-width: 900px) {
-    width: 90rem;
+    max-width: 90rem;
+    width: 100%;
   }
   @media screen and (max-width: 768px) {
     align-items: center;
-    width: 76.8rem;
+    max-width: 76.8rem;
+    width: 100%;
     padding: 3rem 2rem;
   }
   @media screen and (max-width: 530px) {
