@@ -3,7 +3,7 @@ import { MouseEvent, useEffect, useState } from 'react';
 import ProductListCard from '../../components/prducts/ProductsList/ProductsListCard';
 import ProductsSearchBar from '../../components/prducts/ProductsList/ProductsSearchBar';
 import ProductsSortBtn from '../../components/prducts/ProductsList/ProductsSortBtn';
-import * as St from '../../styles/products/ProductsListStyle'
+import * as St from '../../styles/products/ProductsListStyle';
 import { useNavigate } from 'react-router';
 import { fetchRangeProductsPosts, getProductsCount, getProductsPosts } from '../../components/prducts/productsQuery';
 import Pagination from './Pagination';
@@ -14,6 +14,7 @@ const PAGE_POST_NUMBER = 25;
 const ProductsList = () => {
 
   const navigate = useNavigate();
+
   const [selectCategory, setSelectCategory] = useState<string[]>(['전체']);
 
   const [currentPage, setCurrentPage] = useState(1);

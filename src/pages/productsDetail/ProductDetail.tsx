@@ -12,6 +12,7 @@ import { FaHeart } from 'react-icons/fa';
 import { v4 as uuid } from 'uuid';
 import styled from 'styled-components';
 import ProductDetailCarousel from './ProductDetailCarousel';
+import { FaPencil, FaTrash } from 'react-icons/fa6';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
@@ -139,6 +140,7 @@ const ProductDetail = () => {
           (participant: any) => participant.user_id === target.uid
         );
       });
+
       return filtered;
     }
   };
@@ -190,17 +192,21 @@ const ProductDetail = () => {
       if (foundRoom) {
         const InitMessage = [
           {
-            sender_id: curUser.uid,
+            id: uuid(),
+            sender_id: curUser?.uid,
             content: `제목: ${product[0].title}`,
-            chat_room_id: foundRoom[0]?.id
+            chat_room_id: foundRoom[0]?.id,
+            isFirst: true
           },
           {
-            sender_id: curUser.uid,
+            id: uuid(),
+            sender_id: curUser?.uid,
             content: `${product[0].price}원`,
             chat_room_id: foundRoom[0]?.id
           },
           {
-            sender_id: curUser.uid,
+            id: uuid(),
+            sender_id: curUser?.uid,
             content: '상품에 관심 있어요!',
             chat_room_id: foundRoom[0]?.id
           }
@@ -522,7 +528,7 @@ const ProductDetail = () => {
         .eq('id', buyerChatId);
 
       if (buyUser) {
-        const currentBuyProducts = buyUser;
+        const currentBuyProducts = buyUser[0].buyProduct;
         const newList = [...currentBuyProducts, id];
         const { data: res, error: sellError } = await supabase
           .from('user')
@@ -605,8 +611,9 @@ const ProductDetail = () => {
   }, []);
 
   const checkWindowSize = () => {
-    if (window.innerWidth <= 768) {
+    if (window.matchMedia('(max-width: 768px)').matches) {
       setIsMobile(true);
+      window.scrollTo({ top: 0 });
     } else {
       setIsMobile(false);
     }
@@ -625,7 +632,7 @@ const ProductDetail = () => {
 
   if (product === null) return <div>로딩 중</div>;
 
-  const labels = ['수량', '상태', '거래 방식', '직거래 장소', '교환', '배송비'];
+  const labels = ['수량', '상태', '거래 방식', '직거래 장소', '교환'];
 
   const data = product[0];
   const productInfo = [
@@ -633,8 +640,7 @@ const ProductDetail = () => {
     data.quality,
     data.deal_type,
     data.address,
-    data.exchange_product,
-    data.shipping_cost
+    data.exchange_product
   ];
 
   if (isSoldOut === true) {
@@ -672,7 +678,7 @@ const ProductDetail = () => {
     <>
       {showChatList && (
         <StSelectChatBg onClick={() => setShowChatList(false)}>
-          <StChatList>
+          <StChatList onClick={(e) => e.stopPropagation()}>
             <h1
               style={{
                 textAlign: 'center',
@@ -728,18 +734,57 @@ const ProductDetail = () => {
           <St.StProductInfo>
             <St.StProductInfoHeader>
               <St.StUserTitlebox>
-                <St.StUserImage>
-                  <St.StProfileImages></St.StProfileImages>
-                </St.StUserImage>
-                <St.StUserNickname>{data.post_user_name}</St.StUserNickname>
+                <div
+                  style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}
+                >
+                  <St.StUserImage>
+                    <St.StProfileImages
+                      $url={target?.avatar_url}
+                    ></St.StProfileImages>
+                  </St.StUserImage>
+                  <St.StUserNickname>{data.post_user_name}</St.StUserNickname>
+                </div>
               </St.StUserTitlebox>
 
               <St.StAlertButton>
-                {isMobile && (
-                  <St.StTimeLeft>{parseDate(data.created_at)}</St.StTimeLeft>
+                {product[0].post_user_uid === curUser?.uid && (
+                  <>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '.36rem',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <FaPencil style={{ color: 'var(--opc-100)' }} />
+                      수정하기
+                    </div>
+                    <div
+                      onClick={handleDeletePost}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '.36rem',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <FaTrash style={{ color: 'var(--opc-100)' }} />
+                      삭제하기
+                    </div>
+                  </>
                 )}
-                {!isMobile && <St.StAlertIcon />}
-                <p style={{ cursor: 'pointer' }}>신고하기</p>
+                {product[0].post_user_uid !== curUser?.uid && (
+                  <>
+                    {isMobile && (
+                      <St.StTimeLeft>
+                        {parseDate(data.created_at)}
+                      </St.StTimeLeft>
+                    )}
+                    {!isMobile && <St.StAlertIcon />}
+                    <p style={{ cursor: 'pointer' }}>신고하기</p>
+                  </>
+                )}
               </St.StAlertButton>
             </St.StProductInfoHeader>
             <St.StHeaderTitle>{data.title}</St.StHeaderTitle>
@@ -778,15 +823,6 @@ const ProductDetail = () => {
             </St.StProductInfoBody>
             {product[0].post_user_uid === curUser?.uid ? (
               <St.ButtonWrapper>
-                <St.Button $role="chat" onClick={handleDeletePost}>
-                  <h3>삭제하기</h3>
-                </St.Button>
-                <St.Button
-                  $role="chat"
-                  onClick={() => alert('개발 중인 기능입니다!')}
-                >
-                  <h3>수정하기</h3>
-                </St.Button>
                 <St.Button
                   $role="chat"
                   onClick={() => {
@@ -794,7 +830,7 @@ const ProductDetail = () => {
                     handleShowChatList();
                   }}
                 >
-                  <h3>판매 완료</h3>
+                  <h3>판매 완료로 전환하기</h3>
                 </St.Button>
               </St.ButtonWrapper>
             ) : (

@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import * as St from '../style';
 import { SupabaseAPI } from '../supabaseChat/supabase_chat';
 import { User } from '@supabase/supabase-js';
@@ -6,7 +6,6 @@ import { MessageType, RoomType } from '../../../components/chat/types';
 import { BsThreeDots } from 'react-icons/bs';
 import { UtilForChat } from '../chat_utils/functions';
 import { useNavigate } from 'react-router';
-import styled from 'styled-components';
 
 interface ChatHeaderPropsType {
   showMene: boolean;
@@ -43,38 +42,41 @@ const ChatHeader = ({
     setShowMenu((prev) => !prev);
   };
 
-  const checkWindowSize = () => {
-    if (window.innerWidth <= 768) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
+  const checkDevice = (agent: string) => {
+    const mobileRegex = [
+      /Android/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i
+    ];
+
+    return mobileRegex.some((mobile) => agent.match(mobile));
   };
 
-  useState(() => {
-    checkWindowSize();
-    window.addEventListener('resize', checkWindowSize);
-
-    return () => {
-      window.removeEventListener('resize', checkWindowSize);
-    };
-  });
+  useEffect(() => {
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
+  }, []);
 
   return (
     <St.StChatBoardHeader>
       {showMene && (
         <St.StMenuBox>
           <St.StMenu
-            onClick={() =>
+            onClick={() => {
               supaService.handleOutChatRoom(
                 clicked,
                 curUser,
                 targetUser,
                 setRooms,
                 setMessages,
-                setClicked
-              )
-            }
+                setClicked,
+                handleHideBoardPosition
+              );
+              setShowMenu(false);
+            }}
           >
             채팅방 나가기
           </St.StMenu>
@@ -82,9 +84,8 @@ const ChatHeader = ({
         </St.StMenuBox>
       )}
       <St.StChatBoardHeaderName>
-        {isMobile && (
-          <St.StHeaderArrow onClick={() => handleHideBoardPosition()} />
-        )}
+        <St.StHeaderArrow onClick={() => handleHideBoardPosition()} />
+
         <St.StListUserProfile
           $url={targetUser && targetUser[0]?.avatar_url}
         ></St.StListUserProfile>

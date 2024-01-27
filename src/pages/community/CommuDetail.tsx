@@ -7,6 +7,7 @@ import * as St from '../../styles/community/CommunityDetailStyle';
 
 import { supabase } from '../../api/supabase/supabaseClient';
 import Comment from '../../components/community/Comment';
+import SkeletonCommunityDetail from '../../components/skeleton/SkeletonCommunityDetail';
 import parseDate from '../../util/getDate';
 import WriteLayout from './WriteLayout';
 import { deletePostMutation, fetchDetailPost } from './commuQuery';
@@ -54,19 +55,31 @@ const CommuDetail: React.FC = () => {
     }
   };
   if (isLoading) {
-    return <div></div>;
+    return <SkeletonCommunityDetail />;
+    // return <></>;
   }
 
   if (isError) {
     return <div>Error loading posts</div>;
   }
+  const handleOnClickBack = () => {
+    const confirm = window.confirm(
+      '수정한 글이 적용되지 않습니다. 그래도 페이지를 떠나시겠습니까?'
+    );
+    if (confirm) {
+      navigate(-1);
+    }
+  };
 
   return (
     <St.Container>
       {isEditState ? (
         <St.WriteWrap>
           <St.TitleTopper>
-            <button onClick={() => navigate('/community')}>{`<`}</button>
+            <St.BackBtnBox>
+              <St.BackIcon onClick={handleOnClickBack} />
+            </St.BackBtnBox>
+
             <h1>게시글 수정</h1>
             <p>*필수항목</p>
           </St.TitleTopper>
@@ -87,16 +100,20 @@ const CommuDetail: React.FC = () => {
                   <div>
                     <St.MainTopper>
                       <St.TitleCategory>
-                        <button
-                          onClick={() => navigate('/community')}
-                        >{`<`}</button>
+                        <St.BackBtnBox>
+                          <St.BackIcon onClick={() => navigate(-1)} />
+                        </St.BackBtnBox>
                         <h1>{post.title}</h1>
                         <St.Category>{post.category}</St.Category>
                       </St.TitleCategory>
+                      <St.Dots onClick={() => setEditToolOpen(!editToolOpen)} />
                       {posts![0].post_user === userId ? (
                         ''
                       ) : (
-                        <St.Report>신고</St.Report>
+                        <St.ReportArea>
+                          <St.AlertIcon />
+                          <p>신고하기</p>
+                        </St.ReportArea>
                       )}
                     </St.MainTopper>
 
@@ -107,7 +124,7 @@ const CommuDetail: React.FC = () => {
                         </St.NameP>
                         <St.TimeP>{parseDate(post.created_at)}</St.TimeP>
                       </St.TitleCategory>
-                      <St.Dots onClick={() => setEditToolOpen(!editToolOpen)} />
+
                       {editToolOpen && (
                         <St.EditDropdown>
                           {posts[0].post_user === userId ? (

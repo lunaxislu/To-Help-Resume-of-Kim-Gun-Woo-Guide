@@ -4,21 +4,29 @@ import Footer from './Footer';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
 import { supabase } from '../api/supabase/supabaseClient';
-import { userId } from '../util/getUserId';
+
 import styled from 'styled-components';
 import { IoIosClose } from 'react-icons/io';
+const userId = localStorage.getItem('userId');
 
 const StModalContainer = styled.div`
   width: 300px;
   height: 250px;
   padding: 1.5rem;
-  position: absolute;
+  position: fixed;
   top: 5%;
-  right: 0;
+  left: 5%;
   z-index: 3;
   transform: translateX(-10%);
   background-color: var(--3-gray);
   border-radius: 1.2rem;
+  overflow-y: scroll;
+
+  @media screen and (max-width: 768px) {
+    width: 220px;
+    height: 200px;
+    overflow-y: scroll;
+  }
 `;
 
 const StAlertBox = styled.div`
@@ -52,6 +60,9 @@ const Layout = () => {
   const [newAlert, setAlert] = useState<any[]>([]);
   const [userChatRooms, setUserChatRoom] = useState<string[]>([]);
   const navi = useNavigate();
+
+  // push알림
+  const [notifications, setNotifications] = useState<any[]>([]);
 
   const handleHideAlert = () => {
     setShowAlert(false);
@@ -102,9 +113,8 @@ const Layout = () => {
       if (chatRooms) {
         setUserChatRoom(chatRooms[0]?.chat_rooms);
       }
-      // 임시 에러처리
       if (error) {
-        return;
+        console.log('no chatRooms', error);
       }
     };
 
@@ -121,6 +131,7 @@ const Layout = () => {
             payload.new.sender_id !== userId
           ) {
             console.log('Change received!', payload.new);
+            handlePushNotification(payload.new);
             setShowAlert(true);
             setAlert((prev: any) => [payload.new, ...prev]);
           }
@@ -133,8 +144,43 @@ const Layout = () => {
     };
   }, [location]);
 
+  const handlePushNotification = (data: any) => {
+    // 푸시 알림을 보내는 코드 작성
+    const options = {
+      body: data.text
+      // 기타 옵션들을 설정할 수 있습니다.
+    };
+
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.showNotification('새 메세지가 있습니다.', options);
+      });
+    }
+  };
+
+  useEffect(() => {
+    // 사용자에게 알림 권한을 요청
+    Notification.requestPermission().then((permission) => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted!');
+      }
+    });
+
+    navigator.serviceWorker
+      .register('../service-worker.ts')
+      .then((registration) => {
+        console.log(
+          'Service Worker registered with scope:',
+          registration.scope
+        );
+      })
+      .catch((error) => {
+        console.error('Service Worker registration failed:', error);
+      });
+  }, []);
+
   return (
-    <>
+    <Wrapper>
       {newAlert.length > 0 && showAlert && (
         <StModalContainer>
           <StAlertCloseBtn onClick={handleHideAlert} />
@@ -147,12 +193,13 @@ const Layout = () => {
           })}
         </StModalContainer>
       )}
-
       <Header />
-      <Outlet />
+      <ContentWrapper>
+        <Outlet />
+      </ContentWrapper>
       {showTopbutton && <ScrollTopButton />}
       <Footer />
-    </>
+    </Wrapper>
   );
 };
 

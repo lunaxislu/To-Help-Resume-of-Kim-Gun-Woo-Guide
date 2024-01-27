@@ -26,7 +26,7 @@ const ProductDetailInfo = ({ labels, productInfo, data }: ProductInfo) => {
           >
             <StMapModal onClick={(e) => e.stopPropagation()}>
               {/* 주소를 지도로 넘겨주면 안에서 좌표 찾아서 제공 */}
-              <Maps searchAddress={searchAddress} />
+              <Maps searchAddress={searchAddress} setShowMap={setShowMap} />
             </StMapModal>
           </StModalBackDrop>
         </>
@@ -82,7 +82,7 @@ const StMapModal = styled.div`
   position: absolute;
   width: 100%;
   height: 300px;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
 
@@ -90,6 +90,7 @@ const StMapModal = styled.div`
     font-size: 1rem;
     width: 100%;
     max-width: 768px;
+    top: 55%;
   }
 `;
 

@@ -1,40 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  StIconAndDateWrapper,
-  StIconContainer,
-  StPostContainer,
-  StPostContent,
-  StPostContentsWrapper,
-  StPostDate,
-  StPostImage,
-  StPostTitle,
-  StPostWrapper
-} from '../../styles/mypageStyle/CommunityCardStyle';
-
+import { StPostContainer } from '../../../styles/mypageStyle/CommunityCardStyle';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { supabase } from '../../api/supabase/supabaseClient';
+import { supabase } from '../../../api/supabase/supabaseClient';
 import { debounce } from 'lodash';
-import SkeletonCommunityCard from '../card/SkeletonCommunityCard';
-import { userId } from '../../util/getUserId';
-import parseDate from '../../util/getDate';
+import SkeletonCommunityCard from '../../skeleton/SkeletonCommunityCard';
+import { Community, CommunityActive } from '../../../api/supabase/community';
+import { MyPageCommunityCard } from './MyPageCommunityCard';
+import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
+import { setFavPost, setMyPost } from '../../../redux/modules/countSlice';
+import Nothing from '../Nothing';
 
-export interface Community {
-  id: number;
-  title: string;
-  content: string;
-  created_at: string;
-  images: string;
-  post_id: string;
-  comment: [];
-  likes: number;
-}
-
-interface CommunityCardProps {
-  // list: Community[];
-  activeTab: number;
-}
-
-const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
+const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
   const containerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +18,9 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
   const [isInView, setIsInView] = useState(false);
   const [communityPosts, setCommunityPosts] = useState<Community[]>([]);
   const [favCommunityPosts, setFavCommunityPosts] = useState<Community[]>([]);
+  const userId = localStorage.getItem('userId');
 
+  const dispatch = useAppDispatch();
   const getCurrentUserCommunityPosts = async () => {
     let { data: communityPosts, error } = await supabase
       .from('community')
@@ -52,11 +30,11 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
 
     if (communityPosts && communityPosts.length > 0) {
       setCommunityPosts(communityPosts);
+      dispatch(setMyPost(communityPosts));
     }
   };
 
   const onScrollHandler = () => {
-    // js script가 동작하고 카드를 감싸는 전체 컨테이너가 바닥에 닿을 때
     if (containerRef.current && typeof window !== 'undefined') {
       const container = containerRef.current;
       const { scrollTop, clientHeight, scrollHeight } = container;
@@ -70,14 +48,13 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
       .from('community')
       .select('*');
 
-    console.log(userId);
-
     if (favCommunityPosts && favCommunityPosts.length > 0) {
       const filteredFavProducts = favCommunityPosts
         .filter((user) => user.likes_user.includes(userId))
         .map((item) => item);
 
       setFavCommunityPosts(filteredFavProducts);
+      dispatch(setFavPost(filteredFavProducts));
     }
   };
 
@@ -123,9 +100,7 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
   };
 
   const handleText = (content: string): string => {
-    // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
-
     return textOnly;
   };
 
@@ -141,64 +116,61 @@ const CommunityPost: React.FC<CommunityCardProps> = ({ activeTab }) => {
   }, []);
 
   return (
-    <StPostContainer ref={containerRef}>
+    <StPostContainer ref={containerRef} list={communityPosts.length}>
       {activeTab === 3 &&
         communityPosts.map((post) => {
           return (
-            <StPostWrapper
-              key={post.id}
-              to={`/community/detail/${post.post_id}`}
-            >
-              <StPostTitle>{post.title}</StPostTitle>
-              <StPostContentsWrapper>
-                {!post.images ? '' : <StPostImage src={post.images} />}
-                <StPostContent>{handleText(post.content)}</StPostContent>
-              </StPostContentsWrapper>
-
-              <StIconAndDateWrapper>
-                <StIconContainer>
-                  <img src="/assets/thabong.png" />
-                  <span>{post.likes}</span>
-                  <img src="/assets/comments.svg" />
-                  <span>{post.comment?.length}</span>
-                </StIconContainer>
-
-                <StPostDate>{parseDate(post.created_at)}</StPostDate>
-              </StIconAndDateWrapper>
-            </StPostWrapper>
+            <MyPageCommunityCard
+              id={post.id}
+              title={post.title}
+              content={post.content}
+              created_at={post.created_at}
+              main_image={post.main_image}
+              post_id={post.post_id}
+              comment={post.comment}
+              likes={post.likes}
+            />
           );
         })}
 
-      {activeTab === 5 &&
+      {communityPosts.length === 0 && activeTab !== 4 && (
+        <Nothing
+          type={'글쓰기'}
+          content={`아직 작성한 글이 없어요. \n
+           커뮤니티에 작업자들과 이야기를 나눠보세요!`}
+          icon={'/assets/write.svg'}
+          to={'/community_write'}
+          show={true}
+        />
+      )}
+
+      {activeTab === 4 &&
         favCommunityPosts.map((post) => {
           return (
-            <StPostWrapper
-              key={post.id}
-              to={`/community/detail/${post.post_id}`}
-            >
-              <StPostTitle>{post.title}</StPostTitle>
-              <StPostContentsWrapper>
-                {!post.images ? '' : <StPostImage src={post.images} />}
-                <StPostContent>{handleText(post.content)}</StPostContent>
-              </StPostContentsWrapper>
-
-              <StIconAndDateWrapper>
-                <StIconContainer>
-                  <img src="/assets/thabong.png" />
-                  <span>{post.likes}</span>
-                  <img src="/assets/comments.svg" />
-                  <span>{post.comment?.length}</span>
-                </StIconContainer>
-
-                <StPostDate>{parseDate(post.created_at)}</StPostDate>
-              </StIconAndDateWrapper>
-            </StPostWrapper>
+            <MyPageCommunityCard
+              id={post.id}
+              title={post.title}
+              content={post.content}
+              created_at={post.created_at}
+              main_image={post.main_image}
+              post_id={post.post_id}
+              comment={post.comment}
+              likes={post.likes}
+            />
           );
         })}
-
+      {favCommunityPosts.length === 0 && activeTab !== 3 && (
+        <Nothing
+          type={''}
+          content={`추천하신 글이 없습니다.`}
+          icon={''}
+          to={''}
+          show={false}
+        />
+      )}
       {isLoading && <SkeletonCommunityCard cards={10} />}
     </StPostContainer>
   );
 };
 
-export default CommunityPost;
+export default MyPageCommunityPostList;

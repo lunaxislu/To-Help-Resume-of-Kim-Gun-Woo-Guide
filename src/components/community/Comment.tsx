@@ -104,24 +104,26 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
   });
   const updateComment = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newComment = {
-      //   comment_id: uuid(),
-      comment_user: profile![0].id,
-      nickname: profile![0].nickname
-        ? profile![0].nickname
-        : profile![0].username,
-      comment,
-      anon,
-      time: Date()
-    };
-    setComments((prevComments) => [...prevComments, newComment]);
-    const commentObject = {
-      updateData: {
-        comment: [...comments, newComment]
-      },
-      paramId
-    };
-    upsertMutation.mutate(commentObject);
+    if (comment) {
+      const newComment = {
+        //   comment_id: uuid(),
+        comment_user: profile![0].id,
+        nickname: profile![0].nickname
+          ? profile![0].nickname
+          : profile![0].username,
+        comment,
+        anon,
+        time: Date()
+      };
+      setComments((prevComments) => [...prevComments, newComment]);
+      const commentObject = {
+        updateData: {
+          comment: [...comments, newComment]
+        },
+        paramId
+      };
+      upsertMutation.mutate(commentObject);
+    }
   };
 
   // 댓글 수정 버튼 클릭 시

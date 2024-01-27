@@ -5,6 +5,8 @@ import { MessageType, RoomType } from './types';
 import parseDate from '../../util/getDate';
 import styled from 'styled-components';
 import { Product } from '../../api/supabase/products';
+import { UtilForChat } from '../../pages/chat/chat_utils/functions';
+import { User } from '@supabase/supabase-js';
 
 type Props = {
   rooms: RoomType[] | null | undefined;
@@ -12,6 +14,7 @@ type Props = {
   clicked: string | undefined;
   unread: any[] | null;
   handleBoardPosition: any;
+  curUser: User | null | undefined;
 };
 
 const ChatRoomList: React.FC<Props> = ({
@@ -19,20 +22,24 @@ const ChatRoomList: React.FC<Props> = ({
   handleCurClicked,
   clicked,
   unread,
-  handleBoardPosition
+  handleBoardPosition,
+  curUser
 }: Props) => {
   const [newMsg, setNewMsg] = useState<any | null>(null);
   const [allMessage, setAllMessage] = useState<MessageType[] | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
   const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
+
+  const util = new UtilForChat();
 
   const updateToRead = async (room_id: string) => {
     await supabase
       .from('chat_messages')
       .update({ isNew: false })
-      .eq('chat_room_id', room_id)
-      .select();
+      .eq('chat_room_id', clicked)
+      .eq('isNew', true);
   };
 
   const handleRealtime = () => {
@@ -116,6 +123,24 @@ const ChatRoomList: React.FC<Props> = ({
     handleRealtime();
     getAllMessage();
     getProductsforRoom();
+  }, [unread]);
+
+  const checkDevice = (agent: string) => {
+    const mobileRegex = [
+      /Android/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i
+    ];
+
+    return mobileRegex.some((mobile) => agent.match(mobile));
+  };
+
+  useEffect(() => {
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
   }, []);
 
   return (
@@ -125,9 +150,8 @@ const ChatRoomList: React.FC<Props> = ({
           return (
             <St.StListRoom
               onClick={(e) => {
-                if (findMatchMessage(room.id) > 0) {
-                  updateToRead(room.id);
-                }
+                updateToRead(room.id);
+                util.unreadCount(room.id, curUser);
                 handleCurClicked(e);
               }}
               $current={clicked}
@@ -170,8 +194,8 @@ const ChatRoomList: React.FC<Props> = ({
           return (
             <St.StListRoom
               onClick={(e) => {
+                util.unreadCount(room.id, curUser);
                 updateToRead(room.id);
-
                 handleCurClicked(e);
                 handleBoardPosition();
               }}

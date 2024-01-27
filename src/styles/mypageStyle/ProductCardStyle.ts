@@ -14,8 +14,7 @@ export const StCardContainer = styled.div`
     flex-direction: row;
     justify-content: center; */
     width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    max-height: 100%;
     padding: 0 2rem;
   }
 `;
@@ -38,7 +37,8 @@ export const StCardWrapper = styled(Link)`
   }
 
   @media screen and (max-width: 768px) {
-    width: 100%;
+    /* width: 100%; */
+    flex: 1 1 40%;
   }
 `;
 
@@ -52,6 +52,11 @@ export const StProductQuality = styled.p`
   padding: 0.7rem 1rem;
   font-size: var(--fontSize-H6);
   margin-top: 1rem;
+
+  @media screen and (max-width: 768px) {
+    background-color: var(--opc-100);
+    color: var(--2-gray);
+  }
 `;
 
 export const StProductImage = styled.img`
@@ -64,7 +69,7 @@ export const StProductImage = styled.img`
   @media screen and (max-width: 768px) {
     object-fit: cover;
     width: 100%;
-    height: 14rem;
+    max-height: 100%;
   }
 `;
 
@@ -83,4 +88,10 @@ export const StProductPrice = styled.p`
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
   }
+`;
+
+export const StNothingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

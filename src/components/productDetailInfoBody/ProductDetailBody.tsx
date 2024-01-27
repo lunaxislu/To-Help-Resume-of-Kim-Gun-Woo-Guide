@@ -26,23 +26,23 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
     setShowMap(true);
   };
 
-  const checkWindowSize = () => {
-    if (window.innerWidth <= 768) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
+  const checkDevice = (agent: string) => {
+    const mobileRegex = [
+      /Android/i,
+      /iPhone/i,
+      /iPad/i,
+      /iPod/i,
+      /BlackBerry/i,
+      /Windows Phone/i
+    ];
+
+    return mobileRegex.some((mobile) => agent.match(mobile));
   };
 
   useEffect(() => {
-    window.addEventListener('DOMContentLoaded', checkWindowSize);
-    window.addEventListener('resize', checkWindowSize);
-
-    return () => {
-      window.removeEventListener('DOMContentLoaded', checkWindowSize);
-      window.removeEventListener('resize', checkWindowSize);
-    };
-  });
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
+    if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
+  }, []);
 
   return (
     <>
@@ -95,6 +95,8 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
       {productInfo[i] !== data.quality && productInfo[i] !== data.address && (
         <StRowValue>{productInfo[i]}</StRowValue>
       )}
+      {productInfo[i] !== data.shipping_cost &&
+        productInfo[i] !== data.address && <></>}
     </>
   );
 };

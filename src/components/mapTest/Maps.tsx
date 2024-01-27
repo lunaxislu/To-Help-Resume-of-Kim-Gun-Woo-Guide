@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { MouseEvent, SetStateAction, useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
 import styled from 'styled-components';
 
@@ -18,11 +18,12 @@ type Coord = {
 
 type AddressValue = {
   searchAddress: string;
+  setShowMap: React.Dispatch<SetStateAction<boolean>>;
 };
 
 const StModalContainer = styled.div`
   width: 60%;
-  height: 500px;
+  height: 400px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -30,7 +31,8 @@ const StModalContainer = styled.div`
 
   @media screen and (max-width: 768px) {
     width: 90%;
-    top: 15%;
+    top: 55%;
+    left: 50%;
   }
 `;
 
@@ -79,7 +81,7 @@ const StInfoBox = styled(MapMarker)`
   padding: 1rem;
 `;
 
-const Maps = ({ searchAddress }: AddressValue) => {
+const Maps = ({ searchAddress, setShowMap }: AddressValue) => {
   const [coord, setCoord] = useState<Coord>({ lat: 0, lng: 0 });
   const geocoder = new kakao.maps.services.Geocoder();
 
@@ -115,7 +117,7 @@ const Maps = ({ searchAddress }: AddressValue) => {
   return (
     <>
       <StModalContainer>
-        <Map center={coord} style={{ width: '100%', height: '100%' }} draggable>
+        <Map center={coord} style={{ width: '100%', height: '100%' }}>
           <StInfoBox position={coord}>
             <StOverayBox>{searchAddress}</StOverayBox>
           </StInfoBox>
@@ -132,6 +134,7 @@ const Maps = ({ searchAddress }: AddressValue) => {
           <Buttons onClick={copyAddress} id={searchAddress}>
             주소 복사
           </Buttons>
+          <Buttons onClick={() => setShowMap(false)}>닫기</Buttons>
         </StButtonBox>
       </StModalContainer>
     </>
