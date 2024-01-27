@@ -9,6 +9,7 @@ import { User } from '@supabase/gotrue-js';
 import { v4 as uuid } from 'uuid';
 
 export class UtilForChat {
+  // 상대 유저 정보 가져오기
   handleTargetUser = async (
     rooms: RoomType[] | null | undefined,
     clicked: string | undefined,

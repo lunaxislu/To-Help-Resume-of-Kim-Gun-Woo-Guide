@@ -1,7 +1,7 @@
 import React, { SetStateAction, useEffect, useState } from 'react';
 import { supabase } from '../../api/supabase/supabaseClient';
 import * as St from '../../pages/chat/style';
-import { MessageType, RoomType } from './types';
+import { MessageType, Participants, RoomType } from './types';
 import parseDate from '../../util/getDate';
 import styled from 'styled-components';
 import { Product } from '../../api/supabase/products';
@@ -28,8 +28,6 @@ const ChatRoomList: React.FC<Props> = ({
   const [newMsg, setNewMsg] = useState<any | null>(null);
   const [allMessage, setAllMessage] = useState<MessageType[] | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
-  const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
-  const [isDeleted, setIsDeleted] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
   const util = new UtilForChat();
@@ -67,7 +65,8 @@ const ChatRoomList: React.FC<Props> = ({
       .subscribe();
   };
 
-  // 메세지를 다 가져오고, 현재 로그인 된 유저가 속한 채팅방의 메세지라면 allMessage에 set 하고 밑에서 map을 돌면서
+  // 메세지를 다 가져오고, 현재 로그인 된 유저가 속한 채팅방의 메세지라면
+  // allMessage에 set 하고 밑에서 map을 돌면서
   // 이 div의 id와 같은 채팅방 메세지만 출력
   const getAllMessage = async () => {
     const { data: messages, error } = await supabase
@@ -121,12 +120,19 @@ const ChatRoomList: React.FC<Props> = ({
     }
   };
 
-  const buyerImg = (room: RoomType) => {
-    const buyerImg = room.participants.filter((part) => {
+  const targetUser = (room: RoomType) => {
+    const targetInfo = room.participants.filter((part) => {
       return part.user_id !== curUser?.id;
     });
 
-    return buyerImg[0];
+    return targetInfo[0];
+  };
+  const me = (room: RoomType) => {
+    const myInfo = room.participants.filter((part) => {
+      return part.user_id !== curUser?.id;
+    });
+
+    return myInfo[0];
   };
 
   useEffect(() => {
@@ -154,9 +160,18 @@ const ChatRoomList: React.FC<Props> = ({
     if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
   }, []);
 
+  // participants에서 상대방 정보를 가져오는 함수
+  const chatTarget = (room: RoomType) => {
+    const targetInfo = room.participants.filter((info) => {
+      return info.user_id !== curUser?.id;
+    });
+    return targetInfo[0];
+  };
+
   return (
     <St.StChatListItem>
       {rooms?.map((room, i) => {
+        // 판매 완료 상태인지 아닌지 췤
         if (checkProductsStatus(room.about) === true)
           return (
             <St.StListRoom
@@ -176,11 +191,13 @@ const ChatRoomList: React.FC<Props> = ({
                 <St.StUserInfoBox>
                   <St.StListUserProfile
                     $url={
-                      buyerImg(room).avatar_url ? '' : buyerImg(room).avatar_url
+                      chatTarget(room).avatar_url === null
+                        ? ''
+                        : chatTarget(room).avatar_url
                     }
                   ></St.StListUserProfile>
                   <div>
-                    <p>{`${buyerImg(room).user_name}`}</p>
+                    <p>{`${chatTarget(room).user_name}`}</p>
                     <p
                       style={{
                         fontSize: '1.2rem',
@@ -189,7 +206,9 @@ const ChatRoomList: React.FC<Props> = ({
                         color: 'var(--opc-100)'
                       }}
                     >
-                      {room.room_name}
+                      {room.room_name.length >= 20
+                        ? `${room.room_name.substring(0, 20)}...`
+                        : room.room_name}
                     </p>
                   </div>
                 </St.StUserInfoBox>
@@ -226,11 +245,13 @@ const ChatRoomList: React.FC<Props> = ({
                 <St.StUserInfoBox>
                   <St.StListUserProfile
                     $url={
-                      buyerImg(room).avatar_url ? '' : buyerImg(room).avatar_url
+                      chatTarget(room).avatar_url === null
+                        ? ''
+                        : chatTarget(room).avatar_url
                     }
                   ></St.StListUserProfile>
                   <div>
-                    <p>{`${buyerImg(room).user_name}`}</p>
+                    <p>{`${chatTarget(room).user_name}`}</p>
                     <p
                       style={{
                         fontSize: '1.2rem',
@@ -239,7 +260,9 @@ const ChatRoomList: React.FC<Props> = ({
                         color: 'var(--opc-100)'
                       }}
                     >
-                      {room.room_name}
+                      {room.room_name.length >= 20
+                        ? `${room.room_name.substring(0, 20)}...`
+                        : room.room_name}
                     </p>
                   </div>
                 </St.StUserInfoBox>
