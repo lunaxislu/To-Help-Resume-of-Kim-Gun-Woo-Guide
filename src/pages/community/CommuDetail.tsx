@@ -7,11 +7,10 @@ import * as St from '../../styles/community/CommunityDetailStyle';
 
 import { supabase } from '../../api/supabase/supabaseClient';
 import Comment from '../../components/community/Comment';
-import SkeletonCommunityDetail from '../../components/skeleton/SkeletonCommunityDetail';
 import parseDate from '../../util/getDate';
 import WriteLayout from './WriteLayout';
 import { deletePostMutation, fetchDetailPost } from './commuQuery';
-import { FilesObject } from './model';
+import { FilesObject, ProfileObject } from './model';
 // Quill.register('modules/imageActions', ImageActions);
 // Quill.register('modules/imageFormats', ImageFormats);
 
@@ -21,6 +20,7 @@ const CommuDetail: React.FC = () => {
   const [isEditState, setIsEditState] = useState(false);
   const [userId, setUserId] = useState('');
   const [editToolOpen, setEditToolOpen] = useState(false);
+  const [postUser, setPostUser] = useState<ProfileObject[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,6 +42,32 @@ const CommuDetail: React.FC = () => {
     isLoading,
     isError
   } = useQuery(['posts', param.id], () => fetchDetailPost(param.id));
+
+  useEffect(() => {
+    const getPostUser = async () => {
+      // posts 데이터가 로드되었는지 확인
+      if (!isLoading && posts && posts.length > 0) {
+        try {
+          const { data: post_user, error } = await supabase
+            .from('user')
+            .select('*')
+            .eq('id', posts[0].post_user);
+
+          if (error) {
+            throw error;
+          }
+
+          if (post_user) {
+            setPostUser(post_user);
+          }
+        } catch (error: any) {
+          console.log(error.message);
+        }
+      }
+    };
+
+    getPostUser();
+  }, [isLoading, posts]);
   const deleteMutation = useMutation(deletePostMutation, {
     onSuccess: () => {
       queryClient.invalidateQueries('posts');
@@ -55,8 +81,8 @@ const CommuDetail: React.FC = () => {
     }
   };
   if (isLoading) {
-    return <SkeletonCommunityDetail />;
-    // return <></>;
+    // return <SkeletonCommunityDetail />;
+    return <></>;
   }
 
   if (isError) {
@@ -120,7 +146,11 @@ const CommuDetail: React.FC = () => {
                     <St.SubTopper>
                       <St.TitleCategory>
                         <St.NameP>
-                          {!!post.anon ? '익명의 작업자' : post.nickname}
+                          {!!post.anon
+                            ? '익명의 작업자'
+                            : postUser[0]?.nickname
+                            ? postUser[0]?.nickname
+                            : postUser[0]?.username}
                         </St.NameP>
                         <St.TimeP>{parseDate(post.created_at)}</St.TimeP>
                       </St.TitleCategory>
