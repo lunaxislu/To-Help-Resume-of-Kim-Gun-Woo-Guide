@@ -13,8 +13,9 @@ export const StContainer = styled.div`
     font-size: var(--fontSize-H1);
     font-weight: var(--fontWeight-bold);
     text-align: center;
-    white-space: pre-line;
     line-height: 1.5;
+    white-space: pre-line;
+
     @media screen and (max-width: 768px) {
       font-size: var(--fontSize-H4);
     }
@@ -23,7 +24,6 @@ export const StContainer = styled.div`
   & button {
     display: flex;
     align-items: center;
-    justify-content: center;
     background: var(--opc-10);
     border: none;
     color: var(--11-gray);
@@ -32,10 +32,12 @@ export const StContainer = styled.div`
     gap: 0.8rem;
     border-radius: 7rem;
     cursor: pointer;
-    text-align: center;
 
     @media screen and (max-width: 768px) {
       font-size: var(--fontSize-H5);
     }
+  }
+
+  & img {
   }
 `;

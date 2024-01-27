@@ -29,7 +29,6 @@ const CommunityMain: React.FC = () => {
               return (
                 <St.CategoryBtn
                   onClick={(event) => {
-                    //event.target의 타입을 HTMLElement로 명시적으로 지정
                     const target = event.target as HTMLElement;
                     setSelectCategory(target.textContent || '');
                   }}

@@ -17,6 +17,9 @@ export type Participants = {
   user_id: string;
   user_name: string;
   avatar_url: string;
+  isSeller: boolean;
+  about: string;
+  user2_name: string;
 };
 
 export type RoomType = {
@@ -25,6 +28,7 @@ export type RoomType = {
   created_at: string;
   participants: Participants[];
   about: string;
+  isSeller: boolean;
 };
 
 export type RoomStyledProps = {
