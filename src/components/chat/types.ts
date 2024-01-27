@@ -10,6 +10,7 @@ export type MessageType = {
   created_at: string;
   isNew: boolean;
   timeStamp: string;
+  isFirst: boolean;
 };
 
 export type Participants = {

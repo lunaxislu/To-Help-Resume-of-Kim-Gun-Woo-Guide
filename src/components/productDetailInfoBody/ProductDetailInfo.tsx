@@ -26,7 +26,7 @@ const ProductDetailInfo = ({ labels, productInfo, data }: ProductInfo) => {
           >
             <StMapModal onClick={(e) => e.stopPropagation()}>
               {/* 주소를 지도로 넘겨주면 안에서 좌표 찾아서 제공 */}
-              <Maps searchAddress={searchAddress} />
+              <Maps searchAddress={searchAddress} setShowMap={setShowMap} />
             </StMapModal>
           </StModalBackDrop>
         </>

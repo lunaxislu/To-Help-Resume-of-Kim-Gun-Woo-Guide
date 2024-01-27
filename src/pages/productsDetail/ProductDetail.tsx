@@ -140,6 +140,7 @@ const ProductDetail = () => {
           (participant: any) => participant.user_id === target.uid
         );
       });
+
       return filtered;
     }
   };
@@ -191,17 +192,21 @@ const ProductDetail = () => {
       if (foundRoom) {
         const InitMessage = [
           {
-            sender_id: curUser.uid,
+            id: uuid(),
+            sender_id: curUser?.uid,
             content: `제목: ${product[0].title}`,
-            chat_room_id: foundRoom[0]?.id
+            chat_room_id: foundRoom[0]?.id,
+            isFirst: true
           },
           {
-            sender_id: curUser.uid,
+            id: uuid(),
+            sender_id: curUser?.uid,
             content: `${product[0].price}원`,
             chat_room_id: foundRoom[0]?.id
           },
           {
-            sender_id: curUser.uid,
+            id: uuid(),
+            sender_id: curUser?.uid,
             content: '상품에 관심 있어요!',
             chat_room_id: foundRoom[0]?.id
           }
@@ -523,7 +528,7 @@ const ProductDetail = () => {
         .eq('id', buyerChatId);
 
       if (buyUser) {
-        const currentBuyProducts = buyUser;
+        const currentBuyProducts = buyUser[0].buyProduct;
         const newList = [...currentBuyProducts, id];
         const { data: res, error: sellError } = await supabase
           .from('user')
@@ -606,8 +611,9 @@ const ProductDetail = () => {
   }, []);
 
   const checkWindowSize = () => {
-    if (window.innerWidth <= 768) {
+    if (window.matchMedia('(max-width: 768px)').matches) {
       setIsMobile(true);
+      window.scrollTo({ top: 0 });
     } else {
       setIsMobile(false);
     }
@@ -616,15 +622,17 @@ const ProductDetail = () => {
   useEffect(() => {
     checkWindowSize();
     window.addEventListener('DOMContentLoaded', checkWindowSize);
+    window.addEventListener('resize', checkWindowSize);
 
     return () => {
       window.removeEventListener('DOMContentLoaded', checkWindowSize);
+      window.removeEventListener('resize', checkWindowSize);
     };
   });
 
   if (product === null) return <div>로딩 중</div>;
 
-  const labels = ['수량', '상태', '거래 방식', '직거래 장소', '교환', '배송비'];
+  const labels = ['수량', '상태', '거래 방식', '직거래 장소', '교환'];
 
   const data = product[0];
   const productInfo = [
@@ -632,8 +640,7 @@ const ProductDetail = () => {
     data.quality,
     data.deal_type,
     data.address,
-    data.exchange_product,
-    data.shipping_cost
+    data.exchange_product
   ];
 
   if (isSoldOut === true) {
@@ -671,7 +678,7 @@ const ProductDetail = () => {
     <>
       {showChatList && (
         <StSelectChatBg onClick={() => setShowChatList(false)}>
-          <StChatList>
+          <StChatList onClick={(e) => e.stopPropagation()}>
             <h1
               style={{
                 textAlign: 'center',
