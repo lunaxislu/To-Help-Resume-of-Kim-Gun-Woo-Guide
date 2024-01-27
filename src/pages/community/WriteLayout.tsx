@@ -1,6 +1,8 @@
+import { ImageActions } from '@xeger/quill-image-actions';
+import { ImageFormats } from '@xeger/quill-image-formats';
 import React, { useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import ReactQuill from 'react-quill';
+import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router';
 import { v4 as uuid } from 'uuid';
@@ -13,21 +15,8 @@ import {
   updatePostMutation
 } from './commuQuery';
 import { WriteLayoutProps } from './model';
-// Quill.register('modules/imageActions', ImageActions);
-// Quill.register('modules/imageFormats', ImageFormats);
-const formats = [
-  'header',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'video',
-  'image',
-  'color',
-  'background',
-  'height',
-  'width'
-];
+Quill.register('modules/imageActions', ImageActions);
+Quill.register('modules/imageFormats', ImageFormats);
 
 const WriteLayout: React.FC<WriteLayoutProps> = ({
   profile,
@@ -39,7 +28,9 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     data: posts,
     isLoading,
     isError
-  } = useQuery(['posts', paramId], () => fetchDetailPost(paramId));
+  } = useQuery(['posts', paramId], () => fetchDetailPost(paramId), {
+    staleTime: 30000
+  });
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -55,6 +46,36 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     anon: isEdit ? posts![0].anon : false,
     mainImage: isEdit ? posts![0].mainImage : ''
   });
+  const [errors, setErrors] = useState({
+    title: '',
+    category: '',
+    content: ''
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      title: '',
+      category: '',
+      content: ''
+    };
+
+    if (!formValues.title) {
+      newErrors.title = '제목은 필수입니다';
+      isValid = false;
+    }
+    if (!formValues.category) {
+      newErrors.category = '분류는 필수입니다';
+      isValid = false;
+    }
+    if (!formValues.content) {
+      newErrors.content = '내용은 필수입니다';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
 
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
@@ -107,6 +128,9 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   }));
 
   const addPost = async () => {
+    if (!validateForm()) {
+      return;
+    }
     const insertData = {
       title: formValues.title,
       content: formValues.content,
@@ -130,6 +154,9 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   });
 
   const updatePost = () => {
+    if (!validateForm()) {
+      return;
+    }
     const postData = {
       updateData: {
         title: formValues.title,
@@ -172,13 +199,13 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         if (response.data) {
           const postImageUrl = response.data.publicUrl;
           const editor = quillRef.current?.getEditor();
-          const range = editor?.getSelection(true);
+          const range = editor?.getSelection();
           editor?.insertEmbed(range?.index || 0, 'image', postImageUrl);
           setFormValues((prevValues) => ({
             ...prevValues,
             mainImage: postImageUrl
           }));
-          editor?.setSelection((range?.index || 0) + 1, 0);
+          // editor?.setSelection((range?.index || 0) + 1, 0);
           console.log('가져왔다');
         } else {
           console.error('No public URL found in response data.');
@@ -191,8 +218,8 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
 
   const modules = useMemo(
     () => ({
-      imageActions: {},
-      imageFormats: {},
+      // imageActions: {},
+      // imageFormats: {},
       toolbar: {
         container: [
           // [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -210,6 +237,19 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     }),
     []
   );
+  const formats = [
+    'header',
+    'bold',
+    'italic',
+    'underline',
+    'strike',
+    'video',
+    'image',
+    'color',
+    'background',
+    'height',
+    'width'
+  ];
 
   if (isError) {
     return <div>Error loading posts</div>;
@@ -228,14 +268,16 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
                 <label key={item}>
                   <St.CheckBoxs
                     type="checkbox"
-                    name={formValues.category}
+                    name="category"
                     value={item}
                     onChange={(e) => {
+                      // 체크박스가 선택되면, formValues의 category 값을 업데이트합니다.
                       setFormValues({
                         ...formValues,
-                        category: e.target.value
+                        category: e.target.checked ? item : ''
                       });
                     }}
+                    checked={formValues.category === item}
                     defaultChecked={
                       isEdit ? posts![0].category === item : false
                     }
@@ -243,9 +285,10 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
                   {item}
                 </label>
               ) : null;
-            })}{' '}
+            })}
           </St.CategoryGrid>
         </St.LayoutCategoryContainer>
+        {errors.category && <St.Validate>{errors.category}</St.Validate>}
         <St.LayoutTitleContainer>
           <St.LayoutValueText>
             제목<span>*</span>
@@ -259,7 +302,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             placeholder="제목을 입력해주세요(30자)"
           />
         </St.LayoutTitleContainer>
-
+        {errors.title && <St.Validate>{errors.title}</St.Validate>}
         {/* <CategoryContainer>
           {categoryArray.map((item, index) => {
             return index !== 0 ? (
@@ -300,6 +343,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             placeholder="내용을 입력해주세요"
           />
         </St.LayoutContentArea>
+        {errors.content && <St.Validate>{errors.content}</St.Validate>}
         <St.LayoutFileArea>
           <St.LayoutValueText>파일</St.LayoutValueText>
           <St.LayoutFileUploader>
