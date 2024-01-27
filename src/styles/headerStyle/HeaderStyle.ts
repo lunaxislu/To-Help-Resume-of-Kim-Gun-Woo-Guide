@@ -3,12 +3,30 @@ import styled from 'styled-components';
 
 export const HeaderTopContainer = styled.div`
   max-width: 144rem;
-  display: flex;
-  justify-content: center;
-`;
-
-export const HeaderContainer = styled.header`
   width: 111.6rem;
+  height: 15rem;
+  display: flex;
+  margin: auto;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 768px) {
+    max-width: 76.8rem;
+  }
+`;
+export const HeaderContainer = styled.div`
+  width: 95%;
+  margin: auto;
+  @media screen and (max-width: 768px) {
+    max-width: 93%;
+  }
+`;
+export const HeaderWrapper = styled.header`
+  width: 100%;
   display: flex;
   flex-shrink: 0;
   padding: 3rem 0;
@@ -28,8 +46,8 @@ export const HeaderContainer = styled.header`
   }
   @media screen and (max-width: 768px) {
     align-items: center;
-    width: 76.8rem;
-    height: 9rem;
+    max-width: 76.8rem;
+    width: 100%;
     padding: 3rem 2rem;
   }
   @media screen and (max-width: 530px) {
@@ -41,7 +59,9 @@ export const HeaderContainer = styled.header`
 `;
 
 export const HeaderSection = styled.section`
+  width: 100%;
   display: flex;
+
   justify-content: space-between;
   align-items: center;
 
@@ -198,14 +218,10 @@ export const UserIcon = styled.img`
 `;
 
 export const NavSection = styled.section`
+  width: 100%;
   display: flex;
   justify-content: space-between;
   margin-top: 2.3rem;
-
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    padding: 3rem;
-  }
 `;
 
 export const NavBar = styled.nav`
@@ -213,7 +229,6 @@ export const NavBar = styled.nav`
   justify-content: center;
   align-items: center;
   gap: 3.6rem;
-
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -223,6 +238,7 @@ export const NavButton = styled(Link)`
   text-decoration: none;
   align-items: center;
   cursor: pointer;
+  white-space: nowrap;
   color: var(--11-gray);
   font-size: var(--fontSize-H4);
   font-weight: var(--fontWeight-semiBold);

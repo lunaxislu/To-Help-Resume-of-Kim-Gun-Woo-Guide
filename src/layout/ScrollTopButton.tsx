@@ -11,7 +11,7 @@ const ScrollTopButton = () => {
   return (
     <TopButton onClick={scrollToTop}>
       <img
-        src={process.env.PUBLIC_URL + '/assets/upbutton.png'}
+        src={process.env.PUBLIC_URL + '/assets/clickToUpButton.svg'}
         alt="상단으로 이동"
       />
     </TopButton>
