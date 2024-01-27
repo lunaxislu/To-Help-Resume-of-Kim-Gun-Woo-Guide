@@ -222,10 +222,6 @@ export const NavSection = styled.section`
   display: flex;
   justify-content: space-between;
   margin-top: 2.3rem;
-
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
 `;
 
 export const NavBar = styled.nav`
@@ -233,6 +229,9 @@ export const NavBar = styled.nav`
   justify-content: center;
   align-items: center;
   gap: 3.6rem;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const NavButton = styled(Link)`

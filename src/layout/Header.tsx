@@ -202,6 +202,7 @@ const Header = () => {
               setShowSearchComp={setShowSearchComp}
             />
           </St.NavSection>
+          <div style={{ position: 'relative' }}></div>
         </St.HeaderWrapper>
       </St.HeaderContainer>
     </St.HeaderTopContainer>

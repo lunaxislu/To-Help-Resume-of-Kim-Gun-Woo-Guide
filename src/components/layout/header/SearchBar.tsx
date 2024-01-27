@@ -138,15 +138,15 @@ type MobileProps = {
 const SearchInputContainer = styled.div<MobileProps>`
   /* display: flex; */
   align-items: center;
-  position: relative;
+  /* position: relative; */
 
   @media only screen and (max-width: 768px) {
-    width: 100%;
+    width: 100vw;
     height: 100vh;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 3000;
     transition: all 0.3s ease;
     ${(props) => {
       if (props.$position === true) {
