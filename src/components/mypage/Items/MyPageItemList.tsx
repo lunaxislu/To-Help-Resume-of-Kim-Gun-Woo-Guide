@@ -1,13 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  StCardContainer,
-  StNothingContainer
-} from '../../../styles/mypageStyle/ProductCardStyle';
+import { StCardContainer } from '../../../styles/mypageStyle/ProductCardStyle';
 import { debounce } from 'lodash';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import SkeletonProductCard from '../../skeleton/SkeletonProductCard';
 import { Product, ProductCardProps } from '../../../api/supabase/products';
-import { userId } from '../../../util/getUserId';
 import MyPageItemCard from './MyPageItemCard';
 import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
 import {
@@ -28,6 +24,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const [favItems, setFavItems] = useState<Product[]>([]);
 
   const dispatch = useAppDispatch();
+  const userId = localStorage.getItem('userId');
 
   const getCurrentUserProducts = async () => {
     let { data: products, error } = await supabase
