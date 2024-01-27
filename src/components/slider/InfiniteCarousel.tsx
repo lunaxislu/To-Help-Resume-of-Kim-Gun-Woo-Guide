@@ -20,7 +20,7 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
+    // autoplay: true,
     autoplaySpeed: 8000,
     draggable: true,
     arrows: false,
@@ -59,7 +59,7 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
 
   return (
     <CarouselContainer>
-      <Slider {...settings} ref={slickRef}>
+      {/* <Slider {...settings} ref={slickRef}>
         {carouselImages.map((image, index) => (
           <CarouselImage
             key={index}
@@ -67,8 +67,9 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
             alt={`Carousel ${index + 1}`}
           />
         ))}
-      </Slider>
-      <CarouselButtons>
+      </Slider> */}
+      <MainImage src="/assets/carouselmain.png" alt="메인화면" />
+      {/* <CarouselButtons>
         <ArrowButton onClick={previous}>
           <ColoredIcon>
             <FaChevronLeft />
@@ -79,28 +80,41 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
             <FaChevronRight className="rightarrow" />
           </ColoredIcon>
         </ArrowButton>
-      </CarouselButtons>
+      </CarouselButtons> */}
     </CarouselContainer>
   );
 };
 
 export default InfiniteCarousel;
 
+const MainImage = styled.img`
+  width: 100%;
+  min-height: 40.1rem;
+  object-fit: cover;
+  object-position: center;
+  @media screen and (max-width: 768px) {
+    max-height: 41rem;
+    min-height: 20rem;
+  }
+  @media screen and (max-width: 500px) {
+    max-height: 41rem;
+    min-height: 15rem;
+  }
+`;
+
 const CarouselContainer = styled.div`
   position: relative;
-  width: 144rem;
-  height: 40.1rem;
+  width: 100%;
+  /* max-height: 40.1rem; */
   justify-content: center;
   align-items: center;
   margin: 0 auto;
   overflow: hidden;
   @media screen and (max-width: 1024px) {
-    max-width: 102.4rem;
-    width: 100%;
-    height: 28.5rem;
+    /* height: 28.5rem; */
   }
 
-  @media screen and (max-width: 768px) {
+  /* @media screen and (max-width: 768px) {
     max-width: 76.8rem;
     width: 100%;
     height: 21rem;
@@ -115,12 +129,12 @@ const CarouselContainer = styled.div`
     max-width: 40rem;
     width: 100%;
     height: 15.3rem;
-  }
-  .slick-list {
+  } */
+  /* .slick-list {
     @media screen and (max-width: 530px) {
       width: 100%;
     }
-  }
+  } */
 
   .dots_custom {
     display: inline-block;
@@ -166,34 +180,31 @@ const CarouselContainer = styled.div`
 
 const CarouselImage = styled.img`
   width: 100%;
-  max-height: 40.1rem;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
   box-sizing: border-box;
   @media screen and (max-width: 1024px) {
-    width: 100%;
     max-height: 28.5rem;
   }
   @media screen and (max-width: 768px) {
-    width: 100%;
     max-height: 21rem;
   }
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    max-height: 21rem;
-  }
+
   @media screen and (max-width: 530px) {
-    width: 100%;
     max-height: 14.3rem;
   }
 `;
 const CarouselButtons = styled.div`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  /* position: absolute; */
+  top: 45%;
+  /* transform: translateY(-50%); */
   display: flex;
   position: absolute;
   justify-content: space-between;
   width: 100%;
+  height: fit-content;
+  margin: auto 0;
   padding: 0 2rem;
   box-sizing: border-box;
   @media screen and (max-width: 1024px) {
@@ -209,6 +220,7 @@ const ArrowButton = styled.button`
   border: none;
   width: 5rem;
   height: 5rem;
+  cursor: pointer;
   @media screen and (max-width: 1024px) {
     max-width: 76%;
     max-height: 76%;
@@ -230,16 +242,16 @@ const ColoredIcon = styled.div`
   background-color: rgba(255, 255, 255, 0.6);
   border-radius: 50%;
   @media screen and (max-width: 1024px) {
-    max-width: 76%;
-    max-height: 76%;
+    width: 4rem;
+    height: 4rem;
   }
   @media screen and (max-width: 768px) {
-    max-width: 50%;
-    max-height: 50%;
+    width: 3rem;
+    height: 3rem;
   }
   @media screen and (max-width: 530px) {
-    max-width: 40%;
-    max-height: 40%;
+    width: 2rem;
+    height: 2rem;
   }
 
   svg {
@@ -251,9 +263,9 @@ const ColoredIcon = styled.div`
     width: 2rem;
     height: 2rem;
     cursor: pointer;
-    @media screen and (max-width: 320px) {
+    /* @media screen and (max-width: 320px) {
       max-width: 48%;
       max-height: 48%;
-    }
+    } */
   }
 `;

@@ -208,7 +208,6 @@ const HomeContainer = styled.section`
   min-height: 100vh;
   flex-direction: column;
   margin: 0px auto;
-  margin-bottom: 15rem;
   background-color: var(--1, #0b0b0b);
 
   @media screen and (max-width: 768px) {
@@ -220,23 +219,18 @@ const HomeContainer = styled.section`
 
 const CarouselWrapper = styled.div`
   width: 100%;
-  cursor: pointer;
-  @media screen and (max-width: 1116px) {
+  /* @media screen and (max-width: 1116px) {
     max-width: 111.6rem;
-    width: 100%;
   }
   @media screen and (max-width: 1024px) {
     max-width: 102.4rem;
-    width: 100%;
   }
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;
-    width: 100%;
   }
   @media screen and (max-width: 530px) {
     max-width: 53rem;
-    width: 100%;
-  }
+  } */
 `;
 const AllCardContainer = styled.div`
   width: 100%;
@@ -257,7 +251,7 @@ const ProductsContainer = styled.div`
   @media screen and (max-width: 768px) {
     width: 100%;
     min-width: 32rem;
-    /* margin-top: 2rem; */
+    margin-top: 2rem;
   }
 `;
 const ProductsTitle = styled.div`
@@ -313,10 +307,9 @@ const ProductsLink = styled(Link)`
 `;
 
 const ProductsListContainer = styled.ul`
-  width: 100%;
   display: grid;
   margin: auto;
-
+  padding: 1.5rem;
   grid-template-columns: repeat(5, 1fr);
   margin-top: 2rem;
   row-gap: 1.5rem;
@@ -353,9 +346,12 @@ const ProductsListContainer = styled.ul`
 `;
 const ProductsList = styled.li`
   /* display: inline-block; */
-  width: 20.8rem; /* height: 31.5rem; */
+  width: 100%; /* height: 31.5rem; */
   display: flex;
+  aspect-ratio: 1/1;
+  align-items: flex-start;
   flex-direction: column;
+  border-radius: 0.6rem;
   @media screen and (max-width: 768px) {
     width: 100%;
   }
@@ -364,14 +360,11 @@ const ProductsList = styled.li`
   }
 
   .imageWrapper {
-    width: 20.8rem;
-    height: 20.8rem;
-    object-fit: cover;
-    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1/1;
     border-radius: 0.6rem;
+    margin-bottom: 2rem;
     @media screen and (max-width: 768px) {
-      width: 14rem;
-      height: 14rem;
       margin-bottom: 1rem;
     }
   }
@@ -379,28 +372,15 @@ const ProductsList = styled.li`
     object-fit: cover;
     object-position: center;
     width: 100%;
-    height: 100%;
+    aspect-ratio: 1/1;
     border-radius: 0.6rem;
-    border-style: none;
-
-    @media screen and (max-width: 768px) {
-      width: 14rem;
-      height: 14rem;
-      border-radius: 0.6rem;
-    }
   }
   svg {
-    width: 20.8rem;
-    height: 20.8rem;
-    fill: #f8f8f8;
-    border-radius: 6px;
-    border-style: none;
     object-fit: cover;
-    @media screen and (max-width: 768px) {
-      width: 14rem;
-      height: 14rem;
-      border-radius: 0.6rem;
-    }
+    object-position: center;
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 0.6rem;
   }
   h1 {
     width: 9rem;
@@ -430,7 +410,7 @@ const ProductsList = styled.li`
     color: var(--11-gray);
     margin-top: 1rem;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: wrap;
     text-overflow: ellipsis;
     line-height: 1.2;
     @media screen and (max-width: 768px) {
@@ -548,25 +528,16 @@ const CommunityLink = styled(Link)`
 
 const ComunityWrapper = styled.ul`
   width: 100%;
-  margin: 2.2rem auto;
+  /* margin: 2.2rem auto; */
   background-color: transparent;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-
-  @media screen and (max-width: 1200px) {
-    grid-template-columns: 1fr;
-    margin: 0 auto;
-    padding: 0 1rem;
-  }
-
-  @media screen and (max-width: 768px) {
-    grid-template-columns: 1fr;
-    padding: 0 1rem;
-  }
-
-  @media screen and (max-width: 520px) {
-    gap: 1rem;
+  gap: 1.5rem;
+  /* row-gap: 2rem;
+  column-gap: 2rem; */
+  padding: 1.5rem;
+  @media screen and (max-width: 600px) {
+    grid-template-columns: repeat(1, 1fr);
   }
 `;
 
@@ -588,16 +559,12 @@ const ComunityList = styled.li`
   border-radius: 1rem;
   background-color: #1f1f1f;
   padding: 2rem;
+
   @media screen and (max-width: 768px) {
     width: 100%;
+    height: 14rem;
     padding: 1rem;
   }
-  @media screen and (max-width: 520px) {
-    width: 100%;
-    padding: 1rem;
-  }
-
-  margin-bottom: 2rem;
 
   .nopicture {
     width: 6.6rem;
