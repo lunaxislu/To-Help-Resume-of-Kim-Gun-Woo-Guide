@@ -2,18 +2,15 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const StPostContainer = styled.div<{ list: number | boolean }>`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-
-  @media screen and (max-width: 1024px) {
-    padding: 0 2rem;
-    gap: 2rem;
-  }
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1.5rem;
 
   @media screen and (max-width: 768px) {
+    display: grid;
     grid-template-columns: 1fr;
-    padding: 0 2rem;
   }
 `;
 
@@ -59,9 +56,9 @@ export const StPostImage = styled.img`
 `;
 
 export const StPostContent = styled.p`
-  font-size: 1.4rem;
+  font-size: var(--fontSize-H5);
   color: var(--8-gray);
-  /* white-space: nowrap; */
+  line-height: 1.5;
 
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);

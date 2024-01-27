@@ -19,7 +19,7 @@ const Nothing: React.FC<NothingProps> = ({ type, content, icon, to, show }) => {
       {show ? (
         <button onClick={() => navigate(to)}>
           <img src={`${icon}`} alt="" />
-          {`${type}`}
+          <span>{`${type}`}</span>
         </button>
       ) : (
         ''
