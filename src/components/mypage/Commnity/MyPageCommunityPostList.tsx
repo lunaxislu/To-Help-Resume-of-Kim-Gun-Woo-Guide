@@ -4,11 +4,11 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import { debounce } from 'lodash';
 import SkeletonCommunityCard from '../../skeleton/SkeletonCommunityCard';
-import { userId } from '../../../util/getUserId';
 import { Community, CommunityActive } from '../../../api/supabase/community';
 import { MyPageCommunityCard } from './MyPageCommunityCard';
 import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
 import { setFavPost, setMyPost } from '../../../redux/modules/countSlice';
+import Nothing from '../Nothing';
 
 const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
@@ -18,6 +18,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   const [isInView, setIsInView] = useState(false);
   const [communityPosts, setCommunityPosts] = useState<Community[]>([]);
   const [favCommunityPosts, setFavCommunityPosts] = useState<Community[]>([]);
+  const userId = localStorage.getItem('userId');
 
   const dispatch = useAppDispatch();
   const getCurrentUserCommunityPosts = async () => {
@@ -34,7 +35,6 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   };
 
   const onScrollHandler = () => {
-    // js script가 동작하고 카드를 감싸는 전체 컨테이너가 바닥에 닿을 때
     if (containerRef.current && typeof window !== 'undefined') {
       const container = containerRef.current;
       const { scrollTop, clientHeight, scrollHeight } = container;
@@ -47,8 +47,6 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
     let { data: favCommunityPosts, error } = await supabase
       .from('community')
       .select('*');
-
-    console.log(userId);
 
     if (favCommunityPosts && favCommunityPosts.length > 0) {
       const filteredFavProducts = favCommunityPosts
@@ -102,9 +100,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   };
 
   const handleText = (content: string): string => {
-    // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
-
     return textOnly;
   };
 
@@ -120,7 +116,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   }, []);
 
   return (
-    <StPostContainer ref={containerRef}>
+    <StPostContainer ref={containerRef} list={communityPosts.length}>
       {activeTab === 3 &&
         communityPosts.map((post) => {
           return (
@@ -129,13 +125,24 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
               title={post.title}
               content={post.content}
               created_at={post.created_at}
-              // images={post.main_image}
+              main_image={post.main_image}
               post_id={post.post_id}
               comment={post.comment}
               likes={post.likes}
             />
           );
         })}
+
+      {communityPosts.length === 0 && activeTab !== 4 && (
+        <Nothing
+          type={'글쓰기'}
+          content={`아직 작성한 글이 없어요. \n
+           커뮤니티에 작업자들과 이야기를 나눠보세요!`}
+          icon={'/assets/write.svg'}
+          to={'/community_write'}
+          show={true}
+        />
+      )}
 
       {activeTab === 4 &&
         favCommunityPosts.map((post) => {
@@ -145,14 +152,22 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
               title={post.title}
               content={post.content}
               created_at={post.created_at}
-              // images={post.main_image}
+              main_image={post.main_image}
               post_id={post.post_id}
               comment={post.comment}
               likes={post.likes}
             />
           );
         })}
-
+      {favCommunityPosts.length === 0 && activeTab !== 3 && (
+        <Nothing
+          type={''}
+          content={`추천하신 글이 없습니다.`}
+          icon={''}
+          to={''}
+          show={false}
+        />
+      )}
       {isLoading && <SkeletonCommunityCard cards={10} />}
     </StPostContainer>
   );
