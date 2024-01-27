@@ -11,7 +11,15 @@ export const HeaderContainer = styled.header`
   background-color: {
     color: var(--bgColor);
   }
-
+  @media screen and (max-width: 1300px) {
+    width: 120rem;
+  }
+  @media screen and (max-width: 1100px) {
+    width: 110rem;
+  }
+  @media screen and (max-width: 900px) {
+    width: 90rem;
+  }
   @media screen and (max-width: 768px) {
     align-items: center;
     width: 76.8rem;

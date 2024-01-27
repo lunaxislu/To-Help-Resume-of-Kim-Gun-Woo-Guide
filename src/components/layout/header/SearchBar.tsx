@@ -139,6 +139,7 @@ const SearchInputContainer = styled.div<MobileProps>`
   /* display: flex; */
   align-items: center;
   position: relative;
+
   @media only screen and (max-width: 768px) {
     width: 100%;
     height: 100vh;
@@ -179,7 +180,15 @@ const SearchInputBar = styled.input`
   font-weight: var(--fontWeight-medium);
   line-height: 2.4856rem;
   outline: none;
-
+  @media screen and (max-width: 1300px) {
+    width: 48.8rem;
+  }
+  @media screen and (max-width: 1100px) {
+    width: 40rem;
+  }
+  @media screen and (max-width: 900px) {
+    width: 30rem;
+  }
   @media screen and (max-width: 768px) {
     position: relative;
     left: 46%;
