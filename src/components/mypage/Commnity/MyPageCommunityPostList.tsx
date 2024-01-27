@@ -109,7 +109,11 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
     getCurrentUserCommunityPosts();
   }, []);
 
-  console.log(activeTab);
+  const handleText = (content: string): string => {
+    const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
+    return textOnly;
+  };
+
   return (
     <StPostContainer
       ref={containerRef}
@@ -121,7 +125,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
             <MyPageCommunityCard
               id={post.id}
               title={post.title}
-              content={post.content}
+              content={handleText(post.content)}
               created_at={post.created_at}
               main_image={post.main_image}
               post_id={post.post_id}
@@ -134,8 +138,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
       {communityPosts.length === 0 && activeTab !== 4 && (
         <Nothing
           type={'글쓰기'}
-          content={`아직 작성한 글이 없어요. \n
-           커뮤니티에 작업자들과 이야기를 나눠보세요!`}
+          content={`아직 작성한 글이 없어요.\n커뮤니티에 작업자들과 이야기를 나눠보세요!`}
           icon={'/assets/write.svg'}
           to={'/community_write'}
           show={true}
@@ -148,7 +151,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
             <MyPageCommunityCard
               id={post.id}
               title={post.title}
-              content={post.content}
+              content={handleText(post.content)}
               created_at={post.created_at}
               main_image={post.main_image}
               post_id={post.post_id}
