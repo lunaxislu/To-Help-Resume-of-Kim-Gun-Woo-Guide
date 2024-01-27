@@ -78,12 +78,11 @@ const Home = () => {
             {usedItemsCountData?.data?.length}개의 상품이 거래되고 있어요!
           </div>
           <LinktoProducts to="/products">
-            <p>전체보기</p>
-            <FaArrowRight />
+            전체보기<FaArrowRight />
           </LinktoProducts>
         </div>
 
-        <SupabaseListContainer>
+        <ProductsListContainer>
           {usedItems.map((item) => (
             <TousedItemDetailPage
               key={item.id}
@@ -112,7 +111,7 @@ const Home = () => {
               </SupabaseList>
             </TousedItemDetailPage>
           ))}
-        </SupabaseListContainer>
+        </ProductsListContainer>
       </HomeSection>
 
       <ComunityContainer>
@@ -199,7 +198,7 @@ export default Home;
 
 const HomeContainer = styled.section`
   display: flex;
-  width: 144rem;
+  max-width: 144rem;
   height: 170rem;
   flex-direction: column;
   margin: 0px auto;
@@ -208,9 +207,8 @@ const HomeContainer = styled.section`
     width: 100%;
     margin: 0px auto;
   }
-  @media screen and (max-width: 320px) {
-    max-width: 32rem;
-    max-height: 210rem;
+  @media screen and (max-width: 768px) {
+    max-width: 76.8rem;
   }
 `;
 
@@ -226,7 +224,7 @@ const CarouselWrapper = styled.div`
 `;
 
 const HomeSection = styled.div`
-  width: 111.6rem;
+  max-width: 111.6rem;
   margin: 0 auto;
   margin-top: 4rem;
   @media screen and (max-width: 320px) {
@@ -285,7 +283,7 @@ const LinktoProducts = styled(Link)`
   }
 `;
 
-const SupabaseListContainer = styled.ul`
+const ProductsListContainer = styled.ul`
   width: 111.6rem;
   height: 32rem;
   display: flex;
