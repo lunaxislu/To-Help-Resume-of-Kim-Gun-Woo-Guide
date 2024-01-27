@@ -136,8 +136,8 @@ const Header = () => {
               <St.Sell onClick={handleSellbuttonClick}>
                 <BiWon
                   style={{
-                    width: '1.4rem',
-                    height: '1.4rem',
+                    width: '1.6rem',
+                    height: '1.6rem',
                     color: 'var(--opc-100)'
                   }}
                 />
@@ -162,8 +162,8 @@ const Header = () => {
                 <St.Alert>
                   <BiSolidBell
                     style={{
-                      width: '1.4rem',
-                      height: '1.4rem',
+                      width: '1.6rem',
+                      height: '1.6rem',
                       color: 'var(--opc-100)'
                     }}
                   />
