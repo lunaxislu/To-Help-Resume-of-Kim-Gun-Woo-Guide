@@ -50,7 +50,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
 
     if (favCommunityPosts && favCommunityPosts.length > 0) {
       const filteredFavProducts = favCommunityPosts
-        .filter((user) => user.likes_user.includes(userId))
+        .filter((user) => user.likes_user?.includes(userId))
         .map((item) => item);
 
       setFavCommunityPosts(filteredFavProducts);
@@ -111,7 +111,6 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   }, [isInView]);
 
   useEffect(() => {
-    // Initial load
     getCurrentUserCommunityPosts();
   }, []);
 
