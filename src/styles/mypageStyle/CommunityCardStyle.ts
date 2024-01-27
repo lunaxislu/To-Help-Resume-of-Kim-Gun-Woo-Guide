@@ -2,19 +2,15 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const StPostContainer = styled.div<{ list: number | boolean }>`
-  /* display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem; */
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1.5rem;
-  padding: 0.5rem;
+  padding: 1.5rem;
 
   @media screen and (max-width: 768px) {
     display: grid;
     grid-template-columns: 1fr;
-    padding: 0 1.5rem;
   }
 `;
 
