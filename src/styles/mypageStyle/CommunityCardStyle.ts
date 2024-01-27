@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const StPostContainer = styled.div<{ list: number }>`
-  display: flex;
-  flex-wrap: wrap;
+export const StPostContainer = styled.div<{ list: number | boolean }>`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
 
   @media screen and (max-width: 1024px) {
@@ -12,8 +12,7 @@ export const StPostContainer = styled.div<{ list: number }>`
   }
 
   @media screen and (max-width: 768px) {
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: 1fr;
     padding: 0 2rem;
   }
 `;
@@ -49,6 +48,7 @@ export const StPostTitle = styled.p`
 export const StPostContentsWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 1rem;
 `;
 
@@ -61,6 +61,7 @@ export const StPostImage = styled.img`
 export const StPostContent = styled.p`
   font-size: 1.4rem;
   color: var(--8-gray);
+  /* white-space: nowrap; */
 
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);

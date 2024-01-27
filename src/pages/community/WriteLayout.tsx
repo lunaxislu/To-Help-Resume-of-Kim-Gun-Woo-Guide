@@ -271,7 +271,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
                     name="category"
                     value={item}
                     onChange={(e) => {
-                      // 체크박스가 선택되면, formValues의 category 값을 업데이트합니다.
                       setFormValues({
                         ...formValues,
                         category: e.target.checked ? item : ''

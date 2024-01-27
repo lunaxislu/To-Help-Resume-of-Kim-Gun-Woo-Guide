@@ -25,13 +25,20 @@ export const FooterWrapper = styled.div`
   }
 `;
 export const FooterArea = styled.div`
+<<<<<<< HEAD
   max-width: 1116px;
   display: flex;
   flex-direction: column;
+=======
+  width: 1116px;
+  max-width: 100%;
+  margin: auto;
+>>>>>>> 0ae9ccef78bc5fa28bfb7604d970b4e96e33561e
 `;
 
 export const Logo = styled.div`
   img {
+    max-width: 100%;
     width: 10.1rem;
     height: 2.6rem;
     cursor: pointer;

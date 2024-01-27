@@ -28,8 +28,13 @@ export const HeaderContainer = styled.header`
   }
   @media screen and (max-width: 768px) {
     align-items: center;
+<<<<<<< HEAD
     max-width: 76.8rem;
     width: 100%;
+=======
+    width: 76.8rem;
+    height: 9rem;
+>>>>>>> 0ae9ccef78bc5fa28bfb7604d970b4e96e33561e
     padding: 3rem 2rem;
   }
   @media screen and (max-width: 530px) {

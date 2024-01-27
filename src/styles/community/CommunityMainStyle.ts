@@ -80,6 +80,7 @@ export const Title = styled.h2`
   margin-top: 4rem;
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
+    margin-top: 0;
   }
 `;
 export const CategoryBtn = styled.button<{ $selectCategory: string }>`

@@ -50,7 +50,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
 
     if (favCommunityPosts && favCommunityPosts.length > 0) {
       const filteredFavProducts = favCommunityPosts
-        .filter((user) => user.likes_user.includes(userId))
+        .filter((user) => user.likes_user?.includes(userId))
         .map((item) => item);
 
       setFavCommunityPosts(filteredFavProducts);
@@ -99,11 +99,6 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
     setIsLoading(false);
   };
 
-  const handleText = (content: string): string => {
-    const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
-    return textOnly;
-  };
-
   useEffect(() => {
     if (isInView) {
       loadMorePosts(offset);
@@ -111,12 +106,15 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   }, [isInView]);
 
   useEffect(() => {
-    // Initial load
     getCurrentUserCommunityPosts();
   }, []);
 
+  console.log(activeTab);
   return (
-    <StPostContainer ref={containerRef} list={communityPosts.length}>
+    <StPostContainer
+      ref={containerRef}
+      list={communityPosts.length === 0 && activeTab === 3 ? true : false}
+    >
       {activeTab === 3 &&
         communityPosts.map((post) => {
           return (
