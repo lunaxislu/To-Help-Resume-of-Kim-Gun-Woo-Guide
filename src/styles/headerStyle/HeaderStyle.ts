@@ -126,11 +126,11 @@ export const Sell = styled.button`
     font-size: var(--fontSize-H5);
     line-height: 2.6768rem;
   }
-  .sellbtn {
+  /* svg {
     color: var(--opc-100);
     width: 1.4rem;
     height: 1.4rem;
-  }
+  } */
 `;
 
 export const Chat = styled.button`
@@ -155,11 +155,12 @@ export const Chat = styled.button`
     font-size: var(--fontSize-H5);
     line-height: 2.6768rem;
   }
-  .myChat {
+  /* svg {
+    transform: scaleX(-1);
     color: var(--opc-100);
     width: 1.4rem;
     height: 1.4rem;
-  }
+  } */
 `;
 
 export const Alert = styled.button`
@@ -177,11 +178,11 @@ export const Alert = styled.button`
   @media screen and (max-width: 768px) {
     display: none;
   }
-  .myAlarm {
+  /* svg {  
     color: var(--opc-100);
     width: 1.4rem;
     height: 1.4rem;
-  }
+  } */
   p {
     color: var(--11-gray);
     font-weight: var(--fontWeight-medium);

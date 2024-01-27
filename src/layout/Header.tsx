@@ -134,12 +134,25 @@ const Header = () => {
             />
             <St.ButtonContainer>
               <St.Sell onClick={handleSellbuttonClick}>
-                <BiWon className="sellbtn" />
+                <BiWon
+                  style={{
+                    width: '1.4rem',
+                    height: '1.4rem',
+                    color: 'var(--opc-100)'
+                  }}
+                />
                 <p>판매하기</p>
               </St.Sell>
               {isLogin ? (
                 <St.Chat onClick={handleNavigateToChat}>
-                  <BsChatDotsFill className="myChat" />
+                  <BsChatDotsFill
+                    style={{
+                      width: '1.4rem',
+                      height: '1.4rem',
+                      color: 'var(--opc-100)',
+                      transform: 'scaleX(-1)'
+                    }}
+                  />
                   <p>채팅</p>
                 </St.Chat>
               ) : (
@@ -147,7 +160,13 @@ const Header = () => {
               )}
               {isLogin ? (
                 <St.Alert>
-                  <BiSolidBell className="myAlarm" />
+                  <BiSolidBell
+                    style={{
+                      width: '1.4rem',
+                      height: '1.4rem',
+                      color: 'var(--opc-100)'
+                    }}
+                  />
                   <p>알림</p>
                 </St.Alert>
               ) : (
