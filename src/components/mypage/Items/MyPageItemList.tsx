@@ -136,7 +136,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   }, []);
 
   useEffect(() => {
-    //getFavoriteProducts();
+    getFavoriteProducts();
   }, []);
 
   return (
@@ -154,7 +154,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
           />
         ))}
 
-      {myItems.length === 0 && activeTab !== 1 && activeTab !== 2 && (
+      {/* {myItems.length === 0 && activeTab !== 1 && activeTab !== 2 && (
         <Nothing
           type={'판매하기'}
           content={`아직 판매중인 물품이 없어요. \n '판매하기'를 눌러 판매를 시작해보세요!`}
@@ -162,8 +162,9 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
           to={'/productsposts'}
           show={true}
         />
-      )}
-      {isLoading && <SkeletonProductCard cards={myItems.length} />}
+      )} */}
+      {/* {isLoading && <SkeletonProductCard cards={myItems.length} />} */}
+      <SkeletonProductCard cards={myItems.length} />
 
       {activeTab === 1 &&
         purchasedItems.map((item) => {
