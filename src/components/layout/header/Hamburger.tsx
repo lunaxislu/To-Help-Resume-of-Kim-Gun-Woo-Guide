@@ -115,16 +115,16 @@ const HamburgerModalContainer = styled.div<{ isOpen: boolean }>`
   background-color: var(--3-gray);
   z-index: 1000;
   @media screen and (max-width: 768px) {
-    width: 100%;
+    width: 50%;
   }
   @media screen and (max-width: 660px) {
-    width: 80%;
+    width: 50%;
   }
   @media screen and (max-width: 600px) {
-    width: 70%;
+    width: 50%;
   }
   @media screen and (max-width: 500px) {
-    width: 60%;
+    width: 50%;
   }
   @media screen and (max-width: 450px) {
     width: 50%;

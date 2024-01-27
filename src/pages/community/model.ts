@@ -99,5 +99,9 @@ export type LikesObject = {
 };
 export type PageBtnProps = {
   $currentPage: number;
-  pageNumber: number;
+  $pageNumber: number;
+};
+export type EditCommentInputProps = {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };

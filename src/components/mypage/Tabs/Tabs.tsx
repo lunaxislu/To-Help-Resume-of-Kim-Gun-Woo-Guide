@@ -19,8 +19,6 @@ const Tabs = () => {
     setToggle(index);
   };
 
-  console.log(tabMenuArray);
-
   return (
     <>
       <StTabsContainer>

@@ -3,6 +3,7 @@ import { supabase } from './../../../api/supabase/supabaseClient';
 import { SetStateAction } from 'react';
 import { MessageType, RoomType } from '../../../components/chat/types';
 import { UtilForChat } from '../chat_utils/functions';
+import { useNavigate } from 'react-router';
 
 export class SupabaseAPI {
   // constructor type 정의
@@ -27,10 +28,13 @@ export class SupabaseAPI {
     targetUser: any[] | undefined,
     setRooms: React.Dispatch<SetStateAction<RoomType[] | null | undefined>>,
     setMessages: React.Dispatch<SetStateAction<MessageType[]>>,
-    setClicked: React.Dispatch<SetStateAction<string | undefined>>
+    setClicked: React.Dispatch<SetStateAction<string | undefined>>,
+    handleHideBoardPosition: any
   ) => {
     if (window.confirm('정말 삭제하시겠습니까?') === true) {
       const utils = new UtilForChat();
+
+      handleHideBoardPosition();
 
       const { error: messageDelete } = await supabase
         .from('chat_messages')

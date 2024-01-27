@@ -1,3 +1,4 @@
+import { GoChevronLeft } from 'react-icons/go';
 import ReactQuill from 'react-quill';
 import styled from 'styled-components';
 export const LayoutContentArea = styled.div`
@@ -37,6 +38,7 @@ export const LayoutValueText = styled.div`
 `;
 export const LayoutTitleContainer = styled.div`
   display: flex;
+  margin-bottom: 2rem;
 
   & input {
     height: 54px;
@@ -48,7 +50,7 @@ export const LayoutTitleContainer = styled.div`
     padding-left: 16px;
     color: var(--12-gray);
     font-family: 'Pretendard-Medium';
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-body);
     &::placeholder {
       color: var(--5-gray);
       font-size: var(--fontSize-H5);
@@ -59,7 +61,7 @@ export const LayoutTitleContainer = styled.div`
     gap: 1rem;
     & input {
       height: 3rem;
-
+      font-size: var(--fontSize-H6);
       &::placeholder {
         font-size: var(--fontSize-H6);
       }
@@ -114,7 +116,7 @@ export const LayoutBottom = styled.div`
 export const LayoutContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  /* gap: 2rem; */
   width: 100%;
 
   & h1 {
@@ -128,7 +130,8 @@ export const LayoutCategoryContainer = styled.div`
   display: flex;
   align-items: center;
   font-size: var(--fontSize-H5);
-
+  white-space: nowrap;
+  margin-bottom: 2rem;
   & label {
     display: flex;
     align-items: center;
@@ -174,7 +177,7 @@ export const LayoutFileUploader = styled.label`
   width: 100%;
   max-width: 90.6rem;
   color: var(--5-gray);
-
+  margin-bottom: 1.5rem;
   & input {
     display: none;
   }
@@ -189,6 +192,7 @@ export const LayoutQuillEditor = styled(ReactQuill)`
   border-radius: 5px;
   width: 100%;
   max-width: 906px;
+  margin-bottom: 2rem;
 
   .ql-container {
     height: 70rem;
@@ -220,6 +224,9 @@ export const LayoutQuillEditor = styled(ReactQuill)`
     line-height: 30px;
     font-size: var(--fontSize-body);
   }
+  .ql-editor img {
+    width: 60%;
+  }
   @media screen and (max-width: 768px) {
     .ql-container {
       height: 15rem;
@@ -228,8 +235,7 @@ export const LayoutQuillEditor = styled(ReactQuill)`
       max-width: 80%;
     }
     .ql-editor p {
-      display: flex;
-      line-height: 30px;
+      line-height: 2rem;
       font-size: var(--fontSize-H6);
     }
   }
@@ -278,13 +284,8 @@ export const Topper = styled.div`
   align-items: center;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--4-gray);
-  gap: 1rem;
-  & button {
-    font-size: var(--fontSize-H1);
-    background-color: transparent;
-    border: none;
-    color: var(--opc-100);
-  }
+  /* gap: 1rem; */
+
   & p {
     font-size: var(--fontSize-H6);
     color: var(--opc-100);
@@ -295,9 +296,55 @@ export const Topper = styled.div`
   @media screen and (max-width: 768px) {
     & h1 {
       font-size: var(--fontSize-H5);
+      margin-right: 1rem;
     }
     & p {
       font-size: 1rem;
     }
+  }
+`;
+export const Validate = styled.p`
+  color: #ea4949;
+  font-size: var(--fontSize-H6);
+  font-weight: var(--fontWeight-regular);
+  margin-bottom: 2rem;
+  margin-left: 18%;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    margin-left: 0;
+  }
+`;
+
+// export const BackIcon = styled(GoChevronLeft)`
+//   color: var(--opc-100);
+//   display: none;
+//   width: 2rem;
+//   height: 1.5rem;
+//   :hover {
+//     cursor: pointer;
+//   }
+//   @media screen and (max-width: 768px) {
+//     display: block;
+//   }
+// `;
+export const BackBtnBox = styled.div`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+    width: 2rem;
+    height: 1.5rem;
+    :hover {
+      cursor: pointer;
+    }
+  }
+`;
+export const BackIcon = styled(GoChevronLeft)`
+  width: 100%;
+  height: 100%;
+  color: var(--opc-100);
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
   }
 `;

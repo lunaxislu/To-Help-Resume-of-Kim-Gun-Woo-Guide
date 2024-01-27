@@ -18,6 +18,7 @@ export const StTabsContainer = styled.ul`
 `;
 
 export const StTab = styled.li<{ active: boolean }>`
+  cursor: pointer;
   font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
   color: ${(props) => (props.active ? 'var(--opc-100)' : 'var(--10-gray)')};
 `;
