@@ -221,17 +221,30 @@ const HomeContainer = styled.section`
 const CarouselWrapper = styled.div`
   width: 100%;
   cursor: pointer;
+  @media screen and (max-width: 1116px) {
+    max-width: 111.6rem;
+    width: 100%;
+  }
   @media screen and (max-width: 1024px) {
+    max-width: 102.4rem;
     width: 100%;
   }
   @media screen and (max-width: 768px) {
+    max-width: 76.8rem;
+    width: 100%;
+  }
+  @media screen and (max-width: 530px) {
+    max-width: 53rem;
     width: 100%;
   }
 `;
 const AllCardContainer = styled.div`
   width: 100%;
+  @media screen and (max-width: 1300px) {
+    width: 130rem;
+  }
   @media screen and (max-width: 1024px) {
-    width: 100%;
+    width: 10;
   }
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -416,9 +429,17 @@ const ProductsList = styled.li`
     font-size: var(--fontSize-body);
     color: var(--11-gray);
     margin-top: 1rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 1.2;
     @media screen and (max-width: 768px) {
       width: 14rem;
       margin-top: 0.6rem;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
       color: var(--11-gray, #f8f8f8);
       font-weight: var(--fontWeight-medium);
       font-size: var(--fontSize-H5);
@@ -433,7 +454,6 @@ const ProductsList = styled.li`
     margin-top: 1rem;
     text-align: left;
     @media screen and (max-width: 768px) {
-      width: 6rem;
       height: 2.3rem;
       font-weight: var(--fontWeight-bold);
       font-size: var(--fontSize-H5);

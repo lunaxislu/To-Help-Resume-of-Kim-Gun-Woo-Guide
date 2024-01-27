@@ -120,15 +120,7 @@ const Header = () => {
   }, []);
 
   return (
-    <>
-      <Hamburger
-        isOpen={showHamburger}
-        onClose={() => setShowHamburger(false)}
-        onLogout={handleLogOutButtonClick}
-        user={user}
-        setUser={() => setUser(false)}
-        avatarUrl={avatarUrl}
-      />
+    <St.HeaderTopContainer>
       <St.HeaderContainer>
         <St.HeaderSection>
           <St.Logo
@@ -171,6 +163,14 @@ const Header = () => {
                   src="/assets/hamburger.svg"
                   onClick={handlShowSearchBurger}
                 />
+                <Hamburger
+                  isOpen={showHamburger}
+                  onClose={() => setShowHamburger(false)}
+                  onLogout={handleLogOutButtonClick}
+                  user={user}
+                  setUser={() => setUser(false)}
+                  avatarUrl={avatarUrl}
+                />
               </>
             ) : (
               <St.Button onClick={handleNavigateToLogin}>
@@ -201,7 +201,7 @@ const Header = () => {
           />
         </St.NavSection>
       </St.HeaderContainer>
-    </>
+    </St.HeaderTopContainer>
   );
 };
 
