@@ -23,7 +23,7 @@ const Home = () => {
     process.env.PUBLIC_URL + '/assets/carousel3.png'
   ];
 
-  // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 //
+  // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 (중감자동무)//
   const getUserId = async () => {
     const { data, error } = await supabase.auth.getUser();
     if (data && data.user) {
@@ -34,7 +34,7 @@ const Home = () => {
   useEffect(() => {
     getUserId();
   }, []);
-  // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 끝 //
+  // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 끝 (중감자동무)//
 
   // 전체 데이터 개수를 가져오는 쿼리
 
@@ -138,10 +138,10 @@ const Home = () => {
                       <h3>{item.title}</h3>
                     </div>
                     <div className="commupic">
-                      {item.image_Url ? (
+                      {item.main_image ? (
                         <img
                           className="community-pic"
-                          src={item.image_Url}
+                          src={item.main_image}
                           alt="Community Post"
                         />
                       ) : (
@@ -153,7 +153,7 @@ const Home = () => {
                           alt="Default User"
                         />
                       )}
-                      <p>{handleText(item.content)}</p>{' '}
+                      <p>{handleText(item.content)}</p>
                     </div>
                   </div>
                   <div>
@@ -614,18 +614,27 @@ const ComunityList = styled.li`
   }
 
   p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    white-space: normal;
     overflow: hidden;
     font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-medium);
     color: var(--8-gray);
     max-width: 41rem;
     height: 6.6rem;
-    line-height: 19rem;
+    line-height: 1.3;
 
     @media screen and (max-width: 768px) {
       font-size: var(--fontSize-H6);
       line-height: 1.92rem;
       height: 6rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      white-space: normal;
+      overflow: hidden;
     }
   }
 

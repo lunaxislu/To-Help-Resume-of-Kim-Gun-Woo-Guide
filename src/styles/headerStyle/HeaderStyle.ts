@@ -108,7 +108,7 @@ export const ButtonContainer = styled.div`
 export const Sell = styled.button`
   align-items: center;
   display: flex;
-  width: 7.3rem;
+  width: 8rem;
   height: 2.7rem;
   border: 0;
   background: transparent;
@@ -133,10 +133,10 @@ export const Sell = styled.button`
   }
 `;
 
-export const Likes = styled.button`
+export const Chat = styled.button`
   align-items: center;
   display: flex;
-  width: 3.8rem;
+  width: 6rem;
   height: 2.7rem;
   border: 0;
   background: transparent;
@@ -155,7 +155,7 @@ export const Likes = styled.button`
     font-size: var(--fontSize-H5);
     line-height: 2.6768rem;
   }
-  .mylikes {
+  .myChat {
     color: var(--opc-100);
     width: 1.4rem;
     height: 1.4rem;

@@ -41,11 +41,4 @@ export interface Communityy {
   created_at: string;
   comment: Array<Record<string, any>>;
   likes_user: Array<Record<string, any>>;
-  image_filename?: string;
-  imageData?: any;
-  image_url: string;
-  image_Url: string;
-  publicURL: string;
-  images: string;
-  publicUrL: string;
 }

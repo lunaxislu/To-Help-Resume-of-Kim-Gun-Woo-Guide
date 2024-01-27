@@ -10,6 +10,7 @@ import { BiWon } from 'react-icons/bi';
 import { BiSolidHeart } from 'react-icons/bi';
 import { BiSolidBell } from 'react-icons/bi';
 import Hamburger from '../components/layout/header/Hamburger';
+import { BsChatDotsFill } from 'react-icons/bs';
 
 interface User {
   username: string;
@@ -67,7 +68,9 @@ const Header = () => {
   const handleNavigateToLogin = () => {
     navigate('/login/login');
   };
-
+  const handleNavigateToChat = () => {
+    navigate('/chat');
+  };
   // 로그아웃 버튼
   const handleLogOutButtonClick = async () => {
     let { error } = await supabase.auth.signOut();
@@ -135,10 +138,10 @@ const Header = () => {
                 <p>판매하기</p>
               </St.Sell>
               {isLogin ? (
-                <St.Likes>
-                  <BiSolidHeart className="mylikes" />
-                  <p>찜</p>
-                </St.Likes>
+                <St.Chat onClick={handleNavigateToChat}>
+                  <BsChatDotsFill className="myChat" />
+                  <p>채팅</p>
+                </St.Chat>
               ) : (
                 ''
               )}
