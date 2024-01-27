@@ -26,7 +26,7 @@ export const Title = styled.h1`
   font-size: var(--fontSize-H3);
   margin: 4rem 0 2.6rem 0;
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H5);
+    font-size: var(--fontSize-body);
     margin: 2rem 0 1.4rem 0;
   }
 `
@@ -84,7 +84,7 @@ export const Category = styled.p<CategoryProps>`
   }
   // 배경색 조건부 렌더링
   ${(props) => {
-    if (props.$selectCategory === props.children) {
+    if (props.$selectCategory.length === 1 && props.$selectCategory.includes(props.children as string)) {
       return css`
         background-color: var(--opc-100);
         font-weight: var(--fontWeight-bold);
@@ -163,7 +163,7 @@ export const MobilePostsWriteBtn = styled.div`
     align-items: center;
     border-radius: 7rem;
     gap: 0.5rem;
-    background-color: var(--opc-10);
+    //background-color: var(--opc-10);
     white-space: nowrap;
     &:hover {
       cursor: pointer;
@@ -174,10 +174,10 @@ export const MobilePostsWriteBtn = styled.div`
     height: 2rem;
     border-radius: 5.6rem;
     gap: 0.5rem;
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-H5);
+    margin: 1.8rem 0 1.4rem 0;
   }
   @media screen and (max-width: 768px) {
-    margin: 1.8rem 0 1.4rem 0;
   }
 `
 
@@ -297,7 +297,12 @@ export const CardQuality = styled.li`
   }
 `
 export const CardTitle = styled.h2`
+  width: 100%;
   margin-bottom: 0.4rem;
+  overflow: hidden;
+  white-space: wrap;
+  text-overflow: ellipsis;
+  line-height: 1.2;
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
   }

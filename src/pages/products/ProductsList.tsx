@@ -7,6 +7,7 @@ import * as St from '../../styles/products/ProductsListStyle';
 import { useNavigate } from 'react-router';
 import { fetchRangeProductsPosts, getProductsCount, getProductsPosts } from '../../components/prducts/productsQuery';
 import Pagination from './Pagination';
+import PostsNothing from './PostsNothing';
 
 const major = ['전체', '회화', '조소', '판화', '금속공예', '도예', '유리공예', '목공예', '섬유공예', '기타']
 const PAGE_POST_NUMBER = 25;
@@ -88,7 +89,10 @@ const ProductsList = () => {
           <ProductsSortBtn />
         </St.SearchBarContainer> */}
       </St.BarContainer>
-      <ProductListCard selectCategory={selectCategory} />
+      {productsCount === 0 ? (
+        <PostsNothing/>
+      ) : (<ProductListCard selectCategory={selectCategory} />)}
+      
       </St.ContentsContainer>
     </St.EntireContainer>
   );
