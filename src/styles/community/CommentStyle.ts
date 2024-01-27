@@ -2,22 +2,23 @@ import { BsArrowReturnLeft } from 'react-icons/bs';
 import { FaComment, FaThumbsUp } from 'react-icons/fa';
 import { FaRegThumbsUp } from 'react-icons/fa6';
 import styled from 'styled-components';
+import { FormProps } from '../../pages/community/model';
 export const Name = styled.p`
   font-size: var(--fontSize-body);
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-H5);
   }
 `;
 export const Time = styled.p`
   font-size: var(--fontSize-H5);
   color: var(--9-gray);
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    font-size: var(--fontSize-H6);
   }
 `;
 
 export const CommentContent = styled.p`
-  font-size: var(--fontSize-H6);
+  font-size: var(--fontSize-H5);
   max-width: 45rem;
   /* width: 30rem; */
   @media screen and (max-width: 768px) {
@@ -67,7 +68,7 @@ export const AnonLabel = styled.label`
   font-size: var(--fontSize-H5);
   white-space: nowrap;
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    font-size: var(--fontSize-H6);
   }
 `;
 export const CountDivTop = styled.div`
@@ -77,6 +78,9 @@ export const CountDivTop = styled.div`
   gap: 1rem;
   padding-bottom: 1.5rem;
   font-size: var(--fontSize-H5);
+  @media screen and (max-width: 768px) {
+    /* border-bottom: 0.1rem solid var(--5-gray); */
+  }
 `;
 export const Container = styled.div`
   display: flex;
@@ -85,7 +89,7 @@ export const Container = styled.div`
   align-items: center;
   margin-bottom: 50px;
 `;
-export const Form = styled.form`
+export const Form = styled.form<FormProps>`
   width: 100%;
   max-width: 111.6rem;
   height: 12.8rem;
@@ -117,20 +121,24 @@ export const Form = styled.form`
   }
   @media screen and (max-width: 768px) {
     width: 100%;
-    position: fixed;
-    bottom: 0;
-    margin: 0;
-    flex-direction: row-reverse;
-    height: 4rem;
-    justify-content: start;
+    height: 9rem;
+    ${({ isFocused }) =>
+      isFocused &&
+      `position: fixed;
+      bottom: 0;
+      margin: 0;
+      flex-direction: row-reverse;
+      height: 4rem;
+      justify-content: start;
+    `}
     & button {
       height: 2.4rem;
       width: 2.4rem;
     }
     & div {
-      border-bottom: none;
+      /* border-bottom: none; */
       align-items: center;
-      padding-bottom: 0;
+      padding-bottom: 0.8rem;
       width: 100%;
     }
   }
@@ -218,8 +226,10 @@ export const LeftSide = styled.div`
 export const UpdateBtnContainer = styled.div`
   display: flex;
   gap: 1.2rem;
+  cursor: pointer;
+  font-size: var(--fontSize-H6);
+
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
   }
   & p {
     white-space: nowrap;

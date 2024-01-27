@@ -30,6 +30,15 @@ export const Categorys = styled.div`
   gap: 0.6rem;
   /* margin-bottom: 1.8rem; */
   white-space: nowrap;
+  overflow: scroll;
+  // 웹킷 기반 브라우저용 스크롤바 숨김
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  // 비-웹킷 브라우저용 스크롤바 숨김
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 export const WriteBtn = styled.button`
   width: 9rem;
@@ -47,15 +56,16 @@ export const WriteBtn = styled.button`
   @media screen and (max-width: 768px) {
     /* display: none; */ //검색창 잇을떄
     margin-top: 1.5rem;
-    font-size: var(--fontSize-H6);
+    /* font-size: var(--fontSize-H6); */
     background-color: transparent;
-    width: 5rem;
+    width: 6rem;
+    white-space: nowrap;
   }
 `;
 export const WriteIcon = styled(BiEdit)`
   color: var(--opc-100);
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.6rem;
+  height: 1.6rem;
 `;
 export const WriteBtn2 = styled.button`
   display: none;
@@ -76,10 +86,10 @@ export const WriteBtn2 = styled.button`
 export const Title = styled.h2`
   color: var(--12-gray);
   font-size: var(--fontSize-H3);
-  font-weight: var(--fontWeight-regular);
+  font-weight: var(--fontWeight-semiBold);
   margin-top: 4rem;
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H5);
+    font-size: var(--fontSize-body);
     margin-top: 0;
   }
 `;
@@ -90,6 +100,7 @@ export const CategoryBtn = styled.button<{ $selectCategory: string }>`
   padding: 0 1.5rem;
   border-radius: 5.6rem;
   font-family: 'Pretendard-Medium';
+  font-size: var(--fontSize-H5);
   cursor: pointer;
   ${(props) => {
     if (props.$selectCategory === props.children) {
@@ -114,8 +125,7 @@ export const CategoryBtn = styled.button<{ $selectCategory: string }>`
   }}
   @media screen and (max-width: 768px) {
     padding: 0 0.8rem;
-    font-size: 1rem;
-    height: 2rem;
+    height: 2.7rem;
   }
 `;
 export const EditDropdown = styled.div`

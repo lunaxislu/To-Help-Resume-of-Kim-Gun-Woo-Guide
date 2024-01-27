@@ -18,8 +18,9 @@ export const Content = styled.div`
     max-width: 40rem;
   }
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-H5);
     line-height: 2rem;
+    min-height: 30rem;
     & img {
       max-width: 28rem;
     }
@@ -55,7 +56,6 @@ export const ContentsContainer = styled.div`
   min-height: 60rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `;
 export const WriteWrap = styled.div`
   width: 90%;
@@ -81,6 +81,10 @@ export const Topper = styled.div`
 export const DetailBody = styled.div`
   border-bottom: 0.1rem solid var(--5-gray);
   margin-bottom: 2rem;
+  @media screen and (max-width: 768px) {
+    /* border-bottom: none; */
+    /* margin-bottom: 0; */
+  }
 `;
 export const IconContainer = styled.div`
   display: flex;
@@ -91,9 +95,10 @@ export const IconContainer = styled.div`
 export const Category = styled.p`
   /* margin-left: 1.5rem; */
   width: fit-content;
-  padding: 0 0.6rem;
+  padding: 0 0.8rem;
   height: 2.3rem;
   font-size: var(--fontSize-H6);
+  font-weight: var(--fontWeight-bold);
   color: var(--10-gray);
   background-color: var(--3-gray);
   border-radius: 5.6rem;
@@ -102,7 +107,7 @@ export const Category = styled.p`
   justify-content: center;
   white-space: nowrap;
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    height: 2.1rem;
   }
 `;
 
@@ -133,7 +138,8 @@ export const TitleCategory = styled.div`
   }
   @media screen and (max-width: 768px) {
     & h1 {
-      font-size: var(--fontSize-H5);
+      font-size: var(--fontSize-body);
+      font-weight: var(--fontWeight-medium);
     }
     & button {
       font-size: var(--fontSize-H1);
@@ -203,6 +209,9 @@ export const NoticeLike = styled.p`
   justify-content: center;
   border-radius: 8rem;
   margin-bottom: 1rem;
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H6);
+  }
 `;
 export const TitleTopper = styled.div`
   display: flex;
@@ -220,6 +229,7 @@ export const TitleTopper = styled.div`
   } */
   & p {
     font-size: var(--fontSize-H6);
+    font-weight: var(--fontWeight-bold);
     color: var(--opc-100);
   }
 

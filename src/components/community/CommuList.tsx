@@ -61,7 +61,6 @@ const CommuList: React.FC<CommuListProps> = ({
               key={post.post_id}
               onClick={() => {
                 navigate(`/community/detail/${post.post_id}`);
-                window.scrollTo({ top: 0 });
               }}
             >
               <div>

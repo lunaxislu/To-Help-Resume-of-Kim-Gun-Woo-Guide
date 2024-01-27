@@ -105,3 +105,6 @@ export type EditCommentInputProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
+export type FormProps = {
+  isFocused: boolean;
+};
