@@ -15,7 +15,6 @@ export const HeaderContainer = styled.header`
   @media screen and (max-width: 768px) {
     align-items: center;
     width: 76.8rem;
-    height: 10rem;
     padding: 3rem 2rem;
   }
   @media screen and (max-width: 530px) {
@@ -79,6 +78,7 @@ export const Sell = styled.button`
   border: 0;
   background: transparent;
   cursor: pointer;
+  font-family: 'Pretendard-Medium';
   gap: 0.6rem;
 
   @media screen and (max-width: 768px) {
@@ -106,6 +106,8 @@ export const Likes = styled.button`
   border: 0;
   background: transparent;
   cursor: pointer;
+  font-family: 'Pretendard-Medium';
+
   gap: 0.6rem;
 
   @media screen and (max-width: 768px) {
@@ -132,6 +134,8 @@ export const Alert = styled.button`
   height: 2.7rem;
   border: 0;
   background: transparent;
+  font-family: 'Pretendard-Medium';
+
   cursor: pointer;
   gap: 0.6rem;
 
@@ -158,6 +162,7 @@ export const Button = styled.button`
   height: 2.7rem;
   border: 0;
   background: transparent;
+  font-family: 'Pretendard-Medium';
   cursor: pointer;
   color: var(--11-gray);
   font-weight: var(--fontWeight-medium);
@@ -217,6 +222,8 @@ export const LogOut = styled.button`
   border: none;
   margin-top: 0.3rem;
   background: transparent;
+  font-family: 'Pretendard-Medium';
+
   color: var(--11-gray);
   font-weight: var(--fontWeight-medium);
   font-size: var(--fontSize-H5);
