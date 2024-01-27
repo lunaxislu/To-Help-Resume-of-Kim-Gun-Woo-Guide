@@ -1,35 +1,19 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as St from '../../styles/products/ProductsListStyle';
 
 interface Props {
   totalPages: number;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  selectCategory: string[];
 }
 
 const Pagination = ({
   totalPages,
   currentPage,
-  setCurrentPage,
-  selectCategory
+  setCurrentPage
 }: Props) => {
-  //const pageList = [];
+
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-  // useEffect(() => {
-  //   setCurrentPage(1); // 카테고리가 바뀔 때마다 첫 페이지로 리셋
-  // }, [selectCategory]);
-
-  // if (totalPosts === undefined) {
-  //   // postNum이 undefined일 경우 예외 처리 또는 기본값 설정
-  //   console.error("totalPosts is undefined");
-  //   return null;
-  // }
-  //const totalPages = Math.ceil(totalPosts / postsPerPage);
-
-  // for (let i = 1; i <= totalPages; i++) {
-  //   pageList.push(i)
-  // }
 
   const goToPrevPage = () => {
     setCurrentPage(currentPage - 1);

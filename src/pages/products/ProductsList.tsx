@@ -5,13 +5,7 @@ import ProductsSearchBar from '../../components/prducts/ProductsList/ProductsSea
 import ProductsSortBtn from '../../components/prducts/ProductsList/ProductsSortBtn';
 import * as St from '../../styles/products/ProductsListStyle';
 import { useNavigate } from 'react-router';
-import {
-  fetchRangeProductsPosts,
-  getProductsCount,
-  getProductsPosts
-} from '../../components/prducts/productsQuery';
-import Pagination from './Pagination';
-import PostsNothing from './PostsNothing';
+import { getProductsCount } from '../../components/prducts/productsQuery';
 
 const major = [
   '전체',
@@ -25,27 +19,12 @@ const major = [
   '섬유공예',
   '기타'
 ];
-const PAGE_POST_NUMBER = 25;
 
 const ProductsList = () => {
   const navigate = useNavigate();
 
   const [selectCategory, setSelectCategory] = useState<string[]>(['전체']);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalProductsPosts, setTotalProductsPosts] = useState();
-
-  // const {
-  //   data: productsPosts, isLoading, isError
-  // } = useQuery(['productsPosts', currentPage], () => fetchRangeProductsPosts(currentPage, selectCategory),{
-  //   onSuccess: (data) => {
-  //     if (data.count) {
-  //       setTotalPages(Math.ceil(data.count / PAGE_POST_NUMBER))
-  //       setTotalCount(data.count)
-  //     }
-  //   }
-  // });
   const {
     data: productsCount,
     isLoading,
@@ -69,9 +48,6 @@ const ProductsList = () => {
       </St.LoadingStyle>
     );
   }
-
-  // const posts = productsPosts?.data;
-  // const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   const handleOnClickCategory = (e: MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
