@@ -23,10 +23,11 @@ import {
   updateUserImage,
   updateUserNickname
 } from '../../api/supabase/profile';
-import { userId } from '../../util/getUserId';
-import { unstable_HistoryRouter, useNavigate } from 'react-router-dom';
+
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
+  const userId = localStorage.getItem('userId');
   const [isEditing, setIsEditing] = useState(false);
   const [userNickname, setUserNickname] = useState<string | undefined>();
   const [profileImage, setProfileImage] = useState<string | null>();

@@ -4,9 +4,10 @@ import Footer from './Footer';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
 import { supabase } from '../api/supabase/supabaseClient';
-import { userId } from '../util/getUserId';
+
 import styled from 'styled-components';
 import { IoIosClose } from 'react-icons/io';
+const userId = localStorage.getItem('userId');
 
 const StModalContainer = styled.div`
   width: 300px;

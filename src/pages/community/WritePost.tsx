@@ -53,11 +53,21 @@ const Write: React.FC = () => {
     fetchData();
   }, []);
   const navigate = useNavigate();
+  const handleOnClickBack = () => {
+    const confirm = window.confirm(
+      '작성하신 글이 모두 지워집니다. 그래도 페이지를 떠나시겠습니까?'
+    );
+    if (confirm) {
+      navigate(-1);
+    }
+  };
   return (
     <St.Container>
       <St.ContentContainer>
         <St.Topper>
-          <button onClick={() => navigate('/community')}>{`<`}</button>
+          <St.BackBtnBox>
+            <St.BackIcon onClick={handleOnClickBack} />
+          </St.BackBtnBox>
           <h1>글쓰기</h1>
           <p>* 필수항목</p>
         </St.Topper>

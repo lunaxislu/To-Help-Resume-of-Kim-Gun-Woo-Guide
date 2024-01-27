@@ -5,6 +5,7 @@ import {
   StPostContent,
   StPostContentsWrapper,
   StPostDate,
+  StPostImage,
   StPostTitle,
   StPostWrapper
 } from '../../../styles/mypageStyle/CommunityCardStyle';
@@ -18,7 +19,8 @@ export const MyPageCommunityCard: React.FC<MyPageCommunityCardProps> = ({
   post_id,
   comment,
   created_at,
-  likes
+  likes,
+  main_image
 }) => {
   const handleText = (content: string): string => {
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
@@ -29,7 +31,8 @@ export const MyPageCommunityCard: React.FC<MyPageCommunityCardProps> = ({
     <StPostWrapper key={id} to={`/community/detail/${post_id}`}>
       <StPostTitle>{title}</StPostTitle>
       <StPostContentsWrapper>
-        {/* {!post.images ? '' : <StPostImage src={post.images} />} */}
+        {main_image && <StPostImage src={main_image} alt={title} />}
+
         <StPostContent>{handleText(content)}</StPostContent>
       </StPostContentsWrapper>
 
