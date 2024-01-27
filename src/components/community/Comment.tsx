@@ -57,7 +57,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
   ); // 수정 중인 댓글의 인덱스
   const [anon, setAnon] = useState(false);
   const [liked, setLiked] = useState(false);
-
+  const [isFocused, setIsFocused] = useState(false);
   useEffect(() => {
     // 사용자가 이미 좋아요를 했는지 확인
     const userLiked = posts?.[0]?.likes_user?.includes(userId);
@@ -191,14 +191,15 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
         <p>{`${comments.length}개의 댓글`}</p>
       </St.CountDivTop>
 
-      <St.Form onSubmit={updateComment}>
+      <St.Form onSubmit={updateComment} isFocused={isFocused}>
         <div>
           <St.CommentInput
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder="댓글을 입력하세요"
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
           />
-
           <button type="submit">
             <St.SendIcon />
           </button>

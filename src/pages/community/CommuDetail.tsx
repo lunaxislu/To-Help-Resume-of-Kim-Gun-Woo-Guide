@@ -68,6 +68,9 @@ const CommuDetail: React.FC = () => {
 
     getPostUser();
   }, [isLoading, posts]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const deleteMutation = useMutation(deletePostMutation, {
     onSuccess: () => {
       queryClient.invalidateQueries('posts');

@@ -11,6 +11,7 @@ import {
   getProductsPosts
 } from '../../components/prducts/productsQuery';
 import Pagination from './Pagination';
+import PostsNothing from './PostsNothing';
 
 const major = [
   '전체',

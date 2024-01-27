@@ -103,6 +103,11 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
       {productInfo[i] === data.changable && data.changable === '불가능' && (
         <></>
       )}
+      {productInfo[i] === data.changable && data.changable === '가능' && (
+        <>
+          <StRowValue>{productInfo[i]}</StRowValue>
+        </>
+      )}
     </>
   );
 };
