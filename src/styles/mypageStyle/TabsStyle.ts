@@ -13,7 +13,12 @@ export const StTabsContainer = styled.ul`
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
+    overflow-x: scroll;
+    padding: 1rem;
+    &::-webkit-scrollbar {
+      display: none; /* 스크롤 막대 숨기기 */
+    }
   }
 `;
 

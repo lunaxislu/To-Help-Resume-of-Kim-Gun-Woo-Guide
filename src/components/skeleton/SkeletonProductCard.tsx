@@ -12,8 +12,8 @@ const SkeletonProductCard: React.FC<SkeletonProductCardProps> = ({ cards }) => {
     <>
       {Array(cards)
         .fill(0)
-        .map((item) => (
-          <div key={item.id}>
+        .map((item, i) => (
+          <div key={i}>
             <SkeletonTheme baseColor="#ebebeb" highlightColor="#cccccc">
               <StCardWrapper>
                 <Skeleton width={200} height={200} />

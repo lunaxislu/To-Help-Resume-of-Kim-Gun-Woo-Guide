@@ -32,11 +32,13 @@ export const FooterContainer = styled.div`
 `;
 export const FooterArea = styled.div`
   width: 1116px;
+  max-width: 100%;
   margin: auto;
 `;
 
 export const Logo = styled.div`
   img {
+    max-width: 100%;
     width: 10.1rem;
     height: 2.6rem;
     cursor: pointer;

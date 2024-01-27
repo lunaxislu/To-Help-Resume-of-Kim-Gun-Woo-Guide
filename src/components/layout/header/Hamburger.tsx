@@ -51,61 +51,59 @@ const Hamburger: React.FC<HamburgerMenuProps> = ({
 
   useEffect(() => {}, [user]);
   return (
-    <>
-      <HamburgerModalContainer isOpen={isOpen}>
-        <CloseHamburger>
-          <IoIosClose
-            style={{
-              color: 'var(--opc-100)',
-              fontSize: '3rem',
-              cursor: 'pointer'
-            }}
-            onClick={onClose}
-          />
-        </CloseHamburger>
-        <UserInfo>
-          {avatarUrl && <img src={avatarUrl} alt="Avatar" />}
-          <p></p>
-        </UserInfo>
-        <NavToBoard>
-          <NavToProducts to="/products" onClick={onClose}>
-            <BiWon />
-            <p>중고거래</p>
-          </NavToProducts>
-          <NavToCommunity to="/community" onClick={onClose}>
-            <IoPeopleSharp />
+    <HamburgerModalContainer $isOpen={isOpen}>
+      <CloseHamburger>
+        <IoIosClose
+          style={{
+            color: 'var(--opc-100)',
+            fontSize: '3rem',
+            cursor: 'pointer'
+          }}
+          onClick={onClose}
+        />
+      </CloseHamburger>
+      <UserInfo>
+        {avatarUrl && <img src={avatarUrl} alt="Avatar" />}
+        <p></p>
+      </UserInfo>
+      <NavToBoard>
+        <NavToProducts to="/products" onClick={onClose}>
+          <BiWon />
+          <p>중고거래</p>
+        </NavToProducts>
+        <NavToCommunity to="/community" onClick={onClose}>
+          <IoPeopleSharp />
 
-            <p>커뮤니티</p>
-          </NavToCommunity>
-        </NavToBoard>
-        <UserMenu>
-          <NavToMypage to="/mypage" onClick={onClose}>
-            <IoPersonSharp />
-            <p>마이페이지</p>
-          </NavToMypage>
-          <Notice>
-            <FaBell />
-            <p>알림</p>
-          </Notice>
-          <NavToChatRoom to="/chat" onClick={onClose}>
-            <BsChatDotsFill />
-            <p>채팅</p>
-          </NavToChatRoom>
-          <Logout>
-            <IoLogOutOutline />
-            <p onClick={handleLogOut}>로그아웃</p>
-          </Logout>
-        </UserMenu>
-      </HamburgerModalContainer>
-    </>
+          <p>커뮤니티</p>
+        </NavToCommunity>
+      </NavToBoard>
+      <UserMenu>
+        <NavToMypage to="/mypage" onClick={onClose}>
+          <IoPersonSharp />
+          <p>마이페이지</p>
+        </NavToMypage>
+        <Notice>
+          <FaBell />
+          <p>알림</p>
+        </Notice>
+        <NavToChatRoom to="/chat" onClick={onClose}>
+          <BsChatDotsFill />
+          <p>채팅</p>
+        </NavToChatRoom>
+        <Logout>
+          <IoLogOutOutline />
+          <p onClick={handleLogOut}>로그아웃</p>
+        </Logout>
+      </UserMenu>
+    </HamburgerModalContainer>
   );
 };
 
 export default Hamburger;
 
-const HamburgerModalContainer = styled.div<{ isOpen: boolean }>`
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
-  position: fixed;
+const HamburgerModalContainer = styled.div<{ $isOpen: boolean }>`
+  display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
+  position: absolute;
   width: 50%;
   height: 100%;
   top: 0;

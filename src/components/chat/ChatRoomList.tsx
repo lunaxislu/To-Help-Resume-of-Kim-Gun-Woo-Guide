@@ -128,7 +128,6 @@ const ChatRoomList: React.FC<Props> = ({
     updateToRead(clicked as string);
   }, []);
 
-
   const checkDevice = (agent: string) => {
     const mobileRegex = [
       /Android/i,

@@ -24,6 +24,7 @@ const StChatWrapper = styled.div`
     width: 100%;
     max-width: 768px;
     overflow: hidden;
+    padding: 0 1rem;
   }
 `;
 
