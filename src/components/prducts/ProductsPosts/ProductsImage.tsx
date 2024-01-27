@@ -1,7 +1,7 @@
-import React, { MouseEvent, useEffect, useState } from 'react'
+import React, { MouseEvent, useEffect, useState } from 'react';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import { v4 as uuid } from 'uuid';
-import * as St from '../../../styles/products/ProductsPostsStyle'
+import * as St from '../../../styles/products/ProductsPostsStyle';
 
 interface Props {
   uploadedFileUrl: string[];
@@ -25,14 +25,12 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
       });
     }
   };
-  
-  
+
   // 업로드된 파일이 12개가 초과되면 그 뒤에 들어오는 파일은 없앰
   if (uploadedFileUrl.length > 12 && files.length > 12) {
     uploadedFileUrl.pop() && files.pop();
-    alert('이미지는 최대 12개까지 업로드 가능합니다.')
+    alert('이미지는 최대 12개까지 업로드 가능합니다.');
   }
-  
 
   const handleAddImages = async (file: File) => {
     try {
@@ -55,7 +53,7 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
       );
     }
   };
-  
+
   // 이미지 클릭 시 순서 맨 앞으로
   const handleImageOrder = (e: MouseEvent<HTMLElement>) => {
     const url = e.currentTarget.id;
@@ -63,10 +61,12 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
     // 클릭된 아이템 인덱스 번호
     const clickedItem = uploadedFileUrl.indexOf(url);
     // 클릭 된 아이템을 제외한 배열
-    const updatedArr = uploadedFileUrl.filter(item => item !== uploadedFileUrl[clickedItem])
+    const updatedArr = uploadedFileUrl.filter(
+      (item) => item !== uploadedFileUrl[clickedItem]
+    );
     // 클릭 된 아이템을 맨 앞으로 해서 state를 변경하는 부분
-    setUploadedFileUrl([uploadedFileUrl[clickedItem], ...updatedArr])
-  }
+    setUploadedFileUrl([uploadedFileUrl[clickedItem], ...updatedArr]);
+  };
 
   // X 버튼 클릭 시 이미지 삭제
   const handleDeleteImage = (idx: any) => {
@@ -78,10 +78,10 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
   //   console.log(files);
   // },[files])
 
-
   return (
     <St.UpLoadImageContainer>
-      <St.SemiTitle>사진
+      <St.SemiTitle>
+        사진
         <St.Required>*</St.Required>
         <St.ImgCount>{uploadedFileUrl.length}/12</St.ImgCount>
       </St.SemiTitle>
@@ -89,19 +89,31 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
         <St.ImageOrderWrapper>
           <St.ImageOrder>대표사진</St.ImageOrder>
         </St.ImageOrderWrapper>
-        {uploadedFileUrl.map((img:string, idx:number) => 
+        {uploadedFileUrl.map((img: string, idx: number) => (
           <St.ImageCard id={img} key={idx}>
-            <St.Image id={img} onClick={handleImageOrder} src={img} alt={`${img}-${idx}`} />
-              <St.ImageDeleteBtn onClick={() => handleDeleteImage(idx)}>
-                <St.ImageDeleteIcon />
-              </St.ImageDeleteBtn>
+            <St.Image
+              id={img}
+              onClick={handleImageOrder}
+              src={img}
+              alt={`${img}-${idx}`}
+            />
+            <St.ImageDeleteBtn onClick={() => handleDeleteImage(idx)}>
+              <St.ImageDeleteIcon />
+            </St.ImageDeleteBtn>
           </St.ImageCard>
-        )}
+        ))}
         {uploadedFileUrl.length >= 12 ? (
           <></>
-          ) : (
+        ) : (
           <St.UpLoadBox htmlFor="file">
-            <input type="file" id="file" name="file" onChange={handleFiles} multiple hidden />
+            <input
+              type="file"
+              id="file"
+              name="file"
+              onChange={handleFiles}
+              multiple
+              hidden
+            />
             +
           </St.UpLoadBox>
         )}
