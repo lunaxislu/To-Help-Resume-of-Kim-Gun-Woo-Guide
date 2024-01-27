@@ -206,9 +206,11 @@ const Layout = () => {
 export default Layout;
 
 const Wrapper = styled.div`
+  /* max-width: 144rem; */
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  margin: auto;
 `;
 
 const ContentWrapper = styled.div`

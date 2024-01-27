@@ -1,21 +1,40 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+export const HeaderTopContainer = styled.div`
+  max-width: 144rem;
+  display: flex;
+  justify-content: center;
+`;
+
 export const HeaderContainer = styled.header`
-  width: 144rem;
+  width: 111.6rem;
   display: flex;
   flex-shrink: 0;
-  padding: 3rem 15rem;
+  padding: 3rem 0;
   flex-direction: column;
   margin: 0 auto;
-  background-color: {
-    color: var(--bgColor);
-  }
 
+  @media screen and (max-width: 1200px) {
+    max-width: 110rem;
+  }
+  @media screen and (max-width: 1000px) {
+    max-width: 100rem;
+    width: 100%;
+  }
+  @media screen and (max-width: 900px) {
+    max-width: 90rem;
+    width: 100%;
+  }
   @media screen and (max-width: 768px) {
     align-items: center;
+<<<<<<< HEAD
+    max-width: 76.8rem;
+    width: 100%;
+=======
     width: 76.8rem;
     height: 9rem;
+>>>>>>> 0ae9ccef78bc5fa28bfb7604d970b4e96e33561e
     padding: 3rem 2rem;
   }
   @media screen and (max-width: 530px) {
@@ -79,6 +98,7 @@ export const Sell = styled.button`
   border: 0;
   background: transparent;
   cursor: pointer;
+  font-family: 'Pretendard-Medium';
   gap: 0.6rem;
 
   @media screen and (max-width: 768px) {
@@ -106,6 +126,8 @@ export const Likes = styled.button`
   border: 0;
   background: transparent;
   cursor: pointer;
+  font-family: 'Pretendard-Medium';
+
   gap: 0.6rem;
 
   @media screen and (max-width: 768px) {
@@ -132,6 +154,8 @@ export const Alert = styled.button`
   height: 2.7rem;
   border: 0;
   background: transparent;
+  font-family: 'Pretendard-Medium';
+
   cursor: pointer;
   gap: 0.6rem;
 
@@ -158,6 +182,7 @@ export const Button = styled.button`
   height: 2.7rem;
   border: 0;
   background: transparent;
+  font-family: 'Pretendard-Medium';
   cursor: pointer;
   color: var(--11-gray);
   font-weight: var(--fontWeight-medium);
@@ -217,6 +242,8 @@ export const LogOut = styled.button`
   border: none;
   margin-top: 0.3rem;
   background: transparent;
+  font-family: 'Pretendard-Medium';
+
   color: var(--11-gray);
   font-weight: var(--fontWeight-medium);
   font-size: var(--fontSize-H5);
