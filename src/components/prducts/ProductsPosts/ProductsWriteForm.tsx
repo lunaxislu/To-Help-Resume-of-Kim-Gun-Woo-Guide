@@ -202,7 +202,7 @@ const ProductsWriteForm = () => {
       <ProductsImage uploadedFileUrl={uploadedFileUrl} setUploadedFileUrl={setUploadedFileUrl} />
       <St.WrapperStyle>
         <St.SemiTitle>제목<St.Required>*</St.Required></St.SemiTitle>
-        <St.InputStyle type='text' {...register("title", {
+        <St.InputStyle type='text' maxLength={40} {...register("title", {
           required: "제목은 필수로 입력해야합니다.",
           maxLength: {
             value: 40,
@@ -245,7 +245,8 @@ const ProductsWriteForm = () => {
           <St.InputStyle2 type='number' {...register("price", {
             required: "가격을 입력해주세요.",
             valueAsNumber: true,
-            min: 0
+            min: 0,
+            max: 2147483648
           })} placeholder='가격을 입력해주세요'/>
           <St.ShippingCostSelectWrapper>
             {shipping_cost.map((shipping_cost, idx) => 
@@ -269,7 +270,8 @@ const ProductsWriteForm = () => {
         <St.InputStyle2 type='number' {...register("count", {
           required: "수량을 입력해주세요.",
           valueAsNumber: true,
-          min: 0
+          min: 0,
+          max: 2147483648
         })} placeholder='수량을 입력해주세요'/>
         </St.InputWrapperStyle>
       </St.WrapperStyle>
@@ -364,7 +366,7 @@ const ProductsWriteForm = () => {
                   {...register("changable", {required: "교환 가능 여부를 선택해주세요."})} />{changable}</St.InputCheckBoxLabel>
               )}
             </St.ChangableSelectWrapper>
-            <St.InputStyle2 type='text' {...register("exchange_product", {required: getValues("changable") === "가능" ? "교환을 원하는 물품을 입력해주세요." : false})} placeholder='교환을 원하는 상품을 입력해주세요.' />
+            <St.InputStyle2 type='text' disabled={getValues("changable") === "불가능" ? true : false} {...register("exchange_product", {required: getValues("changable") === "가능" ? "교환을 원하는 물품을 입력해주세요." : false})} placeholder='교환을 원하는 상품을 입력해주세요.' />
           </St.InputWrapperStyle>
       </St.WrapperStyle>
       <St.WrapperStyle>
@@ -378,8 +380,12 @@ const ProductsWriteForm = () => {
         <St.SemiTitle>설명<St.Required>*</St.Required></St.SemiTitle>
           <St.InputWrapperStyle>
             <St.CountWrapper>
-              <St.TextAreaStyle {...register("contents", {
-                required: "내용을 입력해주세요."
+              <St.TextAreaStyle maxLength={2000} {...register("contents", {
+                required: "내용을 입력해주세요.",
+                maxLength: {
+                  value: 2000,
+                  message: "최대 2000자까지 입력할 수 있습니다."
+                }
               })} placeholder='물품에 대한 구체적인 설명을 입력해주세요&#13;&#10;tip)설명이 구체적일수록 거래될 확률이 높아져요!' />
               <St.ContentsCount>{watch("contents").length}/2000</St.ContentsCount>
             </St.CountWrapper>

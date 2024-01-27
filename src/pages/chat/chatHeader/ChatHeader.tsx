@@ -2,10 +2,15 @@ import React, { SetStateAction, useEffect, useState } from 'react';
 import * as St from '../style';
 import { SupabaseAPI } from '../supabaseChat/supabase_chat';
 import { User } from '@supabase/supabase-js';
-import { MessageType, RoomType } from '../../../components/chat/types';
+import {
+  MessageType,
+  Participants,
+  RoomType
+} from '../../../components/chat/types';
 import { BsThreeDots } from 'react-icons/bs';
 import { UtilForChat } from '../chat_utils/functions';
 import { useNavigate } from 'react-router';
+import { supabase } from '../../../api/supabase/supabaseClient';
 
 interface ChatHeaderPropsType {
   showMene: boolean;
@@ -35,6 +40,7 @@ const ChatHeader = ({
   const supaService = new SupabaseAPI();
   const utilFunctions = new UtilForChat();
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [currentRoomsUser, setCurrentRoomsUser] = useState<any>();
 
   const navi = useNavigate();
 
@@ -55,10 +61,28 @@ const ChatHeader = ({
     return mobileRegex.some((mobile) => agent.match(mobile));
   };
 
+  const getRoomInfo = async (room_id: string) => {
+    const { data: room, error } = await supabase
+      .from('chat_room')
+      .select('*')
+      .eq('id', clicked);
+
+    if (room) {
+      const currentRoomTargetUser = room[0].participants.filter(
+        (part: Partial<Participants>) => {
+          return part.user_id !== curUser?.id;
+        }
+      );
+
+      setCurrentRoomsUser(currentRoomTargetUser);
+    }
+  };
+
   useEffect(() => {
     if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
     if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
-  }, []);
+    getRoomInfo(clicked);
+  }, [clicked]);
 
   return (
     <St.StChatBoardHeader>
@@ -87,12 +111,9 @@ const ChatHeader = ({
         <St.StHeaderArrow onClick={() => handleHideBoardPosition()} />
 
         <St.StListUserProfile
-          $url={targetUser && targetUser[0]?.avatar_url}
+          $url={currentRoomsUser && currentRoomsUser[0]?.avatar_url}
         ></St.StListUserProfile>
-        <p>
-          {utilFunctions.getUserName(rooms, clicked) !== undefined &&
-            String(rooms && utilFunctions.getUserName(rooms, clicked))}
-        </p>
+        <p>{currentRoomsUser && currentRoomsUser[0]?.user_name}</p>
       </St.StChatBoardHeaderName>
       <BsThreeDots
         style={{ cursor: 'pointer', fontSize: '1.5rem' }}
