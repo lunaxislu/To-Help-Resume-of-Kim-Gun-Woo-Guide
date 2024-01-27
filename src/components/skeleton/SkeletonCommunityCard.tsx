@@ -1,8 +1,12 @@
 import React from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import styled from 'styled-components';
-import { StPostContentsWrapper } from '../../styles/mypageStyle/CommunityCardStyle';
+import {
+  StPostSkeletonContainer,
+  StPostSkeletonContentWrapper,
+  StPostSkeletonIconAndDate,
+  StPostSkeletonWrapper
+} from '../../styles/skeleton/Skeleton';
 
 interface SkeletonCommunityCardProps {
   cards: number;
@@ -17,7 +21,7 @@ const SkeletonCommunityCard: React.FC<SkeletonCommunityCardProps> = ({
         .fill(0)
         .map((item) => (
           <div key={item.id}>
-            <SkeletonTheme baseColor="#ebebeb" highlightColor="#cccccc">
+            <SkeletonTheme baseColor="#191919" highlightColor="#1d1d1d">
               <StPostSkeletonContainer>
                 <Skeleton width={300} height={25} />
 
@@ -42,29 +46,3 @@ const SkeletonCommunityCard: React.FC<SkeletonCommunityCardProps> = ({
 };
 
 export default SkeletonCommunityCard;
-
-const StPostSkeletonContainer = styled.div`
-  background-color: #e2e2e288;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  gap: 1.5rem;
-  border-radius: 1rem;
-  padding: 3rem;
-`;
-
-const StPostSkeletonWrapper = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
-const StPostSkeletonContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-`;
-
-const StPostSkeletonIconAndDate = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;

@@ -4,7 +4,6 @@ import { debounce } from 'lodash';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import SkeletonProductCard from '../../skeleton/SkeletonProductCard';
 import { Product, ProductCardProps } from '../../../api/supabase/products';
-import { userId } from '../../../util/getUserId';
 import MyPageItemCard from './MyPageItemCard';
 import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
 import {
@@ -12,6 +11,7 @@ import {
   setMyItem,
   setPurchasedItem
 } from '../../../redux/modules/countSlice';
+import Nothing from '../Nothing';
 
 const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
@@ -24,6 +24,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const [favItems, setFavItems] = useState<Product[]>([]);
 
   const dispatch = useAppDispatch();
+  const userId = localStorage.getItem('userId');
 
   const getCurrentUserProducts = async () => {
     let { data: products, error } = await supabase
@@ -141,19 +142,27 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   return (
     <StCardContainer ref={containerRef}>
       {activeTab === 0 &&
-        myItems.map((item) => {
-          return (
-            <MyPageItemCard
-              id={item.id}
-              image_url={item.image_url}
-              user={item.user}
-              quality={item.quality}
-              title={item.title}
-              price={item.price}
-            />
-          );
-        })}
+        myItems.map((item) => (
+          <MyPageItemCard
+            key={item.id}
+            id={item.id}
+            image_url={item.image_url}
+            user={item.user}
+            quality={item.quality}
+            title={item.title}
+            price={item.price}
+          />
+        ))}
 
+      {myItems.length === 0 && activeTab !== 1 && activeTab !== 2 && (
+        <Nothing
+          type={'판매하기'}
+          content={`아직 판매중인 물품이 없어요. \n '판매하기'를 눌러 판매를 시작해보세요!`}
+          icon={'/assets/sell.svg'}
+          to={'/productsposts'}
+          show={true}
+        />
+      )}
       {isLoading && <SkeletonProductCard cards={myItems.length} />}
 
       {activeTab === 1 &&
@@ -169,7 +178,15 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
             />
           );
         })}
-
+      {purchasedItems.length === 0 && activeTab !== 0 && activeTab !== 2 && (
+        <Nothing
+          type={''}
+          content={`아직 구매하신 물품이 없어요. `}
+          icon={''}
+          to={''}
+          show={false}
+        />
+      )}
       {isLoading && <SkeletonProductCard cards={purchasedItems.length} />}
 
       {activeTab === 2 &&
@@ -186,6 +203,15 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
           );
         })}
 
+      {favItems.length === 0 && activeTab !== 0 && activeTab !== 1 && (
+        <Nothing
+          type={''}
+          content={`아직 찜한 물품이 없어요. `}
+          icon={''}
+          to={''}
+          show={false}
+        />
+      )}
       {isLoading && <SkeletonProductCard cards={10} />}
     </StCardContainer>
   );
