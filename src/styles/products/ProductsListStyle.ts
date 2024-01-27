@@ -16,9 +16,9 @@ export const EntireContainer = styled.div`
   }
 `;
 export const ContentsContainer = styled.div`
-  width: 95%;
+  max-width: 111.6rem;
   margin: auto;
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 1180px) {
     max-width: 93%;
   }
 `;
@@ -111,7 +111,7 @@ export const Category = styled.p<CategoryProps>`
 `;
 
 export const PostsWriteBtn = styled.div`
-  width: 9.5rem;
+  width: 12rem;
   height: fit-content;
   line-height: 175%;
   display: flex;
@@ -120,7 +120,7 @@ export const PostsWriteBtn = styled.div`
   align-items: center;
   border-radius: 7rem;
   gap: 0.5rem;
-  background-color: var(--opc-10);
+  background-color: var(--opc-20);
   white-space: nowrap;
   &:hover {
     cursor: pointer;
@@ -184,8 +184,8 @@ export const MobilePostsWriteBtn = styled.div`
 
 export const SellWriteIcon = styled(BiWon)`
   color: var(--opc-100);
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
   @media screen and (max-width: 768px) {
     width: 1.5rem;
     height: 1.5rem;
@@ -266,6 +266,7 @@ export const CardImageWrapper = styled.div`
   aspect-ratio: 1/1;
   margin-bottom: 2rem;
   border-radius: 0.6rem;
+  position: relative;
   @media screen and (max-width: 768px) {
     margin-bottom: 1rem;
   }
@@ -301,7 +302,7 @@ export const CardTitle = styled.h2`
   margin-bottom: 0.4rem;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   white-space: normal;
   line-height: 1.3;
@@ -367,3 +368,21 @@ export const LoadingStyle = styled.div`
     font-size: var(--fontSize-H5);
   }
 `;
+export const IsSellProducts = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  opacity: 90%;
+  background-color: var(--2-gray);
+  border-radius: 0.6rem;
+`
+export const SoldOut = styled.div`
+  background-color: var(--opc-90);
+  width: 50%;
+  max-height: 3rem;
+  border-radius: 0.5rem;
+  margin: auto;
+  text-align: center;
+  line-height: 2;
+`

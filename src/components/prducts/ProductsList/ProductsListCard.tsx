@@ -82,6 +82,11 @@ const ProductListCard = ({ selectCategory }: Props) => {
             onClick={() => navigate(`/products/detail/${posts.id}`)}
           >
             <St.CardImageWrapper>
+              {posts.isSell === true ? (
+                <St.IsSellProducts>
+                  <St.SoldOut>판매완료</St.SoldOut>
+                </St.IsSellProducts>
+              ) : (<div></div>)}
               {posts.image_url !== null && posts.image_url !== undefined ? (
                 <St.CardImage src={posts.image_url[0]} alt="상품 이미지" />
               ) : (
