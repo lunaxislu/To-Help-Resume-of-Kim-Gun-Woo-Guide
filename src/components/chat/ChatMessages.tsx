@@ -75,11 +75,35 @@ const ChatMessages = ({
             </div>
           ) : (
             <div key={msg.id} style={{ cursor: 'pointer' }}>
-              {msg.image_url && <StImageballoon src={msg.image_url} alt="" />}
-              {msg.content === null && null}
-              <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
-                {msg.content}
-              </StChatballoon>
+              {msg.isFirst ? (
+                <div
+                  key={msg.id}
+                  id={msg.chat_room_id}
+                  onClick={(e) => findChatRoom(e)}
+                >
+                  <StImageballoon style={{ cursor: 'pointer' }} key={msg.id}>
+                    <p style={{ textDecoration: 'underline', color: 'blue' }}>
+                      {msg.content === null ? null : msg.content}
+                    </p>
+                  </StImageballoon>
+                </div>
+              ) : (
+                <div key={msg.id}>
+                  {msg.image_url && (
+                    <StImageballoon
+                      onClick={handleShowImage}
+                      src={msg.image_url}
+                      alt=""
+                    />
+                  )}
+                  {msg.content === null && null}
+                  {msg.content !== null && (
+                    <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
+                      {msg.content}
+                    </StChatballoon>
+                  )}
+                </div>
+              )}
             </div>
           );
         })}
