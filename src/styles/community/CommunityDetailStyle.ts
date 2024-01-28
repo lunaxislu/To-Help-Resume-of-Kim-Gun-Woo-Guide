@@ -115,6 +115,7 @@ export const MainTopper = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 1rem;
+  position: relative;
 `;
 export const SubTopper = styled.div`
   display: flex;
@@ -262,7 +263,7 @@ export const EditDropdown = styled.div`
     border: 1px solid var(--opc-100);
     z-index: 1000;
     border-radius: 1rem;
-    top: 13rem;
+    /* top: 13rem;*/
     right: 5%;
   }
 `;

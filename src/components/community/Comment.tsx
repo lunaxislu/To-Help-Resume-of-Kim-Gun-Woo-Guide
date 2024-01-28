@@ -191,14 +191,17 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
         <p>{`${comments.length}개의 댓글`}</p>
       </St.CountDivTop>
 
-      <St.Form onSubmit={updateComment} isFocused={isFocused}>
+      <St.Form
+        onSubmit={updateComment}
+        isFocused={isFocused}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+      >
         <div>
           <St.CommentInput
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             placeholder="댓글을 입력하세요"
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
           />
           <button type="submit">
             <St.SendIcon />

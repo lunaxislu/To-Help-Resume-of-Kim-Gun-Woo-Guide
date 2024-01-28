@@ -122,7 +122,7 @@ export const Form = styled.form<FormProps>`
   @media screen and (max-width: 768px) {
     width: 100%;
     height: 9rem;
-    ${({ isFocused }) =>
+    ${({ isFocused: isFocused }) =>
       isFocused &&
       `position: fixed;
       bottom: 0;
@@ -140,6 +140,10 @@ export const Form = styled.form<FormProps>`
       align-items: center;
       padding-bottom: 0.8rem;
       width: 100%;
+      ${({ isFocused: isFocused }) =>
+        isFocused &&
+        `border-bottom: none;
+    `}
     }
   }
 `;
