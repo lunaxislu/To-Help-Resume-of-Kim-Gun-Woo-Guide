@@ -7,7 +7,7 @@ const SkeletonCommunityDetail: React.FC = () => {
   return (
     <>
       <div>
-        <SkeletonTheme baseColor="#ebebeb" highlightColor="#cccccc">
+        <SkeletonTheme baseColor="#191919" highlightColor="#1d1d1d">
           <StPostSkeletonContainer>
             <StPostSkeletonArea>
               <Skeleton width={300} />
