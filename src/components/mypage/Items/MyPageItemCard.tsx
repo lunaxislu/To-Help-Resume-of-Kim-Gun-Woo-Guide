@@ -23,7 +23,7 @@ const MyPageItemCard: React.FC<MyPageItemCardProps> = ({
       />
       <StProductQuality>{quality}</StProductQuality>
       <p>{user}</p>
-      <p>{title}</p>
+      <p>{title.length >= 12 ? `${title.substring(0, 12)}...` : title}</p>
       <StProductPrice>{price.toLocaleString('ko-KR')}원</StProductPrice>
     </StCardWrapper>
   );

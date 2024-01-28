@@ -555,7 +555,7 @@ const ComunityWrapper = styled.ul`
   column-gap: 2rem; */
   padding: 1.5rem;
   @media screen and (max-width: 600px) {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: 100%;
   }
 `;
 
