@@ -158,7 +158,15 @@ const Home = () => {
                       ) : (
                         ''
                       )}
-                      <p>{handleText(item.content)}</p>
+                      <p
+                        className={
+                          item.main_image
+                            ? 'withcommu-image'
+                            : 'withoutcommu-image'
+                        }
+                      >
+                        {handleText(item.content)}
+                      </p>
                     </div>
                   </div>
                   <div>
@@ -459,6 +467,7 @@ const ToUsedItemDetailPage = styled(Link)`
 
 const ComunityContainer = styled.div`
   max-width: 111.6rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -546,7 +555,7 @@ const ComunityWrapper = styled.ul`
   column-gap: 2rem; */
   padding: 1.5rem;
   @media screen and (max-width: 600px) {
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: 100%;
   }
 `;
 
@@ -575,28 +584,15 @@ const ComunityList = styled.li`
     padding: 1rem;
   }
 
-  .nopicture {
-    width: 6.6rem;
-    height: 6.6rem;
-    object-fit: cover;
-    @media screen and (max-width: 768px) {
-      width: 4rem;
-      height: 4rem;
-    }
-  }
-
   .commupic {
+    width: 100%;
     display: flex;
     gap: 1.2rem;
     margin-block: 2.5rem;
     @media screen and (max-width: 768px) {
     }
   }
-  .commucontent {
-    margin-left: 1.5rem;
-    /* margin-bottom: 3rem; */
-    /* gap: 10px; */
-  }
+
   .community-pic {
     width: 6.6rem;
     height: 6.6rem;
@@ -622,20 +618,47 @@ const ComunityList = styled.li`
       width: 20rem;
     }
   }
-
-  p {
+  .withcommu-image {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     white-space: normal;
     overflow: hidden;
     height: 6.6rem;
-    line-height: 1.3;
+    line-height: 1.2;
     font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-medium);
     color: var(--8-gray);
-    /* max-width: 41rem; */
-
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 39rem;
+    @media screen and (max-width: 768px) {
+      font-size: var(--fontSize-H6);
+      line-height: 1.9;
+      height: 4rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      white-space: normal;
+      overflow: hidden;
+    }
+  }
+  .withoutcommu-image {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    overflow: hidden;
+    height: 6.6rem;
+    line-height: 1.2;
+    font-size: var(--fontSize-H4);
+    font-weight: var(--fontWeight-medium);
+    color: var(--8-gray);
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 48rem;
     @media screen and (max-width: 768px) {
       font-size: var(--fontSize-H6);
       line-height: 1.9;

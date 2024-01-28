@@ -163,10 +163,18 @@ const StQualityInfoBox = styled.div`
   padding: 2rem;
   animation: ${StFadeAni} 0.2s forwards;
   text-align: left;
+  font-size: 1.4rem;
+
+  p {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
 
   span {
     color: var(--opc-100);
     font-weight: 500;
+    margin-left: 0.4rem;
   }
 
   @media screen and (max-width: 768px) {
