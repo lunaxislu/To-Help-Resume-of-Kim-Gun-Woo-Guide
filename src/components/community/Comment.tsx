@@ -217,7 +217,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
           익명
         </St.AnonLabel>
       </St.Form>
-      {/* <St.CountDiv>{`${comments.length}개의 댓글`}</St.CountDiv> */}
+
       {comments?.map((comment, index) => {
         const parseTime = parseDate(comment.time);
         return (
