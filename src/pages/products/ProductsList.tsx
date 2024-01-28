@@ -6,6 +6,7 @@ import ProductsSortBtn from '../../components/prducts/ProductsList/ProductsSortB
 import * as St from '../../styles/products/ProductsListStyle';
 import { useNavigate } from 'react-router';
 import { getProductsCount } from '../../components/prducts/productsQuery';
+import PostsNothing from './PostsNothing';
 
 const major = [
   '전체',
@@ -57,25 +58,18 @@ const ProductsList = () => {
   return (
     <St.EntireContainer>
       <St.ContentsContainer>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            padding: '0'
-          }}
-        >
+        <St.TitleContainer>
           <St.Title>{`${productsCount}개의 물품이 거래되고 있어요`}</St.Title>
           <St.MobilePostsWriteBtn onClick={() => navigate('/productsposts')}>
             <St.SellWriteIcon /> 판매하기
           </St.MobilePostsWriteBtn>
-        </div>
+        </St.TitleContainer>
         <St.BarContainer>
           <St.CategoryContainer>
             <St.CategoryWrapper>
               {major.map((major) => (
-                <li>
+                <li key={major}>
                   <St.Category
-                    key={major}
                     onClick={handleOnClickCategory}
                     $selectCategory={selectCategory}
                   >
