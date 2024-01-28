@@ -584,16 +584,6 @@ const ComunityList = styled.li`
     padding: 1rem;
   }
 
-  .nopicture {
-    width: 6.6rem;
-    height: 6.6rem;
-    object-fit: cover;
-    @media screen and (max-width: 768px) {
-      width: 4rem;
-      height: 4rem;
-    }
-  }
-
   .commupic {
     width: 100%;
     display: flex;
@@ -602,10 +592,7 @@ const ComunityList = styled.li`
     @media screen and (max-width: 768px) {
     }
   }
-  .commucontent {
-    /* margin-bottom: 3rem; */
-    /* gap: 10px; */
-  }
+
   .community-pic {
     width: 6.6rem;
     height: 6.6rem;
