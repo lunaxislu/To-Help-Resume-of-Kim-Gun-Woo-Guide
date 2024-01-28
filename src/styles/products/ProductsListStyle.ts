@@ -24,7 +24,11 @@ export const ContentsContainer = styled.div`
     max-width: 93%;
   }
 `;
-
+export const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+`;
 export const Title = styled.h1`
   font-size: var(--fontSize-H3);
   margin: 4rem 0 2.6rem 0;
@@ -110,7 +114,6 @@ export const Category = styled.p<CategoryProps>`
     padding: 0 1.3rem;
   }
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
     padding: 0 0.8rem;
   }
 `;
@@ -289,7 +292,7 @@ export const CardQuality = styled.li`
   margin-bottom: 0.6rem;
   @media screen and (max-width: 768px) {
     padding: 0 0.5rem;
-    font-size: 0.8rem;
+    font-size: 1rem;
     line-height: 2.1;
     background-color: rgba(219, 255, 0, 0.8);
     color: var(--2-gray);
@@ -297,7 +300,7 @@ export const CardQuality = styled.li`
 `;
 export const CardTitle = styled.h2`
   width: 100%;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.6rem;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -305,7 +308,7 @@ export const CardTitle = styled.h2`
   white-space: normal;
   line-height: 1.3;
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-H5);
   }
 `;
 
@@ -313,7 +316,7 @@ export const CardPrice = styled.h2`
   font-weight: var(--fontWeight-bold);
   color: var(--12-gray);
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-H5);
   }
 `;
 export const PageNumberStyle = styled.div`

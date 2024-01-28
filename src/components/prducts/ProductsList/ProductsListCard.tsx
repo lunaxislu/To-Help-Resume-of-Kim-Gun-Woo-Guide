@@ -5,6 +5,7 @@ import { PAGE_POST_NUMBER, fetchRangeProductsPosts } from '../productsQuery';
 import { useEffect, useState } from 'react';
 import { ProductsPostsType } from '../ProductsType';
 import Pagination from '../../../pages/products/Pagination';
+import PostsNothing from '../../../pages/products/PostsNothing';
 
 interface Props {
   selectCategory: string[];
@@ -75,37 +76,43 @@ const ProductListCard = ({ selectCategory }: Props) => {
 
   return (
     <div>
-      <St.ProductsListContainer>
-        {postsTest?.map((posts: ProductsPostsType) => (
-          <St.ProductsCardContainer
-            key={posts.id}
-            onClick={() => navigate(`/products/detail/${posts.id}`)}
-          >
-            <St.CardImageWrapper>
-              {posts.isSell === true ? (
-                <St.IsSellProducts>
-                  <St.SoldOut>판매완료</St.SoldOut>
-                </St.IsSellProducts>
-              ) : (<div></div>)}
-              {posts.image_url !== null && posts.image_url !== undefined ? (
-                <St.CardImage src={posts.image_url[0]} alt="상품 이미지" />
-              ) : (
-                <div></div>
-              )}
-            </St.CardImageWrapper>
-            {[posts.quality].map((condition) => (
-              <St.CardQuality key={condition}>{condition}</St.CardQuality>
+      {postsTest && postsTest.length > 0 ? (
+        <>
+          <St.ProductsListContainer>
+            {postsTest?.map((posts: ProductsPostsType) => (
+              <St.ProductsCardContainer
+                key={posts.id}
+                onClick={() => navigate(`/products/detail/${posts.id}`)}
+              >
+                <St.CardImageWrapper>
+                  {posts.isSell === true ? (
+                    <St.IsSellProducts>
+                      <St.SoldOut>판매완료</St.SoldOut>
+                    </St.IsSellProducts>
+                  ) : (<div></div>)}
+                  {posts.image_url !== null && posts.image_url !== undefined ? (
+                    <St.CardImage src={posts.image_url[0]} alt="상품 이미지" />
+                  ) : (
+                    <div></div>
+                  )}
+                </St.CardImageWrapper>
+                {[posts.quality].map((condition) => (
+                  <St.CardQuality key={condition}>{condition}</St.CardQuality>
+                ))}
+                <St.CardTitle>{posts.title}</St.CardTitle>
+                <St.CardPrice>{posts.price.toLocaleString('kr-KO')}원</St.CardPrice>
+              </St.ProductsCardContainer>
             ))}
-            <St.CardTitle>{posts.title}</St.CardTitle>
-            <St.CardPrice>{posts.price.toLocaleString('kr-KO')}원</St.CardPrice>
-          </St.ProductsCardContainer>
-        ))}
-      </St.ProductsListContainer>
-      <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+          </St.ProductsListContainer>
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </>
+      ) : (
+        <PostsNothing selectCategory={selectCategory}/>
+      )}
     </div>
   );
 };

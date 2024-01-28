@@ -1,7 +1,7 @@
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../../api/supabase/supabaseClient';
 import * as St from '../../pages/chat/style';
-import { MessageType, Participants, RoomType } from './types';
+import { MessageType, RoomType } from './types';
 import parseDate from '../../util/getDate';
 import styled from 'styled-components';
 import { Product } from '../../api/supabase/products';
@@ -120,19 +120,12 @@ const ChatRoomList: React.FC<Props> = ({
     }
   };
 
-  const targetUser = (room: RoomType) => {
-    const targetInfo = room.participants.filter((part) => {
-      return part.user_id !== curUser?.id;
+  // participants에서 상대방 정보를 가져오는 함수
+  const chatTarget = (room: RoomType) => {
+    const targetInfo = room.participants.filter((info) => {
+      return info.user_id !== curUser?.id;
     });
-
     return targetInfo[0];
-  };
-  const me = (room: RoomType) => {
-    const myInfo = room.participants.filter((part) => {
-      return part.user_id !== curUser?.id;
-    });
-
-    return myInfo[0];
   };
 
   useEffect(() => {
@@ -159,14 +152,6 @@ const ChatRoomList: React.FC<Props> = ({
     if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
     if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
   }, []);
-
-  // participants에서 상대방 정보를 가져오는 함수
-  const chatTarget = (room: RoomType) => {
-    const targetInfo = room.participants.filter((info) => {
-      return info.user_id !== curUser?.id;
-    });
-    return targetInfo[0];
-  };
 
   return (
     <St.StChatListItem>
