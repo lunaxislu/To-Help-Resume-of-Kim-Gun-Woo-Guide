@@ -75,13 +75,16 @@ export const Category = styled.p<CategoryProps>`
   padding: 0 1.5rem;
   text-align: center;
   vertical-align: middle;
-  line-height: 175%;
+  line-height: 1.8;
   border-radius: 5.6rem;
   color: var(--6-gray);
   background-color: var(--opc-10);
   white-space: nowrap;
   &:hover {
     cursor: pointer;
+    background-color: var(--opc-100);
+    font-weight: var(--fontWeight-bold);
+    color: var(--1-gray);
   }
   // 배경색 조건부 렌더링
   ${(props) => {
@@ -110,8 +113,18 @@ export const Category = styled.p<CategoryProps>`
   }
 `;
 
+export const SellWriteIcon = styled(BiWon)`
+  color: var(--opc-100);
+  width: 2rem;
+  height: 2rem;
+  @media screen and (max-width: 768px) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`;
+
 export const PostsWriteBtn = styled.div`
-  width: 12rem;
+  width: 11rem;
   height: fit-content;
   line-height: 175%;
   display: flex;
@@ -124,50 +137,40 @@ export const PostsWriteBtn = styled.div`
   white-space: nowrap;
   &:hover {
     cursor: pointer;
+    background-color: var(--opc-100);
+    font-weight: var(--fontWeight-bold);
+    color: var(--1-gray);
+    ${SellWriteIcon} {
+      color: var(--2-gray);
+    }
   }
   @media screen and (max-width: 930px) {
     display: none;
   }
-  /* @media screen and (max-width: 768px) {
-    width: 8.1rem;
-    height: 2rem;
-    border-radius: 5.6rem;
-    gap: 0.5rem;
-    font-size: var(--fontSize-H6);
-  } */
 `;
 export const MobilePostsWriteBtn = styled.div`
   display: none;
-  /* margin: 4rem 0 2.6rem 0;
-  width: 9.5rem;
-  height: fit-content;
-  line-height: 175%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  border-radius: 7rem;
-  gap: 0.5rem;
-  background-color: var(--opc-10);
-  white-space: nowrap;
-  &:hover {
-    cursor: pointer;
-  } */
   @media screen and (max-width: 930px) {
     margin: 4rem 0 2.6rem 0;
     width: 9.5rem;
     height: fit-content;
-    line-height: 175%;
+    line-height: 1.8;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     border-radius: 7rem;
     gap: 0.5rem;
-    //background-color: var(--opc-10);
+    background-color: var(--opc-20);
     white-space: nowrap;
     &:hover {
       cursor: pointer;
+      background-color: var(--opc-100);
+      font-weight: var(--fontWeight-bold);
+      color: var(--1-gray);
+      ${SellWriteIcon} {
+      color: var(--2-gray);
+    }
     }
   }
   @media screen and (max-width: 768px) {
@@ -176,19 +179,10 @@ export const MobilePostsWriteBtn = styled.div`
     border-radius: 5.6rem;
     gap: 0.5rem;
     font-size: var(--fontSize-H5);
+    background-color: transparent;
     margin: 1.8rem 0 1.4rem 0;
   }
   @media screen and (max-width: 768px) {
-  }
-`;
-
-export const SellWriteIcon = styled(BiWon)`
-  color: var(--opc-100);
-  width: 2rem;
-  height: 2rem;
-  @media screen and (max-width: 768px) {
-    width: 1.5rem;
-    height: 1.5rem;
   }
 `;
 
@@ -256,8 +250,10 @@ export const ProductsCardContainer = styled.div`
   align-items: flex-start;
   list-style: none;
   border-radius: 0.6rem;
+  transition: all 0.2s linear;
   &:hover {
     cursor: pointer;
+    transform: scale(1.02);
   }
 `;
 
@@ -380,9 +376,14 @@ export const IsSellProducts = styled.div`
 export const SoldOut = styled.div`
   background-color: var(--opc-90);
   width: 50%;
-  max-height: 3rem;
+  max-height: 5rem;
   border-radius: 0.5rem;
   margin: auto;
   text-align: center;
-  line-height: 2;
+  line-height: 2.5;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+    width: 40%;
+    line-height: 2.5;
+  }
 `
