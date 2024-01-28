@@ -81,11 +81,11 @@ const ChatMessages = ({
                   id={msg.chat_room_id}
                   onClick={(e) => findChatRoom(e)}
                 >
-                  <StImageballoon style={{ cursor: 'pointer' }} key={msg.id}>
+                  <StChatballoon style={{ cursor: 'pointer' }} key={msg.id}>
                     <p style={{ textDecoration: 'underline', color: 'blue' }}>
                       {msg.content === null ? null : msg.content}
                     </p>
-                  </StImageballoon>
+                  </StChatballoon>
                 </div>
               ) : (
                 <div key={msg.id}>
@@ -121,6 +121,7 @@ const StMyImageballoon = styled.img`
   border-radius: 12px;
   cursor: pointer;
   margin-block: 2rem;
+  font-weight: 500;
 
   @media screen and (max-width: 768px) {
     width: 130px;
@@ -156,7 +157,7 @@ const StChatballoon = styled.div`
   margin-block: 1rem;
   padding: 1.2rem 2.7rem;
   border-radius: 40px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.2;
   font-size: 1.4rem;
 
