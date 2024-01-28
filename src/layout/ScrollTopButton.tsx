@@ -1,7 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const ScrollTopButton = () => {
+  const [smallscreen, setSmallScreen] = useState(window.innerWidth <= 768);
+  const handleResize = () => {
+    setSmallScreen(window.innerWidth <= 768);
+  };
+  // 화면 크기가 변할 때마다 handleResize 함수 호출
+  window.addEventListener('resize', handleResize);
+  // 컴포넌트가 언마운트되면 이벤트 리스너 제거
+  React.useEffect(() => {
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -10,10 +22,17 @@ const ScrollTopButton = () => {
   };
   return (
     <TopButton onClick={scrollToTop}>
-      <img
-        src={process.env.PUBLIC_URL + '/assets/clickToUpButton.svg'}
-        alt="상단으로 이동"
-      />
+      {smallscreen ? (
+        <img
+          src={process.env.PUBLIC_URL + '/assets/clickToUpButton.svg'}
+          alt="상단으로 이동"
+        />
+      ) : (
+        <img
+          src={process.env.PUBLIC_URL + '/assets/upupbutton.svg'}
+          alt="상단으로 이동"
+        />
+      )}
     </TopButton>
   );
 };

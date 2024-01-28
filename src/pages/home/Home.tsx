@@ -22,7 +22,7 @@ const Home = () => {
     process.env.PUBLIC_URL + '/assets/carousel2.png',
     process.env.PUBLIC_URL + '/assets/carousel3.png'
   ];
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 (중감자동무)//
   const getUserId = async () => {
     const { data, error } = await supabase.auth.getUser();
@@ -66,7 +66,18 @@ const Home = () => {
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
     return textOnly;
   };
-  const isMobile = window.innerWidth <= 768;
+  // const handleResize = () => {
+  //   setIsMobile(window.innerWidth <= 768);
+  // };
+  // // 화면 크기가 변할 때마다 handleResize 함수 호출
+  // window.addEventListener('resize', handleResize);
+  // // 컴포넌트가 언마운트되면 이벤트 리스너 제거
+  // useEffect(() => {
+  //   return () => {
+  //     window.removeEventListener('resize', handleResize);
+  //   };
+  // }, []);
+
   return (
     <HomeContainer>
       <CarouselWrapper>
