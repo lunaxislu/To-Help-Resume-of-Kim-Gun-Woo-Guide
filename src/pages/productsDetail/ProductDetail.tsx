@@ -596,11 +596,11 @@ const ProductDetail = () => {
       .eq('about', id);
 
     if (chat_rooms) {
-      const existsRoom = chat_rooms[0]?.participants?.filter(
-        (userData: Partial<Participants>) => {
-          return userData?.user_id === curUser?.uid;
-        }
-      );
+      const existsRoom = chat_rooms.filter((room) => {
+        return room.participants.some((part: Participants) => {
+          return part.user_id === curUser?.uid;
+        });
+      });
       existsRoom?.length > 0 && setIsExist(true);
     }
     // if (chat_rooms && chat_rooms.length > 0 && curUser) {

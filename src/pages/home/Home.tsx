@@ -467,6 +467,7 @@ const ToUsedItemDetailPage = styled(Link)`
 
 const ComunityContainer = styled.div`
   max-width: 111.6rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -594,6 +595,7 @@ const ComunityList = styled.li`
   }
 
   .commupic {
+    width: 100%;
     display: flex;
     gap: 1.2rem;
     margin-block: 2.5rem;
