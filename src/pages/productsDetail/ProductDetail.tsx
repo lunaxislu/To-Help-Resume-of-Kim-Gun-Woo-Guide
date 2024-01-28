@@ -803,7 +803,15 @@ const ProductDetail = () => {
                         handleSelectedUser(e);
                       }}
                     >
-                      <div>{room.participants[0].user_name}</div>
+                      <div>
+                        {
+                          room.participants.filter(
+                            (part: Partial<Participants>) => {
+                              return part.user_id !== curUser?.id;
+                            }
+                          )[0].user_name
+                        }
+                      </div>
                     </St.StChatListItem>
                     <St.StConfirmSellBtn onClick={handleSellComplete}>
                       <span>{selectedUser}</span> 님에게 판매 완료하기
