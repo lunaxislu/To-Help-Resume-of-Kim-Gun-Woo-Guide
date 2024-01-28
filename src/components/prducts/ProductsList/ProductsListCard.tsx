@@ -97,7 +97,7 @@ const ProductListCard = ({ selectCategory }: Props) => {
                   )}
                 </St.CardImageWrapper>
                 {[posts.quality].map((condition) => (
-                  <St.CardQuality key={condition}>{condition}</St.CardQuality>
+                  <St.CardQuality $quality={condition} key={condition}>{condition}</St.CardQuality>
                 ))}
                 <St.CardTitle>{posts.title}</St.CardTitle>
                 <St.CardPrice>{posts.price.toLocaleString('kr-KO')}원</St.CardPrice>
