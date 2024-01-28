@@ -108,12 +108,13 @@ const Home = () => {
                       <rect width="208" height="208" rx="15" fill="#F8F8F8" />
                     </svg>
                   )}
-                  {[item.quality].map((condition) => (
-                    <ProductsCardQuality $quality={condition} key={condition}>
-                      {condition}
-                    </ProductsCardQuality>
-                  ))}
-                  <h1>{item.quality}</h1>
+
+                  <ProductsCardQuality
+                    $quality={item.quality}
+                    key={item.quality}
+                  >
+                    {item.quality}
+                  </ProductsCardQuality>
                   <h3>{item.title}</h3>
                   <p>{item.price.toLocaleString('kr-KO')}원</p>
                 </ProductsList>
@@ -431,7 +432,7 @@ const ProductsList = styled.li`
 interface QualityProps {
   $quality: string;
 }
-const ProductsCardQuality = styled.li<QualityProps>`
+const ProductsCardQuality = styled.h1<QualityProps>`
   width: 9rem;
   padding: 0 0.8rem;
   text-align: center;
@@ -439,6 +440,9 @@ const ProductsCardQuality = styled.li<QualityProps>`
   border-radius: 0.3rem;
   margin-top: 1rem;
   background-color: #fcfcfc;
+  interface QualityProps {
+    $quality: string;
+  }
   color: var(--2-gray);
   margin-bottom: 0.6rem;
   font-size: var(--fontSize-H6);
@@ -459,7 +463,7 @@ const ProductsCardQuality = styled.li<QualityProps>`
   }}
   @media screen and (max-width: 768px) {
     margin-top: 1rem;
-    width: 6.5rem;
+    width: 8rem;
     height: 2rem;
     font-size: 1rem;
     font-weight: 500;
