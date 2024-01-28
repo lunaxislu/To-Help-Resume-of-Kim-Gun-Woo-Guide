@@ -281,7 +281,10 @@ export const CardImage = styled.img`
   border-radius: 0.6rem;
 `;
 
-export const CardQuality = styled.li`
+interface QualityProps {
+  $quality: string;
+}
+export const CardQuality = styled.li<QualityProps>`
   width: fit-content;
   padding: 0 0.7rem;
   text-align: center;
@@ -290,6 +293,15 @@ export const CardQuality = styled.li`
   background-color: var(--opc-20);
   color: var(--10-gray);
   margin-bottom: 0.6rem;
+  // 배경색 조건부 렌더링
+  ${(props) => {
+    if (props.children === '새상품(미사용)') {
+      return css`
+        background-color: var(--12-gray);
+        color: #FCFCFC;
+      `;
+    }
+  }}
   @media screen and (max-width: 768px) {
     padding: 0 0.5rem;
     font-size: 1rem;
