@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
 import { fetchData } from '../../components/main/DataFetch';
@@ -68,17 +68,6 @@ const Home = () => {
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
     return textOnly;
   };
-  // const handleResize = () => {
-  //   setIsMobile(window.innerWidth <= 768);
-  // };
-  // // 화면 크기가 변할 때마다 handleResize 함수 호출
-  // window.addEventListener('resize', handleResize);
-  // // 컴포넌트가 언마운트되면 이벤트 리스너 제거
-  // useEffect(() => {
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, []);
 
   return (
     <HomeContainer>
@@ -119,7 +108,11 @@ const Home = () => {
                       <rect width="208" height="208" rx="15" fill="#F8F8F8" />
                     </svg>
                   )}
-
+                  {[item.quality].map((condition) => (
+                    <ProductsCardQuality $quality={condition} key={condition}>
+                      {condition}
+                    </ProductsCardQuality>
+                  ))}
                   <h1>{item.quality}</h1>
                   <h3>{item.title}</h3>
                   <p>{item.price.toLocaleString('kr-KO')}원</p>
@@ -357,6 +350,7 @@ const ProductsListContainer = styled.ul`
     grid-template-columns: repeat(1, 1fr);
   }
 `;
+
 const ProductsList = styled.li`
   /* display: inline-block; */
   width: 100%;
@@ -392,29 +386,6 @@ const ProductsList = styled.li`
     border-radius: 0.6rem;
   }
 
-  h1 {
-    width: 9rem;
-    padding: 0.8rem;
-    color: var(--9-gray);
-    text-align: center;
-    background-color: var(--opc-20);
-    border-radius: 0.3rem;
-    margin-top: 1rem;
-    font-size: var(--fontSize-H6);
-    font-weight: var(--fontWeight-bold);
-    @media screen and (max-width: 768px) {
-      margin-top: 1rem;
-      width: 6.5rem;
-      height: 2rem;
-      font-size: 1rem;
-      font-weight: 500;
-      line-height: 191.2%;
-      text-align: center;
-      background-color: var(--opc-100);
-      color: var(--2-gray);
-      padding: 0;
-    }
-  }
   h3 {
     font-size: var(--fontSize-body);
     color: var(--11-gray);
@@ -457,6 +428,46 @@ const ProductsList = styled.li`
     }
   }
 `;
+interface QualityProps {
+  $quality: string;
+}
+const ProductsCardQuality = styled.li<QualityProps>`
+  width: 9rem;
+  padding: 0 0.8rem;
+  text-align: center;
+  line-height: 1.7;
+  border-radius: 0.3rem;
+  margin-top: 1rem;
+  background-color: #fcfcfc;
+  color: var(--2-gray);
+  margin-bottom: 0.6rem;
+  font-size: var(--fontSize-H6);
+  // 배경색 조건부 렌더링
+  ${(props) => {
+    if (props.children === '새상품(미사용)') {
+      return css`
+        background-color: var(--opc-100);
+        color: var(--2-gray);
+      `;
+    }
+    if (props.children === '고장/파손 상품') {
+      return css`
+        background-color: var(--4-gray);
+        color: var(--11-gray);
+      `;
+    }
+  }}
+  @media screen and (max-width: 768px) {
+    margin-top: 1rem;
+    width: 6.5rem;
+    height: 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 191.2%;
+    text-align: center;
+  }
+`;
+
 const ToUsedItemDetailPage = styled(Link)`
   text-decoration: none;
   cursor: pointer;
