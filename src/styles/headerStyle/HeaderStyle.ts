@@ -108,7 +108,7 @@ export const ButtonContainer = styled.div`
 export const Sell = styled.button`
   align-items: center;
   display: flex;
-  width: 7.3rem;
+  width: 8rem;
   height: 2.7rem;
   border: 0;
   background: transparent;
@@ -126,17 +126,17 @@ export const Sell = styled.button`
     font-size: var(--fontSize-H5);
     line-height: 2.6768rem;
   }
-  .sellbtn {
+  /* svg {
     color: var(--opc-100);
     width: 1.4rem;
     height: 1.4rem;
-  }
+  } */
 `;
 
-export const Likes = styled.button`
+export const Chat = styled.button`
   align-items: center;
   display: flex;
-  width: 3.8rem;
+  width: 6rem;
   height: 2.7rem;
   border: 0;
   background: transparent;
@@ -155,11 +155,12 @@ export const Likes = styled.button`
     font-size: var(--fontSize-H5);
     line-height: 2.6768rem;
   }
-  .mylikes {
+  /* svg {
+    transform: scaleX(-1);
     color: var(--opc-100);
     width: 1.4rem;
     height: 1.4rem;
-  }
+  } */
 `;
 
 export const Alert = styled.button`
@@ -177,11 +178,11 @@ export const Alert = styled.button`
   @media screen and (max-width: 768px) {
     display: none;
   }
-  .myAlarm {
+  /* svg {  
     color: var(--opc-100);
     width: 1.4rem;
     height: 1.4rem;
-  }
+  } */
   p {
     color: var(--11-gray);
     font-weight: var(--fontWeight-medium);

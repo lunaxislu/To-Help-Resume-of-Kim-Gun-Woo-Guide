@@ -224,10 +224,10 @@ const SearchResults: React.FC = () => {
                         <h3>{item.title}</h3>
                       </div>
                       <div className="commupic">
-                        {item.image_Url ? (
+                        {item.main_image ? (
                           <img
                             className="community-pic"
-                            src={item.image_Url}
+                            src={item.main_image}
                             alt="Community Post"
                           />
                         ) : (
@@ -707,7 +707,7 @@ const CommunityPostsList = styled.ul`
   background-color: transparent;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
+  gap: 1.5rem;
   @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
     margin: 0 auto;

@@ -68,7 +68,7 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
           />
         ))}
       </Slider> */}
-      <MainImage src="/assets/carouselmain.png" alt="메인화면" />
+      <MainImage src="/assets/mainbanner.png" alt="메인화면" />
       {/* <CarouselButtons>
         <ArrowButton onClick={previous}>
           <ColoredIcon>

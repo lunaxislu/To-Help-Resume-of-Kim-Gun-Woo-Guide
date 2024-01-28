@@ -113,7 +113,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
         )}
         <SearchInputBar
           type="text"
-          placeholder="검색어를 입력하세요."
+          placeholder={
+            isMobile
+              ? '검색어 입력 후 Enter키를 누르세요.'
+              : '검색어를 입력하세요.'
+          }
           value={searchQuery}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
