@@ -1,9 +1,11 @@
 import styled from 'styled-components';
+import { StFadeAni } from "../../pages/productsDetail/style";
 
 export const StLoginContainer = styled.div`
   width: 400px;
   margin: 2rem auto;
   padding: 2rem 0;
+  animation: ${StFadeAni} 0.3s ease;
   @media screen and (max-width: 768px) {
     width: 40rem;
   }

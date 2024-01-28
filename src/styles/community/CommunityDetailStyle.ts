@@ -4,6 +4,8 @@ import { GoChevronLeft } from 'react-icons/go';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiBallPenLine } from 'react-icons/ri';
 import styled from 'styled-components';
+import { StFadeAni } from "../../pages/productsDetail/style";
+
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,6 +33,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   color: var(--12-gray);
+  animation: ${StFadeAni} 0.3s ease;
   /* margin-bottom: 5rem; */
   & strong {
     font-weight: bold;

@@ -1,6 +1,8 @@
 import { BiEdit } from 'react-icons/bi';
 import { IoIosArrowDown } from 'react-icons/io';
 import styled, { css } from 'styled-components';
+import { StFadeAni } from "../../pages/productsDetail/style";
+
 export const Container = styled.div`
   /* margin-top: 30px; */
   display: flex;
@@ -8,6 +10,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   gap: 0.1rem;
+  animation: ${StFadeAni} 0.3s ease;
 `;
 export const Post_container = styled.div`
   max-width: 111.6rem;
