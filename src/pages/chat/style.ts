@@ -260,6 +260,8 @@ const StListUserProfile = styled.div<ChatProfileType>`
   border-radius: 50px;
   background: ${(props) => (props.$url ? css`url(${props.$url})` : '#d9d9d9')};
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
   @media screen and (max-width: 768px) {
     width: 24px;

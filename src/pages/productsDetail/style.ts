@@ -316,8 +316,10 @@ const FaHeartIcon = styled(FaHeart)`
 // 상품 설명 섹션
 const StProductIntroSection = styled.section`
   width: 100%;
+  max-width: 120rem;
   line-height: 3.1rem;
   color: var(--8-gray);
+  margin: auto;
 
   @media screen and (max-width: 768px) {
     width: 100%;
