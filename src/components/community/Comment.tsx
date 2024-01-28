@@ -24,14 +24,14 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
             .from('user')
             .select('*')
             .eq('id', userId);
-          console.log(user);
+          // console.log(user);
           if (error) {
             console.log(error);
           }
 
           if (user != null) {
             setProfile(user);
-            console.log(user);
+            // console.log(user);
           }
         } catch (error: any) {
           console.log(error.message);
@@ -193,7 +193,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
 
       <St.Form
         onSubmit={updateComment}
-        isFocused={isFocused}
+        $isFocused={isFocused}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
       >
