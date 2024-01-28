@@ -856,7 +856,13 @@ const ProductDetail = () => {
                       ></St.StProfileImages>
                     )}
                   </St.StUserImage>
-                  <St.StUserNickname>{data.post_user_name}</St.StUserNickname>
+                  <St.StUserNickname>
+                    {product[0].post_user_uid === curUser?.id ? (
+                      <p>{curUser?.username}</p>
+                    ) : (
+                      <p>{target?.username}</p>
+                    )}
+                  </St.StUserNickname>
                 </div>
               </St.StUserTitlebox>
 
