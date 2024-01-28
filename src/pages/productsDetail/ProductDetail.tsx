@@ -864,6 +864,9 @@ const ProductDetail = () => {
                 {product[0].post_user_uid === curUser?.uid && (
                   <>
                     <div
+                      onClick={() => {
+                        alert('개발 중인 기능입니다!');
+                      }}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
