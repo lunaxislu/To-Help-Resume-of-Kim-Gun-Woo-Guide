@@ -593,7 +593,6 @@ const ComunityList = styled.li`
     }
   }
   .commucontent {
-    margin-left: 1.5rem;
     /* margin-bottom: 3rem; */
     /* gap: 10px; */
   }
