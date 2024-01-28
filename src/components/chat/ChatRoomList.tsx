@@ -155,121 +155,127 @@ const ChatRoomList: React.FC<Props> = ({
 
   return (
     <St.StChatListItem>
-      {rooms?.map((room, i) => {
-        // 판매 완료 상태인지 아닌지 췤
-        if (checkProductsStatus(room.about) === true)
+      {rooms
+        ?.sort((a, b) => {
           return (
-            <St.StListRoom
-              onClick={(e) => {
-                updateToRead(room.id);
-                handleCurClicked(e);
-              }}
-              $current={clicked}
-              id={room.id}
-              key={room.id}
-            >
-              {/* onClick={handleBoardPosition} 완료 상품 관련 채팅을 띄워줘야할지,,, 고민즁... */}
-              <StStatusOveray onClick={handleBoardPosition}>
-                <StOverayText>판매 완료 상품입니다</StOverayText>
-              </StStatusOveray>
-              <St.StListUpper>
-                <St.StUserInfoBox>
-                  <St.StListUserProfile
-                    $url={
-                      chatTarget(room).avatar_url === null
-                        ? ''
-                        : chatTarget(room).avatar_url
-                    }
-                  ></St.StListUserProfile>
-                  <div>
-                    <p>{`${chatTarget(room).user_name}`}</p>
-                    <p
-                      style={{
-                        fontSize: '1.2rem',
-                        fontWeight: '400',
-                        marginTop: '.5rem',
-                        color: 'var(--opc-100)'
-                      }}
-                    >
-                      {room.room_name.length >= 20
-                        ? `${room.room_name.substring(0, 20)}...`
-                        : room.room_name}
-                    </p>
-                  </div>
-                </St.StUserInfoBox>
-                <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
-              </St.StListUpper>
-
-              <St.StListLower>
-                <p>
-                  {findMatchMessage(room.id)?.content
-                    ? findMatchMessage(room.id)?.content
-                    : ''}
-                </p>
-                <span>
-                  {findMatchMessage(room.id)
-                    ? parseDate(findMatchMessage(room.id)?.created_at)
-                    : '신규 생성 채팅방'}
-                </span>
-              </St.StListLower>
-            </St.StListRoom>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
           );
-        else {
-          return (
-            <St.StListRoom
-              onClick={(e) => {
-                handleCurClicked(e);
-                handleBoardPosition();
-                updateToRead(room.id);
-              }}
-              $current={clicked}
-              id={room.id}
-              key={room.id}
-            >
-              <St.StListUpper>
-                <St.StUserInfoBox>
-                  <St.StListUserProfile
-                    $url={
-                      chatTarget(room).avatar_url === null
-                        ? ''
-                        : chatTarget(room).avatar_url
-                    }
-                  ></St.StListUserProfile>
-                  <div>
-                    <p>{`${chatTarget(room).user_name}`}</p>
-                    <p
-                      style={{
-                        fontSize: '1.2rem',
-                        fontWeight: '400',
-                        marginTop: '.5rem',
-                        color: 'var(--opc-100)'
-                      }}
-                    >
-                      {room.room_name.length >= 20
-                        ? `${room.room_name.substring(0, 20)}...`
-                        : room.room_name}
-                    </p>
-                  </div>
-                </St.StUserInfoBox>
-                <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
-              </St.StListUpper>
+        })
+        .map((room, i) => {
+          // 판매 완료 상태인지 아닌지 췤
+          if (checkProductsStatus(room.about) === true)
+            return (
+              <St.StListRoom
+                onClick={(e) => {
+                  updateToRead(room.id);
+                  handleCurClicked(e);
+                }}
+                $current={clicked}
+                id={room.id}
+                key={room.id}
+              >
+                {/* onClick={handleBoardPosition} 완료 상품 관련 채팅을 띄워줘야할지,,, 고민즁... */}
+                <StStatusOveray onClick={handleBoardPosition}>
+                  <StOverayText>판매 완료 상품입니다</StOverayText>
+                </StStatusOveray>
+                <St.StListUpper>
+                  <St.StUserInfoBox>
+                    <St.StListUserProfile
+                      $url={
+                        chatTarget(room).avatar_url === null
+                          ? ''
+                          : chatTarget(room).avatar_url
+                      }
+                    ></St.StListUserProfile>
+                    <div>
+                      <p>{`${chatTarget(room).user_name}`}</p>
+                      <p
+                        style={{
+                          fontSize: '1.2rem',
+                          fontWeight: '400',
+                          marginTop: '.5rem',
+                          color: 'var(--opc-100)'
+                        }}
+                      >
+                        {room.room_name.length >= 20
+                          ? `${room.room_name.substring(0, 20)}...`
+                          : room.room_name}
+                      </p>
+                    </div>
+                  </St.StUserInfoBox>
+                  <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
+                </St.StListUpper>
 
-              <St.StListLower>
-                <p>
-                  {findMatchMessage(room.id)?.content
-                    ? findMatchMessage(room.id)?.content
-                    : ''}
-                </p>
-                <span>
-                  {findMatchMessage(room.id)
-                    ? parseDate(findMatchMessage(room.id)?.created_at)
-                    : '신규 생성 채팅방'}
-                </span>
-              </St.StListLower>
-            </St.StListRoom>
-          );
-        }
-      })}
+                <St.StListLower>
+                  <p>
+                    {findMatchMessage(room.id)?.content
+                      ? findMatchMessage(room.id)?.content
+                      : ''}
+                  </p>
+                  <span>
+                    {findMatchMessage(room.id)
+                      ? parseDate(findMatchMessage(room.id)?.created_at)
+                      : '신규 생성 채팅방'}
+                  </span>
+                </St.StListLower>
+              </St.StListRoom>
+            );
+          else {
+            return (
+              <St.StListRoom
+                onClick={(e) => {
+                  handleCurClicked(e);
+                  handleBoardPosition();
+                  updateToRead(room.id);
+                }}
+                $current={clicked}
+                id={room.id}
+                key={room.id}
+              >
+                <St.StListUpper>
+                  <St.StUserInfoBox>
+                    <St.StListUserProfile
+                      $url={
+                        chatTarget(room).avatar_url === null
+                          ? ''
+                          : chatTarget(room).avatar_url
+                      }
+                    ></St.StListUserProfile>
+                    <div>
+                      <p>{`${chatTarget(room).user_name}`}</p>
+                      <p
+                        style={{
+                          fontSize: '1.2rem',
+                          fontWeight: '400',
+                          marginTop: '.5rem',
+                          color: 'var(--opc-100)'
+                        }}
+                      >
+                        {room.room_name.length >= 20
+                          ? `${room.room_name.substring(0, 20)}...`
+                          : room.room_name}
+                      </p>
+                    </div>
+                  </St.StUserInfoBox>
+                  <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
+                </St.StListUpper>
+
+                <St.StListLower>
+                  <p>
+                    {findMatchMessage(room.id)?.content
+                      ? findMatchMessage(room.id)?.content
+                      : ''}
+                  </p>
+                  <span>
+                    {findMatchMessage(room.id)
+                      ? parseDate(findMatchMessage(room.id)?.created_at)
+                      : '신규 생성 채팅방'}
+                  </span>
+                </St.StListLower>
+              </St.StListRoom>
+            );
+          }
+        })}
     </St.StChatListItem>
   );
 };
