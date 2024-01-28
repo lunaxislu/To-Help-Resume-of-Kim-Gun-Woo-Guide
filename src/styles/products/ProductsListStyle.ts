@@ -18,16 +18,19 @@ export const EntireContainer = styled.div`
   }
 `;
 export const ContentsContainer = styled.div`
-  max-width: 111.6rem;
+  //max-width: 111.6rem;
+  width: 77.5%;
   margin: auto;
-  @media screen and (max-width: 1180px) {
-    max-width: 93%;
+  @media screen and (max-width: 970px) {
+    width: 90%;
+  }
+  @media screen and (max-width: 768px) {
+    width: 93%;
   }
 `;
 export const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0;
 `;
 export const Title = styled.h1`
   font-size: var(--fontSize-H3);
@@ -42,7 +45,7 @@ export const BarContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
 `;
 
 export const CategoryContainer = styled.div`
@@ -57,7 +60,7 @@ export const CategoryContainer = styled.div`
 `;
 
 export const CategoryWrapper = styled.div`
-  width: 100%;
+  //width: 100%;
   display: flex;
   flex-direction: row;
   list-style: none;
@@ -69,6 +72,9 @@ export const CategoryWrapper = styled.div`
     &::-webkit-scrollbar {
       display: none; /* Chrome , Safari , Opera */
     }
+    // 비-웹킷 브라우저용 스크롤바 숨김
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 `;
 
@@ -109,7 +115,7 @@ export const Category = styled.p<CategoryProps>`
       `;
     }
   }}
-  @media screen and (max-width: 820px) {
+  @media screen and (max-width: 860px) {
     font-size: var(--fontSize-H5);
     padding: 0 1.3rem;
   }
@@ -149,13 +155,13 @@ export const PostsWriteBtn = styled.div`
       color: var(--2-gray);
     }
   }
-  @media screen and (max-width: 930px) {
+  @media screen and (max-width: 1130px) {
     display: none;
   }
 `;
 export const MobilePostsWriteBtn = styled.div`
   display: none;
-  @media screen and (max-width: 930px) {
+  @media screen and (max-width: 1130px) {
     margin: 4rem 0 2.6rem 0;
     width: 9.5rem;
     height: fit-content;
@@ -186,8 +192,6 @@ export const MobilePostsWriteBtn = styled.div`
     font-size: var(--fontSize-H5);
     background-color: transparent;
     margin: 1.8rem 0 1.4rem 0;
-  }
-  @media screen and (max-width: 768px) {
   }
 `;
 
@@ -281,15 +285,35 @@ export const CardImage = styled.img`
   border-radius: 0.6rem;
 `;
 
-export const CardQuality = styled.li`
+interface QualityProps {
+  $quality: string;
+}
+export const CardQuality = styled.li<QualityProps>`
   width: fit-content;
   padding: 0 0.7rem;
   text-align: center;
-  line-height: 2;
+  line-height: 1.7;
   border-radius: 0.4rem;
-  background-color: var(--opc-20);
-  color: var(--10-gray);
+  background-color: #FCFCFC;
+  color: var(--2-gray);
   margin-bottom: 0.6rem;
+  font-size: var(--fontSize-H6);
+  // 배경색 조건부 렌더링
+  ${(props) => {
+    if (props.children === '새상품(미사용)') {
+      return css`
+        background-color: var(--opc-100);
+        color: var(--2-gray);
+      `;
+    }
+    if (props.children === '고장/파손 상품') {
+      return css`
+        background-color: var(--4-gray);
+        color: var(--11-gray);
+      `;
+    }
+  }}
+  
   @media screen and (max-width: 768px) {
     padding: 0 0.5rem;
     font-size: 1rem;
