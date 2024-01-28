@@ -14,10 +14,10 @@ export const EntireContainer = styled.div`
   }
 `;
 export const ContentsContainer = styled.div`
-  width: 90%;
+  max-width: 111.6rem;
   margin: auto;
-  @media screen and (max-width: 768px) {
-    max-width: 90%;
+  @media screen and (max-width: 1180px) {
+    max-width: 93%;
   }
 `;
 export const BackBtnBox = styled.div`
@@ -583,7 +583,7 @@ export const ChangableSelectWrapper = styled.div`
   }
 `;
 export const TextAreaStyle = styled.textarea`
-  width: 91%;
+  width: 94%;
   height: 19.6rem;
   resize: none;
   background-color: var(--3-gray);
@@ -602,6 +602,12 @@ export const TextAreaStyle = styled.textarea`
   }
   &::placeholder {
     color: var(--5-gray);
+  }
+  @media screen and (max-width: 1130px) {
+    width: 92%;
+  }
+  @media screen and (max-width: 890px) {
+    width: 90%;
   }
   @media screen and (max-width: 768px) {
     width: 100%;

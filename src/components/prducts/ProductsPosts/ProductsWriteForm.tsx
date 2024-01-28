@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import AddressBtn from './AddressBtn';
 import { ProductsInputType, AddressValueType, ProductsInputFinalType } from '../ProductsType';
