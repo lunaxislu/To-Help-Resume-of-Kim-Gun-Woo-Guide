@@ -160,7 +160,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
             />
           );
         })}
-      {/* {favCommunityPosts.length === 0 && activeTab !== 3 && (
+      {favCommunityPosts.length === 0 && activeTab !== 3 && (
         <Nothing
           type={''}
           content={`추천하신 글이 없습니다.`}
@@ -168,9 +168,9 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
           to={''}
           show={false}
         />
-      )} */}
-      {/* {isLoading && <SkeletonCommunityCard cards={10} />} */}
-      <SkeletonCommunityCard cards={10} />
+      )}
+      {isLoading && <SkeletonCommunityCard cards={10} />}
+      {/* <SkeletonCommunityCard cards={10} /> */}
     </StPostContainer>
   );
 };

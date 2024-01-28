@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { RiBallPenLine } from 'react-icons/ri';
 
 export const StProfileContainer = styled.div`
   width: 100%;
@@ -114,6 +115,7 @@ export const StProfileContentWrapper = styled.div`
 
 export const StProfileButtonWrapper = styled.div`
   display: flex;
+  align-items: center;
   gap: 2.2rem;
 
   @media screen and (max-width: 1024px) {
@@ -186,4 +188,9 @@ export const StProfileContent = styled.div`
   @media screen and (max-width: 768px) {
     display: none;
   }
+`;
+
+export const Pen = styled(RiBallPenLine)`
+  color: #dbff00;
+  text-align: center;
 `;
