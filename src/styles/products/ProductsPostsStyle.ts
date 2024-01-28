@@ -2,12 +2,14 @@ import { CgCloseO } from "react-icons/cg";
 import { GoChevronLeft } from "react-icons/go";
 import { GoInfo } from 'react-icons/go';
 import styled from "styled-components";
+import { StFadeAni } from "../../pages/productsDetail/style";
 
 // ProductsPosts
 export const EntireContainer = styled.div`
   max-width: 144rem;
   display: flex;
   margin: auto;
+  animation: ${StFadeAni} 0.3s ease;
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;
     min-width: 3.5rem;

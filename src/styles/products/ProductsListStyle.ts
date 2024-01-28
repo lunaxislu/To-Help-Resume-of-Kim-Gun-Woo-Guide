@@ -3,12 +3,14 @@ import { GoChevronLeft } from 'react-icons/go';
 import { GoChevronRight } from 'react-icons/go';
 import { BiWon } from 'react-icons/bi';
 import styled, { css } from 'styled-components';
+import { StFadeAni } from "../../pages/productsDetail/style";
 
 // ProductsList(page)
 export const EntireContainer = styled.div`
   max-width: 144rem;
   display: flex;
   margin: auto;
+  animation: ${StFadeAni} 0.3s ease;
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;
     min-width: 30rem;
