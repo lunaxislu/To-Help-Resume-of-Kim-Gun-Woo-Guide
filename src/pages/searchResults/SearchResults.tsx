@@ -193,7 +193,7 @@ const SearchResults: React.FC = () => {
                     </div>
                     <h1>{item.quality}</h1>
                     <h3>{item.title}</h3>
-                    <p>{item.price}원</p>
+                    <p>{item.price.toLocaleString('kr-KO')}원</p>
                   </ProductList>
                 </ToProductsPage>
               ))}
@@ -231,14 +231,7 @@ const SearchResults: React.FC = () => {
                             alt="Community Post"
                           />
                         ) : (
-                          <img
-                            className="nopicture"
-                            src={
-                              process.env.PUBLIC_URL +
-                              '/assets/commudefault.png'
-                            }
-                            alt="Default User"
-                          />
+                          ''
                         )}
                         <p>{handleText(item.content)}</p>{' '}
                       </div>
@@ -589,8 +582,19 @@ const ProductList = styled.li`
     font-size: var(--fontSize-body);
     color: var(--11-gray);
     margin-top: 1rem;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    overflow: hidden;
+    height: 2.5rem;
+    white-space: wrap;
+    text-overflow: ellipsis;
+    line-height: 1.5;
     @media screen and (max-width: 768px) {
       width: 14rem;
+      height: 2rem;
       margin-top: 0.6rem;
       color: var(--11-gray, #f8f8f8);
       font-weight: var(--fontWeight-medium);
@@ -797,18 +801,22 @@ const PostList = styled.li`
   }
 
   p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    white-space: normal;
     overflow: hidden;
     font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-medium);
     color: var(--8-gray);
-    max-width: 41rem;
     height: 6.6rem;
-    line-height: 19rem;
+    line-height: 1.3;
 
     @media screen and (max-width: 768px) {
       font-size: var(--fontSize-H6);
-      line-height: 1.92rem;
-      height: 6rem;
+      -webkit-line-clamp: 2;
+      line-height: 1.92;
+      height: 4rem;
     }
   }
 
