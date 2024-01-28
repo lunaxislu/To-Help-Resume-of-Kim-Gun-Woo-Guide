@@ -33,7 +33,9 @@ const CommuList: React.FC<CommuListProps> = ({
   useEffect(() => {
     setCurrentPage(1); // 카테고리가 바뀔 때마다 첫 페이지로 리셋
   }, [selectCategory]);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   if (isLoading) {
     // return <SkeletonCommunityCard cards={2} />;
     return <></>;
