@@ -1,7 +1,7 @@
 import { BiEdit } from 'react-icons/bi';
 import { IoIosArrowDown } from 'react-icons/io';
 import styled, { css } from 'styled-components';
-import { StFadeAni } from "../../pages/productsDetail/style";
+import { StFadeAni } from '../../pages/productsDetail/style';
 
 export const Container = styled.div`
   /* margin-top: 30px; */
@@ -63,6 +63,10 @@ export const WriteBtn = styled.button`
     background-color: transparent;
     width: 6rem;
     white-space: nowrap;
+    /* :hover {
+  background-color: var(--opc-100);
+
+    } */
   }
 `;
 export const WriteIcon = styled(BiEdit)`
