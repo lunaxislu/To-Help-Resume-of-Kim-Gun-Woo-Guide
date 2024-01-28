@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+  CommentIcon,
+  LikesIcon,
   StIconAndDateWrapper,
   StIconContainer,
   StPostContent,
@@ -42,9 +44,9 @@ export const MyPageCommunityCard: React.FC<MyPageCommunityCardProps> = ({
 
       <StIconAndDateWrapper>
         <StIconContainer>
-          <img src="/assets/thumbsup.svg" />
+          <LikesIcon />
           <span>{likes}</span>
-          <img src="/assets/comments.svg" />
+          <CommentIcon />
           <span>{comment?.length}</span>
         </StIconContainer>
         <StPostDate>{parseDate(created_at)}</StPostDate>

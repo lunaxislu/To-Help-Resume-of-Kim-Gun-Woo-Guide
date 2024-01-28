@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
+  Pen,
   StMobileCancelButton,
   StMobileEditButton,
   StMobileNav,
@@ -201,7 +202,7 @@ const Profile = () => {
                   </StProfileButtonWrapper>
                 ) : (
                   <StProfileEditButtonWrapper>
-                    <img src="/assets/pen.svg" alt="프로필 수정 아이콘" />
+                    <Pen />
                     <button onClick={clickEditHandler}>수정하기</button>
                   </StProfileEditButtonWrapper>
                 )}

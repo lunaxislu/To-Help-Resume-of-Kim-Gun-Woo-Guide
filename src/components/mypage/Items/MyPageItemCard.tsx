@@ -21,7 +21,7 @@ const MyPageItemCard: React.FC<MyPageItemCardProps> = ({
         src={image_url !== null && image_url !== undefined ? image_url[0] : ''}
         alt=""
       />
-      <StProductQuality>{quality}</StProductQuality>
+      <StProductQuality qualityColor={quality}>{quality}</StProductQuality>
       <p>{user}</p>
       <p>{title.length >= 12 ? `${title.substring(0, 12)}...` : title}</p>
       <StProductPrice>{price.toLocaleString('ko-KR')}원</StProductPrice>

@@ -214,6 +214,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
         />
       )}
       {isLoading && <SkeletonProductCard cards={10} />}
+      {/* <SkeletonProductCard cards={10} /> */}
     </StCardContainer>
   );
 };
