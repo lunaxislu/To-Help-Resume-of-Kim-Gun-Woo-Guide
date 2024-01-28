@@ -1,6 +1,7 @@
 import { GoChevronLeft } from 'react-icons/go';
 import ReactQuill from 'react-quill';
 import styled from 'styled-components';
+import { StFadeAni } from '../../pages/chat/style';
 export const LayoutContentArea = styled.div`
   display: flex;
   @media screen and (max-width: 768px) {
@@ -229,7 +230,7 @@ export const LayoutQuillEditor = styled(ReactQuill)`
   }
   @media screen and (max-width: 768px) {
     .ql-container {
-      height: 250rem;
+      height: 25rem;
     }
     & img {
       max-width: 80%;
@@ -269,6 +270,7 @@ export const Container = styled.div`
   justify-content: center;
   margin-bottom: 5rem;
   color: #f3f3f3;
+  animation: ${StFadeAni} 0.3s ease;
 `;
 export const ContentContainer = styled.div`
   display: flex;
@@ -282,7 +284,7 @@ export const Topper = styled.div`
   display: flex;
   margin-top: 50px;
   align-items: center;
-  padding-bottom: 20px;
+  padding-bottom: 0.8rem;
   border-bottom: 1px solid var(--4-gray);
   /* gap: 1rem; */
 
@@ -294,6 +296,8 @@ export const Topper = styled.div`
     font-size: var(--fontSize-H1);
   }
   @media screen and (max-width: 768px) {
+    margin-top: 0;
+
     & h1 {
       font-size: var(--fontSize-H5);
       margin-right: 1rem;
