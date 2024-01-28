@@ -770,7 +770,7 @@ const PostList = styled.li`
     }
   }
   .commucontent {
-    margin-left: 1.5rem;
+    /* margin-left: 1.5rem; */
     /* margin-bottom: 3rem; */
     /* gap: 10px; */
   }
@@ -810,7 +810,7 @@ const PostList = styled.li`
     font-weight: var(--fontWeight-medium);
     color: var(--8-gray);
     height: 6.6rem;
-    line-height: 1.3;
+    line-height: 1.2;
 
     @media screen and (max-width: 768px) {
       font-size: var(--fontSize-H6);

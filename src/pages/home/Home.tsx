@@ -158,7 +158,15 @@ const Home = () => {
                       ) : (
                         ''
                       )}
-                      <p>{handleText(item.content)}</p>
+                      <p
+                        className={
+                          item.main_image
+                            ? 'withcommu-image'
+                            : 'withoutcommu-image'
+                        }
+                      >
+                        {handleText(item.content)}
+                      </p>
                     </div>
                   </div>
                   <div>
@@ -595,7 +603,6 @@ const ComunityList = styled.li`
     }
   }
   .commucontent {
-    margin-left: 1.5rem;
     /* margin-bottom: 3rem; */
     /* gap: 10px; */
   }
@@ -624,20 +631,47 @@ const ComunityList = styled.li`
       width: 20rem;
     }
   }
-
-  p {
+  .withcommu-image {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     white-space: normal;
     overflow: hidden;
     height: 6.6rem;
-    line-height: 1.3;
+    line-height: 1.2;
     font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-medium);
     color: var(--8-gray);
-    /* max-width: 41rem; */
-
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 39rem;
+    @media screen and (max-width: 768px) {
+      font-size: var(--fontSize-H6);
+      line-height: 1.9;
+      height: 4rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      white-space: normal;
+      overflow: hidden;
+    }
+  }
+  .withoutcommu-image {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    overflow: hidden;
+    height: 6.6rem;
+    line-height: 1.2;
+    font-size: var(--fontSize-H4);
+    font-weight: var(--fontWeight-medium);
+    color: var(--8-gray);
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 48rem;
     @media screen and (max-width: 768px) {
       font-size: var(--fontSize-H6);
       line-height: 1.9;
