@@ -37,6 +37,7 @@ const ProductDetail = () => {
   const navi = useNavigate();
   const [curUser, setCurUser] = useState<CustomUser | null>(null);
   const [target, setTarget] = useState<CustomUser | null>(null);
+
   const [product, setProduct] = useState<Product[] | null>(null);
   const [isExist, setIsExist] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
@@ -48,157 +49,200 @@ const ProductDetail = () => {
   const [likesCount, setLikesCount] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  const getUserData = async () => {
-    const { data: user, error } = await supabase.auth.getUser();
+  // 1. 버튼 클릭 시 상대방과의 채팅방을 만든다.
 
-    // DB에 유저 정보 없음 에러
-    if (error) console.log('cannot get User Info');
-
-    // DB에 유저 정보가 있다면 DB에 업로드
-    if (user.user) {
-      const { data: currentLogined, error } = await supabase
-        .from('user')
-        .select('*')
-        .eq('id', user.user.id);
-
-      // 현재 로그인 유저의 데이터가 있다면
-      if (currentLogined && currentLogined.length > 0) {
-        setCurUser(currentLogined[0]);
-      }
-      // 로그이 유저 없음 에러
-      if (error) console.log('logined user not exists');
-
-      await findRoom();
-    }
-  };
-
-  const getProduct = async (id: string) => {
-    let { data: products, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('id', id);
-    if (error) {
-      console.log(error);
-    } else {
-      setProduct(products);
-    }
-  };
+  // 2. 채팅에는 제품에 대한 Id, 참여자 정보가 들어있고, 고유한 ID를 가졌다.
+  // 중복을 어떻게 막는가: participants를 고유한 값으로 줘서 중복생성을 막는다,
+  // 참여자 정보는 같아도 participants 안의 about에 제품 정보가 들어있기 때문에,
+  // 한 제품에는 같은 유저들로 구성된 채팅방이 생성될 수 없을 것
+  // 3. 한 쪽이 채팅방을 생성하면 게시물 작성자의 정보를 가져와 그 유저의 chatRoom에도 채팅방 ID를 추가한다.
+  //    participants의 about이 같고 현재 로그인 유저가 속해 있는 chatRoom에
+  // 4. 생성한 사람의 charRoom에도 현재 채팅방 id를 추가한다 (participants의 about이 같고 현재 로그인 유저가 있는 곳에)
+  // 5. 해당 채팅방에 sender ID를 현재 유저의 아이디로 하여 보낸다.
 
   const makeChatRoom = async (e: MouseEvent<HTMLDivElement>) => {
-    const targetId = e.currentTarget.id;
+    // curUser, targetUser 준비
+    const currentUserId = localStorage.getItem('userId');
+    const targetUserID = e.currentTarget.id;
 
     // user 테이블에서 채팅 상대 정보 가져오기
-    const { data: targetUser, error: noUser } = await supabase
+    const { data: targetUser, error: noTargetUser } = await supabase
       .from('user')
       .select('*')
-      .eq('uid', targetId);
-    console.log('targetUser', targetUser);
+      .eq('uid', targetUserID);
 
-    if (targetUser && targetUser.length > 0) {
+    const { data: currentUser, error: noCurrentUser } = await supabase
+      .from('user')
+      .select('*')
+      .eq('uid', currentUserId);
+
+    // 에러 처리
+    if (noTargetUser) console.log('TargetUser is not exists', noTargetUser);
+    if (noCurrentUser) console.log('CurrentUser is not exists', noCurrentUser);
+
+    // 에러가 없다면 실행
+    if (
+      targetUser &&
+      targetUser.length > 0 &&
+      currentUser &&
+      currentUser.length > 0
+    ) {
       setTarget(targetUser[0]);
+      setCurUser(currentUser[0]);
+      if (targetUser && currentUser) {
+        await insertUserIntoChatRoom(currentUser[0], targetUser[0]);
+      } else {
+        console.log('TargetUser or currentUser is null');
+      }
     }
-
-    if (noUser) console.log('user is not exists', noUser);
   };
 
   // 생성된 채팅방 row에 참여자 정보, 채팅방 이름 삽입
   const insertUserIntoChatRoom = async (
-    curUser: CustomUser,
-    target: CustomUser
+    currentUser: CustomUser | null,
+    targetUser: CustomUser | null
   ) => {
-    if (product) {
+    // product를 가져오자 url 주소에 있는 것이 제품 ID니까 그것과 같은 것으로
+    const { data: productInfo, error: getProductError } = await supabase
+      .from('products')
+      .select('*')
+      .eq('id', id);
+
+    // 에러 처리
+    if (getProductError)
+      console.log('제품정보 fetch 실패', getProductError.message);
+
+    if (productInfo) {
+      setProduct(productInfo);
       const roomForm = [
         {
-          id: uuid(),
-          room_name: `${product![0].title}`,
-          about: `${id}`,
+          id: uuid(), // 고유 채팅방 id
+          room_name: `${productInfo[0].title}`, // 채팅방 이름
+          about: `${id}`, // 채팅방이 어떤 제품과 관련이 있는지 제품 id를 넣음
+          // 참여자 정보와 제품 정보를 넣어 참여자와 제품이 모두 같은 방의 중복 생성을 방지
           participants: [
             {
               about: `${id}`,
-              isSeller: true,
-              user_id: target.uid,
-              user_name: target.username,
-              avatar_url: target.avatar_url
+              isSeller: true, // 구매자와 판매자를 나누는 기준
+              user_id: targetUser?.uid, // 상대방은 항상 판매자
+              user_name: targetUser?.username,
+              avatar_url: targetUser?.avatar_url
             },
             {
               about: `${id}`,
               isSeller: false,
-              user_id: curUser.uid,
-              user_name: curUser.username,
-              avatar_url: curUser.avatar_url
+              user_id: currentUser?.uid,
+              user_name: currentUser?.username,
+              avatar_url: currentUser?.avatar_url
             }
           ]
         }
       ];
 
-      const { data: chatRoom, error } = await supabase
+      // 방을 생성하고 정보를 삽입한다.
+      const { data: chatRoom, error: roomCreateError } = await supabase
         .from('chat_room')
-        .insert(roomForm);
+        .insert(roomForm)
+        .select();
 
-      if (error) {
-        console.log('생성 실패', error);
+      // 에러 처리
+      if (roomCreateError) {
+        console.log('생성 실패', roomCreateError);
         return false;
       }
 
-      await sendFirstMessage();
-    }
-  };
+      ////////////////// 방 생성 후 유저들에게 소속된 방을 추가 //////////////
 
-  // 유저가 속한 채팅방 찾기
-  const findRoom = async () => {
-    const { data: foundRoom, error } = await supabase
-      .from('chat_room')
-      .select('*');
-
-    if (error) {
-      console.error('Error fetching chat rooms:', error);
-      return;
-    }
-
-    if (foundRoom && curUser && target) {
-      const filtered = foundRoom.filter((room: any) => {
-        // curUser.id와 일치하는 participant를 포함한 방만 필터링
-        return room.participants.some(
-          (participant: any) => participant.user_id === target.uid
-        );
-      });
-
-      return filtered;
-    }
-  };
-
-  // 각 유저에게 채팅방을 추가하자
-  const findUser = async (User: CustomUser) => {
-    const { data: userInfo, error } = await supabase
-      .from('user')
-      .select('*')
-      .eq('uid', User?.uid);
-
-    if (userInfo) {
-      await insertRoomintoUser(userInfo as any);
-    }
-  };
-
-  // findUser 함수와 이어지는 함수
-  // 유저의 chat_rooms 필드값에 방을 업뎃해주자
-  const insertRoomintoUser = async (userInfo: CustomUser[]) => {
-    const room = (await findRoom()) as RoomType[];
-
-    // DB 초기값이 null 이라서 값이 있어도 배열 메서드가 안 통한 것.. 컬럼 확인 잘하자
-    if (room && userInfo) {
-      if (userInfo[0].chat_rooms === null) {
-        userInfo[0].chat_rooms = [];
+      // 방이 생겼다면 유저들의 chat_room 필드에 생성 된 채팅방을 넣어주자
+      if (chatRoom && currentUser && targetUser) {
+        await handleAddRoomIntoUsers(currentUser, chatRoom);
+        await handleAddRoomIntoUsers(targetUser, chatRoom);
+        await sendInitMessage(product, chatRoom, currentUser);
       }
-      const room_id = room[0]?.id;
-      const updatedData = [...userInfo[0].chat_rooms, room_id];
+    }
+  };
+
+  // 첫 게시 메세지 보내기
+  const sendInitMessage = async (
+    product: Product[] | null,
+    chatRoom: RoomType[],
+    currentUser: CustomUser | null
+  ) => {
+    // 현재 게시물에 대한 채팅방이면서, 내가 속한 채팅방
+
+    if (product && chatRoom) {
+      const InitMessage = [
+        {
+          id: uuid(),
+          sender_id: currentUser?.uid,
+          content: `제목: ${product[0].title}`,
+          chat_room_id: chatRoom[0]?.id,
+          isFirst: true
+        },
+        {
+          id: uuid(),
+          sender_id: currentUser?.uid,
+          content: `${product[0].price.toLocaleString('kr-KO')}원`,
+          chat_room_id: chatRoom[0]?.id
+        },
+        {
+          id: uuid(),
+          sender_id: currentUser?.uid,
+          content: '상품에 관심 있어요!',
+          chat_room_id: chatRoom[0]?.id
+        }
+      ];
+
+      // 메세지를 전송
       const { data, error } = await supabase
+        .from('chat_messages')
+        .insert(InitMessage);
+
+      // 메세지 전송 실패
+      if (error) console.log('Send Messages Failed', error);
+      // 성공
+      else navi('/chat');
+    }
+  };
+
+  // 유저들의 chat_room 필드값에 방 아이디 추가
+  const handleAddRoomIntoUsers = async (
+    user: CustomUser | null,
+    chatRoom: RoomType[]
+  ) => {
+    // 각 유저의 chat_rooms 필드값 가져옴
+    const { data: userRoom, error: noUserRoom } = await supabase
+      .from('user')
+      .select('chat_rooms')
+      .eq('id', user?.uid);
+
+    // 에러 처리
+    if (noUserRoom) {
+      console.log('사용자의 채팅방 정보 fetch 실패', noUserRoom.message);
+    }
+
+    // 현재 사용자의 정보 채팅방 정보가 있다면
+    if (userRoom) {
+      // 방이 null 이라면 빈 배열로 초기화 후 진행
+      if (userRoom[0].chat_rooms === null) {
+        userRoom[0].chat_rooms = [];
+      }
+      // 현재 방 아이디를 기존 필드값에 추가
+      const newRoom_id = chatRoom[0]?.id;
+      const updatedData = [...userRoom[0].chat_rooms, newRoom_id];
+
+      const { error: FaildUpdataCurrentUserRoom } = await supabase
         .from('user')
         .update({ chat_rooms: updatedData })
-        .eq('uid', userInfo[0].uid)
+        .eq('uid', user?.uid)
         .select();
 
-      if (error) {
-        console.error('Error adding chat room id to user:', error.message);
+      // 방 추가 업데이트 에러처리
+      if (FaildUpdataCurrentUserRoom) {
+        console.error(
+          'Error adding chat room id to user:',
+          FaildUpdataCurrentUserRoom.message
+        );
         return false;
       }
 
@@ -206,87 +250,7 @@ const ProductDetail = () => {
     }
   };
 
-  // 게시물 관련 데이터를 첫 메세지로 보낸당
-  const sendFirstMessage = async () => {
-    const foundRoom = await findRoom();
-
-    if (product && curUser) {
-      if (foundRoom) {
-        const InitMessage = [
-          {
-            id: uuid(),
-            sender_id: curUser?.uid,
-            content: `제목: ${product[0].title}`,
-            chat_room_id: foundRoom[0]?.id,
-            isFirst: true
-          },
-          {
-            id: uuid(),
-            sender_id: curUser?.uid,
-            content: `${product[0].price}원`,
-            chat_room_id: foundRoom[0]?.id
-          },
-          {
-            id: uuid(),
-            sender_id: curUser?.uid,
-            content: '상품에 관심 있어요!',
-            chat_room_id: foundRoom[0]?.id
-          }
-        ];
-        const { data, error } = await supabase
-          .from('chat_messages')
-          .insert(InitMessage);
-
-        if (error) console.log('Send Messages Failed', error);
-
-        navi('/chat');
-      }
-    } else console.log('Failed, no data');
-  };
-
-  const isExistsRoom = async () => {
-    const { data: chat_rooms, error } = await supabase
-      .from('chat_room')
-      .select('*')
-      .eq('about', id);
-
-    if (chat_rooms && chat_rooms.length > 0 && curUser) {
-      const connectedRoom = chat_rooms.filter((room: RoomType) => {
-        return room.participants[1].user_id === curUser?.uid;
-      });
-      if (connectedRoom && connectedRoom.length > 0) {
-        setIsExist(true);
-      }
-    }
-  };
-
-  const isLikedProduct = async () => {
-    const { data: likeProduct, error } = await supabase
-      .from('user')
-      .select('likes')
-      .eq('uid', curUser?.uid);
-
-    if (
-      likeProduct &&
-      likeProduct[0].likes?.length > 0 &&
-      likeProduct[0].likes.includes(id)
-    ) {
-      setIsLiked(true);
-    } else {
-      setIsLiked(false);
-    }
-  };
-
-  const handleCheckIsSoldOut = async () => {
-    const { data: checkRes, error: checkErr } = await supabase
-      .from('products')
-      .select('isSell')
-      .eq('id', id);
-
-    if (checkRes && checkRes[0].isSell === true) setIsSoldOut(true);
-    if (checkErr) console.log('sold out check err');
-  };
-
+  // 좋아요
   const handleLike = async () => {
     // 좋아요 수
     const { data: likesField, error: likes } = await supabase
@@ -305,7 +269,8 @@ const ProductDetail = () => {
       .select('likes')
       .eq('uid', curUser?.uid);
 
-    // 유저 관련 처리
+    ////////////////////////////// 유저 관련 처리 ////////////////////////////////
+
     // 유저에게 좋아요한 게시물 추가
     const like_userList =
       Array.isArray(likeList) && likeList.length > 0
@@ -321,9 +286,8 @@ const ProductDetail = () => {
         .eq('id', curUser?.id);
     }
 
-    //==============================
-    // 이거슨 product 테이블 관련 처리
-    //==============================
+    ////////////////////////// product 테이블 관련 처리 ///////////////////////////
+
     if (
       likesField &&
       likesField.length > 0 &&
@@ -405,6 +369,7 @@ const ProductDetail = () => {
     isLikedProduct();
   };
 
+  // 찜 취소 기능
   const handleCancleLike = async () => {
     // 좋아요 수
     const { data: likesField, error: likes } = await supabase
@@ -423,7 +388,7 @@ const ProductDetail = () => {
       .select('likes')
       .eq('uid', curUser?.uid);
 
-    // 유저 관련 처리
+    ////////////////////////////// 유저 관련 처리 ////////////////////////////////
     // 유저에게 좋아요한 게시물 추가
     const like_userList =
       Array.isArray(likeList) && likeList.length > 0
@@ -441,9 +406,8 @@ const ProductDetail = () => {
         .eq('id', curUser?.id);
     }
 
-    //==============================
-    // 이거슨 product 테이블 관련 처리
-    //==============================
+    ////////////////////////// product 테이블 관련 처리 ///////////////////////////
+
     if (
       likesField &&
       likesField.length > 0 &&
@@ -522,34 +486,41 @@ const ProductDetail = () => {
     isLikedProduct();
   };
 
+  // 판매 완료 때 사용 할 제품 관련 사용자 리스트 가져오기
   const handleLoadChatRooms = async () => {
-    const { data: roomList, error } = await supabase
+    const { data: roomList, error: roomListFetchError } = await supabase
       .from('chat_room')
       .select('*')
       .eq('about', id);
     if (roomList) {
       setCreatedChatList(roomList);
     }
-    if (error) {
+    if (roomListFetchError) {
       console.log('no exists created Room');
     }
   };
 
+  // 누구한테 팔지 선택할 때 (클릭한 사용자의 uid를 받아) state에 저장
   const handleSetBuyer = (e: MouseEvent<HTMLDivElement>) => {
     const buyerChatroomId = e.currentTarget.id;
     setBuyerChatId(buyerChatroomId);
   };
 
+  // 판매 완료
   const handleSellComplete = async () => {
     if (
       window.confirm(`${selectedUser}님 에게 물품 판매를 완료하시겠습니까?`) ===
       true
     ) {
-      const { data: buyUser, error } = await supabase
+      const { data: buyUser, error: buyUserFetchError } = await supabase
         .from('user')
         .select('*')
         .eq('uid', buyerChatId);
-      console.log(buyUser);
+
+      // 에러처리
+      if (buyUserFetchError) {
+        console.log('buyUser Fetch Failed', buyUserFetchError);
+      }
 
       if (buyUser) {
         const currentBuyProducts = buyUser[0].buyProduct || [];
@@ -559,10 +530,12 @@ const ProductDetail = () => {
           .update({ buyProduct: newList })
           .eq('uid', buyerChatId);
 
+        // 업데이트 실패 에러 처리
         if (sellError) {
           console.log('list update fail at user table');
         }
 
+        // 제품 게시물 상태  업데이트
         const { data: sellRes, error: sellErr } = await supabase
           .from('products')
           .update({ isSell: true })
@@ -576,15 +549,18 @@ const ProductDetail = () => {
     }
   };
 
+  // 채팅 리스트 보여주기
   const handleShowChatList = () => {
     setShowChatList(true);
   };
 
+  // 클릭 된 유저 이름 받아오기
   const handleSelectedUser = (e: MouseEvent<HTMLDivElement>) => {
     const selected = e.currentTarget.innerText;
     setSelectedUser(selected);
   };
 
+  // 찜 개수 카운트 해주는 함수
   const handleGetLikeCount = async () => {
     const { data: likes, error } = await supabase
       .from('products')
@@ -596,6 +572,7 @@ const ProductDetail = () => {
     }
   };
 
+  // 게시물 삭제
   const handleDeletePost = async () => {
     if (window.confirm('정말 삭제하시겠습니까?') === true) {
       const { error } = await supabase.from('products').delete().eq('id', id);
@@ -611,13 +588,95 @@ const ProductDetail = () => {
     }
   };
 
-  useEffect(() => {
-    if (id) {
-      getProduct(id);
+  // 내가 소속된 채팅 방인지 판단 (마운트 시)
+  const isExistsRoom = async () => {
+    const { data: chat_rooms, error } = await supabase
+      .from('chat_room')
+      .select('*')
+      .eq('about', id);
+
+    if (chat_rooms) {
+      const existsRoom = chat_rooms[0]?.participants?.filter(
+        (userData: Partial<Participants>) => {
+          return userData?.user_id === curUser?.uid;
+        }
+      );
+      existsRoom?.length > 0 && setIsExist(true);
     }
+    // if (chat_rooms && chat_rooms.length > 0 && curUser) {
+    //   const connectedRoom = chat_rooms.filter((room: RoomType) => {
+
+    //   });
+    //   if (connectedRoom && connectedRoom.length > 0) {
+    //     setIsExist(true);
+    //   }
+    // }
+  };
+  // 마운트 시 유저 정보 가져옴
+  const getUserData = async () => {
+    const currentUserId = localStorage.getItem('userId');
+    const { data: currentUser, error } = await supabase
+      .from('user')
+      .select('*')
+      .eq('uid', currentUserId);
+
+    // 현재 로그인 유저의 데이터가 있다면
+    if (currentUser && currentUser.length > 0) {
+      setCurUser(currentUser[0]);
+    }
+    // 로그이 유저 없음 에러
+    if (error) console.log('logined user not exists');
+  };
+
+  // 마운트 시 제품 정보 가져옴
+  const getProduct = async (id: string | undefined) => {
+    let { data: products, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('id', id);
+    if (error) {
+      console.log(error);
+    } else {
+      setProduct(products);
+    }
+  };
+
+  // 내가 좋아한 게시물인가 판단 (마운트 시)
+  const isLikedProduct = async () => {
+    const { data: likeProduct, error } = await supabase
+      .from('user')
+      .select('likes')
+      .eq('uid', curUser?.uid);
+
+    if (error) console.log('like Product fetch Failed');
+
+    if (
+      likeProduct &&
+      likeProduct[0].likes?.length > 0 &&
+      likeProduct[0].likes.includes(id)
+    ) {
+      setIsLiked(true);
+    } else {
+      setIsLiked(false);
+    }
+  };
+
+  // 판매가 완료된 게시물인가 확인 (마운트 시)
+  const handleCheckIsSoldOut = async () => {
+    const { data: checkRes, error: checkErr } = await supabase
+      .from('products')
+      .select('isSell')
+      .eq('id', id);
+
+    if (checkRes && checkRes[0].isSell === true) setIsSoldOut(true);
+    if (checkErr) console.log('sold out check err');
+  };
+
+  useEffect(() => {
     getUserData();
-    isExistsRoom();
+    getProduct(id);
     handleCheckIsSoldOut();
+    handleGetLikeCount();
   }, []);
 
   useEffect(() => {
@@ -626,19 +685,6 @@ const ProductDetail = () => {
       isExistsRoom();
     }
   }, [curUser]);
-
-  useEffect(() => {
-    if (curUser && target) {
-      insertUserIntoChatRoom(curUser, target);
-      findUser(curUser);
-      findUser(target);
-    }
-  }, [target]);
-
-  useEffect(() => {
-    handleGetLikeCount();
-    window.scrollTo({ top: 0 });
-  }, []);
 
   const checkWindowSize = () => {
     if (window.matchMedia('(max-width: 768px)').matches) {
@@ -733,7 +779,6 @@ const ProductDetail = () => {
                 <h1
                   style={{
                     textAlign: 'center',
-                    paddingTop: '7rem',
                     height: '100%'
                   }}
                 >
@@ -741,7 +786,7 @@ const ProductDetail = () => {
                 </h1>
               ))}
             {createdChatList &&
-              createdChatList.map((room: RoomType) => {
+              createdChatList?.map((room: RoomType) => {
                 return (
                   <>
                     <St.StChatListItem
@@ -770,6 +815,7 @@ const ProductDetail = () => {
         </St.StSelectChatBg>
       )}
       <ToastContainer />
+      {/* ///////////// 본체 //////////////// */}
       <St.StDetailContainer>
         <St.StDetailInfoSection>
           <St.StImageWrapper>
@@ -836,7 +882,14 @@ const ProductDetail = () => {
                       </St.StTimeLeft>
                     )}
                     {!isMobile && <St.StAlertIcon />}
-                    <p style={{ cursor: 'pointer' }}>신고하기</p>
+                    <p
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        alert('개발 중인 기능입니다!');
+                      }}
+                    >
+                      신고하기
+                    </p>
                   </>
                 )}
               </St.StAlertButton>
