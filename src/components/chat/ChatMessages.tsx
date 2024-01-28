@@ -1,6 +1,6 @@
-import React, { MouseEvent, useEffect } from 'react';
+import React, { MouseEvent } from 'react';
 import styled from 'styled-components';
-import type { MessageCompProps, MessageType, RoomType } from './types';
+import type { MessageCompProps, MessageType } from './types';
 import { useNavigate } from 'react-router';
 import { supabase } from '../../api/supabase/supabaseClient';
 
