@@ -4,7 +4,7 @@ import { GoChevronLeft } from 'react-icons/go';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiBallPenLine } from 'react-icons/ri';
 import styled from 'styled-components';
-import { StFadeAni } from "../../pages/productsDetail/style";
+import { StFadeAni } from '../../pages/productsDetail/style';
 
 export const Content = styled.div`
   display: flex;
@@ -35,6 +35,7 @@ export const Container = styled.div`
   color: var(--12-gray);
   animation: ${StFadeAni} 0.3s ease;
   /* margin-bottom: 5rem; */
+  margin-top: 2rem;
   & strong {
     font-weight: bold;
   }
@@ -219,7 +220,7 @@ export const NoticeLike = styled.p`
 `;
 export const TitleTopper = styled.div`
   display: flex;
-  margin-top: 50px;
+  /* margin-top: 50px; */
   align-items: center;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--4-gray);
