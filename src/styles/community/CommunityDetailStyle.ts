@@ -4,6 +4,8 @@ import { GoChevronLeft } from 'react-icons/go';
 import { IoTrashOutline } from 'react-icons/io5';
 import { RiBallPenLine } from 'react-icons/ri';
 import styled from 'styled-components';
+import { StFadeAni } from "../../pages/productsDetail/style";
+
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -31,6 +33,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   color: var(--12-gray);
+  animation: ${StFadeAni} 0.3s ease;
   /* margin-bottom: 5rem; */
   & strong {
     font-weight: bold;
@@ -115,6 +118,7 @@ export const MainTopper = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 1rem;
+  position: relative;
 `;
 export const SubTopper = styled.div`
   display: flex;
@@ -262,7 +266,7 @@ export const EditDropdown = styled.div`
     border: 1px solid var(--opc-100);
     z-index: 1000;
     border-radius: 1rem;
-    top: 13rem;
+    /* top: 13rem;*/
     right: 5%;
   }
 `;

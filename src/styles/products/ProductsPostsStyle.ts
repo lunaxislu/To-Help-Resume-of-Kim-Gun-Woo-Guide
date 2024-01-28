@@ -2,22 +2,24 @@ import { CgCloseO } from "react-icons/cg";
 import { GoChevronLeft } from "react-icons/go";
 import { GoInfo } from 'react-icons/go';
 import styled from "styled-components";
+import { StFadeAni } from "../../pages/productsDetail/style";
 
 // ProductsPosts
 export const EntireContainer = styled.div`
   max-width: 144rem;
   display: flex;
   margin: auto;
+  animation: ${StFadeAni} 0.3s ease;
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;
     min-width: 3.5rem;
   }
 `;
 export const ContentsContainer = styled.div`
-  width: 90%;
+  max-width: 111.6rem;
   margin: auto;
-  @media screen and (max-width: 768px) {
-    max-width: 90%;
+  @media screen and (max-width: 1180px) {
+    max-width: 93%;
   }
 `;
 export const BackBtnBox = styled.div`
@@ -583,7 +585,7 @@ export const ChangableSelectWrapper = styled.div`
   }
 `;
 export const TextAreaStyle = styled.textarea`
-  width: 91%;
+  width: 94%;
   height: 19.6rem;
   resize: none;
   background-color: var(--3-gray);
@@ -602,6 +604,12 @@ export const TextAreaStyle = styled.textarea`
   }
   &::placeholder {
     color: var(--5-gray);
+  }
+  @media screen and (max-width: 1130px) {
+    width: 92%;
+  }
+  @media screen and (max-width: 890px) {
+    width: 90%;
   }
   @media screen and (max-width: 768px) {
     width: 100%;

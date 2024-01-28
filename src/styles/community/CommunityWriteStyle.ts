@@ -229,7 +229,7 @@ export const LayoutQuillEditor = styled(ReactQuill)`
   }
   @media screen and (max-width: 768px) {
     .ql-container {
-      height: 15rem;
+      height: 250rem;
     }
     & img {
       max-width: 80%;

@@ -1,6 +1,8 @@
 import { BiEdit } from 'react-icons/bi';
 import { IoIosArrowDown } from 'react-icons/io';
 import styled, { css } from 'styled-components';
+import { StFadeAni } from "../../pages/productsDetail/style";
+
 export const Container = styled.div`
   /* margin-top: 30px; */
   display: flex;
@@ -8,6 +10,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   gap: 0.1rem;
+  animation: ${StFadeAni} 0.3s ease;
 `;
 export const Post_container = styled.div`
   max-width: 111.6rem;
@@ -86,11 +89,11 @@ export const WriteBtn2 = styled.button`
 export const Title = styled.h2`
   color: var(--12-gray);
   font-size: var(--fontSize-H3);
-  font-weight: var(--fontWeight-semiBold);
+  /* font-weight: var(--fontWeight-semiBold); */
   margin-top: 4rem;
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-body);
-    margin-top: 0;
+    margin-top: 2rem;
   }
 `;
 export const CategoryBtn = styled.button<{ $selectCategory: string }>`

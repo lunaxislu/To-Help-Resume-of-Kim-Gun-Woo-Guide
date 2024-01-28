@@ -11,7 +11,7 @@ export type ProductsPostsType = {
   count: number, 
   contents: string,
   created_at: string,
-  post_user: string,
+  post_user_name: string,
   nickname: string,    
   deal_type: string,
   likes: number,

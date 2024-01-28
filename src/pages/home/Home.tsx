@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
 import parseDate from '../../util/getDate';
 import { FaArrowRight } from 'react-icons/fa6';
+import { StFadeAni } from "../../pages/productsDetail/style";
+
 type UsedItemsCountData = {
   count: number | null;
   data: {
@@ -219,7 +221,7 @@ const HomeContainer = styled.section`
   min-height: 100vh;
   flex-direction: column;
   margin: 0px auto;
-  background-color: var(--1, #0b0b0b);
+  animation: ${StFadeAni} 0.3s ease;
 
   @media screen and (max-width: 768px) {
     width: 100%;

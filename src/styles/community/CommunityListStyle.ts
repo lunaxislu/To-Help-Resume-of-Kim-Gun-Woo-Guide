@@ -72,15 +72,20 @@ export const Posts = styled.li`
 `;
 export const ContentArea = styled.p`
   overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  white-space: normal;
   text-overflow: ellipsis;
-  height: 6.6rem;
+  /* height: 6.6rem; */
   font-size: var(--fontSize-H5);
   font-weight: var(--fontWeight-medium);
   line-height: 2.2rem;
   color: var(--9-gray);
   @media screen and (max-width: 768px) {
-    height: 3.8rem;
+    /* height: 3.8rem; */
     font-size: var(--fontSize-H6);
+    -webkit-line-clamp: 2;
   }
 `;
 export const RightSide = styled.div`
