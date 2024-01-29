@@ -94,9 +94,11 @@ export const LayoutBottom = styled.div`
     border-radius: 1rem;
     width: 10rem;
     height: 4rem;
+    font-family: 'Pretendard-Medium';
     background-color: var(--opc-100);
     font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-bold);
+    cursor: pointer;
   }
   & label {
     display: flex;
