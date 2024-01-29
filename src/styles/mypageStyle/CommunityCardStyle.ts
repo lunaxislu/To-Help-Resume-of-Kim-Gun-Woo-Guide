@@ -21,7 +21,7 @@ export const StPostWrapper = styled(Link)`
   height: 20rem;
   flex: 1 1 40%;
   gap: 1.5rem;
-  background: var(--2-gray);
+  background: var(--3-gray);
   border-radius: 1rem;
   padding: 3rem;
   text-decoration: none;

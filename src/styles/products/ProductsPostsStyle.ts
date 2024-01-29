@@ -507,7 +507,7 @@ export const AddressBtn = styled.button`
   background-color: var(--3-gray);
   font-family: 'Pretendard-Medium';
   color: var(--10-gray);
-  :hover {
+  &:hover {
     cursor: pointer;
   }
   @media screen and (max-width: 768px) {

@@ -146,7 +146,7 @@ const StChatBoardHeaderName = styled.h3`
 
 const StChatForm = styled.form`
   width: 100%;
-  background-color: var(--bgColor);
+  background-color: #1f1f1f;
   position: sticky;
   bottom: 0;
   padding-bottom: 1rem;
@@ -163,7 +163,7 @@ const StChatForm = styled.form`
 const ImageInput = styled.input.attrs({ type: 'file' })`
   width: fit-content;
   padding: 1rem;
-  margin-left: 2.5rem;
+  margin-left: 1.2rem;
   margin-bottom: 1rem;
   background-color: var(--3-gray);
   border-radius: 0.6rem;
@@ -184,6 +184,7 @@ const StChatInput = styled.textarea.attrs({
   position: sticky;
   bottom: 0;
   border: none;
+  font-family: 'Pretendard-Regular';
   font-weight: 600;
   outline: none;
   border-radius: 0.8rem;

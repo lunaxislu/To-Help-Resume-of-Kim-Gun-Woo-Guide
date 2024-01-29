@@ -9,7 +9,7 @@ export const FooterContainer = styled.div`
   font-size: var(--fontSize-body);
   font-weight: var(--fontWeight-regular);
   color: var(--9-gray);
-  background-color: var(--2-gray);
+  background-color: var(--3-gray);
   @media screen and (max-width: 768px) {
     height: 15rem;
     margin-top: 8rem;
