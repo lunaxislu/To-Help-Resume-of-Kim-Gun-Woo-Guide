@@ -95,7 +95,7 @@ export const Form = styled.form<FormProps>`
   height: 12.8rem;
   margin-top: 6px;
   margin-bottom: 6px;
-  background-color: #1f1f1f;
+  background-color: var(--3-gray);
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -195,7 +195,7 @@ export const CheckBoxs = styled.input`
 `;
 export const CommentContainer = styled.div`
   margin-top: 10px;
-  background-color: #1f1f1f;
+  background-color: var(--3-gray);
   width: 100%;
   min-height: 9.4rem;
   display: flex;
