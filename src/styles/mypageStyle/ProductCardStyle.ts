@@ -51,7 +51,7 @@ export const StProductQuality = styled.p<{ qualityColor: string }>`
       ? 'var(--11-gray)'
       : 'var(--2-gray)'};
   background: ${(props) =>
-    (props.qualityColor === '거의 새것' && 'var(--opc-100)') ||
+    (props.qualityColor === '새상품(미사용)' && 'var(--opc-100)') ||
     (props.qualityColor === '사용감 없음' && '#ECECEC') ||
     (props.qualityColor === '사용감 적음' && '#ECECEC') ||
     (props.qualityColor === '사용감 많음' && '#ECECEC') ||
