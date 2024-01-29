@@ -95,7 +95,7 @@ export const LayoutBottom = styled.div`
     width: 10rem;
     height: 4rem;
     background-color: var(--opc-100);
-    font-size: var(--fontSize-H5);
+    font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-bold);
   }
   & label {
