@@ -78,4 +78,11 @@ self.addEventListener('message', (event) => {
   }
 });
 
+// Install event
+self.addEventListener('install', (event) => {
+  console.log('Service Worker installed.');
+  // Trigger the install prompt
+  self.skipWaiting();
+});
+
 // Any other custom service worker logic can go here.
