@@ -858,9 +858,17 @@ const ProductDetail = () => {
                   </St.StUserImage>
                   <St.StUserNickname>
                     {product[0].post_user_uid === curUser?.id ? (
-                      <p>{curUser?.username}</p>
+                      <p>
+                        {curUser.nickname !== null
+                          ? curUser?.nickname
+                          : curUser?.username}
+                      </p>
                     ) : (
-                      <p>{target?.username}</p>
+                      <p>
+                        {target?.nickname !== null
+                          ? target?.nickname
+                          : target?.username}
+                      </p>
                     )}
                   </St.StUserNickname>
                 </div>
