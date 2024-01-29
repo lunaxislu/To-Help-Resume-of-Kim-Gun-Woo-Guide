@@ -15,12 +15,7 @@ const AddressInit: AddressValueType = {
 const major = [
   '회화',
   '조소',
-  '판화',
-  '금속공예',
-  '도예',
-  '유리공예',
-  '목공예',
-  '섬유공예',
+  '공예',
   '기타'
 ];
 const shipping_cost = ['배송비 포함', '배송비 별도'];
@@ -186,7 +181,7 @@ const ProductsWriteForm = () => {
       post_user_name: userState.post_user_name,
       nickname: userState.nickname,
     };
-
+    console.log(EntireData)
     addPosts(EntireData);
 
   };
@@ -224,9 +219,9 @@ const ProductsWriteForm = () => {
       <St.WrapperStyle>
         <St.SemiTitle>카테고리<St.Required>*</St.Required></St.SemiTitle>
           <St.CategoryContainer>
-            {major.map((major, idx) => 
+            {major.map((major) => 
             <div style={{display: 'flex', flexDirection: 'row'}}>
-              <St.InputCheckBoxLabel key={idx} htmlFor={major}>
+              <St.InputCheckBoxLabel key={major} htmlFor={major}>
                 <St.InputCheckBoxStyle type='checkbox' id={major} value={major} 
                 {...register("category", {required: "카테고리를 선택해주세요."})} />{major}</St.InputCheckBoxLabel>
             </div>
@@ -242,15 +237,18 @@ const ProductsWriteForm = () => {
       <St.WrapperStyle>
         <St.SemiTitle>가격<St.Required>*</St.Required></St.SemiTitle>
         <St.InputWrapperStyle>
-          <St.InputStyle2 type='number' {...register("price", {
+          <St.InputStyle2 type='number' min={0} {...register("price", {
             required: "가격을 입력해주세요.",
             valueAsNumber: true,
-            min: 0,
+            min: {
+              value: 1,
+              message: "0 이하의 값은 입력할 수 없습니다."
+            },
             max: 2147483648
           })} placeholder='가격을 입력해주세요'/>
           <St.ShippingCostSelectWrapper>
-            {shipping_cost.map((shipping_cost, idx) => 
-              <St.InputCheckBoxLabel key={idx} htmlFor={shipping_cost}>
+            {shipping_cost.map((shipping_cost) => 
+              <St.InputCheckBoxLabel key={shipping_cost} htmlFor={shipping_cost}>
                 <St.InputCheckBoxStyle type='radio' id={shipping_cost} value={shipping_cost} 
                 {...register("shipping_cost", {required: "배송비 포함 여부를 선택해주세요."})} />{shipping_cost}</St.InputCheckBoxLabel>
             )}
@@ -267,10 +265,13 @@ const ProductsWriteForm = () => {
       <St.WrapperStyle>
         <St.SemiTitle>수량<St.Required>*</St.Required></St.SemiTitle>
         <St.InputWrapperStyle>
-        <St.InputStyle2 type='number' {...register("count", {
+        <St.InputStyle2 type='number' min={0} {...register("count", {
           required: "수량을 입력해주세요.",
           valueAsNumber: true,
-          min: 0,
+          min: {
+            value: 1,
+            message: "0 이하의 값은 입력할 수 없습니다."
+          },
           max: 2147483648
         })} placeholder='수량을 입력해주세요'/>
         </St.InputWrapperStyle>
@@ -285,8 +286,8 @@ const ProductsWriteForm = () => {
         <St.SemiTitle>거래방식<St.Required>*</St.Required></St.SemiTitle>
         <St.InputWrapperStyle>
           <St.MobileDealTypeWrapper>
-            {deal_type.map((deal_type, idx) => 
-              <St.InputCheckBoxLabel key={idx} htmlFor={deal_type}>
+            {deal_type.map((deal_type) => 
+              <St.InputCheckBoxLabel key={deal_type} htmlFor={deal_type}>
                 <St.InputCheckBoxStyle type='radio' id={deal_type} value={deal_type} 
                 {...register("deal_type", {required: "거래방식을 선택해주세요."})} />{deal_type}</St.InputCheckBoxLabel>
                 )}
@@ -409,7 +410,7 @@ const ProductsWriteForm = () => {
           <St.InputStyle2 type='text' {...register("tags", {
             pattern: {
               value: /^[가-힣A-Za-z,]+$/i,
-              message: "한글과 영어만 입력 가능합니다.",
+              message: "띄어쓰기와 숫자, 특수문자는 입력이 불가능합니다.",
             }
           })} placeholder='태그를 입력해주세요.' />
           <St.GapStyle/>
