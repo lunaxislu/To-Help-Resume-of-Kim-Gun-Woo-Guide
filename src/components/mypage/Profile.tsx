@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   Pen,
+  StButtonCotainer,
   StMobileCancelButton,
   StMobileEditButton,
   StMobileNav,
@@ -26,6 +27,12 @@ import {
 } from '../../api/supabase/profile';
 
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../redux/reduxHooks/reduxBase';
+import { setSuccessLogout } from '../../redux/modules/authSlice';
+
+interface User {
+  username: string;
+}
 
 const Profile = () => {
   const userId = localStorage.getItem('userId');
@@ -35,6 +42,10 @@ const Profile = () => {
   const [imagePath, setImagePath] = useState<string>();
   const fileInput = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const [user, setUser] = useState<User | boolean>(false);
+  const [avatarUrl, setAvatarUrl] = useState<string>();
 
   const queryClient = useQueryClient();
 
@@ -132,6 +143,31 @@ const Profile = () => {
     }
   };
 
+  // 로그아웃 버튼
+  const handleLogOutButtonClick = async () => {
+    let { error } = await supabase.auth.signOut();
+    if (error) {
+      console.log(error);
+    } else {
+      // 로그아웃이 성공 시 로그아웃 상태로 업데이트하기
+      dispatch(setSuccessLogout());
+      // 사용자 정보 초기화
+      setUser(false);
+      setAvatarUrl(undefined);
+      // 이락균이 추가함 //
+      navigate('/');
+    }
+    if (error) {
+      console.log(error);
+    } else {
+      // 로그아웃이 성공 시 로그아웃 상태로 업데이트하기
+      dispatch(setSuccessLogout());
+      // 사용자 정보 초기화
+      setUser(false);
+      setAvatarUrl(undefined);
+    }
+  };
+
   return (
     <StProfileContainer>
       <StMobileNav>
@@ -180,33 +216,36 @@ const Profile = () => {
             </StProfileImageWrapper>
 
             <StProfileContentWrapper>
-              <StNicknameAndButton>
-                {isEditing ? (
-                  <input
-                    defaultValue={
-                      !user.nickname ? user.username : user.nickname
-                    }
-                    onChange={onChangeNickname}
-                    placeholder="최대 8자"
-                    maxLength={8}
-                  />
-                ) : (
-                  <h2>{!user.nickname ? user.username : user.nickname}</h2>
-                )}
-                {isEditing ? (
-                  <StProfileButtonWrapper>
-                    <button onClick={cancelEditHandler}>취소</button>
-                    <StSaveButton onClick={clickUpdateProfile}>
-                      저장
-                    </StSaveButton>
-                  </StProfileButtonWrapper>
-                ) : (
-                  <StProfileEditButtonWrapper>
-                    <Pen />
-                    <button onClick={clickEditHandler}>수정하기</button>
-                  </StProfileEditButtonWrapper>
-                )}
-              </StNicknameAndButton>
+              <StButtonCotainer>
+                <StNicknameAndButton>
+                  {isEditing ? (
+                    <input
+                      defaultValue={
+                        !user.nickname ? user.username : user.nickname
+                      }
+                      onChange={onChangeNickname}
+                      placeholder="최대 8자"
+                      maxLength={8}
+                    />
+                  ) : (
+                    <h2>{!user.nickname ? user.username : user.nickname}</h2>
+                  )}
+                  {isEditing ? (
+                    <StProfileButtonWrapper>
+                      <button onClick={cancelEditHandler}>취소</button>
+                      <StSaveButton onClick={clickUpdateProfile}>
+                        저장
+                      </StSaveButton>
+                    </StProfileButtonWrapper>
+                  ) : (
+                    <StProfileEditButtonWrapper>
+                      <Pen />
+                      <button onClick={clickEditHandler}>수정하기</button>
+                    </StProfileEditButtonWrapper>
+                  )}
+                </StNicknameAndButton>
+                <button onClick={handleLogOutButtonClick}>로그아웃</button>
+              </StButtonCotainer>
 
               <StProfileContent>
                 <span>이름</span>
