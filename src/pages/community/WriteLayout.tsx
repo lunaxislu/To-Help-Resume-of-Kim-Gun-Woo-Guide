@@ -302,30 +302,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
           />
         </St.LayoutTitleContainer>
         {errors.title && <St.Validate>{errors.title}</St.Validate>}
-        {/* <CategoryContainer>
-          {categoryArray.map((item, index) => {
-            return index !== 0 ? (
-              <label key={item} className="radio-label">
-                <input
-                  className="radio-input"
-                  type="radio"
-                  name="category"
-                  value={item}
-                  onChange={(event) =>
-                    setFormValues({
-                      ...formValues,
-                      category: event.target.value
-                    })
-                  }
-                  checked={formValues.category === item}
-                />
-                <span className="radio-checkmark" />
-                <span className="radio-text">{item}</span>
-              </label>
-            ) : null;
-          })}
-        </CategoryContainer> */}
-
         <St.LayoutContentArea>
           <St.LayoutValueText>
             내용<span>*</span>

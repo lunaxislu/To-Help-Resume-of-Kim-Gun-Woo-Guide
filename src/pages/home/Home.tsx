@@ -590,7 +590,7 @@ const ComunityList = styled.li`
   position: relative;
   align-items: center;
   border-radius: 1rem;
-  background-color: #1f1f1f;
+  background-color: var(--3-gray);
   padding: 2rem;
 
   @media screen and (max-width: 768px) {

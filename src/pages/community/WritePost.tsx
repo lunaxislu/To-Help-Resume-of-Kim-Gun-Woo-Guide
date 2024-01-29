@@ -12,10 +12,11 @@ import { ProfileObject } from './model';
 export const categoryArray = [
   '전체',
   '작업',
-  '진로',
   '고민',
   '구인',
+  '공구',
   '피드백',
+  '진로',
   '수다'
 ];
 Quill.register('modules/imageActions', ImageActions);
