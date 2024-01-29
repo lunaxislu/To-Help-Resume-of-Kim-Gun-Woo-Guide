@@ -195,7 +195,7 @@ export const CheckBoxs = styled.input`
 `;
 export const CommentContainer = styled.div`
   margin-top: 10px;
-  background-color: var(--3-gray);
+  background-color: var(--2-gray);
   width: 100%;
   min-height: 9.4rem;
   display: flex;
@@ -216,6 +216,9 @@ export const CommentContainer = styled.div`
     height: 3.8rem;
     border-radius: 1rem;
     min-width: 20rem;
+  }
+  @media screen and (max-width: 768px) {
+    background-color: #1f1f1f;
   }
 `;
 export const LeftSide = styled.div`
