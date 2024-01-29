@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { FaComment, FaThumbsUp } from 'react-icons/fa';
 
 export const StPostContainer = styled.div<{ list: number | boolean }>`
   display: flex;
@@ -21,7 +22,7 @@ export const StPostWrapper = styled(Link)`
   height: 20rem;
   flex: 1 1 40%;
   gap: 1.5rem;
-  background: var(--2-gray);
+  background: var(--3-gray);
   border-radius: 1rem;
   padding: 3rem;
   text-decoration: none;
@@ -89,4 +90,14 @@ export const StPostDate = styled.p`
   @media screen and (max-width: 768px) {
     font-size: 1rem;
   }
+`;
+
+export const CommentIcon = styled(FaComment)`
+  color: #dbff00;
+  opacity: 50%;
+  transform: scaleX(-1);
+`;
+export const LikesIcon = styled(FaThumbsUp)`
+  color: #dbff00;
+  opacity: 50%;
 `;

@@ -1,6 +1,17 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+export const Hr = styled.hr`
+  width: 100%;
+  height: 0.1rem;
+  border: none;
+  background-color: var(--7-gray);
+  margin-bottom: 2rem;
+  @media screen and (max-width: 768px) {
+    margin-bottom: 1rem;
+  }
+`;
+
 export const HeaderTopContainer = styled.div`
   max-width: 144rem;
   width: 111.6rem;

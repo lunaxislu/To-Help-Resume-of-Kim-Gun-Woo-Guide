@@ -34,7 +34,8 @@ const StDetailContainer = styled.div`
 
 const StDetailInfoSection = styled.section`
   width: 100%;
-  max-width: 1440px;
+  max-width: 1116px;
+  margin:auto;
   height: fit-content;
   display: flex;
   gap: 4.6rem;
@@ -203,7 +204,7 @@ const StProductInfoBody = styled.div`
   flex-direction: column;
   gap: 2rem;
   background-color: var(--3-gray);
-  color: var(--8-gray);
+  color: var(--9-gray);
   border-radius: 1rem;
 
   @media screen and (max-width: 768px) {
@@ -316,7 +317,7 @@ const FaHeartIcon = styled(FaHeart)`
 // 상품 설명 섹션
 const StProductIntroSection = styled.section`
   width: 100%;
-  max-width: 120rem;
+  max-width: 111.6rem;
   line-height: 3.1rem;
   color: var(--8-gray);
   margin: auto;

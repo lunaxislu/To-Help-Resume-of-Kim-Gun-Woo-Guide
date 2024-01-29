@@ -170,6 +170,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
         />
       )}
       {isLoading && <SkeletonCommunityCard cards={10} />}
+      {/* <SkeletonCommunityCard cards={10} /> */}
     </StPostContainer>
   );
 };

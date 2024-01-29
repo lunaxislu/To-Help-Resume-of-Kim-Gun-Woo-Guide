@@ -42,12 +42,20 @@ export const StCardWrapper = styled(Link)`
   }
 `;
 
-export const StProductQuality = styled.p`
+export const StProductQuality = styled.p<{ qualityColor: string }>`
   width: 10rem;
   text-align: center;
   display: block;
-  color: var(--9-gray);
-  background: var(--opc-20);
+  color: ${(props) =>
+    props.qualityColor === '고장/파손 상품'
+      ? 'var(--11-gray)'
+      : 'var(--2-gray)'};
+  background: ${(props) =>
+    (props.qualityColor === '거의 새것' && 'var(--opc-100)') ||
+    (props.qualityColor === '사용감 없음' && '#ECECEC') ||
+    (props.qualityColor === '사용감 적음' && '#ECECEC') ||
+    (props.qualityColor === '사용감 많음' && '#ECECEC') ||
+    (props.qualityColor === '고장/파손 상품' && 'var(--4-gray)')};
   border-radius: 0.4rem;
   padding: 0.7rem 1rem;
   font-size: var(--fontSize-H6);

@@ -741,7 +741,7 @@ const PostList = styled.li`
   position: relative;
   align-items: center;
   border-radius: 1rem;
-  background-color: #1f1f1f;
+  background-color: var(--3-gray);
   padding: 2rem;
   margin-bottom: 2rem;
 

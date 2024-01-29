@@ -399,19 +399,20 @@ export const IsSellProducts = styled.div`
   position: absolute;
   display: flex;
   opacity: 90%;
-  background-color: var(--2-gray);
+  background-color: var(--3-gray);
   border-radius: 0.6rem;
 `
 export const SoldOut = styled.div`
-  background-color: var(--opc-90);
+  background-color: var(--3-gray);
   width: 50%;
   max-height: 5rem;
   border-radius: 0.5rem;
   margin: auto;
   text-align: center;
   line-height: 2.5;
+  font-size: var(--fontSize-H2);
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    font-size: var(--fontSize-H5);
     width: 40%;
     line-height: 2.5;
   }

@@ -45,7 +45,7 @@ export const LayoutTitleContainer = styled.div`
     height: 54px;
     width: 100%;
     max-width: 90.6rem;
-    background-color: #1f1f1f;
+    background-color: var(--3-gray);
     border: none;
     border-radius: 5px;
     padding-left: 16px;
@@ -94,9 +94,11 @@ export const LayoutBottom = styled.div`
     border-radius: 1rem;
     width: 10rem;
     height: 4rem;
+    font-family: 'Pretendard-Medium';
     background-color: var(--opc-100);
-    font-size: var(--fontSize-H5);
+    font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-bold);
+    cursor: pointer;
   }
   & label {
     display: flex;
@@ -154,21 +156,18 @@ export const LayoutCategoryContainer = styled.div`
       cursor: pointer;
       margin-bottom: 1rem;
     }
-    & div {
-      grid-template-columns: 1fr 1fr 1fr;
-    }
   }
 `;
 export const CategoryGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   @media screen and (max-width: 768px) {
     grid-template-columns: 1fr 1fr 1fr;
   }
 `;
 
 export const LayoutFileUploader = styled.label`
-  background-color: #1f1f1f;
+  background-color: var(--3-gray);
   border-radius: 5px;
   height: 54px;
   display: flex;
@@ -189,7 +188,7 @@ export const LayoutFileUploader = styled.label`
   }
 `;
 export const LayoutQuillEditor = styled(ReactQuill)`
-  background-color: #1f1f1f;
+  background-color: var(--3-gray);
   border-radius: 5px;
   width: 100%;
   max-width: 906px;
@@ -228,6 +227,18 @@ export const LayoutQuillEditor = styled(ReactQuill)`
   .ql-editor img {
     width: 60%;
   }
+  .ql-snow .ql-fill,
+  .ql-snow .ql-stroke.ql-fill {
+    fill: var(--8-gray);
+  }
+  .ql-snow .ql-stroke {
+    stroke: var(--8-gray);
+  }
+  .ql-editor.ql-blank::before {
+    color: var(--5-gray);
+    font-size: var(--fontSize-H5);
+    font-style: normal;
+  }
   @media screen and (max-width: 768px) {
     .ql-container {
       height: 25rem;
@@ -239,13 +250,16 @@ export const LayoutQuillEditor = styled(ReactQuill)`
       line-height: 2rem;
       font-size: var(--fontSize-H6);
     }
+    .ql-editor.ql-blank::before {
+      font-size: var(--fontSize-H6);
+    }
   }
 `;
 export const CheckBoxs = styled.input`
   appearance: none;
   width: 20px;
   height: 20px;
-  background-color: var(--6-gray);
+  background-color: var(--4-gray);
   border: none;
   border-radius: 4px;
   position: relative;
