@@ -45,7 +45,7 @@ export const Posts = styled.li`
   gap: 1.6rem;
   border: none;
   border-radius: 1rem;
-  background-color: #1f1f1f;
+  background-color: var(--3-gray);
   justify-content: space-between;
   color: #d9d9d9;
   cursor: pointer;

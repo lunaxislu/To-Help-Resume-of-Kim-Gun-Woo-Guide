@@ -150,13 +150,14 @@ const StImageballoon = styled.img`
 
 const StChatballoon = styled.div`
   width: fit-content;
+  max-width: 350px;
   color: var(--11-gray);
   background-color: var(--3-gray);
   margin-right: auto;
   margin-left: 2.7rem;
   margin-block: 1rem;
-  padding: 1.2rem 2.7rem;
-  border-radius: 40px;
+  padding: 1rem 2rem;
+  border-radius: 12px;
   font-weight: 500;
   line-height: 1.2;
   font-size: 1.4rem;
@@ -164,18 +165,21 @@ const StChatballoon = styled.div`
   @media screen and (max-width: 768px) {
     font-size: 1rem;
     padding: 0.6rem 1.2rem;
+    max-width: 250px;
+    border-radius: 5px;
   }
 `;
 
 const StMyChatballoon = styled.div`
   width: fit-content;
+  max-width: 350px;
   color: var(--2-gray);
   background-color: var(--opc-100);
   margin-left: auto;
   margin-right: 2.7rem;
-  margin-block: 1.6rem;
-  padding: 0.9rem 3.1rem;
-  border-radius: 60px;
+  margin-block: 1rem;
+  padding: 0.9rem 2rem;
+  border-radius: 12px;
   font-size: 1.4rem;
   font-weight: 600;
   line-height: 1.2;
@@ -184,6 +188,8 @@ const StMyChatballoon = styled.div`
   @media screen and (max-width: 768px) {
     font-size: 1rem;
     padding: 0.6rem 1.2rem;
+    max-width: 250px;
+    border-radius: 5px;
   }
 `;
 
