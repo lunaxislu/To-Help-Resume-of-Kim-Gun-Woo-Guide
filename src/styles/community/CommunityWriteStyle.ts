@@ -45,7 +45,7 @@ export const LayoutTitleContainer = styled.div`
     height: 54px;
     width: 100%;
     max-width: 90.6rem;
-    background-color: #1f1f1f;
+    background-color: var(--3-gray);
     border: none;
     border-radius: 5px;
     padding-left: 16px;
@@ -90,13 +90,15 @@ export const LayoutBottom = styled.div`
   max-width: 90.6rem;
   justify-content: space-between;
   & button {
+    font-family: 'Pretendard-Medium';
     border: none;
     border-radius: 1rem;
     width: 10rem;
     height: 4rem;
     background-color: var(--opc-100);
-    font-size: var(--fontSize-H5);
+    font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-bold);
+    cursor: pointer;
   }
   & label {
     display: flex;
@@ -168,7 +170,7 @@ export const CategoryGrid = styled.div`
 `;
 
 export const LayoutFileUploader = styled.label`
-  background-color: #1f1f1f;
+  background-color: var(--3-gray);
   border-radius: 5px;
   height: 54px;
   display: flex;
@@ -189,7 +191,7 @@ export const LayoutFileUploader = styled.label`
   }
 `;
 export const LayoutQuillEditor = styled(ReactQuill)`
-  background-color: #1f1f1f;
+  background-color: var(--3-gray);
   border-radius: 5px;
   width: 100%;
   max-width: 906px;
@@ -245,7 +247,7 @@ export const CheckBoxs = styled.input`
   appearance: none;
   width: 20px;
   height: 20px;
-  background-color: var(--6-gray);
+  background-color: var(--4-gray);
   border: none;
   border-radius: 4px;
   position: relative;

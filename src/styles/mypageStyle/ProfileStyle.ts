@@ -103,6 +103,10 @@ export const StProfileImageWrapper = styled.div`
     cursor: pointer;
     font-weight: var(--fontWeight-semiBold);
   }
+
+  @media screen and (max-width: 1024px) {
+    justify-content: center;
+  }
 `;
 
 export const StProfileContentWrapper = styled.div`
@@ -116,16 +120,39 @@ export const StProfileContentWrapper = styled.div`
 export const StProfileButtonWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 2.2rem;
+  gap: 1rem;
+  margin-left: 1rem;
 
   @media screen and (max-width: 1024px) {
     display: none;
   }
 `;
 
-export const StNicknameAndButton = styled.div`
+export const StButtonCotainer = styled.div`
   display: flex;
   justify-content: space-between;
+
+  & button {
+    background: transparent;
+    font-size: var(--fontSize-H5);
+    color: var(--10-gray);
+    border: none;
+    cursor: pointer;
+    &:hover {
+      color: var(--opc-90);
+    }
+  }
+  @media screen and (max-width: 768px) {
+    justify-content: center;
+    & button {
+      display: none;
+    }
+  }
+`;
+
+export const StNicknameAndButton = styled.div`
+  display: flex;
+  align-items: center;
 
   & input {
     background: var(--4-gray);
@@ -143,6 +170,7 @@ export const StNicknameAndButton = styled.div`
   & h2 {
     font-size: var(--fontSize-H2);
     font-weight: var(--fontWeight-semiBold);
+    text-align: center;
 
     @media screen and (max-width: 768px) {
       text-align: center;
@@ -169,6 +197,7 @@ export const StNicknameAndButton = styled.div`
 export const StProfileEditButtonWrapper = styled.div`
   display: flex;
   gap: 0.5rem;
+  margin-left: 1rem;
 
   @media screen and (max-width: 768px) {
     display: none;

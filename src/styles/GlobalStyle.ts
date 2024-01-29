@@ -113,10 +113,14 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
     font-size: 1.6rem;
-    background-color: var(--1-gray);
+    background-color: #1F1F1F;
     font-family: 'Pretendard-Medium';
     color: var(--11-gray);
     overflow-x: hidden;
+}
+button,
+input {
+    font-family: 'Pretendard-Medium';
 }
 ol, ul {
 	list-style: none;

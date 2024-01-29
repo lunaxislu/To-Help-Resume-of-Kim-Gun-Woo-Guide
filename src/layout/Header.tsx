@@ -20,7 +20,6 @@ const Header = () => {
   const [user, setUser] = useState<User | boolean>(false);
   const [loading, setLoading] = useState(true);
   const [avatarUrl, setAvatarUrl] = useState<string>();
-
   const { isLogin } = useAppSelector((state) => state.auth);
   const location = useLocation();
   const dispatch = useAppDispatch();
@@ -123,112 +122,109 @@ const Header = () => {
   }, []);
 
   return (
-    <St.HeaderTopContainer>
-      <St.HeaderContainer>
-        <St.HeaderWrapper>
-          <St.HeaderSection>
-            <St.Logo
-              src="/assets/logo2.png"
-              alt="작업자들"
-              onClick={handleLogoClick}
-            />
-            <St.ButtonContainer>
-              <St.Sell onClick={handleSellbuttonClick}>
-                <BiWon
-                  style={{
-                    width: '1.6rem',
-                    height: '1.6rem',
-                    color: 'var(--opc-100)'
-                  }}
-                />
-                <p>판매하기</p>
-              </St.Sell>
-              {isLogin ? (
-                <St.Chat onClick={handleNavigateToChat}>
-                  <BsChatDotsFill
-                    style={{
-                      width: '1.4rem',
-                      height: '1.4rem',
-                      color: 'var(--opc-100)',
-                      transform: 'scaleX(-1)'
-                    }}
-                  />
-                  <p>채팅</p>
-                </St.Chat>
-              ) : (
-                ''
-              )}
-              {isLogin ? (
-                <St.Alert>
-                  <BiSolidBell
+    <>
+      <St.HeaderTopContainer>
+        <St.HeaderContainer>
+          <St.HeaderWrapper>
+            <St.HeaderSection>
+              <St.Logo
+                src="/assets/logo2.png"
+                alt="작업자들"
+                onClick={handleLogoClick}
+              />
+              <St.ButtonContainer>
+                <St.Sell onClick={handleSellbuttonClick}>
+                  <BiWon
                     style={{
                       width: '1.6rem',
                       height: '1.6rem',
                       color: 'var(--opc-100)'
                     }}
                   />
-                  <p>알림</p>
-                </St.Alert>
-              ) : (
-                ''
-              )}
-              {isLogin ? (
-                <>
-                  <St.UserIcon
-                    src={`${avatarUrl}`}
-                    onClick={handleMyPageButtonClick}
-                  />
-                  <St.MobileSearchIcon
-                    src="/assets/mobile_search.svg"
-                    onClick={handleShowSearchComp}
-                  />
-                  <St.HamburgerMenu
-                    src="/assets/hamburger.svg"
-                    onClick={handlShowSearchBurger}
-                  />
-                  <Hamburger
-                    isOpen={showHamburger}
-                    onClose={() => setShowHamburger(false)}
-                    onLogout={handleLogOutButtonClick}
-                    user={user}
-                    setUser={() => setUser(false)}
-                    avatarUrl={avatarUrl}
-                  />
-                </>
-              ) : (
-                <St.Button onClick={handleNavigateToLogin}>
-                  로그인/회원가입
-                </St.Button>
-              )}
-            </St.ButtonContainer>
-          </St.HeaderSection>
-          <St.NavSection>
-            <St.NavBar>
-              <St.NavButton to="/products" onClick={handlePageChange}>
-                중고거래
-              </St.NavButton>
-              <St.NavButton to="/community" onClick={handlePageChange}>
-                커뮤니티
-              </St.NavButton>
-              {isLogin ? (
-                <St.LogOut onClick={handleLogOutButtonClick}>
-                  로그아웃
-                </St.LogOut>
-              ) : (
-                ''
-              )}
-            </St.NavBar>
+                  <p>판매하기</p>
+                </St.Sell>
+                {isLogin ? (
+                  <St.Chat onClick={handleNavigateToChat}>
+                    <BsChatDotsFill
+                      style={{
+                        width: '1.4rem',
+                        height: '1.4rem',
+                        color: 'var(--opc-100)',
+                        transform: 'scaleX(-1)'
+                      }}
+                    />
+                    <p>채팅</p>
+                  </St.Chat>
+                ) : (
+                  ''
+                )}
+                {isLogin ? (
+                  <St.Alert>
+                    <BiSolidBell
+                      style={{
+                        width: '1.6rem',
+                        height: '1.6rem',
+                        color: 'var(--opc-100)'
+                      }}
+                    />
+                    <p>알림</p>
+                  </St.Alert>
+                ) : (
+                  ''
+                )}
+                {isLogin ? (
+                  <>
+                    <St.UserIcon
+                      src={`${avatarUrl}`}
+                      onClick={handleMyPageButtonClick}
+                    />
+                    <St.MobileSearchIcon
+                      src="/assets/mobile_search.svg"
+                      onClick={handleShowSearchComp}
+                    />
+                    <St.HamburgerMenu
+                      src="/assets/hamburger.svg"
+                      onClick={handlShowSearchBurger}
+                    />
+                    <Hamburger
+                      isOpen={showHamburger}
+                      onClose={() => setShowHamburger(false)}
+                      onLogout={handleLogOutButtonClick}
+                      user={user}
+                      setUser={() => setUser(false)}
+                      avatarUrl={avatarUrl}
+                    />
+                  </>
+                ) : (
+                  <St.Button onClick={handleNavigateToLogin}>
+                    로그인/회원가입
+                  </St.Button>
+                )}
+              </St.ButtonContainer>
+            </St.HeaderSection>
+            <St.NavSection>
+              <St.NavBar>
+                <St.NavButton to="/products" onClick={handlePageChange}>
+                  중고거래
+                </St.NavButton>
+                <St.NavButton to="/community" onClick={handlePageChange}>
+                  커뮤니티
+                </St.NavButton>
+              </St.NavBar>
 
-            <SearchBar
-              showSearchComp={showSearchComp}
-              setShowSearchComp={setShowSearchComp}
-            />
-          </St.NavSection>
-          <div style={{ position: 'relative' }}></div>
-        </St.HeaderWrapper>
-      </St.HeaderContainer>
-    </St.HeaderTopContainer>
+              <SearchBar
+                showSearchComp={showSearchComp}
+                setShowSearchComp={setShowSearchComp}
+              />
+            </St.NavSection>
+            <div style={{ position: 'relative' }}></div>
+          </St.HeaderWrapper>
+        </St.HeaderContainer>
+      </St.HeaderTopContainer>
+      <St.Hr />
+    </>
   );
 };
 
 export default Header;
+
