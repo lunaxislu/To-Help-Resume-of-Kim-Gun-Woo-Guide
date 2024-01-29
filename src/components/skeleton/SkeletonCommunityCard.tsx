@@ -23,7 +23,7 @@ const SkeletonCommunityCard: React.FC<SkeletonCommunityCardProps> = ({
           <div key={item.id}>
             <SkeletonTheme baseColor="#191919" highlightColor="#1d1d1d">
               <StPostSkeletonContainer>
-                <Skeleton width={300} height={25} />
+                <Skeleton width={490} height={25} />
 
                 <StPostSkeletonWrapper>
                   <Skeleton width={70} height={70} />

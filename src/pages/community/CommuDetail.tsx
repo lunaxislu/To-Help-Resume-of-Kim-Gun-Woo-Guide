@@ -139,7 +139,11 @@ const CommuDetail: React.FC = () => {
                       {posts![0].post_user === userId ? (
                         ''
                       ) : (
-                        <St.ReportArea>
+                        <St.ReportArea
+                          onClick={() => {
+                            alert('개발 중인 기능입니다!');
+                          }}
+                        >
                           <St.AlertIcon />
                           <p>신고하기</p>
                         </St.ReportArea>
@@ -175,7 +179,13 @@ const CommuDetail: React.FC = () => {
                               </St.DropdownItem>
                             </>
                           ) : (
-                            <St.DropdownItem>신고하기</St.DropdownItem>
+                            <St.DropdownItem
+                              onClick={() => {
+                                alert('개발 중인 기능입니다!');
+                              }}
+                            >
+                              신고하기
+                            </St.DropdownItem>
                           )}
                         </St.EditDropdown>
                       )}

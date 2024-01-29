@@ -1,8 +1,8 @@
-import { CgCloseO } from "react-icons/cg";
-import { GoChevronLeft } from "react-icons/go";
+import { CgCloseO } from 'react-icons/cg';
+import { GoChevronLeft } from 'react-icons/go';
 import { GoInfo } from 'react-icons/go';
-import styled from "styled-components";
-import { StFadeAni } from "../../pages/productsDetail/style";
+import styled from 'styled-components';
+import { StFadeAni } from '../../pages/productsDetail/style';
 
 // ProductsPosts
 export const EntireContainer = styled.div`
@@ -201,7 +201,7 @@ export const UpLoadBox = styled.label`
   text-align: center;
   line-height: 3.5;
   position: relative;
-    &:hover {
+  &:hover {
     cursor: pointer;
   }
   @media screen and (max-width: 768px) {
@@ -363,7 +363,7 @@ export const TextValidation = styled.div`
   flex-direction: column;
   height: 5rem;
   padding: 1rem 0 0 19rem;
-    @media screen and (max-width: 1240px) {
+  @media screen and (max-width: 1240px) {
     padding: 1rem 0 0 18rem;
   }
   @media screen and (max-width: 950px) {
@@ -374,7 +374,7 @@ export const TextValidation = styled.div`
   }
 `;
 export const ValidationText = styled.p`
-  color: #EA4949;
+  color: #ea4949;
   line-height: 1.8;
   @media screen and (max-width: 768px) {
     font-size: 1rem;
@@ -410,7 +410,7 @@ export const CategoryContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
-  `;
+`;
 export const InputCheckBoxLabel = styled.label`
   color: var(--11-gray);
   display: flex;
@@ -667,7 +667,7 @@ export const TagsInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-`
+`;
 export const TagsValidation = styled.div`
   display: flex;
   flex-direction: column;
@@ -684,7 +684,7 @@ export const AgreementCheckBoxWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 2rem;
-`
+`;
 export const AgreementCheckBoxStyle = styled.input`
   appearance: none;
   width: 2.8rem;
@@ -740,7 +740,7 @@ export const QualityInfoWrapper = styled.div`
   max-width: 29.7rem;
   height: 22.4rem;
   border-radius: 1rem;
-  border: 0.1rem solid rgba(204, 255, 0, 0.50);
+  border: 0.1rem solid rgba(204, 255, 0, 0.5);
   background-color: var(--3-gray);
   padding: 1.4rem;
   position: absolute;
@@ -774,16 +774,16 @@ export const QualityInfoBtn = styled.div`
       cursor: pointer;
     }
   }
-  `;
-  export const QualityInfoIcon = styled(GoInfo)`
-    display: none;
-    @media screen and (max-width: 768px) {
-      display: block;
-      width: 100%;
-      height: 100%;
-      color: var(--opc-100);
-      :hover { 
-        cursor: pointer;
-      }
+`;
+export const QualityInfoIcon = styled(GoInfo)`
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: var(--opc-100);
+    :hover {
+      cursor: pointer;
     }
-  `;
+  }
+`;

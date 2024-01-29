@@ -541,6 +541,12 @@ const ProductDetail = () => {
           .update({ isSell: true })
           .eq('id', id);
 
+        // 게시물 buyer_uid에 구매자 ID 업데이트
+        const { data: buyerInsert, error: buyerInsertErr } = await supabase
+          .from('products')
+          .update({ buyer_uid: buyerChatId })
+          .eq('id', id);
+
         alert('판매가 완료되었습니다');
         navi('/');
       }
@@ -858,6 +864,9 @@ const ProductDetail = () => {
                 {product[0].post_user_uid === curUser?.uid && (
                   <>
                     <div
+                      onClick={() => {
+                        alert('개발 중인 기능입니다!');
+                      }}
                       style={{
                         display: 'flex',
                         alignItems: 'center',
