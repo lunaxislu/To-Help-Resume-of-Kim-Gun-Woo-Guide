@@ -634,6 +634,30 @@ const ProductDetail = () => {
     if (error) console.log('logined user not exists');
   };
 
+  // 마운트 시 유저 정보 가져옴
+  const getTargetData = async () => {
+    const { data: product, error: productError } = await supabase
+      .from('products')
+      .select('*')
+      .eq('id', id);
+
+    if (product) {
+      const { data: targetUser, error } = await supabase
+        .from('user')
+        .select('*')
+        .eq('uid', product[0]?.post_user_uid);
+
+      // 현재 로그인 유저의 데이터가 있다면
+      if (targetUser && targetUser.length > 0) {
+        setTarget(targetUser[0]);
+      }
+      // 로그이 유저 없음 에러
+      if (error) console.log('logined user not exists');
+    }
+
+    if (productError) console.log('작성자 정보 fetch 오류');
+  };
+
   // 마운트 시 제품 정보 가져옴
   const getProduct = async (id: string | undefined) => {
     let { data: products, error } = await supabase
@@ -680,6 +704,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     getUserData();
+    getTargetData();
     getProduct(id);
     handleCheckIsSoldOut();
     handleGetLikeCount();
