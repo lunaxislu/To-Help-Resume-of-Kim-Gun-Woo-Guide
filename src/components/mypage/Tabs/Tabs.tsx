@@ -5,7 +5,7 @@ import MyPageCommunityPostList from '../Commnity/MyPageCommunityPostList';
 import { useAppSelector } from '../../../redux/reduxHooks/reduxBase';
 
 const Tabs = () => {
-  const count = useAppSelector((state) => state.count);
+  const count = useAppSelector((state) => state.item);
   const tabMenuArray = [
     { label: '내 물품', value: count.myItems },
     { label: '구매한 물품', value: count.purchasedItems },
@@ -14,9 +14,9 @@ const Tabs = () => {
     { label: '추천한 글', value: count.favPosts }
   ];
 
-  const [toggle, setToggle] = useState<number | null>(0);
+  const [tab, setTab] = useState<number>(0);
   const clickToggleTab = (index: number) => {
-    setToggle(index);
+    setTab(index);
   };
 
   return (
@@ -27,7 +27,7 @@ const Tabs = () => {
             <StTab
               key={index}
               onClick={() => clickToggleTab(index)}
-              active={toggle === index}
+              active={tab === index}
             >
               {`${menu.label} (${menu.value.length})`}
             </StTab>
@@ -35,15 +35,10 @@ const Tabs = () => {
         })}
       </StTabsContainer>
 
-      {toggle === 0 || toggle === 1 || toggle === 2 ? (
-        <MyPageItemList activeTab={toggle} />
+      {tab >= 2 ? (
+        <MyPageCommunityPostList activeTab={tab} />
       ) : (
-        ''
-      )}
-      {toggle === 3 || toggle === 4 ? (
-        <MyPageCommunityPostList activeTab={toggle} />
-      ) : (
-        ''
+        <MyPageItemList activeTab={tab} />
       )}
     </>
   );

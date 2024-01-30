@@ -22,6 +22,7 @@ const CommuDetail: React.FC = () => {
   const [userId, setUserId] = useState('');
   const [editToolOpen, setEditToolOpen] = useState(false);
   const [postUser, setPostUser] = useState<ProfileObject[]>([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {

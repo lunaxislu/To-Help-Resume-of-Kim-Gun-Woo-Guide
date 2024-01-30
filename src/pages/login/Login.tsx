@@ -17,7 +17,7 @@ const Login = () => {
         supabaseClient={supabase}
         appearance={{ theme: ThemeSupa }}
         providers={['google', 'facebook', 'kakao']}
-        redirectTo="/"
+        redirectTo="https://jmxcfojtfaoeuzxaoncm.supabase.co/auth/v1/callback"
         onlyThirdPartyProviders={true}
         theme="dark"
       />

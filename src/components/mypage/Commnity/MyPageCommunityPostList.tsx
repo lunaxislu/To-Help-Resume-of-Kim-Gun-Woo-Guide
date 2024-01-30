@@ -7,18 +7,21 @@ import SkeletonCommunityCard from '../../skeleton/SkeletonCommunityCard';
 import { Community, CommunityActive } from '../../../api/supabase/community';
 import { MyPageCommunityCard } from './MyPageCommunityCard';
 import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
-import { setFavPost, setMyPost } from '../../../redux/modules/countSlice';
+import { setFavPost, setMyPost } from '../../../redux/modules/itemSlice';
 import Nothing from '../Nothing';
+import { useInView } from 'react-intersection-observer';
 
 const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
-  const containerRef = useRef(null);
+
   const [isLoading, setIsLoading] = useState(false);
   const [offset, setOffset] = useState(1);
-  const [isInView, setIsInView] = useState(false);
   const [communityPosts, setCommunityPosts] = useState<Community[]>([]);
   const [favCommunityPosts, setFavCommunityPosts] = useState<Community[]>([]);
   const userId = localStorage.getItem('userId');
+  const { ref, inView, entry } = useInView({
+    threshold: 0
+  });
 
   const dispatch = useAppDispatch();
   const getCurrentUserCommunityPosts = async () => {
@@ -31,15 +34,6 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
     if (communityPosts && communityPosts.length > 0) {
       setCommunityPosts(communityPosts);
       dispatch(setMyPost(communityPosts));
-    }
-  };
-
-  const onScrollHandler = () => {
-    if (containerRef.current && typeof window !== 'undefined') {
-      const container = containerRef.current;
-      const { scrollTop, clientHeight, scrollHeight } = container;
-      const isAtBottom = scrollTop + clientHeight <= scrollHeight;
-      setIsInView(isAtBottom);
     }
   };
 
@@ -60,14 +54,6 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
 
   useEffect(() => {
     getCurrentUserFavCommunityPosts();
-  }, []);
-
-  useEffect(() => {
-    const debouncedScroll = debounce(() => onScrollHandler(), 200);
-    window.addEventListener('scroll', debouncedScroll);
-    return () => {
-      window.removeEventListener('scroll', debouncedScroll);
-    };
   }, []);
 
   const fetchCommunityPosts = async (offset: number, limit: number) => {
@@ -100,10 +86,10 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   };
 
   useEffect(() => {
-    if (isInView) {
+    if (inView) {
       loadMorePosts(offset);
     }
-  }, [isInView]);
+  }, []);
 
   useEffect(() => {
     getCurrentUserCommunityPosts();
@@ -116,7 +102,7 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
 
   return (
     <StPostContainer
-      ref={containerRef}
+      ref={ref}
       list={communityPosts.length === 0 && activeTab === 3 ? true : false}
     >
       {activeTab === 3 &&

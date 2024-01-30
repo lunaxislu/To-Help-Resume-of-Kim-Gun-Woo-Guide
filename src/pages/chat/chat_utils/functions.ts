@@ -205,23 +205,25 @@ export class UtilForChat {
     e.preventDefault();
 
     if (!curUser) return;
+    if (chatInput.trim().length === 0) alert('내용을 입력해주세요');
+    if (chatInput.trim().length !== 0) {
+      const messageTemp = {
+        id: uuid(),
+        sender_id: curUser?.id,
+        chat_room_id: clicked,
+        content: chatInput === '' ? null : chatInput,
+        image_url: images
+      };
 
-    const messageTemp = {
-      id: uuid(),
-      sender_id: curUser?.id,
-      chat_room_id: clicked,
-      content: chatInput === '' ? null : chatInput,
-      image_url: images
-    };
+      if (curUser) {
+        const { error } = await supabase
+          .from('chat_messages')
+          .insert([messageTemp]);
 
-    if (curUser) {
-      const { error } = await supabase
-        .from('chat_messages')
-        .insert([messageTemp]);
-
-      setImages('');
-      this.resetInput(setChatInput, setShowFileInput);
-      if (error) console.log('전송 실패', error);
+        setImages('');
+        this.resetInput(setChatInput, setShowFileInput);
+        if (error) console.log('전송 실패', error);
+      }
     }
   };
 }

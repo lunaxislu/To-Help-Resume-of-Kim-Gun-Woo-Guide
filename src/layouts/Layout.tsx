@@ -4,7 +4,6 @@ import Footer from './Footer';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
 import { supabase } from '../api/supabase/supabaseClient';
-
 import styled from 'styled-components';
 import { IoIosClose } from 'react-icons/io';
 const userId = localStorage.getItem('userId');
@@ -55,7 +54,6 @@ const StAlertCloseBtn = styled(IoIosClose)`
 const Layout = () => {
   const location = useLocation();
   const [showTopbutton, setShowTopButton] = useState(false);
-
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [newAlert, setAlert] = useState<any[]>([]);
   const [userChatRooms, setUserChatRoom] = useState<string[]>([]);
@@ -105,43 +103,45 @@ const Layout = () => {
 
   // 메세지 실시간 알림 받기
   useEffect(() => {
-    const getUserChatRoom = async () => {
-      const { data: chatRooms, error } = await supabase
-        .from('user')
-        .select('*')
-        .eq('uid', userId);
-      if (chatRooms) {
-        setUserChatRoom(chatRooms[0]?.chat_rooms);
-      }
-      if (error) {
-        console.log('no chatRooms', error);
-      }
-    };
-
-    getUserChatRoom();
-
-    const chatMessages = supabase
-      .channel('custom-all-channel')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'chat_messages' },
-        (payload: any) => {
-          if (
-            userChatRooms.includes(payload.new.chat_room_id) &&
-            payload.new.sender_id !== userId
-          ) {
-            console.log('Change received!', payload.new);
-            // handlePushNotification(payload.new);
-            setShowAlert(true);
-            setAlert((prev: any) => [payload.new, ...prev]);
-          }
+    if (userId) {
+      const getUserChatRoom = async () => {
+        const { data: chatRooms, error } = await supabase
+          .from('user')
+          .select('*')
+          .eq('uid', userId);
+        if (chatRooms) {
+          setUserChatRoom(chatRooms[0]?.chat_rooms);
         }
-      )
-      .subscribe();
+        if (error) {
+          console.log('no chatRooms', error);
+        }
+      };
 
-    return () => {
-      chatMessages.unsubscribe();
-    };
+      getUserChatRoom();
+
+      const chatMessages = supabase
+        .channel('custom-all-channel')
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'chat_messages' },
+          (payload: any) => {
+            if (
+              userChatRooms.includes(payload.new.chat_room_id) &&
+              payload.new.sender_id !== userId
+            ) {
+              console.log('Change received!', payload.new);
+              // handlePushNotification(payload.new);
+              setShowAlert(true);
+              setAlert((prev: any) => [payload.new, ...prev]);
+            }
+          }
+        )
+        .subscribe();
+
+      return () => {
+        chatMessages.unsubscribe();
+      };
+    }
   }, [location]);
 
   return (

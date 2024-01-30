@@ -8,21 +8,20 @@ export const StCardContainer = styled.div`
   gap: 1.5rem;
   margin: 2rem auto;
 
+  @media screen and (max-width: 1024px) {
+    padding: 0 1.5rem;
+  }
+
   @media screen and (max-width: 768px) {
-    /* width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center; */
     width: 100%;
     max-height: 100%;
-    padding: 0 2rem;
   }
 `;
 
 export const StCardWrapper = styled(Link)`
   display: flex;
   flex-direction: column;
-  width: 20.8rem;
+  width: auto;
   height: 31.5rem;
   gap: 0.5rem;
   text-decoration: none;
@@ -37,7 +36,6 @@ export const StCardWrapper = styled(Link)`
   }
 
   @media screen and (max-width: 768px) {
-    /* width: 100%; */
     flex: 1 1 40%;
   }
 `;
@@ -51,7 +49,7 @@ export const StProductQuality = styled.p<{ qualityColor: string }>`
       ? 'var(--11-gray)'
       : 'var(--2-gray)'};
   background: ${(props) =>
-    (props.qualityColor === '거의 새것' && 'var(--opc-100)') ||
+    (props.qualityColor === '새상품(미사용)' && 'var(--opc-100)') ||
     (props.qualityColor === '사용감 없음' && '#ECECEC') ||
     (props.qualityColor === '사용감 적음' && '#ECECEC') ||
     (props.qualityColor === '사용감 많음' && '#ECECEC') ||
@@ -69,7 +67,7 @@ export const StProductQuality = styled.p<{ qualityColor: string }>`
 
 export const StProductImage = styled.img`
   object-fit: cover;
-  /* width: 20.8rem; */
+  width: 20.8rem;
   height: 20.8rem;
   border-style: none;
   border-radius: 0.6rem;
