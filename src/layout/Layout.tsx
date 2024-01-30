@@ -4,7 +4,6 @@ import Footer from './Footer';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
 import { supabase } from '../api/supabase/supabaseClient';
-
 import styled from 'styled-components';
 import { IoIosClose } from 'react-icons/io';
 const userId = localStorage.getItem('userId');
@@ -159,9 +158,7 @@ const Layout = () => {
         </StModalContainer>
       )}
       <Header />
-      <ContentWrapper>
-        <Outlet />
-      </ContentWrapper>
+      <ContentWrapper></ContentWrapper>
       {showTopbutton && <ScrollTopButton />}
       <Footer />
     </Wrapper>
