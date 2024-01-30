@@ -291,7 +291,6 @@ const SearchResultsContainer = styled.div`
   margin: 0 auto;
   margin-bottom: 15rem;
   color: var(--12, #f8f8f8);
-  background-color: var(--1, #0b0b0b);
   @media screen and (max-width: 1300px) {
     width: 100%;
     max-width: 130rem;
@@ -742,7 +741,7 @@ const PostList = styled.li`
   position: relative;
   align-items: center;
   border-radius: 1rem;
-  background-color: #1f1f1f;
+  background-color: var(--3-gray);
   padding: 2rem;
   margin-bottom: 2rem;
 

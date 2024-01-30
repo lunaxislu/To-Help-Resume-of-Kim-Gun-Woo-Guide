@@ -440,9 +440,7 @@ const ProductsCardQuality = styled.h1<QualityProps>`
   border-radius: 0.3rem;
   margin-top: 1rem;
   background-color: #fcfcfc;
-  interface QualityProps {
-    $quality: string;
-  }
+
   color: var(--2-gray);
   margin-bottom: 0.6rem;
   font-size: var(--fontSize-H6);

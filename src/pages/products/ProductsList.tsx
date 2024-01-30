@@ -6,18 +6,12 @@ import ProductsSortBtn from '../../components/prducts/ProductsList/ProductsSortB
 import * as St from '../../styles/products/ProductsListStyle';
 import { useNavigate } from 'react-router';
 import { getProductsCount } from '../../components/prducts/productsQuery';
-import PostsNothing from './PostsNothing';
 
 const major = [
   '전체',
   '회화',
   '조소',
-  '판화',
-  '금속공예',
-  '도예',
-  '유리공예',
-  '목공예',
-  '섬유공예',
+  '공예',
   '기타'
 ];
 
