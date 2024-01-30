@@ -173,7 +173,9 @@ const ImageInput = styled.input.attrs({ type: 'file' })`
 `;
 
 const StChatInput = styled.textarea.attrs({
-  placeholder: '채팅을 입력하세요'
+  placeholder: '채팅을 입력하세요',
+  maxLength: 250,
+  required: true
 })`
   width: 100%;
   max-width: 688px;
