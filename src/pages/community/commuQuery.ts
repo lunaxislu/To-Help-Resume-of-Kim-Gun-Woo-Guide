@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid';
 import { supabase } from '../../api/supabase/supabaseClient';
 import {
   CommentUpload,
@@ -80,4 +81,17 @@ export const deletePostMutation = async (postId: string | undefined) => {
     throw error;
   }
   return data;
+};
+
+export const uploadFile = async (file: File) => {
+  const newFileName = uuid();
+  const { data, error } = await supabase.storage
+    .from('files')
+    .upload(`files/${newFileName}`, file);
+
+  if (error) {
+    throw new Error('파일 업로드 중 오류가 발생했습니다.');
+  }
+
+  return supabase.storage.from('files').getPublicUrl(data.path);
 };

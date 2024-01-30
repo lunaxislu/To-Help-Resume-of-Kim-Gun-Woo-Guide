@@ -9,7 +9,10 @@ export type Post = {
   comment: Comments | null;
   likes: number | null;
   like_user: string[];
-  files: [];
+  files: {
+    name: string;
+    url: string | null[];
+  }[];
   main_image: string;
   anon: boolean;
 };

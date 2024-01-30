@@ -42,7 +42,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     content: isEdit
       ? posts![0].content.replace(/<p>(.*?)<\/p>/g, ' <div>$1</div>')
       : '',
-    uploadedFileUrl: isEdit ? posts![0].uploadedFileUrl : [],
+    uploadedFileUrl: isEdit ? posts![0].files[0].url : [],
     anon: isEdit ? posts![0].anon : false,
     mainImage: isEdit ? posts![0].mainImage : ''
   });
@@ -79,7 +79,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
 
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
-    console.log(fileList);
     if (fileList) {
       const filesArray = Array.from(fileList);
       filesArray.forEach((file) => {
@@ -89,6 +88,11 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   };
 
   const handleFilesUpload = async (file: File) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      files: [...prevValues.files],
+      uploadedFileUrl: [...prevValues.uploadedFileUrl]
+    }));
     try {
       const newFileName = uuid();
       const { data, error } = await supabase.storage
@@ -99,23 +103,15 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         return;
       }
       const res = supabase.storage.from('files').getPublicUrl(data.path);
-      setFormValues((prevValues) => ({
+      setFormValues((prevValues: any) => ({
         ...prevValues,
         files: [...prevValues.files, file],
         uploadedFileUrl: [...prevValues.uploadedFileUrl, res.data.publicUrl]
       }));
+      console.log(res.data.publicUrl);
     } catch (error) {
       console.error('파일을 업로드하지 못했습니다:', error);
     }
-  };
-  const removeFile = (index: number) => {
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      files: prevValues.files.filter((_: File, i: number) => i !== index),
-      uploadedFileUrl: prevValues.uploadedFileUrl.filter(
-        (_: File, i: number) => i !== index
-      )
-    }));
   };
 
   const addMutation = useMutation(addPostMutation, {
@@ -125,11 +121,27 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       navigate('/community');
     }
   });
-  const fileArr = formValues.files.map((file: File) => ({
+
+  const removeFile = (index: number) => {
+    if (formValues.files && formValues.files.length > 0) {
+      const newFiles = formValues.files.filter(
+        (_: File, i: number) => i !== index
+      );
+      const newUploadedFileUrls = formValues.uploadedFileUrl.filter(
+        (_: File, i: number) => i !== index
+      );
+
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        files: newFiles,
+        uploadedFileUrl: newUploadedFileUrls
+      }));
+    }
+  };
+  const fileArr = formValues.files.map((file: File, index: number) => ({
     name: file.name,
     url: formValues.uploadedFileUrl
   }));
-
   const addPost = async () => {
     if (!validateForm()) {
       return;
@@ -208,7 +220,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             ...prevValues,
             mainImage: postImageUrl
           }));
-          editor?.setSelection((range?.index || 0) + 1, 0);
+          // editor?.setSelection((range?.index || 0) + 1, 0);
           console.log('가져왔다');
         } else {
           console.error('No public URL found in response data.');
@@ -325,20 +337,28 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         <St.LayoutFileArea>
           <St.LayoutValueText>파일</St.LayoutValueText>
           <St.LayoutFileUploader>
-            {formValues.files.length !== 0
-              ? formValues.files.map((file: File) => file.name)
-              : '파일을 업로드하려면 클릭하세요'}
-            <input type="file" onChange={handleFiles} multiple />
+            파일을 업로드하려면 클릭하세요 (hwp, pdf, xlsx, xls)
+            <input
+              type="file"
+              onChange={handleFiles}
+              accept=".pdf, .xls, .xlsx, .hwp"
+              multiple
+            />
           </St.LayoutFileUploader>
-          <ul>
-            {formValues.files.map((file: File, index: number) => (
-              <li key={index}>
-                {file.name}
-                <button onClick={() => removeFile(index)}>삭제</button>
-              </li>
-            ))}
-          </ul>
         </St.LayoutFileArea>
+        <St.LayoutFileListArea>
+          <St.LayoutValueText></St.LayoutValueText>
+          {/* <St.FileListContainer> */}
+          <St.FileList>
+            {formValues.files.map((file: File, index: number) => (
+              <div>
+                <li key={index}>{file.name}</li>
+                <button onClick={() => removeFile(index)}>X</button>
+              </div>
+            ))}
+          </St.FileList>
+          {/* </St.FileListContainer> */}
+        </St.LayoutFileListArea>
         <St.LayoutAnonArea>
           <St.LayoutValueText></St.LayoutValueText>
           <St.LayoutBottom>

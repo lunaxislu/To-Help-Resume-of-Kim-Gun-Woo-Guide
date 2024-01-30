@@ -7,13 +7,14 @@ import * as St from '../../styles/community/CommunityDetailStyle';
 
 import { supabase } from '../../api/supabase/supabaseClient';
 import Comment from '../../components/community/Comment';
+import CommuFileList from '../../components/community/CommuFileList';
 import parseDate from '../../util/getDate';
 import WriteLayout from './WriteLayout';
 import { deletePostMutation, fetchDetailPost } from './commuQuery';
-import { FilesObject, ProfileObject } from './model';
+import { ProfileObject } from './model';
 // Quill.register('modules/imageActions', ImageActions);
 // Quill.register('modules/imageFormats', ImageFormats);
-
+const fileIcons = {};
 const CommuDetail: React.FC = () => {
   const param = useParams();
   const navigate = useNavigate();
@@ -211,22 +212,7 @@ const CommuDetail: React.FC = () => {
                   </div>{' '}
                   <St.Content>{parse(post.content)}</St.Content>
                   {post.files && post.files.length > 0 && (
-                    <div>
-                      {post.files.map((file: FilesObject, index: number) => (
-                        <>
-                          <a
-                            key={index}
-                            href={file.url[index]}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {file.name}
-                          </a>
-                          <br />
-                          <br />
-                        </>
-                      ))}
-                    </div>
+                    <CommuFileList files={post.files} />
                   )}{' '}
                 </div>
               );
