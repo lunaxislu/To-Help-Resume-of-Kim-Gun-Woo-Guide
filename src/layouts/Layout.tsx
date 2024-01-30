@@ -54,7 +54,6 @@ const StAlertCloseBtn = styled(IoIosClose)`
 const Layout = () => {
   const location = useLocation();
   const [showTopbutton, setShowTopButton] = useState(false);
-
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [newAlert, setAlert] = useState<any[]>([]);
   const [userChatRooms, setUserChatRoom] = useState<string[]>([]);
@@ -158,7 +157,9 @@ const Layout = () => {
         </StModalContainer>
       )}
       <Header />
-      <ContentWrapper></ContentWrapper>
+      <ContentWrapper>
+        <Outlet />
+      </ContentWrapper>
       {showTopbutton && <ScrollTopButton />}
       <Footer />
     </Wrapper>
