@@ -1,9 +1,7 @@
-import React from 'react';
-import { useAppSelector } from '../../redux/reduxHooks/reduxBase';
 import { Navigate, Outlet } from 'react-router';
 
 const PrivateLayout = () => {
-  const { isLogin } = useAppSelector((state) => state.auth);
+  const isLogin = localStorage.getItem('userId');
 
   if (!isLogin) return <Navigate to={'/login'} replace />;
 
