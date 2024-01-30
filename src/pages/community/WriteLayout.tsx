@@ -38,7 +38,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   const [formValues, setFormValues] = useState({
     title: isEdit ? posts![0].title : '',
     category: isEdit ? posts![0].category : '',
-    files: [],
+    files: isEdit ? posts![0].files : [],
     content: isEdit
       ? posts![0].content.replace(/<p>(.*?)<\/p>/g, ' <div>$1</div>')
       : '',
@@ -89,11 +89,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   };
 
   const handleFilesUpload = async (file: File) => {
-    setFormValues((prevValues: any) => ({
-      ...prevValues,
-      files: [],
-      uploadedFileUrl: []
-    }));
     try {
       const newFileName = uuid();
       const { data, error } = await supabase.storage
@@ -104,15 +99,23 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         return;
       }
       const res = supabase.storage.from('files').getPublicUrl(data.path);
-      setFormValues((prevValues: any) => ({
+      setFormValues((prevValues) => ({
         ...prevValues,
         files: [...prevValues.files, file],
         uploadedFileUrl: [...prevValues.uploadedFileUrl, res.data.publicUrl]
       }));
-      console.log(res.data.publicUrl);
     } catch (error) {
       console.error('파일을 업로드하지 못했습니다:', error);
     }
+  };
+  const removeFile = (index: number) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      files: prevValues.files.filter((_: File, i: number) => i !== index),
+      uploadedFileUrl: prevValues.uploadedFileUrl.filter(
+        (_: File, i: number) => i !== index
+      )
+    }));
   };
 
   const addMutation = useMutation(addPostMutation, {
@@ -205,7 +208,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             ...prevValues,
             mainImage: postImageUrl
           }));
-          // editor?.setSelection((range?.index || 0) + 1, 0);
+          editor?.setSelection((range?.index || 0) + 1, 0);
           console.log('가져왔다');
         } else {
           console.error('No public URL found in response data.');
@@ -327,6 +330,14 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
               : '파일을 업로드하려면 클릭하세요'}
             <input type="file" onChange={handleFiles} multiple />
           </St.LayoutFileUploader>
+          <ul>
+            {formValues.files.map((file: File, index: number) => (
+              <li key={index}>
+                {file.name}
+                <button onClick={() => removeFile(index)}>삭제</button>
+              </li>
+            ))}
+          </ul>
         </St.LayoutFileArea>
         <St.LayoutAnonArea>
           <St.LayoutValueText></St.LayoutValueText>
