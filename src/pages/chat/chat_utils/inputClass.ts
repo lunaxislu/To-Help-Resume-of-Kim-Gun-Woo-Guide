@@ -20,8 +20,8 @@ export class InputHandler {
     clicked: string | undefined,
     chatInput: string,
     setChatInput: React.Dispatch<SetStateAction<string>>,
-    setImages: React.Dispatch<SetStateAction<string>>,
-    images: string,
+    setImages: React.Dispatch<SetStateAction<any>>,
+    images: (string | undefined)[],
     setShowFileInput: React.Dispatch<SetStateAction<boolean>>
   ) => {
     if (e.key === 'Enter') {

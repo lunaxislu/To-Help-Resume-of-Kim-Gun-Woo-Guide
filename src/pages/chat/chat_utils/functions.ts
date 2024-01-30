@@ -119,7 +119,7 @@ export class UtilForChat {
     if (file !== undefined) {
       const { data, error } = await supabase.storage
         .from('images')
-        .upload(`messages/${uuid()}`, file);
+        .upload(`images/${uuid()}`, file);
 
       if (error) {
         console.error('파일 업로드 실패:', error);
@@ -197,15 +197,18 @@ export class UtilForChat {
     curUser: User | null | undefined,
     clicked: string | undefined,
     chatInput: string,
-    images: string,
-    setImages: React.Dispatch<SetStateAction<string>>,
+    images: (string | undefined)[],
+    setImages: React.Dispatch<SetStateAction<any>>,
     setChatInput: React.Dispatch<SetStateAction<string>>,
     setShowFileInput: React.Dispatch<SetStateAction<boolean>>
   ) => {
     e.preventDefault();
 
     if (!curUser) return;
-    if (chatInput.trim().length === 0) alert('내용을 입력해주세요');
+    if (chatInput.trim().length === 0) {
+      alert('메세지를 입력해주세요');
+      setChatInput('');
+    }
     if (chatInput.trim().length !== 0) {
       const messageTemp = {
         id: uuid(),

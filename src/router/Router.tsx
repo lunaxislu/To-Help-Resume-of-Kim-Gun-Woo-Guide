@@ -19,6 +19,7 @@ import ProductDetail from '../pages/productsDetail/ProductDetail';
 import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
 import { useAppSelector } from '../redux/reduxHooks/reduxBase';
+import PreviewTest from '../components/imagePreviewer/PreviewTest';
 
 const Router = () => {
   const { isLogin } = useAppSelector((state) => state.auth);
@@ -64,6 +65,7 @@ const Router = () => {
             path="/community/detail/:id"
             element={isLogin ? <CommuDetail /> : <Navigate to="/login/login" />}
           />
+          <Route path="/chat/imageViewer" element={<PreviewTest />} />
         </Route>
       </Routes>
     </BrowserRouter>
