@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StCardContainer } from '../../../styles/mypageStyle/ProductCardStyle';
+import { debounce } from 'lodash';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import SkeletonProductCard from '../../skeleton/SkeletonProductCard';
 import { Product, ProductCardProps } from '../../../api/supabase/products';
 import MyPageItemCard from './MyPageItemCard';
-import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
+import {
+  useAppDispatch,
+  useAppSelector
+} from '../../../redux/reduxHooks/reduxBase';
 import { useInView } from 'react-intersection-observer';
 import {
   setFavItem,
@@ -17,9 +21,11 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
   const [isLoading, setIsLoading] = useState(false);
   const [offset, setOffset] = useState(1);
+
   const [myItems, setMyItems] = useState<Product[]>([]);
   const [purchasedItems, setPurchasedItems] = useState<Product[]>([]);
   const [favItems, setFavItems] = useState<Product[]>([]);
+
   const dispatch = useAppDispatch();
   const userId = localStorage.getItem('userId');
 
@@ -69,6 +75,24 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
 
   useEffect(() => {
     getFavoriteProducts();
+  }, []);
+
+  const onScrollHandler = () => {
+    // js script가 동작하고 카드를 감싸는 전체 컨테이너가 바닥에 닿을 때
+    // if (inView) {
+    //   const container = containerRef.current;
+    //   const { scrollTop, clientHeight, scrollHeight } = container;
+    //   const isAtBottom = scrollTop + clientHeight <= scrollHeight;
+    //   setIsInView(isAtBottom);
+    // }
+  };
+
+  useEffect(() => {
+    const debouncedScroll = debounce(() => onScrollHandler(), 200);
+    window.addEventListener('scroll', debouncedScroll);
+    return () => {
+      window.removeEventListener('scroll', debouncedScroll);
+    };
   }, []);
 
   const fetchProducts = async (offset: number, limit: number) => {
@@ -146,7 +170,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
           show={true}
         />
       )}
-      {inView && <SkeletonProductCard cards={myItems.length} />}
+      {isLoading && <SkeletonProductCard cards={myItems.length} />}
 
       {activeTab === 1 &&
         purchasedItems.map((item) => {
@@ -197,6 +221,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
         />
       )}
       {isLoading && <SkeletonProductCard cards={10} />}
+      {/* <SkeletonProductCard cards={10} /> */}
     </StCardContainer>
   );
 };

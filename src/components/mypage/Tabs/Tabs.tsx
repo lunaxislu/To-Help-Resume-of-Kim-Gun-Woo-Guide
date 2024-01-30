@@ -5,7 +5,7 @@ import MyPageCommunityPostList from '../Commnity/MyPageCommunityPostList';
 import { useAppSelector } from '../../../redux/reduxHooks/reduxBase';
 
 const Tabs = () => {
-  const count = useAppSelector((state) => state.count);
+  const count = useAppSelector((state) => state.item);
   const tabMenuArray = [
     { label: '내 물품', value: count.myItems },
     { label: '구매한 물품', value: count.purchasedItems },

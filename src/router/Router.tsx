@@ -1,11 +1,4 @@
-import {
-  BrowserRouter,
-  Navigate,
-  Outlet,
-  Route,
-  Routes
-} from 'react-router-dom';
-
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import ChatRoom from '../pages/chat/ChatRoom';
 import CommuDetail from '../pages/community/CommuDetail';
 import CommunityMain from '../pages/community/CommunityMain';
@@ -18,7 +11,6 @@ import ProductsPosts from '../pages/products/ProductsPosts';
 import ProductDetail from '../pages/productsDetail/ProductDetail';
 import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
-import PublicLayout from '../layouts/PublicLayout/PublicLayout';
 import PrivateLayout from '../layouts/PrivateLayout/PrivateLayout';
 import Layout from '../layouts/Layout';
 
@@ -28,7 +20,6 @@ const Router = () => {
       <GlobalStyles />
       <Routes>
         <Route element={<Layout />}>
-          <Route element={<PublicLayout />} />
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/community" element={<CommunityMain />} />
@@ -36,14 +27,16 @@ const Router = () => {
           <Route path="/products" element={<ProductsList />} />
           <Route path="/products/detail/:id" element={<ProductDetail />} />
           <Route path="/search-results" element={<SearchResults />} />
-        </Route>
+          <Route path="*" element={<Navigate to={'/'} replace />} />
 
-        <Route element={<PrivateLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/chat" element={<ChatRoom />} />
-          <Route path="/productsposts" element={<ProductsPosts />} />
-          <Route path="/community_write" element={<WritePost />} />
+          <Route element={<PrivateLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/chat" element={<ChatRoom />} />
+            <Route path="/productsposts" element={<ProductsPosts />} />
+            <Route path="/community_write" element={<WritePost />} />
+            <Route path="*" element={<Navigate to={'/'} replace />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
