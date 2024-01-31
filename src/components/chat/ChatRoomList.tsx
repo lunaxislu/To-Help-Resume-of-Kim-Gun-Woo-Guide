@@ -30,8 +30,6 @@ const ChatRoomList: React.FC<Props> = ({
   const [products, setProducts] = useState<Product[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
-  const util = new UtilForChat();
-
   const updateToRead = async (room_id: string) => {
     await supabase
       .from('chat_messages')
@@ -132,7 +130,6 @@ const ChatRoomList: React.FC<Props> = ({
     handleRealtime();
     getAllMessage();
     getProductsforRoom();
-    updateToRead(clicked as string);
   }, []);
 
   const checkDevice = (agent: string) => {

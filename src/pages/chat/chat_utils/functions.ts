@@ -170,10 +170,12 @@ export class UtilForChat {
   // submit 발생 시 인풋 초기화
   resetInput = (
     setChatInput: React.Dispatch<SetStateAction<string>>,
-    setShowFileInput: React.Dispatch<SetStateAction<boolean>>
+    setShowFileInput: React.Dispatch<SetStateAction<boolean>>,
+    setImages: React.Dispatch<SetStateAction<(string | undefined)[]>>
   ) => {
     setChatInput('');
     setShowFileInput(false);
+    setImages([]);
   };
 
   // 메세지 전송 - 메세지 테이블에 insert
@@ -190,41 +192,46 @@ export class UtilForChat {
     e.preventDefault();
 
     if (!curUser) return;
-    if (chatInput.trim().length === 0) {
+
+    if (chatInput.trim().length === 0 && images.length === 0) {
       alert('메세지를 입력해주세요');
       setChatInput('');
+      return;
     }
-    if (chatInput.trim().length !== 0) {
-      const messageTemp = {
-        id: uuid(),
-        sender_id: curUser?.id,
-        chat_room_id: clicked,
-        content: chatInput === '' ? null : chatInput,
-        image_url: images.length > 0 ? images : null
-      };
+    const messageTemp = {
+      id: uuid(),
+      sender_id: curUser?.id,
+      chat_room_id: clicked,
+      content: chatInput === '' ? null : chatInput,
+      image_url: images.length > 0 ? images : null
+    };
 
-      if (curUser) {
-        const { error } = await supabase
-          .from('chat_messages')
-          .insert([messageTemp]);
-        setImages(null);
-        setShowFileInput(false);
+    if (curUser) {
+      const { error } = await supabase
+        .from('chat_messages')
+        .insert([messageTemp]);
+      this.resetInput(setChatInput, setShowFileInput, setImages);
 
-        const { data: unread, error: getCountError } = await supabase
+      const { data: unread, error: getCountError } = await supabase
+        .from('chat_room')
+        .select('unread')
+        .eq('id', clicked);
+      this.resetInput(setChatInput, setShowFileInput, setImages);
+
+      if (getCountError) console.log('안 읽은 메세지 에러', getCountError);
+
+      if (unread && messageTemp.sender_id !== curUser?.id) {
+        console.log(unread);
+        const updatedCount = unread[0].unread + 1;
+        const { error: countUpdateError } = await supabase
           .from('chat_room')
-          .select('unread')
+          .update({ unread: updatedCount })
           .eq('id', clicked);
+        this.resetInput(setChatInput, setShowFileInput, setImages);
 
-        if (unread && messageTemp.sender_id !== curUser?.id) {
-          const updatedCount = unread[0].unread + 1;
-          const { error: countUpdateError } = await supabase
-            .from('chat_room')
-            .update({ unread: updatedCount })
-            .eq('id', clicked);
-
-          if (error) console.log('전송 실패', error);
-        }
+        if (error) console.log('전송 실패', error);
       }
+      this.resetInput(setChatInput, setShowFileInput, setImages);
     }
   };
 }

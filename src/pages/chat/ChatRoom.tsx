@@ -53,7 +53,6 @@ export default function ChatRoom() {
   const [unread, setUnread] = useState<number[] | null>(null);
   const [targetUser, setTargetUser] = useState<any[]>();
   const [showFileInput, setShowFileInput] = useState<boolean>(false);
-  const [myRooms, setMyRooms] = useState<RoomType[] | null>();
 
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [boardPosition, setboardPosition] = useState<number>(100);
@@ -229,7 +228,7 @@ export default function ChatRoom() {
           />
         </St.StChatList>
         <St.StChatBoard $position={boardPosition}>
-          {clicked && (
+          {clicked ? (
             <ChatHeader
               handleHideBoardPosition={handleHideBoardPosition}
               showMene={showMene}
@@ -242,6 +241,12 @@ export default function ChatRoom() {
               rooms={rooms}
               setShowMenu={setShowMenu}
             />
+          ) : (
+            <StChatStart>
+              <h1>
+                <span>채팅방</span>을 눌러 <span>채팅</span>을 시작하세요!
+              </h1>
+            </StChatStart>
           )}
 
           <St.StChatGround ref={scrollRef}>
@@ -263,3 +268,24 @@ export default function ChatRoom() {
     </St.StChatWrapper>
   );
 }
+
+const StChatStart = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  h1 {
+    display: block;
+    position: absolute;
+    top: 45%;
+    left: 53%;
+    transform: translate(-50%, -50%);
+  }
+
+  span {
+    color: var(--opc-100);
+  }
+`;

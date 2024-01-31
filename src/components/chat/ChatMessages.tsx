@@ -93,7 +93,7 @@ const ChatMessages = ({
               ) : (
                 <div key={msg.id}>
                   {msg.image_url &&
-                    msg.image_url.map((img: string) => {
+                    msg.image_url?.map((img: string) => {
                       return (
                         <StImageballoon
                           onClick={handleShowImage}
@@ -104,8 +104,8 @@ const ChatMessages = ({
                     })}
                   {msg.content === null && null}
                   {msg.content !== null && (
-                    <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
-                      {msg.content}
+                    <StChatballoon key={msg.id}>
+                      {msg.content === null ? null : msg.content}
                     </StChatballoon>
                   )}
                 </div>
@@ -155,7 +155,7 @@ type ImageBalloon = {
   src: string;
 };
 
-const StImageballoon = styled.div<ImageBalloon>`
+const StImageballoon = styled.img<ImageBalloon>`
   width: 200px;
   height: 200px;
   display: block;
