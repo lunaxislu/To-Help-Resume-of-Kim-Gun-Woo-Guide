@@ -18,6 +18,7 @@ import {
   researchItems
 } from '../../../pages/searchResults/researchItem';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { IoIosClose } from 'react-icons/io';
 import { GrPrevious } from 'react-icons/gr';
 
 type SearchBarProps = {
@@ -33,13 +34,28 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isInputEmpty, setIsInputEmpty] = useState<boolean>(true);
+
+  // 인풋창 최대 입력 글자 제한
+  const maxInputLength = 20;
 
   const handleHideSearchComp = () => {
     setShowSearchComp(false);
   };
 
+  // 인풋창에 작성되는 내용을 인식해서 스토어로 보내주고, 입력 내용 지울 수 있는 state 삽입
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
     dispatch(setSearchQuery(e.target.value));
+    setIsInputEmpty(!inputValue.trim());
+    if (inputValue.length > maxInputLength) {
+      alert(`최대 ${maxInputLength}까지 입력이 가능합니다.`);
+    }
+  };
+
+  const handleClearInput = () => {
+    dispatch(setSearchQuery(''));
+    setIsInputEmpty(true);
   };
 
   const handleSearch = async () => {
@@ -105,7 +121,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           <GrPrevious
             style={{
               color: 'var(--opc-100)',
-              fontSize: '2rem',
+              fontSize: '1.6rem',
               cursor: 'pointer'
             }}
             onClick={handleHideSearchComp}
@@ -121,8 +137,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
           value={searchQuery}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
+          maxLength={maxInputLength}
         />
-
+        {isMobile && !isInputEmpty && (
+          <ClearInputButton onClick={handleClearInput}>
+            <IoIosClose />
+          </ClearInputButton>
+        )}
         <SearchBtn onClick={handleSearch}>
           <StMagnifyGlass />
 
@@ -145,7 +166,6 @@ const SearchInputContainer = styled.div<MobileProps>`
   /* position: relative; */
 
   @media only screen and (max-width: 768px) {
-    margin-top: 15.1rem;
     width: 100vw;
     height: 100vh;
     position: fixed;
@@ -176,6 +196,7 @@ const SearchInputContainer = styled.div<MobileProps>`
 const SearchInputBar = styled.input`
   width: 48.8rem;
   height: 3.7rem;
+  padding-left: 2rem;
   border-radius: 1.9rem;
   background: var(--3-gray, #2c2c2c);
   border: none;
@@ -203,9 +224,21 @@ const SearchInputBar = styled.input`
     border: none;
     border-radius: 0;
     border-bottom: 1px solid #dbff00;
+    padding-left: 0.5rem;
   }
 `;
 
+const ClearInputButton = styled.div`
+  @media screen and (max-width: 768px) {
+    position: absolute;
+    top: 10%;
+    right: 80px;
+    transform: translateY(0%);
+    color: #878787;
+    font-size: 3rem;
+    cursor: pointer;
+  }
+`;
 const StMagnifyGlass = styled(FaMagnifyingGlass)`
   position: absolute;
   top: 32%;
