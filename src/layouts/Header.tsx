@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { MouseEvent, SetStateAction, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { supabase } from '../api/supabase/supabaseClient';
 import SearchBar from '../components/layout/header/SearchBar';
 import { setSuccessLogin, setSuccessLogout } from '../redux/modules/authSlice';
@@ -7,23 +7,132 @@ import { setSearchQuery, setSearchResults } from '../redux/modules/searchSlice';
 import { useAppDispatch, useAppSelector } from '../redux/reduxHooks/reduxBase';
 import * as St from '../styles/headerStyle/HeaderStyle';
 import { BiWon } from 'react-icons/bi';
-import { BiSolidHeart } from 'react-icons/bi';
 import { BiSolidBell } from 'react-icons/bi';
 import Hamburger from '../components/layout/header/Hamburger';
 import { BsChatDotsFill } from 'react-icons/bs';
+import styled, { keyframes } from 'styled-components';
 
 interface User {
   username: string;
 }
 
-const Header = () => {
+type HeaderProps = {
+  notification: any[];
+  newNotiExists: boolean;
+  setNewNotiExists: React.Dispatch<SetStateAction<boolean>>;
+  setNotification: React.Dispatch<SetStateAction<any[]>>;
+};
+
+const NotiAni = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const StNotiContainer = styled.div`
+  width: 200px;
+  max-height: 150px;
+  overflow-y: scroll;
+  border: 0.1rem solid var(--opc-100);
+  border-radius: 3px;
+  background-color: var(--3-gray);
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding-top: 2rem;
+  top: 7%;
+  right: 18%;
+  z-index: 3;
+  transition: all 0.3s ease;
+  animation: ${NotiAni} 0.3s ease;
+
+  @media screen and (max-width: 768px) {
+    width: 150px;
+  }
+`;
+
+const StNoticeButtonContainer = styled.div`
+  width: 100%;
+  padding: 0.3rem;
+  background-color: var(--2-gray);
+  position: absolute;
+  top: 0;
+`;
+
+const StNoticeDeleteBtn = styled.button`
+  background: var(--2-gray);
+  outline: none;
+  border: none;
+  color: var(--opc-100);
+  cursor: pointer;
+`;
+
+const StNotiItem = styled.div`
+  width: 100%;
+  padding: 1.2rem 0.8rem;
+  border-bottom: 0.1rem solid var(--opc-20);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--opc-100);
+    color: var(--3-gray);
+  }
+`;
+
+const StNotiDot = styled.div`
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
+`;
+
+const Header = ({
+  notification,
+  newNotiExists,
+  setNewNotiExists,
+  setNotification
+}: HeaderProps) => {
   const [user, setUser] = useState<User | boolean>(false);
-  const [loading, setLoading] = useState(true);
   const [avatarUrl, setAvatarUrl] = useState<string>();
   const { isLogin } = useAppSelector((state) => state.auth);
-  const location = useLocation();
   const dispatch = useAppDispatch();
 
+  // 알림 관련
+  const [showNoti, setShowNoti] = useState<boolean>(false);
+  const navi = useNavigate();
+
+  const showNotiToggle = () => {
+    setShowNoti((prev) => !prev);
+    setNewNotiExists(false);
+  };
+
+  const deleteAllNotification = () => {
+    setNotification([]);
+  };
+
+  const filterPrevNoti = (noti_id: string) => {
+    console.log(noti_id);
+    console.log(notification);
+    const filtered = notification.filter((noti) => {
+      return noti.id !== noti_id;
+    });
+    setNotification(filtered);
+  };
+
+  const clickNoti = (e: MouseEvent<HTMLDivElement>) => {
+    const clickedItem = e.currentTarget.id;
+    filterPrevNoti(clickedItem);
+    setShowNoti(false);
+    navi('/chat');
+  };
+
+  // 반응형 대응 서치 컴포넌트 관련
   const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
   const [showHamburger, setShowHamburger] = useState<boolean>(false);
   // 반응형 대응 서치 컴포넌트 두두둥장
@@ -51,12 +160,12 @@ const Header = () => {
     if (isLogin) {
       navigate('/productsposts');
     } else {
-      navigate('/login/login');
+      navigate('/login');
     }
     if (isLogin) {
       navigate('/productsposts');
     } else {
-      navigate('/login/login');
+      navigate('/login');
     }
   };
 
@@ -65,7 +174,7 @@ const Header = () => {
     handlePageChange();
   };
   const handleNavigateToLogin = () => {
-    navigate('/login/login');
+    navigate('/login');
   };
   const handleNavigateToChat = () => {
     navigate('/chat');
@@ -123,6 +232,34 @@ const Header = () => {
 
   return (
     <>
+      {notification.length > 0 && showNoti && (
+        <>
+          <StNotiContainer>
+            {notification.map((noti) => {
+              return (
+                <StNotiItem id={noti.id} onClick={clickNoti} key={noti.id}>
+                  새로운 메세지가 있습니다.
+                </StNotiItem>
+              );
+            })}
+            <StNoticeButtonContainer>
+              <StNoticeDeleteBtn onClick={deleteAllNotification}>
+                알림 지우기
+              </StNoticeDeleteBtn>
+            </StNoticeButtonContainer>
+          </StNotiContainer>
+        </>
+      )}
+      {notification.length === 0 && showNoti && (
+        <StNotiContainer>
+          <StNotiItem>알림이 없습니다</StNotiItem>
+          <StNoticeButtonContainer>
+            <StNoticeDeleteBtn onClick={deleteAllNotification}>
+              알림 지우기
+            </StNoticeDeleteBtn>
+          </StNoticeButtonContainer>
+        </StNotiContainer>
+      )}
       <St.HeaderTopContainer>
         <St.HeaderContainer>
           <St.HeaderWrapper>
@@ -159,7 +296,7 @@ const Header = () => {
                   ''
                 )}
                 {isLogin ? (
-                  <St.Alert>
+                  <St.Alert onClick={showNotiToggle}>
                     <BiSolidBell
                       style={{
                         width: '1.6rem',
@@ -167,6 +304,7 @@ const Header = () => {
                         color: 'var(--opc-100)'
                       }}
                     />
+                    {notification && newNotiExists && <StNotiDot></StNotiDot>}
                     <p>알림</p>
                   </St.Alert>
                 ) : (
@@ -227,4 +365,3 @@ const Header = () => {
 };
 
 export default Header;
-

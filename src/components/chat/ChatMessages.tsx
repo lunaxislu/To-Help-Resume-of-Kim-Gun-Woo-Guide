@@ -1,5 +1,5 @@
 import React, { MouseEvent } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import type { MessageCompProps, MessageType } from './types';
 import { useNavigate } from 'react-router';
 import { supabase } from '../../api/supabase/supabaseClient';
@@ -40,7 +40,7 @@ const ChatMessages = ({
           (a: MessageType, b: MessageType) =>
             new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
         )
-        .map((msg: any) => {
+        .map((msg: MessageType) => {
           return msg.sender_id === curUser?.id ? (
             <div key={msg.id}>
               {msg.isFirst ? (
@@ -57,13 +57,16 @@ const ChatMessages = ({
                 </div>
               ) : (
                 <div key={msg.id}>
-                  {msg.image_url && (
-                    <StMyImageballoon
-                      onClick={handleShowImage}
-                      src={msg.image_url}
-                      alt=""
-                    />
-                  )}
+                  {msg.image_url &&
+                    msg.image_url?.map((img: string) => {
+                      return (
+                        <StMyImageballoon
+                          onClick={handleShowImage}
+                          $url={img}
+                          src={img}
+                        />
+                      );
+                    })}
                   {msg.content === null && null}
                   {msg.content !== null && (
                     <StMyChatballoon key={msg.id}>
@@ -89,17 +92,20 @@ const ChatMessages = ({
                 </div>
               ) : (
                 <div key={msg.id}>
-                  {msg.image_url && (
-                    <StImageballoon
-                      onClick={handleShowImage}
-                      src={msg.image_url}
-                      alt=""
-                    />
-                  )}
+                  {msg.image_url &&
+                    msg.image_url?.map((img: string) => {
+                      return (
+                        <StImageballoon
+                          onClick={handleShowImage}
+                          $url={img}
+                          src={img}
+                        />
+                      );
+                    })}
                   {msg.content === null && null}
                   {msg.content !== null && (
-                    <StChatballoon style={{ textAlign: 'left' }} key={msg.id}>
-                      {msg.content}
+                    <StChatballoon key={msg.id}>
+                      {msg.content === null ? null : msg.content}
                     </StChatballoon>
                   )}
                 </div>
@@ -111,38 +117,71 @@ const ChatMessages = ({
   );
 };
 
-const StMyImageballoon = styled.img`
+const StMyImageballoon = styled.img<ImageBalloon>`
   width: 200px;
+  height: 200px;
   display: block;
   margin-right: 2.5rem;
   margin-left: auto;
-  padding: 1rem;
-  background: #eee;
+  ${(props) => {
+    if (props.$url && props.$url !== undefined) {
+      return css`
+        background: url(${props.$url});
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      `;
+    } else {
+      return css`
+        background: #eee;
+      `;
+    }
+  }}
   border-radius: 12px;
   cursor: pointer;
   margin-block: 2rem;
   font-weight: 500;
 
   @media screen and (max-width: 768px) {
-    width: 130px;
+    width: 150px;
+    height: 150px;
     margin-right: 2rem;
     padding: 0.5rem;
   }
 `;
 
-const StImageballoon = styled.img`
+type ImageBalloon = {
+  $url: string;
+  src: string;
+};
+
+const StImageballoon = styled.img<ImageBalloon>`
   width: 200px;
+  height: 200px;
   display: block;
   margin-right: auto;
   margin-left: 2.5rem;
-  padding: 1rem;
-  background: #eee;
+  ${(props) => {
+    if (props.$url && props.$url !== undefined) {
+      return css`
+        background: url(${props.$url});
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      `;
+    } else {
+      return css`
+        background: #eee;
+      `;
+    }
+  }}
   border-radius: 12px;
   cursor: pointer;
   margin-block: 2rem;
 
   @media screen and (max-width: 768px) {
-    width: 130px;
+    width: 150px;
+    height: 150px;
     margin-left: 2rem;
     padding: 0.5rem;
   }

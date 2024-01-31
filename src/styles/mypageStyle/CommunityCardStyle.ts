@@ -60,6 +60,7 @@ export const StPostContent = styled.p`
   font-size: var(--fontSize-H5);
   color: var(--8-gray);
   line-height: 1.5;
+  flex: 1;
 
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);

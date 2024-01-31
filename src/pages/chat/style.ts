@@ -160,20 +160,38 @@ const StChatForm = styled.form`
   }
 `;
 
-const ImageInput = styled.input.attrs({ type: 'file' })`
+const ImageInput = styled.input.attrs({
+  type: 'file',
+  multiple: true
+})`
   width: fit-content;
   padding: 1rem;
   margin-left: 1.2rem;
   margin-bottom: 1rem;
   background-color: var(--3-gray);
   border-radius: 0.6rem;
+
+  &::file-selector-button {
+    width: 150px;
+    height: 30px;
+    background: #fff;
+    border: 1px solid rgb(77, 77, 77);
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover {
+      background: rgb(77, 77, 77);
+      color: #fff;
+    }
+  }
   @media screen and (max-width: 768px) {
     margin-left: 0;
   }
 `;
 
 const StChatInput = styled.textarea.attrs({
-  placeholder: '채팅을 입력하세요'
+  placeholder: '채팅을 입력하세요',
+  maxLength: 120,
+  required: true
 })`
   width: 100%;
   max-width: 688px;

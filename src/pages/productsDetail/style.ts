@@ -35,7 +35,7 @@ const StDetailContainer = styled.div`
 const StDetailInfoSection = styled.section`
   width: 100%;
   max-width: 1116px;
-  margin:auto;
+  margin: auto;
   height: fit-content;
   display: flex;
   gap: 4.6rem;
@@ -271,6 +271,14 @@ const Button = styled.div<ButtonProps>`
   flex-direction: column;
   position: relative;
   cursor: pointer;
+  ${(props) => {
+    if (props.$role === 'sold-out') {
+      return css`
+        background-color: var(--3-gray);
+        color: var(--opc-100);
+      `;
+    }
+  }}
 
   p {
     position: absolute;
@@ -291,6 +299,14 @@ const Button = styled.div<ButtonProps>`
     font-size: 1.8rem;
     color: var(--2-gray);
     font-weight: var(--fontWeight-bold);
+    ${(props) => {
+      if (props.$role === 'sold-out') {
+        return css`
+          background-color: var(--3-gray);
+          color: var(--opc-100);
+        `;
+      }
+    }}
   }
   &:hover {
     h3,
@@ -298,6 +314,14 @@ const Button = styled.div<ButtonProps>`
       color: var(--opc-100);
     }
     background-color: var(--3-gray);
+    ${(props) => {
+      if (props.$role === 'sold-out') {
+        return css`
+          background-color: var(--3-gray);
+          color: var(--opc-100);
+        `;
+      }
+    }}
   }
 
   @media screen and (max-width: 768px) {
@@ -331,10 +355,12 @@ const StProductIntroTitle = styled.h4`
   width: 100%;
   margin-block: 1.6rem;
   font-size: 2rem;
-  font-weight: 500;
+  font-weight: var(--fontWeight-semiBold);
+  color: var(--12-gray);
 `;
 const StProductContent = styled.div`
   width: 100%;
+  font-weight: 500;
   font-size: 1.6rem;
   white-space: break-spaces;
 `;
