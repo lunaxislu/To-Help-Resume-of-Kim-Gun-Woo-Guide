@@ -70,6 +70,7 @@ const CommuDetail: React.FC = () => {
 
     getPostUser();
   }, [isLoading, posts]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -154,6 +155,12 @@ const CommuDetail: React.FC = () => {
 
                     <St.SubTopper>
                       <St.TitleCategory>
+                        {postUser.length > 0 ? (
+                          <St.ProfileImage src={postUser[0].avatar_url} />
+                        ) : (
+                          <St.DefaultImage></St.DefaultImage>
+                        )}
+
                         <St.NameP>
                           {!!post.anon
                             ? '익명의 작업자'

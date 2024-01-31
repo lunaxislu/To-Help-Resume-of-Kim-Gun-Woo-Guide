@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
 import CommuList from '../../components/community/CommuList';
 import * as St from '../../styles/community/CommunityMainStyle';
-import { categoryArray } from './WritePost';
+import { CATEGORY_ARRAY } from './WritePost';
 import { fetchPosts } from './commuQuery';
 const CommunityMain: React.FC = () => {
   const [selectCategory, setSelectCategory] = useState('전체');
@@ -25,7 +25,7 @@ const CommunityMain: React.FC = () => {
         </St.Title>
         <St.FeatureBar>
           <St.Categorys>
-            {categoryArray.map((category) => {
+            {CATEGORY_ARRAY.map((category) => {
               return (
                 <St.CategoryBtn
                   onClick={(event) => {

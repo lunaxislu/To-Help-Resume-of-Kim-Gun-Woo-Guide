@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router';
 import { v4 as uuid } from 'uuid';
 import { supabase } from '../../api/supabase/supabaseClient';
 import * as St from '../../styles/community/CommunityWriteStyle';
-import { categoryArray } from './WritePost';
+import { CATEGORY_ARRAY } from './WritePost';
 import {
   addPostMutation,
   fetchDetailPost,
@@ -278,7 +278,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             분류<span>*</span>
           </St.LayoutValueText>{' '}
           <St.CategoryGrid>
-            {categoryArray.map((item, index) => {
+            {CATEGORY_ARRAY.map((item, index) => {
               return index !== 0 ? (
                 <label key={item}>
                   <St.CheckBoxs

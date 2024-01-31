@@ -23,7 +23,7 @@ export type FilesObject = {
 export type ProfileObject = {
   id: string;
   created_at: string;
-  avartar_url: string;
+  avatar_url: string;
   username: string;
   nickname: string;
   email: string;

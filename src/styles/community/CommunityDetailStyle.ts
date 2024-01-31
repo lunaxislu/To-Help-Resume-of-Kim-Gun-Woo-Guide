@@ -17,12 +17,23 @@ export const PdfIcon = styled(GrDocumentPdf)`
 `;
 
 export const ExcelIcon = styled(GrDocumentExcel)`
+  font-size: 2.2rem;
   color: green;
-  font-size: 2rem;
 `;
 export const DefaultIcon = styled(LiaFileSolid)`
   font-size: 2rem;
   color: var(--1-gray);
+`;
+export const ProfileImage = styled.img`
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+`;
+export const DefaultImage = styled.div`
+  background-color: var(--10-gray);
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
 `;
 export const DetailFiles = styled.div`
   display: flex;
@@ -34,14 +45,14 @@ export const DetailFiles = styled.div`
   & a {
     color: var(--1-gray);
     text-decoration: none;
-    overflow: hidden;
-    display: -webkit-box;
+    /* overflow: hidden; */
+    /* display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
-    white-space: normal;
+    white-space: normal; */
   }
   & div {
-    background-color: var(--11-gray);
+    background-color: var(--10-gray);
     width: 25rem;
     height: 5rem;
     display: flex;

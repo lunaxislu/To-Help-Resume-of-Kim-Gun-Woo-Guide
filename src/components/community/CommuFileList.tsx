@@ -31,7 +31,7 @@ const CommuFileList: React.FC<FileListProps> = ({ files }) => (
         <div key={index}>
           {getFileIconComponent(file.name)}
           <a href={file.url[index]} target="_blank" rel="noopener noreferrer">
-            {filenameWithoutExtension}
+            {filenameWithoutExtension.slice(0, 20)}
           </a>
         </div>
       );

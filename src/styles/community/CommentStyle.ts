@@ -20,6 +20,8 @@ export const Time = styled.p`
 export const CommentContent = styled.p`
   font-size: var(--fontSize-H5);
   max-width: 45rem;
+  overflow: hidden;
+
   /* width: 30rem; */
   @media screen and (max-width: 768px) {
     /* width: 17rem; */
@@ -28,7 +30,7 @@ export const CommentContent = styled.p`
 export const LeftCommentSide = styled.div`
   display: flex;
   flex-direction: column;
-  width: fit-content;
+  width: 100%;
 `;
 export const CommentIcon = styled(FaComment)`
   color: var(--opc-100);
@@ -203,6 +205,7 @@ export const CommentContainer = styled.div`
   padding: 20px;
   border-radius: 5px;
   align-items: center;
+  gap: 2rem;
   /* white-space: nowrap; */
   & button {
     padding: 10px;
@@ -215,7 +218,8 @@ export const CommentContainer = styled.div`
     border: none;
     height: 3.8rem;
     border-radius: 1rem;
-    min-width: 20rem;
+    width: 100%;
+    /* min-width: 20rem; */
   }
   @media screen and (max-width: 768px) {
     background-color: #1f1f1f;
