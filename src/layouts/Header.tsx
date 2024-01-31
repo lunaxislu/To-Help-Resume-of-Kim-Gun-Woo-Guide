@@ -26,13 +26,13 @@ const Header = () => {
 
   const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
   const [showHamburger, setShowHamburger] = useState<boolean>(false);
-  // 반응형 대응 서치 컴포넌트 두두둥장
   const handleShowSearchComp = () => {
     setShowSearchComp((prev) => !prev);
   };
-  // 반응형 대응 햄버거 버튼
+  // 반응형 대응 햄버거 버튼 , 검색바 열려있으면 검색바 닫기
   const handlShowSearchBurger = () => {
     setShowHamburger((prev) => !prev);
+    setShowSearchComp((prev) => !prev);
   };
   // 페이지 이동 시 검색어 초기화 함수
   const handlePageChange = () => {

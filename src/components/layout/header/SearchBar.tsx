@@ -150,6 +150,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
           <SearchBtnImg src={'/assets/searchbtn.png'} alt="searchbutton" />
         </SearchBtn>
       </div>
+      {isMobile ? (
+        <div>
+          <div></div>
+        </div>
+      ) : (
+        ''
+      )}
     </SearchInputContainer>
   );
 };
@@ -169,9 +176,11 @@ const SearchInputContainer = styled.div<MobileProps>`
     width: 100vw;
     height: 100vh;
     position: fixed;
+    margin-top: 15.026rem;
     top: 0;
     left: 0;
     z-index: 3000;
+
     transition: all 0.3s ease;
     ${(props) => {
       if (props.$position === true) {
@@ -200,7 +209,7 @@ const SearchInputBar = styled.input`
   border-radius: 1.9rem;
   background: var(--3-gray, #2c2c2c);
   border: none;
-  color: var(--6-gray, #717171);
+  color: var(--11-gray, #717171);
   font-size: var(--fontSize-H5);
   font-weight: var(--fontWeight-medium);
   line-height: 2.4856rem;
@@ -226,14 +235,35 @@ const SearchInputBar = styled.input`
     border-bottom: 1px solid #dbff00;
     padding-left: 0.5rem;
   }
+  @media screen and (max-width: 400px) {
+    position: relative;
+    margin-left: 1rem;
+    left: 40%;
+    transform: translateX(-50%);
+    width: 80%;
+    /* background-color: var(--2-gray); */
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #dbff00;
+    padding-left: 0.5rem;
+  }
 `;
 
 const ClearInputButton = styled.div`
   @media screen and (max-width: 768px) {
     position: absolute;
-    top: 10%;
-    right: 80px;
-    transform: translateY(0%);
+    top: 50%;
+    right: 70px;
+    transform: translate(-50%, -50%);
+    color: #878787;
+    font-size: 3rem;
+    cursor: pointer;
+  }
+  @media screen and (max-width: 400px) {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translate(-50%, -50%);
     color: #878787;
     font-size: 3rem;
     cursor: pointer;

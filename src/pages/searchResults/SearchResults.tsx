@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/store';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import parseDate from '../../util/getDate';
 import { setSearchResults } from '../../redux/modules/searchSlice';
 import { FaArrowRight } from 'react-icons/fa';
@@ -191,7 +191,13 @@ const SearchResults: React.FC = () => {
                         </svg>
                       )}
                     </div>
-                    <h1>{item.quality}</h1>
+
+                    <ProductsCardQuality
+                      $quality={item.quality}
+                      key={item.quality}
+                    >
+                      {item.quality}
+                    </ProductsCardQuality>
                     <h3>{item.title}</h3>
                     <p>{item.price.toLocaleString('kr-KO')}원</p>
                   </ProductList>
@@ -325,8 +331,11 @@ const SearchResultsCountContainer = styled.div`
   margin-top: 6rem;
   display: flex;
   flex-direction: column;
-  /* justify-content: center;
-  align-items: center; */
+  justify-content: center;
+  align-items: center;
+  @media screen and (max-width: 768px) {
+    margin-top: 2rem;
+  }
 `;
 const CheckImage = styled.img`
   margin: 0 auto;
@@ -335,7 +344,6 @@ const CheckImage = styled.img`
   @media screen and (max-width: 768px) {
     width: 4.4rem;
     height: 4.4rem;
-    display: none;
   }
 `;
 const FullCounts = styled.div`
@@ -343,7 +351,7 @@ const FullCounts = styled.div`
   font-size: var(--fontSize-H1);
   font-weight: var(--fontWeight-bold);
   @media screen and (max-width: 768px) {
-    display: none;
+    font-size: var(--fontSize-H4);
   }
 `;
 const ResultListContainer = styled.div`
@@ -355,6 +363,8 @@ const ResultListContainer = styled.div`
   margin-top: 3rem;
   @media screen and (max-width: 768px) {
     width: 100%;
+    margin-top: 2rem;
+    border-top: none;
   }
 `;
 const UsedItemResultsContainer = styled.div`
@@ -476,40 +486,35 @@ const UsedItemsList = styled.ul<{
   @media screen and (max-width: 1160px) {
     grid-template-columns: repeat(4, 1fr);
     margin-top: ${({ usedItemCount }) =>
-      usedItemCount !== 0 ? '4rem' : '2rem'};
+      usedItemCount !== 0 ? '5rem' : '2rem'};
   }
 
   @media screen and (max-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
-    margin-top: ${({ usedItemCount }) =>
-      usedItemCount !== 0 ? '4rem' : '2rem'};
+    margin-top: ${({ usedItemCount }) => (usedItemCount !== 0 ? '5rem' : '')};
   }
 
   @media screen and (max-width: 768px) {
     column-gap: 1.5rem;
     row-gap: 1.8rem;
     grid-template-columns: repeat(3, 1fr);
-    margin-top: ${({ usedItemCount }) =>
-      usedItemCount !== 0 ? '10rem' : '2rem'};
+    margin-top: ${({ usedItemCount }) => (usedItemCount !== 0 ? '3rem' : '')};
   }
   @media screen and (max-width: 670px) {
     column-gap: 1.5rem;
     row-gap: 1.8rem;
     grid-template-columns: repeat(2, 1fr);
-    margin-top: ${({ usedItemCount }) =>
-      usedItemCount !== 0 ? '10rem' : '2rem'};
+    margin-top: ${({ usedItemCount }) => (usedItemCount !== 0 ? '2rem' : '')};
   }
   @media screen and (max-width: 520px) {
     row-gap: 1.8rem;
     grid-template-columns: repeat(2, 1fr);
-    /* height: ${({ usedItemCount }) =>
-      usedItemCount === 0 ? '0rem' : '6rem'}; */
+    margin-top: ${({ usedItemCount }) => (usedItemCount !== 0 ? '2rem' : '')};
   }
 
   @media screen and (max-width: 349px) {
     grid-template-columns: repeat(1, 1fr);
-    /* height: ${({ usedItemCount }) =>
-      usedItemCount === 0 ? '0rem' : '6rem'}; */
+    margin-top: ${({ usedItemCount }) => (usedItemCount !== 0 ? '2rem' : '')};
   }
 `;
 const ToProductsPage = styled(Link)`
@@ -554,29 +559,7 @@ const ProductList = styled.li`
       border-radius: 0.6rem;
     }
   }
-  h1 {
-    width: 9rem;
-    padding: 0.8rem;
-    color: var(--9-gray);
-    text-align: center;
-    background-color: var(--opc-20);
-    border-radius: 0.3rem;
-    margin-top: 1rem;
-    font-size: var(--fontSize-H6);
-    font-weight: var(--fontWeight-bold);
-    @media screen and (max-width: 768px) {
-      margin-top: 1rem;
-      width: 6.5rem;
-      height: 2rem;
-      font-size: 1rem;
-      font-weight: 500;
-      line-height: 191.2%;
-      text-align: center;
-      background-color: var(--opc-100);
-      color: var(--2-gray);
-      padding: 0;
-    }
-  }
+
   h3 {
     font-size: var(--fontSize-body);
     color: var(--11-gray);
@@ -608,11 +591,52 @@ const ProductList = styled.li`
     margin-top: 1rem;
     text-align: left;
     @media screen and (max-width: 768px) {
-      width: 6rem;
       height: 2.3rem;
       font-weight: var(--fontWeight-bold);
       font-size: var(--fontSize-H5);
     }
+  }
+`;
+
+interface QualityProps {
+  $quality: string;
+}
+
+const ProductsCardQuality = styled.h1<QualityProps>`
+  width: 9rem;
+  padding: 0 0.8rem;
+  text-align: center;
+  line-height: 1.7;
+  border-radius: 0.3rem;
+  margin-top: 1rem;
+  background-color: #fcfcfc;
+
+  color: var(--2-gray);
+  margin-bottom: 0.6rem;
+  font-size: var(--fontSize-H6);
+  // 배경색 조건부 렌더링
+  ${(props) => {
+    if (props.children === '새상품(미사용)') {
+      return css`
+        background-color: var(--opc-100);
+        color: var(--2-gray);
+      `;
+    }
+    if (props.children === '고장/파손 상품') {
+      return css`
+        background-color: var(--4-gray);
+        color: var(--11-gray);
+      `;
+    }
+  }}
+  @media screen and (max-width: 768px) {
+    margin-top: 1rem;
+    width: 8rem;
+    height: 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 191.2%;
+    text-align: center;
   }
 `;
 
@@ -714,6 +738,7 @@ const CommunityPostsList = styled.ul`
   @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
     margin: 0 auto;
+    /* margin-top */
   }
 
   @media screen and (max-width: 768px) {
