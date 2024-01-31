@@ -148,7 +148,7 @@ const SearchInputContainer = styled.div<MobileProps>`
     width: 100vw;
     height: 100vh;
     position: fixed;
-    top: 0;
+    top: 10;
     left: 0;
     z-index: 3000;
     transition: all 0.3s ease;
