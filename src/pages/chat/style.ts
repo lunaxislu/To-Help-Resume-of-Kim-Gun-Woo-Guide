@@ -160,7 +160,7 @@ const StChatForm = styled.form`
   }
 `;
 
-const ImageInput = styled.input.attrs({ type: 'file' })`
+const ImageInput = styled.input.attrs({ type: 'file', multiple: true })`
   width: fit-content;
   padding: 1rem;
   margin-left: 1.2rem;
@@ -174,7 +174,7 @@ const ImageInput = styled.input.attrs({ type: 'file' })`
 
 const StChatInput = styled.textarea.attrs({
   placeholder: '채팅을 입력하세요',
-  maxLength: 250,
+  maxLength: 120,
   required: true
 })`
   width: 100%;

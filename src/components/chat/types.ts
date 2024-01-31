@@ -6,7 +6,7 @@ export type MessageType = {
   sender_id: string;
   chat_room_id: string;
   content: string;
-  image_url: string;
+  image_url: string[];
   created_at: string;
   isNew: boolean;
   timeStamp: string;
@@ -29,6 +29,7 @@ export type RoomType = {
   participants: Participants[];
   about: string;
   isSeller: boolean;
+  unread: number;
 };
 
 export type RoomStyledProps = {

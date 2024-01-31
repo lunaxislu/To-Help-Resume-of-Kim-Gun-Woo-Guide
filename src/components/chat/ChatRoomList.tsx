@@ -36,10 +36,10 @@ const ChatRoomList: React.FC<Props> = ({
     await supabase
       .from('chat_messages')
       .update({ isNew: false })
-      .eq('chat_room_id', clicked)
+      .eq('chat_room_id', room_id)
       .eq('isNew', true);
 
-    await util.unreadCount(room_id, curUser);
+    await supabase.from('chat_room').update({ unread: 0 }).eq('id', room_id);
   };
 
   const handleRealtime = () => {
@@ -153,6 +153,8 @@ const ChatRoomList: React.FC<Props> = ({
     if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
   }, []);
 
+  console.log(rooms);
+
   return (
     <St.StChatListItem>
       {rooms
@@ -203,7 +205,7 @@ const ChatRoomList: React.FC<Props> = ({
                       </p>
                     </div>
                   </St.StUserInfoBox>
-                  <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
+                  <St.StUnreadCount>{room.unread}</St.StUnreadCount>
                 </St.StListUpper>
 
                 <St.StListLower>
@@ -257,7 +259,7 @@ const ChatRoomList: React.FC<Props> = ({
                       </p>
                     </div>
                   </St.StUserInfoBox>
-                  <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
+                  <St.StUnreadCount>{room.unread}</St.StUnreadCount>
                 </St.StListUpper>
 
                 <St.StListLower>

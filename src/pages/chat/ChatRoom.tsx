@@ -159,17 +159,6 @@ export default function ChatRoom() {
     };
   }, []);
 
-  // 각 채팅방이 업데이트 시 안 읽은 메세지 수를 가져오고 상태에 저장
-  useEffect(() => {
-    if (rooms && curUser) {
-      Promise.all(
-        rooms.map((room) => utilFunctions.unreadCount(room.id, curUser))
-      ).then((counts) => {
-        setUnread(counts as number[]);
-      });
-    }
-  }, [rooms]); // 여기 의심
-
   // 채팅방 로드 시 스크롤 최하단으로
   useEffect(() => {
     if (scrollRef.current) {
