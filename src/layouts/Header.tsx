@@ -51,12 +51,12 @@ const Header = () => {
     if (isLogin) {
       navigate('/productsposts');
     } else {
-      navigate('/login/login');
+      navigate('/login');
     }
     if (isLogin) {
       navigate('/productsposts');
     } else {
-      navigate('/login/login');
+      navigate('/login');
     }
   };
 
@@ -65,7 +65,7 @@ const Header = () => {
     handlePageChange();
   };
   const handleNavigateToLogin = () => {
-    navigate('/login/login');
+    navigate('/login');
   };
   const handleNavigateToChat = () => {
     navigate('/chat');
@@ -227,4 +227,3 @@ const Header = () => {
 };
 
 export default Header;
-

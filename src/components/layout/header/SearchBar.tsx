@@ -18,7 +18,7 @@ import {
   researchItems
 } from '../../../pages/searchResults/researchItem';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
-import { IoIosArrowBack, IoIosClose } from 'react-icons/io';
+import { GrPrevious } from 'react-icons/gr';
 
 type SearchBarProps = {
   showSearchComp: boolean;
@@ -102,10 +102,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
         }}
       >
         {isMobile && (
-          <IoIosClose
+          <GrPrevious
             style={{
               color: 'var(--opc-100)',
-              fontSize: '3rem',
+              fontSize: '2rem',
               cursor: 'pointer'
             }}
             onClick={handleHideSearchComp}
@@ -145,10 +145,11 @@ const SearchInputContainer = styled.div<MobileProps>`
   /* position: relative; */
 
   @media only screen and (max-width: 768px) {
+    margin-top: 15.1rem;
     width: 100vw;
     height: 100vh;
     position: fixed;
-    top: 10;
+    top: 0;
     left: 0;
     z-index: 3000;
     transition: all 0.3s ease;
@@ -176,7 +177,6 @@ const SearchInputBar = styled.input`
   width: 48.8rem;
   height: 3.7rem;
   border-radius: 1.9rem;
-  padding-left: 20px;
   background: var(--3-gray, #2c2c2c);
   border: none;
   color: var(--6-gray, #717171);
@@ -196,10 +196,13 @@ const SearchInputBar = styled.input`
   }
   @media screen and (max-width: 768px) {
     position: relative;
-    left: 46%;
+    left: 40%;
     transform: translateX(-50%);
-    width: 85%;
-    background-color: var(--2-gray);
+    width: 70%;
+    /* background-color: var(--2-gray); */
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #dbff00;
   }
 `;
 
@@ -227,6 +230,7 @@ const SearchBtn = styled.button`
 
   @media screen and (max-width: 768px) {
     position: relative;
+    display: none;
   }
 `;
 
