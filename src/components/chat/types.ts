@@ -29,6 +29,7 @@ export type RoomType = {
   participants: Participants[];
   about: string;
   isSeller: boolean;
+  unread: number;
 };
 
 export type RoomStyledProps = {

@@ -80,7 +80,7 @@ const ChatForm = ({
       <div style={{ display: 'flex' }}>
         <St.StChatInput
           onChange={(e) => inputHandler.handleUserInput(e, setChatInput)}
-          onKeyDown={(e) =>
+          onKeyDown={(e) => {
             inputHandler.isPressEnter(
               e,
               formRef,
@@ -91,8 +91,8 @@ const ChatForm = ({
               setImages,
               images,
               setShowFileInput
-            )
-          }
+            );
+          }}
           name="chat"
           value={chatInput}
         />

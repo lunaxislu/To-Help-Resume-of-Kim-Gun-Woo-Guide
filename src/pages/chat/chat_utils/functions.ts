@@ -46,21 +46,6 @@ export class UtilForChat {
     if (error) return;
   };
 
-  // 안 읽은 메세지를 count 해주는 함수
-  unreadCount = async (room_id: string, curUser: User | null | undefined) => {
-    let { data: chat_messages, error } = await supabase
-      .from('chat_messages')
-      .select()
-      .eq('chat_room_id', room_id)
-      .eq('isNew', true);
-
-    if (error) console.log('count error', error);
-
-    return chat_messages?.filter(
-      (msg: MessageType) => msg.sender_id !== curUser?.id
-    ).length;
-  };
-
   // 유저 정보를 확인하여 유저가 속한 채팅방 가져오는 함수
   getRoomsforUser = async (
     curUser: User | null | undefined,
@@ -215,17 +200,30 @@ export class UtilForChat {
         sender_id: curUser?.id,
         chat_room_id: clicked,
         content: chatInput === '' ? null : chatInput,
-        image_url: images
+        image_url: images.length > 0 ? images : null
       };
 
       if (curUser) {
         const { error } = await supabase
           .from('chat_messages')
           .insert([messageTemp]);
+        setImages(null);
+        setShowFileInput(false);
 
-        setImages('');
-        this.resetInput(setChatInput, setShowFileInput);
-        if (error) console.log('전송 실패', error);
+        const { data: unread, error: getCountError } = await supabase
+          .from('chat_room')
+          .select('unread')
+          .eq('id', clicked);
+
+        if (unread && messageTemp.sender_id !== curUser?.id) {
+          const updatedCount = unread[0].unread + 1;
+          const { error: countUpdateError } = await supabase
+            .from('chat_room')
+            .update({ unread: updatedCount })
+            .eq('id', clicked);
+
+          if (error) console.log('전송 실패', error);
+        }
       }
     }
   };
