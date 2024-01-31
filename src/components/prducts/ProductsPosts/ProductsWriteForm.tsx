@@ -303,19 +303,17 @@ const ProductsWriteForm = () => {
       <St.WrapperStyle>
         <St.SemiTitle>직거래 지역</St.SemiTitle>
           <St.InputWrapperStyle>
-          <AddressBtn register={register}  addressValue={addressValue} setAddressValue={setAddressValue} />
+          <AddressBtn register={register} addressValue={addressValue} setAddressValue={setAddressValue} />
             <St.GapStyle/>
             <St.AddressInputStyle readOnly type='text' name='address' 
-            required={getValues("deal_type") === '직거래' ? true : false} 
+            required={watch("deal_type") === '직거래' ? true : false} 
             value={addressValue.address} 
-            disabled={getValues("deal_type") === '택배' || getValues("deal_type") === '협의 후 결정'} 
             onChange={handleOnChangeAddressValue} 
-            placeholder={getValues("deal_type") === '직거래' ? '주소검색을 이용해주세요.' : ""} />
+            placeholder='주소검색을 이용해주세요.' />
             <St.GapStyle/>
             <St.AddressInputStyle type='text' name='detailAddress' value={addressValue.detailAddress} 
-            disabled={getValues("deal_type") === '택배' || getValues("deal_type") === '협의 후 결정'} 
             onChange={handleOnChangeAddressValue} 
-            placeholder={getValues("deal_type") === '직거래' ? '상세주소를 기입해주세요.' : ""} />
+            placeholder='상세주소를 기입해주세요.' />
             <St.GapStyle2/>
           </St.InputWrapperStyle>
       </St.WrapperStyle>

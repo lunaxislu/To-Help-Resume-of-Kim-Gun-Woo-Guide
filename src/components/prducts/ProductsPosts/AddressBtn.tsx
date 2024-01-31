@@ -1,12 +1,11 @@
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import * as St from '../../../styles/products/ProductsPostsStyle';
 import { ProductsInputType, AddressValueType } from '../ProductsType';
-import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import { UseFormRegister } from 'react-hook-form';
 
 interface Props {
   scriptUrl?: string;
   register?: UseFormRegister<ProductsInputType>;
-  setValue?: UseFormSetValue<ProductsInputType>;
   addressValue: AddressValueType;
   setAddressValue: React.Dispatch<React.SetStateAction<AddressValueType>>;
 }
@@ -14,7 +13,6 @@ interface Props {
 const AddressBtn = ({
   scriptUrl,
   register,
-  setValue,
   addressValue,
   setAddressValue
 }: Props) => {

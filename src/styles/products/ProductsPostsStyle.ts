@@ -389,11 +389,11 @@ export const MobileWrapperStyle = styled.div`
   }
 `;
 export const CategoryContainer = styled.div`
-  height: 8rem;
+  height: 4rem;
   display: flex;
   align-items: center;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 2.2rem;
   @media screen and (max-width: 940px) {
     height: 12rem;
@@ -585,7 +585,7 @@ export const ChangableSelectWrapper = styled.div`
   }
 `;
 export const TextAreaStyle = styled.textarea`
-  width: 94%;
+  width: 92%;
   height: 19.6rem;
   resize: none;
   background-color: var(--3-gray);
@@ -605,11 +605,14 @@ export const TextAreaStyle = styled.textarea`
   &::placeholder {
     color: var(--5-gray);
   }
-  @media screen and (max-width: 1130px) {
-    width: 92%;
-  }
-  @media screen and (max-width: 890px) {
+  @media screen and (max-width: 1185px) {
     width: 90%;
+  }
+  @media screen and (max-width: 1010px) {
+    width: 88%;
+  }
+  @media screen and (max-width: 865px) {
+    width: 86%;
   }
   @media screen and (max-width: 768px) {
     width: 100%;
