@@ -5,20 +5,23 @@ import { supabase } from '../../../api/supabase/supabaseClient';
 import SkeletonProductCard from '../../skeleton/SkeletonProductCard';
 import { Product, ProductCardProps } from '../../../api/supabase/products';
 import MyPageItemCard from './MyPageItemCard';
-import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
+import {
+  useAppDispatch,
+  useAppSelector
+} from '../../../redux/reduxHooks/reduxBase';
+import { useInView } from 'react-intersection-observer';
 import {
   setFavItem,
   setMyItem,
   setPurchasedItem
-} from '../../../redux/modules/countSlice';
+} from '../../../redux/modules/itemSlice';
 import Nothing from '../Nothing';
 
 const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const CARDS_COUNT = 10;
-  const containerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [offset, setOffset] = useState(1);
-  const [isInView, setIsInView] = useState(false);
+
   const [myItems, setMyItems] = useState<Product[]>([]);
   const [purchasedItems, setPurchasedItems] = useState<Product[]>([]);
   const [favItems, setFavItems] = useState<Product[]>([]);
@@ -76,12 +79,12 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
 
   const onScrollHandler = () => {
     // js script가 동작하고 카드를 감싸는 전체 컨테이너가 바닥에 닿을 때
-    if (containerRef.current && typeof window !== 'undefined') {
-      const container = containerRef.current;
-      const { scrollTop, clientHeight, scrollHeight } = container;
-      const isAtBottom = scrollTop + clientHeight <= scrollHeight;
-      setIsInView(isAtBottom);
-    }
+    // if (inView) {
+    //   const container = containerRef.current;
+    //   const { scrollTop, clientHeight, scrollHeight } = container;
+    //   const isAtBottom = scrollTop + clientHeight <= scrollHeight;
+    //   setIsInView(isAtBottom);
+    // }
   };
 
   useEffect(() => {
@@ -122,10 +125,10 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   };
 
   useEffect(() => {
-    if (isInView) {
+    if (inView) {
       loadMoreProducts(offset);
     }
-  }, [isInView]);
+  }, []);
 
   useEffect(() => {
     getCurrentUserProducts();
@@ -139,8 +142,12 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
     getFavoriteProducts();
   }, []);
 
+  const { ref, inView, entry } = useInView({
+    threshold: 0
+  });
+
   return (
-    <StCardContainer ref={containerRef}>
+    <StCardContainer ref={ref}>
       {activeTab === 0 &&
         myItems.map((item) => (
           <MyPageItemCard

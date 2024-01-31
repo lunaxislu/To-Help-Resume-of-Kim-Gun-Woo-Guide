@@ -19,9 +19,9 @@ const initialState: CountState = {
   favPosts: []
 };
 
-export const countSlice = createSlice({
-  name: 'count',
-  // `createSlice` will infer the state type from the `initialState` argument
+export const itemSlice = createSlice({
+  name: 'item',
+
   initialState,
   reducers: {
     setMyItem: (state: CountState, action: PayloadAction<Product[]>) => {
@@ -48,5 +48,5 @@ export const {
   setFavItem,
   setMyPost,
   setFavPost
-} = countSlice.actions;
-export default countSlice.reducer;
+} = itemSlice.actions;
+export default itemSlice.reducer;

@@ -4,7 +4,6 @@ import Footer from './Footer';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
 import { supabase } from '../api/supabase/supabaseClient';
-
 import styled from 'styled-components';
 import { IoIosClose } from 'react-icons/io';
 const userId = localStorage.getItem('userId');
@@ -55,7 +54,6 @@ const StAlertCloseBtn = styled(IoIosClose)`
 const Layout = () => {
   const location = useLocation();
   const [showTopbutton, setShowTopButton] = useState(false);
-
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [newAlert, setAlert] = useState<any[]>([]);
   const [userChatRooms, setUserChatRoom] = useState<string[]>([]);
