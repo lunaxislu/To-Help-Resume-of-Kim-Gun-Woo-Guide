@@ -95,6 +95,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     }));
     try {
       const newFileName = uuid();
+      //쿼리로 바꾸기
       const { data, error } = await supabase.storage
         .from('files')
         .upload(`files/${newFileName}`, file);

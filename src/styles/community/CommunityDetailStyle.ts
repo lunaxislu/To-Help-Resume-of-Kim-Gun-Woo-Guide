@@ -53,13 +53,18 @@ export const DetailFiles = styled.div`
   }
   & div {
     background-color: var(--10-gray);
-    width: 25rem;
+    /* width: 25rem; */
     height: 5rem;
     display: flex;
     align-items: center;
     gap: 1rem;
     padding: 0 1rem;
     border-radius: 0.8rem;
+  }
+  @media screen and (max-width: 768px) {
+    & div {
+      height: 3rem;
+    }
   }
 `;
 export const Content = styled.div`

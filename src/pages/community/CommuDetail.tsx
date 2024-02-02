@@ -6,8 +6,8 @@ import { useNavigate, useParams } from 'react-router';
 import * as St from '../../styles/community/CommunityDetailStyle';
 
 import { supabase } from '../../api/supabase/supabaseClient';
-import Comment from '../../components/community/Comment';
 import CommuFileList from '../../components/community/CommuFileList';
+import Reply from '../../components/community/Reply';
 import parseDate from '../../util/getDate';
 import WriteLayout from './WriteLayout';
 import { deletePostMutation, fetchDetailPost } from './commuQuery';
@@ -24,20 +24,14 @@ const CommuDetail: React.FC = () => {
   const [postUser, setPostUser] = useState<ProfileObject[]>([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {
-          data: { user }
-        } = await supabase.auth.getUser();
-        setUserId(user!.id);
-      } catch (error: any) {
-        console.log(error.message);
-      }
-    };
+    // 로컬 스토리지에서 userId 가져오기
+    const storedUserId = localStorage.getItem('userId');
 
-    fetchData();
+    if (storedUserId) {
+      // 로컬 스토리지에 userId가 있으면 상태 업데이트
+      setUserId(storedUserId);
+    }
   }, []);
-
   const queryClient = useQueryClient();
   const {
     data: posts,
@@ -229,11 +223,7 @@ const CommuDetail: React.FC = () => {
           <St.NoticeLike>글이 마음에 든다면 추천을 눌러보세요!</St.NoticeLike>
 
           <div>
-            <Comment
-              userId={userId}
-              paramId={param.id}
-              likes={posts![0].likes}
-            />
+            <Reply userId={userId} paramId={param.id} likes={posts![0].likes} />
           </div>
         </St.ContentsContainer>
       )}

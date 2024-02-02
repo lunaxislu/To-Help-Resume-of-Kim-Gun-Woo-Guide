@@ -1,8 +1,9 @@
-import { BsArrowReturnLeft } from 'react-icons/bs';
+import { BsArrowReturnLeft, BsThreeDots } from 'react-icons/bs';
 import { FaComment, FaThumbsUp } from 'react-icons/fa';
 import { FaRegThumbsUp } from 'react-icons/fa6';
 import styled from 'styled-components';
 import { FormProps } from '../../pages/community/model';
+
 export const Name = styled.p`
   font-size: var(--fontSize-body);
   @media screen and (max-width: 768px) {
@@ -12,9 +13,15 @@ export const Name = styled.p`
 export const Time = styled.p`
   font-size: var(--fontSize-H5);
   color: var(--9-gray);
+  margin-top: 0.3rem;
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
   }
+`;
+export const ProfileImage = styled.img`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
 `;
 
 export const CommentContent = styled.p`
@@ -62,7 +69,10 @@ export const CountDiv = styled.div`
   margin: 2rem;
   font-size: var(--fontSize-H5);
 `;
-
+export const CheckBoxArea = styled.section`
+  display: flex;
+  gap: 0.5rem;
+`;
 export const AnonLabel = styled.label`
   display: flex;
   align-items: center;
@@ -91,18 +101,17 @@ export const Container = styled.div`
   align-items: center;
   margin-bottom: 50px;
 `;
+export const FormBox = styled.div``;
 export const Form = styled.form<FormProps>`
   width: 100%;
   max-width: 111.6rem;
-  height: 12.8rem;
-  margin-top: 6px;
-  margin-bottom: 6px;
-  background-color: var(--3-gray);
+  height: fit-content;
+  background-color: #dcf4f1;
   border-radius: 0.5rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1.5rem;
+  gap: 0.5rem;
   & button {
     height: 5.3rem;
     width: 5.3rem;
@@ -123,14 +132,15 @@ export const Form = styled.form<FormProps>`
   }
   @media screen and (max-width: 768px) {
     width: 100%;
-    height: 9rem;
+    /* height: 9rem; */
     ${({ $isFocused: isFocused }) =>
       isFocused &&
       `position: fixed;
       bottom: 0;
       margin: 0;
       flex-direction: row-reverse;
-      height: 4rem;
+      // height: 5rem;
+      // padding-top:1rem;
       justify-content: start;
     `}
     & button {
@@ -149,19 +159,22 @@ export const Form = styled.form<FormProps>`
     }
   }
 `;
+
 export const CommentInput = styled.input`
   width: 80%;
   height: 38px;
-  background-color: transparent;
+  background-color: var(--opc-20);
   border: none;
   color: var(--12-gray);
   font-size: var(--fontSize-body);
+  border-radius: 1rem;
+  padding-left: 1rem;
   &::placeholder {
     color: var(--5-gray);
     font-size: var(--fontSize-body);
   }
   @media screen and (max-width: 768px) {
-    height: 24px;
+    /* height: 24px; */
     font-size: var(--fontSize-H6);
     &::placeholder {
       font-size: var(--fontSize-H6);
@@ -172,7 +185,8 @@ export const CheckBoxs = styled.input`
   appearance: none;
   width: 20px;
   height: 20px;
-  background-color: var(--5-gray); /* 선택되지 않은 상태의 배경 색상 */
+  background-color: var(--white); /* 선택되지 않은 상태의 배경 색상 */
+
   border: none;
   border-radius: 4px;
   position: relative;
@@ -197,7 +211,7 @@ export const CheckBoxs = styled.input`
 `;
 export const CommentContainer = styled.div`
   margin-top: 10px;
-  background-color: var(--2-gray);
+  background-color: var(--opc-20);
   width: 100%;
   min-height: 9.4rem;
   display: flex;
@@ -211,7 +225,9 @@ export const CommentContainer = styled.div`
     padding: 10px;
     border-radius: 20px;
     border: none;
-    background-color: #f3f3f3;
+    white-space: nowrap;
+    background-color: transparent;
+    cursor: pointer;
   }
   & input {
     background-color: var(--7-gray);
@@ -221,14 +237,42 @@ export const CommentContainer = styled.div`
     width: 100%;
     /* min-width: 20rem; */
   }
+
   @media screen and (max-width: 768px) {
-    background-color: #1f1f1f;
+    /* background-color: #1f1f1f; */
   }
+`;
+export const ParentComment = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  /* border-bottom: 0.1rem solid var(--opc-100); */
+  /* padding-bottom: 1.5rem; */
+  margin-bottom: 1.5rem;
+`;
+export const ChildComment = styled.div`
+  margin-left: 3rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+export const ChildCommentContainer = styled.div`
+  display: flex;
+  width: 100%;
+`;
+export const Comment = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 export const LeftSide = styled.div`
   display: flex;
   gap: 20px;
-  align-items: center;
+  align-items: start;
 
   & p {
     margin-bottom: 20px;
@@ -245,4 +289,26 @@ export const UpdateBtnContainer = styled.div`
   & p {
     white-space: nowrap;
   }
+`;
+export const Dots = styled(BsThreeDots)`
+  cursor: pointer;
+  color: var(--9-gray);
+  position: relative;
+`;
+export const EditDropdown = styled.div`
+  position: absolute;
+  background-color: var(--5-gray);
+  border: 1px solid var(--opc-100);
+  z-index: 1000;
+  border-radius: 1rem;
+  right: 5%;
+  margin-top: 2rem;
+`;
+
+export const DropdownItem = styled.div`
+  text-align: center;
+  display: block;
+  padding: 0.7rem 1.2rem;
+  font-size: var(--fontSize-H6);
+  cursor: pointer;
 `;

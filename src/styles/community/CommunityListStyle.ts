@@ -108,13 +108,13 @@ export const CommentArea = styled.div`
   }
 `;
 export const CommentIcon = styled(FaComment)`
-  color: #dbff00;
-  opacity: 50%;
+  color: var(--opc-100);
+  /* opacity: 50%; */
   transform: scaleX(-1);
 `;
 export const LikesIcon = styled(FaThumbsUp)`
-  color: #dbff00;
-  opacity: 50%;
+  color: var(--opc-100);
+  /* opacity: 50%; */
 `;
 export const Title = styled.h2`
   color: white;

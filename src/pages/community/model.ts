@@ -111,3 +111,24 @@ export type EditCommentInputProps = {
 export type FormProps = {
   $isFocused: boolean;
 };
+export type ReplyInsertObject = {
+  id: number;
+  parent_id: number;
+  user_id: string;
+  post_id: number;
+  content: string;
+  anon: boolean;
+  secret: boolean;
+  created_at: string;
+};
+export type ReplyObject = {
+  id: number;
+  parent_id: number;
+  user_id: string;
+  post_id: number;
+  content: string;
+  anon: boolean;
+  secret: boolean;
+  created_at: string;
+  user: ProfileObject;
+};

@@ -4,84 +4,71 @@ export const GlobalStyles = createGlobalStyle`
 :root {
     /* Typography */
     /* Font Size */
-    --fontSize-body : 1.6rem; // 16px
+    --fontSize-body : 1.8rem; // 18px
     
-    --fontSize-H1 : 2.4rem; // 24px
-    --fontSize-H2 : 2.2rem; // 22px
-    --fontSize-H3 : 2rem; // 20px
-    --fontSize-H4 : 1.8rem; // 18px
-    --fontSize-H5 : 1.4rem; // 14px
-    --fontSize-H6 : 1.2rem; // 12px
+    --fontSize-H1 : 2.6rem; // 26px
+    --fontSize-H2 : 2.4rem; // 24px
+    --fontSize-H3 : 2.2rem; // 22px
+    --fontSize-H4 : 2rem; // 20px
+    --fontSize-H5 : 1.6rem; // 16px
+    --fontSize-H6 : 1.4rem; // 14px
 
     /* Font Weight */
     --fontWeight-bold: 700;
-    --fontWeight-semiBold: 600;
-    --fontWeight-medium: 500; /* 기본 굵기 */
-    --fontWeight-regular: 400; /* 모바일에서 쓰임 */
+    --fontWeight-500: 500; /* 기본 굵기 */
 
-    /* 어두운 배경색 */
-    --bgColor : #131313;
+    /* 밝은 배경색 */
+    --bgColor : #FFFEFA;
 
     /* Primary Color 투명도 */
-    --opc-100: #DBFF00; /* 100% 쨍한 연두 - 활성화 된 버튼(등록버튼) */
-    --opc-90: #dbff0090;
-    --opc-80: #dbff0080;
-    --opc-70: #dbff0070;
-    --opc-60: #dbff0060;
-    --opc-50: #dbff0050;
-    --opc-40: #dbff0040;
-    --opc-30: #dbff0030;
-    --opc-20: #dbff0020;
-    --opc-10: #dbff0010; /* 탁한 녹색 - 활성화 안 된 버튼 */
+    --opc-100: #13B3BC; /* 100% 쨍한 파랑 - 활성화 된 버튼(등록버튼) */
+    --opc-90: #13B3BC90;
+    --opc-80: #13B3BC80;
+    --opc-70: #13B3BC70;
+    --opc-60: #13B3BC60;
+    --opc-50: #13B3BC50;
+    --opc-40: #13B3BC40;
+    --opc-30: #13B3BC30; /* 인풋창 */
+    --opc-20: #13B3BC20;
+    --opc-10: #13B3BC10; /* 옅은 파랑 - 활성화 안 된 버튼 */
+
+    /* 커뮤니티 색상 */
+    --c-red: #FFC1A9; /* 사용감 많음 */
+    --c-yellow: #FFEF77; /* 사용감 있음 */
+    --c-green: #A0F4B3; /* 사용감 없음 */
+    --c-blue: #94CDFF;
+    --c-purple: #B5B5FA;
+
+    /* 정렬, 상품상태 설명창 배경색 */
+    --drop: #CCE8EA;
 
     /* gray scale */
-    --1-gray : #0b0b0b; /* 블랙 */
-    --2-gray : #191919; 
-    --3-gray : #2c2c2c; /* 인풋창, 네브바, 검색창 */
-    --4-gray : #444444; 
-    --5-gray : #5a5a5a; 
-    --6-gray : #717171; 
-    --7-gray : #9d9d9d; 
-    --8-gray : #b6b6b6; /* 작은 글씨 - 컨텐츠 */
-    --9-gray : #cccccc; 
-    --10-gray : #e2e2e2; 
-    --11-gray : #f8f8f8; /* 전체적인 글씨 - 큰(제목) 글씨 */
-    --12-gray : #FFFFFF; /* 화이트 */
+    --black : #191919; 
+    --gray : #717171; 
+    --white : #f8f8f8;
 
     /*!사용법! {color: var(--primary-color)}*/
 }
 
 @font-face {
-    font-family: 'Pretendard-Light';
-    src: url('/fonts/Pretendard-Light.woff') format('woff');
+    font-family: 'BM-JUA';
+    src: url('/fonts/BMJUA.woff') format('woff');
     font-weight: 300;
     font-style: normal;
 }
+
 @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('/fonts/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Pretendard-Medium';
-    src: url('/fonts/Pretendard-Medium.woff') format('woff');
+    font-family: 'DalseoHealing-Medium';
+    src: url('/fonts/DalseoHealingMedium.woff') format('woff');
     font-weight: 500;
     font-style: normal;
 }
 @font-face {
-    font-family: 'Pretendard-SemiBold';
-    src: url('/fonts/Pretendard-SemiBold.woff') format('woff');
-    font-weight: 600;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Pretendard-Bold';
-    src: url('/fonts/Pretendard-Bold.woff') format('woff');
+    font-family: 'DalseoHealing-Bold';
+    src: url('/fonts/DalseoHealingBold.woff') format('woff');
     font-weight: 700;
     font-style: normal;
 }
-
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -102,8 +89,6 @@ time, mark, audio, video {
 	font-size: 100%;
 	font: inherit;
 	vertical-align: baseline;
-    
-
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
@@ -112,15 +97,18 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
-    font-size: 1.6rem;
-    background-color: #1F1F1F;
-    font-family: 'Pretendard-Medium';
-    color: var(--11-gray);
+    font-size: var(--fontSize-body);
+    background-color: var(--bgColor);
+    font-family: 'BM-JUA';
+    color: var(--black);
     overflow-x: hidden;
 }
 button,
 input {
-    font-family: 'Pretendard-Medium';
+    font-family: 'BM-JUA';
+}
+input {
+    background-color: var(--opc-30);
 }
 ol, ul {
 	list-style: none;
@@ -146,6 +134,16 @@ html {
     padding: 0;
     margin: 0 ;
     box-sizing: border-box;
-
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--opc-100);
+        border-radius: 50px;
+        background-clip: content-box;
+    }
 }
 `;
