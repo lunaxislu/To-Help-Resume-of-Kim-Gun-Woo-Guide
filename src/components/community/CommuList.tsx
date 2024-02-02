@@ -30,6 +30,7 @@ const CommuList: React.FC<CommuListProps> = ({
       // staleTime: 300000
     }
   );
+
   useEffect(() => {
     setCurrentPage(1); // 카테고리가 바뀔 때마다 첫 페이지로 리셋
   }, [selectCategory]);
@@ -84,7 +85,7 @@ const CommuList: React.FC<CommuListProps> = ({
                   <St.LikesIcon />
                   <p>{post.likes}</p>
                   <St.CommentIcon />
-                  <p>{post.comment?.length}</p>
+                  <p>{post.comments_count}</p>
                 </St.CommentArea>
                 <div>
                   <p>{parseDate(post.created_at)}</p>

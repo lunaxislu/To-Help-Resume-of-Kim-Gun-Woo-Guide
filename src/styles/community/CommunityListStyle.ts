@@ -45,9 +45,9 @@ export const Posts = styled.li`
   gap: 1.6rem;
   border: none;
   border-radius: 1rem;
-  background-color: var(--3-gray);
+
   justify-content: space-between;
-  color: #d9d9d9;
+
   cursor: pointer;
 
   & h2 {
@@ -57,7 +57,7 @@ export const Posts = styled.li`
     overflow: hidden;
     width: 100%;
     max-width: 40rem;
-    color: var(--12-gray);
+
     height: 1.8rem;
   }
   @media screen and (max-width: 768px) {
@@ -81,7 +81,7 @@ export const ContentArea = styled.p`
   font-size: var(--fontSize-H5);
   font-weight: var(--fontWeight-medium);
   line-height: 2.2rem;
-  color: var(--9-gray);
+
   @media screen and (max-width: 768px) {
     /* height: 3.8rem; */
     font-size: var(--fontSize-H6);
@@ -92,7 +92,7 @@ export const RightSide = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: var(--fontSize-H6);
-  color: var(--6-gray);
+  /* color: var(--6-gray); */
   font-weight: var(--fontWeight-medium);
   @media screen and (max-width: 768px) {
     font-size: 1rem;
@@ -102,7 +102,7 @@ export const CommentArea = styled.div`
   display: flex;
   /* align-items: center; */
   gap: 0.6rem;
-  color: var(--8-gray);
+  /* color: var(--8-gray); */
   & img {
     margin-top: 0.3rem;
   }
@@ -117,7 +117,6 @@ export const LikesIcon = styled(FaThumbsUp)`
   /* opacity: 50%; */
 `;
 export const Title = styled.h2`
-  color: white;
   font-size: 2.4rem;
 `;
 export const PageNumber = styled.div`

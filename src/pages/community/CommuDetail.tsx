@@ -14,7 +14,7 @@ import { deletePostMutation, fetchDetailPost } from './commuQuery';
 import { ProfileObject } from './model';
 // Quill.register('modules/imageActions', ImageActions);
 // Quill.register('modules/imageFormats', ImageFormats);
-const fileIcons = {};
+
 const CommuDetail: React.FC = () => {
   const param = useParams();
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const CommuDetail: React.FC = () => {
     isLoading,
     isError
   } = useQuery(['posts', param.id], () => fetchDetailPost(param.id));
-
+  console.log(userId);
   useEffect(() => {
     const getPostUser = async () => {
       // posts 데이터가 로드되었는지 확인
@@ -223,7 +223,12 @@ const CommuDetail: React.FC = () => {
           <St.NoticeLike>글이 마음에 든다면 추천을 눌러보세요!</St.NoticeLike>
 
           <div>
-            <Reply userId={userId} paramId={param.id} likes={posts![0].likes} />
+            <Reply
+              userId={userId}
+              paramId={param.id}
+              likes={posts![0].likes}
+              postUserId={posts![0].post_user}
+            />
           </div>
         </St.ContentsContainer>
       )}

@@ -6,6 +6,12 @@ import * as St from '../../styles/community/CommentStyle';
 
 import { useNavigate } from 'react-router';
 import {
+  addCommentMutation,
+  deleteCommentMutation,
+  fetchComments,
+  updateCommentMutation
+} from '../../pages/community/ReplyQuery';
+import {
   fetchDetailPost,
   updatePostMutation
 } from '../../pages/community/commuQuery';
@@ -15,7 +21,12 @@ import {
   ReplyObject
 } from '../../pages/community/model';
 import parseDate from '../../util/getDate';
-const Reply: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
+const Reply: React.FC<CommentProps> = ({
+  userId,
+  paramId,
+  likes,
+  postUserId
+}) => {
   //유저 데이터 가져오기
   const queryClient = useQueryClient();
   useEffect(() => {
@@ -63,12 +74,14 @@ const Reply: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
   const [anon, setAnon] = useState(false);
   const [secret, setSecret] = useState(false);
   const [parentId, setParentId] = useState<number | null>(null);
+  const [parentUserId, setParentUserId] = useState<string | null>(null);
+
   const [isReply, setIsReply] = useState(false);
   const [liked, setLiked] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [replyingToComment, setReplyingToComment] =
     useState<ReplyObject | null>(null);
-  const [editToolOpenId, setEditToolOpenId] = useState<number | null>(null);
+
   useEffect(() => {
     // 사용자가 이미 좋아요를 했는지 확인
     const userLiked = posts?.[0]?.likes_user?.includes(userId);
@@ -110,65 +123,32 @@ const Reply: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
       setSecret(false);
     }
   });
-  // console.log(comments);
 
-  useEffect(() => {
-    const getCommentsWithUserData = async () => {
-      try {
-        const { data: commentsData, error: commentsError } = await supabase
-          .from('comments')
-          .select('*')
-          .order('id', { ascending: false })
-          .eq('post_id', paramId);
+  const { data: commentUserInfo, isLoading: commentLoading } = useQuery(
+    ['comments', paramId],
+    () => fetchComments(paramId)
+  );
+  // console.log(commentUserInfo);
+  //댓글 추가 쿼리 변환 완료
+  const addMutation = useMutation(addCommentMutation, {
+    onSuccess: (data) => {
+      console.log(data);
+      queryClient.invalidateQueries('comments');
+    }
+  });
 
-        if (commentsError) throw commentsError;
-        // const thisComment = comments.filter((comment) => {
-        //   return editToolOpenId === comment.id;
-        // });
-        // console.log(thisComment);
-        //각 댓글에 담긴 user_id로 유저데이터 가져오기
-        const commentUserInfo = await Promise.all(
-          commentsData.map(async (comment) => {
-            const { data: user, error: userError } = await supabase
-              .from('user')
-              .select('*')
-              .eq('id', comment.user_id)
-              .single();
-            if (userError) throw userError;
-            return { ...comment, user }; // user정보 객체에 추가
-          })
-        );
-
-        setComments(commentUserInfo);
-      } catch (error) {
-        console.error('댓글 및 사용자 정보 가져오기 오류:', error);
-      }
-    };
-
-    getCommentsWithUserData();
-  }, []);
   const addComment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const insertReply = {
       parent_id: parentId,
+      parentUser_id: parentUserId,
       user_id: userId,
       post_id: paramId,
       content: comment,
       anon,
       secret
     };
-    try {
-      const { data, error } = await supabase
-        .from('comments')
-        .insert([insertReply]);
-      if (error) throw error;
-      setAnon(false);
-      setComment('');
-      setSecret(false);
-      setReplyingToComment(null); // 대댓글 대상 댓글 정보 저장
-    } catch (error) {
-      console.error('Error adding comment:', error);
-    }
+    addMutation.mutate(insertReply);
   };
 
   const startEditComment = (commentId: number, currentContent: string) => {
@@ -176,41 +156,30 @@ const Reply: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
     setEditedCommentIndex(commentId); // 수정 중인 댓글의 ID 설정
     setIsEdit(true);
   };
+  const updateMutation = useMutation(updateCommentMutation, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['comment']);
+    }
+  });
   const updateCommentDetail = async (commentId: number) => {
     const updateReply = {
-      content: editComment,
-      anon,
-      secret
+      updateData: {
+        content: editComment,
+        anon,
+        secret
+      },
+      commentId
     };
-    try {
-      const { data, error } = await supabase
-        .from('comments')
-        .update([updateReply])
-        .eq('id', commentId);
-      if (error) throw error;
-      setAnon(false);
-      setComment('');
-      setSecret(false);
-      setIsEdit(false); // 수정 모드 종료
-      setEditedCommentIndex(null);
-    } catch (error) {
-      console.error('Error adding comment:', error);
-    }
+    updateMutation.mutate(updateReply);
   };
-
+  const deleteMutation = useMutation(deleteCommentMutation, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['comment']);
+    }
+  });
   const deleteComment = async (commentId: number) => {
     if (window.confirm('해당 댓글을 삭제하시겠습니까?')) {
-      try {
-        const { data, error } = await supabase
-          .from('comments')
-          .delete()
-          .eq('id', commentId);
-        if (error) throw error;
-
-        setEditedCommentIndex(null);
-      } catch (error) {
-        console.error('Error adding comment:', error);
-      }
+      deleteMutation.mutate(commentId);
     } else {
       alert('삭제취소');
     }
@@ -219,6 +188,7 @@ const Reply: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
     setIsReply(true); // 대댓글 입력 활성화
     setReplyingToComment(comment); // 대댓글 대상 댓글 정보 저장
     setParentId(comment.id);
+    setParentUserId(comment.user_id);
   };
   // console.log(replyingToComment);
   const commentFocusHandler = () => {
@@ -239,8 +209,11 @@ const Reply: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
     return comment.parent_id === null;
   });
   const childComment = (commentId: number) =>
-    comments.filter((reply) => reply.parent_id === commentId);
+    commentUserInfo?.filter((reply) => reply.parent_id === commentId);
   if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  if (commentLoading) {
     return <div>Loading...</div>;
   }
 
@@ -306,16 +279,21 @@ const Reply: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
         </St.CheckBoxArea>
       </St.Form>
 
-      {comments
+      {commentUserInfo
         ?.filter((comment) => {
           return comment.parent_id === null;
         })
         .map((comment, index) => {
           const parseTime = parseDate(comment.created_at);
+          const canViewSecretComment =
+            !comment.secret ||
+            comment.user_id === userId || // 현재 사용자가 댓글 작성자
+            postUserId === userId ||
+            comment.parentUser_id === userId;
           return (
             <St.CommentContainer key={index}>
-              {comment.secret ? (
-                <></>
+              {comment.secret && !canViewSecretComment ? (
+                <p>이 댓글은 비밀댓글입니다.</p>
               ) : (
                 <St.Comment>
                   <St.ParentComment>
@@ -358,7 +336,7 @@ const Reply: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
                               </>
                             )
                           ) : (
-                            <></>
+                            <p>신고</p>
                           )}
                         </St.UpdateBtnContainer>
                       </St.LeftSide>
@@ -376,74 +354,79 @@ const Reply: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
                     </button>
                   </St.ParentComment>
 
-                  {childComment(comment.id).map((comment) => (
-                    <St.ChildCommentContainer>
-                      <p>ㄴ</p>
-                      <St.ChildComment>
-                        <St.LeftCommentSide>
-                          <St.LeftSide>
-                            <St.ProfileImage src={comment.user.avatar_url} />
-                            <St.Name>
-                              {comment.anon
-                                ? '익명의 작업자'
-                                : comment.user.nickname
-                                ? comment.user.nickname
-                                : comment.user.username}
-                            </St.Name>
-                            <St.Time>{parseTime}</St.Time>
-                            <St.UpdateBtnContainer>
-                              {profile.length > 0 &&
-                              comment.user_id === profile[0].id ? (
-                                isEdit && editedCommentIndex === comment.id ? (
-                                  <p
-                                    onClick={() =>
-                                      updateCommentDetail(comment.id)
-                                    }
-                                  >
-                                    수정완료
-                                  </p>
-                                ) : (
-                                  <>
+                  {childComment(comment.id)
+                    ?.reverse()
+                    .map((comment, index) => (
+                      <St.ChildCommentContainer key={index}>
+                        <p>ㄴ</p>
+                        <St.ChildComment>
+                          <St.LeftCommentSide>
+                            <St.LeftSide>
+                              <St.ProfileImage src={comment.user.avatar_url} />
+                              <St.Name>
+                                {comment.anon
+                                  ? '익명의 작업자'
+                                  : comment.user.nickname
+                                  ? comment.user.nickname
+                                  : comment.user.username}
+                              </St.Name>
+                              <St.Time>{parseTime}</St.Time>
+                              <St.UpdateBtnContainer>
+                                {profile.length > 0 &&
+                                comment.user_id === profile[0].id ? (
+                                  isEdit &&
+                                  editedCommentIndex === comment.id ? (
                                     <p
                                       onClick={() =>
-                                        startEditComment(
-                                          comment.id,
-                                          comment.content
-                                        )
+                                        updateCommentDetail(comment.id)
                                       }
                                     >
-                                      수정
+                                      수정완료
                                     </p>
-                                    <p>|</p>
-                                    <p
-                                      onClick={() => deleteComment(comment.id)}
-                                    >
-                                      삭제
-                                    </p>
-                                  </>
-                                )
-                              ) : (
-                                <></>
-                              )}
-                            </St.UpdateBtnContainer>
-                          </St.LeftSide>
-                          {isEdit && editedCommentIndex === comment.id ? (
-                            <input
-                              value={editComment}
-                              onChange={(e) => setEditComment(e.target.value)}
-                            />
-                          ) : (
-                            <St.CommentContent>
-                              {comment.content}
-                            </St.CommentContent>
-                          )}
-                        </St.LeftCommentSide>{' '}
-                        <button onClick={() => handleReplyClick(comment)}>
-                          대댓글
-                        </button>
-                      </St.ChildComment>
-                    </St.ChildCommentContainer>
-                  ))}
+                                  ) : (
+                                    <>
+                                      <p
+                                        onClick={() =>
+                                          startEditComment(
+                                            comment.id,
+                                            comment.content
+                                          )
+                                        }
+                                      >
+                                        수정
+                                      </p>
+                                      <p>|</p>
+                                      <p
+                                        onClick={() =>
+                                          deleteComment(comment.id)
+                                        }
+                                      >
+                                        삭제
+                                      </p>
+                                    </>
+                                  )
+                                ) : (
+                                  <p>신고</p>
+                                )}
+                              </St.UpdateBtnContainer>
+                            </St.LeftSide>
+                            {isEdit && editedCommentIndex === comment.id ? (
+                              <input
+                                value={editComment}
+                                onChange={(e) => setEditComment(e.target.value)}
+                              />
+                            ) : (
+                              <St.CommentContent>
+                                {comment.content}
+                              </St.CommentContent>
+                            )}
+                          </St.LeftCommentSide>{' '}
+                          {/* <button onClick={() => handleReplyClick(comment)}>
+                            대댓글
+                          </button> */}
+                        </St.ChildComment>
+                      </St.ChildCommentContainer>
+                    ))}
                 </St.Comment>
               )}
 

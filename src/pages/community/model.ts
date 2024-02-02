@@ -15,6 +15,7 @@ export type Post = {
   }[];
   main_image: string;
   anon: boolean;
+  comments_count: number;
 };
 export type FilesObject = {
   url: string;
@@ -78,6 +79,7 @@ export type CommentProps = {
   userId: string;
   paramId: string | undefined;
   likes: number | undefined;
+  postUserId: string | undefined;
 };
 export type CommentUpload = {
   updateData: {
@@ -112,14 +114,13 @@ export type FormProps = {
   $isFocused: boolean;
 };
 export type ReplyInsertObject = {
-  id: number;
-  parent_id: number;
+  parent_id: number | null;
+  parentUser_id: string | null;
   user_id: string;
-  post_id: number;
+  post_id: string | undefined;
   content: string;
   anon: boolean;
   secret: boolean;
-  created_at: string;
 };
 export type ReplyObject = {
   id: number;
@@ -131,4 +132,13 @@ export type ReplyObject = {
   secret: boolean;
   created_at: string;
   user: ProfileObject;
+  parentUser_id: string;
+};
+export type UpdateComment = {
+  updateData: {
+    content: string;
+    anon: boolean;
+    secret: boolean;
+  };
+  commentId: number | undefined;
 };

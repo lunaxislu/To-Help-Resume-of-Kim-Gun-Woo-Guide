@@ -54,7 +54,7 @@ export const WriteBtn = styled.button`
   align-items: center;
   justify-content: center;
   border-radius: 2.4rem;
-  font-family: 'Pretendard-Medium';
+
   cursor: pointer;
   @media screen and (max-width: 768px) {
     /* display: none; */ //검색창 잇을떄
@@ -86,7 +86,7 @@ export const WriteBtn2 = styled.button`
     align-items: center;
     justify-content: center;
     border-radius: 2.4rem;
-    font-family: 'Pretendard-Medium';
+
     cursor: pointer;
   }
 `;
@@ -106,7 +106,7 @@ export const CategoryBtn = styled.button<{ $selectCategory: string }>`
   width: fit-content;
   padding: 0 1.5rem;
   border-radius: 5.6rem;
-  font-family: 'Pretendard-Medium';
+
   font-size: var(--fontSize-H5);
   cursor: pointer;
   ${(props) => {
@@ -164,7 +164,7 @@ export const SearchBar = styled.input`
   border: none;
   border-radius: 1.9rem;
   height: 3.6rem;
-  font-family: 'Pretendard-Medium';
+
   padding-left: 1.6rem;
   background-color: var(--3-gray);
   width: 31.6rem;
@@ -181,7 +181,7 @@ export const Topper2 = styled.div`
   margin-bottom: 2.4rem;
   font-size: var(--fontSize-H5);
   color: var(--7-gray);
-  font-family: 'Pretendard-Medium';
+
   justify-content: space-between;
   white-space: nowrap;
   & div {
