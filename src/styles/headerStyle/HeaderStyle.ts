@@ -182,6 +182,7 @@ export const Alert = styled.button`
   border: 0;
   background: transparent;
   font-family: 'Pretendard-Medium';
+  position: relative;
 
   cursor: pointer;
   gap: 0.6rem;

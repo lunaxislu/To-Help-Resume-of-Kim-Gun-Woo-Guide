@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { IoClose } from 'react-icons/io5';
 
 // 파일을 받는다
@@ -47,8 +47,22 @@ const ImagePreviewer = ({
 
 export default ImagePreviewer;
 
+const ImageAni = keyframes`
+  from {
+    opacity: 0;
+    scale: 0;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+`;
+
 const StPreviewContainer = styled.div`
   width: 100%;
+  border-radius: 9px;
+  margin-block: 1rem;
   padding: 1.25rem;
   display: flex;
   gap: 1.65rem;
@@ -79,6 +93,8 @@ const StPreviewItems = styled.div<ItemType>`
       `;
     }
   }}
+
+  animation: ${ImageAni} .3s ease
 `;
 
 const StdeleteImage = styled.div`

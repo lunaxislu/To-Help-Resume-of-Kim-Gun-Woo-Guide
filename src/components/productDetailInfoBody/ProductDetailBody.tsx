@@ -151,12 +151,13 @@ const StQualityInfo = styled.div`
 const StQualityInfoBox = styled.div`
   width: fit-content;
   height: fit-content;
-  background-color: rgba(0, 0, 0, .8);
+  background-color: rgba(0, 0, 0, 0.8);
   position: absolute;
   left: -500px;
   bottom: -100px;
   color: white;
   border-radius: 12px;
+  display: -webkit-flex; /* iOS Safari에서 Flexbox 지정 */
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
