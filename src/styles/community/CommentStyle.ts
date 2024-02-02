@@ -23,7 +23,17 @@ export const ProfileImage = styled.img`
   height: 2rem;
   border-radius: 50%;
 `;
+export const SecretComment = styled.p`
+  font-size: var(--fontSize-H5);
+  max-width: 45rem;
+  overflow: hidden;
+  margin: 2rem 0;
 
+  /* width: 30rem; */
+  @media screen and (max-width: 768px) {
+    /* width: 17rem; */
+  }
+`;
 export const CommentContent = styled.p`
   font-size: var(--fontSize-H5);
   max-width: 45rem;
@@ -268,6 +278,7 @@ export const Comment = styled.div`
   width: 100%;
   flex-direction: column;
   justify-content: space-between;
+  height: fit-content;
 `;
 export const LeftSide = styled.div`
   display: flex;

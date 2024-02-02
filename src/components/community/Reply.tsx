@@ -134,6 +134,10 @@ const Reply: React.FC<CommentProps> = ({
     onSuccess: (data) => {
       console.log(data);
       queryClient.invalidateQueries('comments');
+      setAnon(false);
+      setComment('');
+      setSecret(false);
+      setReplyingToComment(null);
     }
   });
 
@@ -158,7 +162,12 @@ const Reply: React.FC<CommentProps> = ({
   };
   const updateMutation = useMutation(updateCommentMutation, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['comment']);
+      queryClient.invalidateQueries(['comments']);
+      setAnon(false);
+      setComment('');
+      setSecret(false);
+      setIsEdit(false);
+      setEditedCommentIndex(null);
     }
   });
   const updateCommentDetail = async (commentId: number) => {
@@ -174,7 +183,8 @@ const Reply: React.FC<CommentProps> = ({
   };
   const deleteMutation = useMutation(deleteCommentMutation, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['comment']);
+      queryClient.invalidateQueries(['comments']);
+      setEditedCommentIndex(null);
     }
   });
   const deleteComment = async (commentId: number) => {
@@ -205,9 +215,6 @@ const Reply: React.FC<CommentProps> = ({
     }
   };
 
-  const parentComment = comments?.filter((comment) => {
-    return comment.parent_id === null;
-  });
   const childComment = (commentId: number) =>
     commentUserInfo?.filter((reply) => reply.parent_id === commentId);
   if (isLoading) {
@@ -230,7 +237,7 @@ const Reply: React.FC<CommentProps> = ({
         <p>{likes}</p>
 
         <St.CommentIcon className="comment" />
-        <p>{`${comments.length}개의 댓글`}</p>
+        <p>{`${commentUserInfo?.length}개의 댓글`}</p>
       </St.CountDivTop>
 
       <St.Form
@@ -292,10 +299,10 @@ const Reply: React.FC<CommentProps> = ({
             comment.parentUser_id === userId;
           return (
             <St.CommentContainer key={index}>
-              {comment.secret && !canViewSecretComment ? (
-                <p>이 댓글은 비밀댓글입니다.</p>
-              ) : (
-                <St.Comment>
+              <St.Comment>
+                {comment.secret && !canViewSecretComment ? (
+                  <St.SecretComment>이 댓글은 비밀댓글입니다.</St.SecretComment>
+                ) : (
                   <St.ParentComment>
                     <St.LeftCommentSide>
                       <St.LeftSide>
@@ -353,12 +360,18 @@ const Reply: React.FC<CommentProps> = ({
                       대댓글
                     </button>
                   </St.ParentComment>
+                )}
 
-                  {childComment(comment.id)
-                    ?.reverse()
-                    .map((comment, index) => (
-                      <St.ChildCommentContainer key={index}>
-                        <p>ㄴ</p>
+                {childComment(comment.id)
+                  ?.reverse()
+                  .map((comment, index) => (
+                    <St.ChildCommentContainer key={index}>
+                      <p>ㄴ</p>
+                      {comment.secret && !canViewSecretComment ? (
+                        <St.CommentContent>
+                          이 댓글은 비밀댓글입니다.
+                        </St.CommentContent>
+                      ) : (
                         <St.ChildComment>
                           <St.LeftCommentSide>
                             <St.LeftSide>
@@ -425,10 +438,10 @@ const Reply: React.FC<CommentProps> = ({
                             대댓글
                           </button> */}
                         </St.ChildComment>
-                      </St.ChildCommentContainer>
-                    ))}
-                </St.Comment>
-              )}
+                      )}
+                    </St.ChildCommentContainer>
+                  ))}
+              </St.Comment>
 
               {/* <button>신고</button> */}
             </St.CommentContainer>
