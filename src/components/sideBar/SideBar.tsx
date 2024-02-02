@@ -14,6 +14,7 @@ const StSideBtnContainer = styled.div`
   top: 30%;
   right: 3%;
   transform: translate(0%, -50%);
+  z-index: 100;
 `;
 
 const StMainButton = styled.button`
@@ -27,6 +28,12 @@ const StMainButton = styled.button`
   font-weight: 600;
   position: relative;
   cursor: pointer;
+  transition: opacity 0.1s ease;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const SlideDown = keyframes`
@@ -67,8 +74,8 @@ const StMenuButtons = styled.button<ButtonProps>`
   color: #18b3bc;
   font-weight: 600;
   position: absolute;
-  margin-top: 2rem;
-  top: ${(props) => props.$index * 120}%;
+  margin-top: 3.6rem;
+  top: ${(props) => props.$index * 90}%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: -1;
@@ -77,6 +84,12 @@ const StMenuButtons = styled.button<ButtonProps>`
   animation-fill-mode: backwards;
   animation-delay: ${(props) => 0.06 * props.$index}s;
   cursor: pointer;
+  transition: opacity 0.1s ease;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const SideBar = () => {
@@ -96,25 +109,23 @@ const SideBar = () => {
   ];
   return (
     <StSideBtnContainer>
-      <StMainButton onClick={setMenuToggle}>
-        Menu
-        {arr.map((menu, i) => {
-          return (
-            isShow && (
-              <StMenuButtons
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-                $isShow
-                $index={i + 1}
-                key={i}
-              >
-                {menu}
-              </StMenuButtons>
-            )
-          );
-        })}
-      </StMainButton>
+      <StMainButton onClick={setMenuToggle}>Menu</StMainButton>
+      {arr.map((menu, i) => {
+        return (
+          isShow && (
+            <StMenuButtons
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              $isShow
+              $index={i + 1}
+              key={i}
+            >
+              {menu}
+            </StMenuButtons>
+          )
+        );
+      })}
     </StSideBtnContainer>
   );
 };

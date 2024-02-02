@@ -6,9 +6,9 @@ import { CustomUser } from '../../pages/productsDetail/types';
 
 const StSellTitle = styled.h1`
   text-align: center;
-  font-weight: 600;
+  font-weight: 500;
   margin-block: 1rem;
-  color: white;
+  color: black;
   letter-spacing: 0.1rem;
 `;
 
@@ -53,7 +53,10 @@ const ProductChatList = ({
               <h1
                 style={{
                   textAlign: 'center',
-                  height: '100%'
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%,-50%)'
                 }}
               >
                 채팅 내역이 없습니다

@@ -33,16 +33,12 @@ const ChatHeader = ({
   setRooms,
   setMessages,
   setClicked,
-  rooms,
   setShowMenu,
   handleHideBoardPosition
 }: ChatHeaderPropsType) => {
   const supaService = new SupabaseAPI();
-  const utilFunctions = new UtilForChat();
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [currentRoomsUser, setCurrentRoomsUser] = useState<any>();
-
-  const navi = useNavigate();
 
   const handleShowMenuToggle = () => {
     setShowMenu((prev) => !prev);

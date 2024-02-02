@@ -19,9 +19,9 @@ const Layout = () => {
   const [notification, setNotification] = useState<any[]>([]);
   const [newNotiExists, setNewNotiExists] = useState<boolean>(false);
 
+  // 알림 울리기
   const playAlert = () => {
     const ring = new Audio('/assets/Twitter Notification_sound_effect.mp3');
-
     setTimeout(() => {
       ring.play();
       ring.currentTime = 0.5;

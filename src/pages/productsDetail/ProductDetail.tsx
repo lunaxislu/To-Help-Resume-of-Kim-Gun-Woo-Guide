@@ -32,6 +32,10 @@ import {
   handleSellComplete,
   isExistsRoom
 } from '../../components/productDetailInfoBody/ProductDetailFn';
+import { TbCircleNumber1 } from 'react-icons/tb';
+import { HiSparkles } from 'react-icons/hi2';
+import { FaLocationDot, FaTruckFast } from 'react-icons/fa6';
+import { RiExchangeFill } from 'react-icons/ri';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
@@ -201,7 +205,28 @@ const ProductDetail = () => {
 
   if (product === null) return <div>로딩 중</div>;
 
-  const labels = ['수량', '상태', '거래 방식', '직거래 장소', '교환'];
+  const labels = [
+    {
+      tag: '수량',
+      icon: <TbCircleNumber1 />
+    },
+    {
+      tag: '상태',
+      icon: <HiSparkles />
+    },
+    {
+      tag: '거래 방식',
+      icon: <FaTruckFast />
+    },
+    {
+      tag: '직거래 장소',
+      icon: <FaLocationDot />
+    },
+    {
+      tag: '교환',
+      icon: <RiExchangeFill />
+    }
+  ];
 
   const data = product[0];
   const productInfo = [
@@ -229,7 +254,7 @@ const ProductDetail = () => {
         />
       )}
       <ToastContainer />
-      {/* ///////////// 본체 //////////////// */}
+      {/* 본체 */}
       <St.StDetailContainer>
         <St.StDetailInfoSection>
           <St.StImageWrapper>
@@ -239,6 +264,7 @@ const ProductDetail = () => {
               }
             />
           </St.StImageWrapper>
+          {/* 게시물 상단 */}
           <St.StProductInfo>
             <ProductDetailInfoHeader
               curUser={curUser}
@@ -258,8 +284,8 @@ const ProductDetail = () => {
                 productInfo={productInfo}
                 data={data}
               />
-              {/* 게시물 작성자에게 보여지는 버튼 */}
             </St.StProductInfoBody>
+            {/* 판매자와 구매자에게 다르게 보이는 버튼 */}
             <ProductButton
               curUser={curUser}
               handleCancleLike={() => {
@@ -291,6 +317,7 @@ const ProductDetail = () => {
             />
           </St.StProductInfo>
         </St.StDetailInfoSection>
+        {/* 상품 설명란 */}
         <St.StProductIntroSection>
           <St.StProductIntroTitle>상품 설명</St.StProductIntroTitle>
           <St.StProductContent>{data.contents}</St.StProductContent>

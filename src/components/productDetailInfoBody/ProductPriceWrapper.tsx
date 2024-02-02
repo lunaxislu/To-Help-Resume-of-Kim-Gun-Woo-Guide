@@ -17,9 +17,11 @@ const StPriceContainer = styled.div`
 
 const StShippingCostInfoBox = styled.div`
   padding: 0.5rem;
-  background-color: var(--4-gray);
+  background-color: var(--opc-100);
+  color: white;
   border-radius: 2px;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
+  font-weight: 500;
 `;
 
 const ProductPriceWrapper = ({ data, isMobile }: PriceWrapperProps) => {

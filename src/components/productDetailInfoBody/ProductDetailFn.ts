@@ -165,6 +165,10 @@ export const handleLike = async ({
   isLikedProduct,
   setIsLiked
 }: LikeFnProps) => {
+  if (!curUser) {
+    alert('로그인 후 이용바랍니다');
+    return;
+  }
   try {
     const [likesFieldRes, existingDataRes, likeListRes] =
       await Promise.allSettled([

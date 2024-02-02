@@ -74,7 +74,7 @@ const StChatballoon = styled.div`
   width: fit-content;
   max-width: 350px;
   color: var(--11-gray);
-  background-color: var(--3-gray);
+  background-color: #13b3bc50;
   margin-right: auto;
   margin-left: 2.7rem;
   margin-block: 1rem;
@@ -83,6 +83,7 @@ const StChatballoon = styled.div`
   font-weight: 500;
   line-height: 1.2;
   font-size: 1.4rem;
+  border: 0.1rem solid #13b3bc30;
 
   @media screen and (max-width: 768px) {
     font-size: 1rem;
@@ -96,7 +97,7 @@ const StMyChatballoon = styled.div`
   width: fit-content;
   max-width: 350px;
   color: var(--2-gray);
-  background-color: var(--opc-100);
+  background-color: #13b3bc;
   margin-left: auto;
   margin-right: 2.7rem;
   margin-block: 1rem;
