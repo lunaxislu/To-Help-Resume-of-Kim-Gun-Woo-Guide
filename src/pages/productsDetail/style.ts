@@ -22,7 +22,6 @@ const StDetailContainer = styled.div`
   max-height: 2828px;
   padding: 4.9rem 0;
   margin: auto;
-  font-family: 'Pretendard-Regular';
   animation: ${StFadeAni} 0.3s ease;
 
   @media screen and (max-width: 768px) {
@@ -156,7 +155,6 @@ const StAlertIcon = styled(AiFillAlert)`
 
 const StHeaderTitle = styled.div`
   width: 100%;
-  font-family: 'Pretendard-Medium';
   margin-block: 2.1rem;
   font-size: var(--fontSize-H2);
 
@@ -180,9 +178,7 @@ const StHeaderPriceWrapper = styled.div`
     margin-block: 0.6rem;
   }
 `;
-const StPrice = styled.h3`
-  font-family: 'Pretendard-Bold';
-`;
+const StPrice = styled.h3``;
 const StTimeLeft = styled.div`
   max-width: 20%;
   font-size: var(--fontSize-H5);
@@ -418,7 +414,6 @@ const StChatList = styled.div`
 
 const StChatListItem = styled.div`
   padding: 2rem 1rem;
-  height: 100%;
 
   cursor: pointer;
 

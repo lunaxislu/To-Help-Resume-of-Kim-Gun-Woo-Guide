@@ -3,7 +3,6 @@ import { supabase } from './../../../api/supabase/supabaseClient';
 import { SetStateAction } from 'react';
 import { MessageType, RoomType } from '../../../components/chat/types';
 import { UtilForChat } from '../chat_utils/functions';
-import { useNavigate } from 'react-router';
 
 export class SupabaseAPI {
   // constructor type 정의

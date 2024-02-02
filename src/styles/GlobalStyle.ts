@@ -52,35 +52,26 @@ export const GlobalStyles = createGlobalStyle`
 }
 
 @font-face {
-    font-family: 'Pretendard-Light';
-    src: url('/fonts/Pretendard-Light.woff') format('woff');
+    font-family: 'BM-JUA';
+    src: url('/fonts/BMJUA.woff') format('woff');
     font-weight: 300;
     font-style: normal;
 }
+
 @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('/fonts/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Pretendard-Medium';
-    src: url('/fonts/Pretendard-Medium.woff') format('woff');
+    font-family: 'DalseoHealing-Medium';
+    src: url('/fonts/DalseoHealingMedium.woff') format('woff');
     font-weight: 500;
     font-style: normal;
 }
 @font-face {
-    font-family: 'Pretendard-SemiBold';
-    src: url('/fonts/Pretendard-SemiBold.woff') format('woff');
-    font-weight: 600;
-    font-style: normal;
-}
-@font-face {
-    font-family: 'Pretendard-Bold';
-    src: url('/fonts/Pretendard-Bold.woff') format('woff');
+    font-family: 'DalseoHealing-Bold';
+    src: url('/fonts/DalseoHealingBold.woff') format('woff');
     font-weight: 700;
     font-style: normal;
 }
+
+
 
 
 html, body, div, span, applet, object, iframe,
@@ -103,6 +94,7 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
     
+    
 
 }
 /* HTML5 display-role reset for older browsers */
@@ -114,13 +106,13 @@ body {
 	line-height: 1;
     font-size: 1.6rem;
     background-color: #1F1F1F;
-    font-family: 'Pretendard-Medium';
+    font-family: 'DalseoHealing-Medium';
     color: var(--11-gray);
     overflow-x: hidden;
 }
 button,
 input {
-    font-family: 'Pretendard-Medium';
+    font-family: 'DalseoHealing-Medium';
 }
 ol, ul {
 	list-style: none;
@@ -146,6 +138,16 @@ html {
     padding: 0;
     margin: 0 ;
     box-sizing: border-box;
-
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--opc-100);
+        border-radius: 50px;
+        background-clip: content-box;
+    }
 }
 `;

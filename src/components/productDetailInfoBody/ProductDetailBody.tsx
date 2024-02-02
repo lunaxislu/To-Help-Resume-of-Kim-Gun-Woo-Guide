@@ -115,7 +115,6 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
 const StRowValue = styled.div`
   width: 100%;
   font-size: 1.4rem;
-  font-family: 'Pretendard-Medium';
   text-align: left;
   display: flex;
   align-items: center;
@@ -131,6 +130,7 @@ const StValueParagraph = styled.div`
   font-size: 1.2rem;
   padding: 0.6rem;
   border-radius: 0.3rem;
+  padding-top: 0.9rem;
   color: var(--11-gray);
   background-color: var(--4-gray);
 `;
