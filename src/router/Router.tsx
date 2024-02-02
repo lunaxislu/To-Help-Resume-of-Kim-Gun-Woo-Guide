@@ -13,6 +13,7 @@ import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
 import PrivateLayout from '../layouts/PrivateLayout/PrivateLayout';
 import Layout from '../layouts/Layout';
+import ProductsPostsEdit from '../pages/products/ProductsPostsEdit';
 
 const Router = () => {
   return (
@@ -32,8 +33,9 @@ const Router = () => {
           <Route element={<PrivateLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/mypage" element={<MyPage />} />
-            <Route path="/chat" element={<ChatRoom />} />
+            <Route path="/chat" element={<ChatRoom />} /> 
             <Route path="/productsposts" element={<ProductsPosts />} />
+            <Route path="/productsposts/edit/:id" element={<ProductsPostsEdit />} />
             <Route path="/community_write" element={<WritePost />} />
             <Route path="*" element={<Navigate to={'/'} replace />} />
           </Route>

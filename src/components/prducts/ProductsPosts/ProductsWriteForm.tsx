@@ -157,8 +157,7 @@ const ProductsWriteForm = () => {
   };
 
 
-  const onSubmit: SubmitHandler<ProductsInputType> = async (data) => {
-    await new Promise((r: any) => setTimeout(r, 1000));
+  const onSubmit: SubmitHandler<ProductsInputType> = (data) => {
 
     if (!uploadedFileUrl || uploadedFileUrl.length === 0) {
       alert('이미지를 업로드해주세요.');

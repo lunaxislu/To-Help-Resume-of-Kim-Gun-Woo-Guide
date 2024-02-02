@@ -21,7 +21,6 @@ import {
   isLikedProduct,
   sendInitMessage
 } from './supabase_Detail/supabaseAPI';
-import ProductsPosts from '../products/ProductsPosts';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
@@ -49,6 +48,9 @@ const ProductDetail = () => {
   const [selectedUser, setSelectedUser] = useState<string>('');
   const [likesCount, setLikesCount] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  
+  // 하빈 추가(게시물 수정기능)
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   // 1. 버튼 클릭 시 상대방과의 채팅방을 만든다.
 
@@ -628,7 +630,6 @@ const ProductDetail = () => {
     data.changable,
     data.shipping_cost
   ];
-
   return (
     <>
       {showChatList && (
@@ -732,21 +733,20 @@ const ProductDetail = () => {
               <St.StAlertButton>
                 {product[0].post_user_uid === curUser?.uid && (
                   <>
-                      <div
-                        onClick={() => {
-                          // setIsEditing(true);
-                        }}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '.36rem',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        <FaPencil style={{ color: 'var(--opc-100)' }} />
-                        수정하기
-                      </div>
-                    
+                    <div
+                      onClick={() => {
+                        alert('개발 중인 기능입니다!');
+                      }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '.36rem',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <FaPencil style={{ color: 'var(--opc-100)' }} />
+                      수정하기
+                    </div>
                     <div
                       onClick={handleDeletePost}
                       style={{
@@ -888,7 +888,6 @@ const ProductDetail = () => {
           </St.StProductCategory>
         </St.StProductIntroSection>
       </St.StDetailContainer>
-      
     </>
   );
 };
