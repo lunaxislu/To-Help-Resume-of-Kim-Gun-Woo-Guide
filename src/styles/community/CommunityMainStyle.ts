@@ -47,7 +47,7 @@ export const WriteBtn = styled.button`
   width: 9rem;
   height: 3.1rem;
   color: var(--12-gray);
-  background-color: var(--opc-10);
+  background-color: var(--opc-20);
   border: none;
   font-size: var(--fontSize-H5);
   display: flex;
@@ -57,16 +57,9 @@ export const WriteBtn = styled.button`
 
   cursor: pointer;
   @media screen and (max-width: 768px) {
-    /* display: none; */ //검색창 잇을떄
     margin-top: 1.5rem;
-    /* font-size: var(--fontSize-H6); */
-    background-color: transparent;
-    width: 6rem;
+    width: 8rem;
     white-space: nowrap;
-    /* :hover {
-  background-color: var(--opc-100);
-
-    } */
   }
 `;
 export const WriteIcon = styled(BiEdit)`
@@ -74,22 +67,22 @@ export const WriteIcon = styled(BiEdit)`
   width: 1.6rem;
   height: 1.6rem;
 `;
-export const WriteBtn2 = styled.button`
-  display: none;
-  @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H6);
-    background-color: transparent;
-    height: 3.1rem;
-    color: var(--12-gray);
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 2.4rem;
+// export const WriteBtn2 = styled.button`
+//   display: none;
+//   @media screen and (max-width: 768px) {
+//     font-size: var(--fontSize-H6);
+//     background-color: var(--opc-20);
+//     height: 3.1rem;
+//     color: var(--12-gray);
+//     border: none;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     border-radius: 2.4rem;
 
-    cursor: pointer;
-  }
-`;
+//     cursor: pointer;
+//   }
+// `;
 export const Title = styled.h2`
   color: var(--12-gray);
   font-size: var(--fontSize-H3);
@@ -113,7 +106,7 @@ export const CategoryBtn = styled.button<{ $selectCategory: string }>`
     if (props.$selectCategory === props.children) {
       return css`
         background-color: var(--opc-100);
-        font-weight: var(--fontWeight-bold);
+
         color: var(--white);
       `;
     }
@@ -128,11 +121,10 @@ export const CategoryBtn = styled.button<{ $selectCategory: string }>`
     return css`
       background-color: var(--drop);
       color: var(--gray);
-      font-weight: var(--fontWeight-medium);
     `;
   }}
   @media screen and (max-width: 768px) {
-    padding: 0 0.8rem;
+    padding: 0 1rem;
     height: 2.7rem;
   }
 `;

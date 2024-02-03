@@ -6,16 +6,23 @@ import CommunityList from '../../components/community/CommunityList';
 import * as St from '../../styles/community/CommunityMainStyle';
 import { CATEGORY_ARRAY } from './WritePost';
 import { fetchPosts } from './commuQuery';
+
 const CommunityMain: React.FC = () => {
   const [selectCategory, setSelectCategory] = useState('전체');
   const [editToolOpen, setEditToolOpen] = useState(false);
   const navigate = useNavigate();
-  const { data: posts, isLoading, isError } = useQuery('posts', fetchPosts);
-
+  const {
+    data: posts,
+    isLoading,
+    isError
+  } = useQuery(['posts', selectCategory], () => fetchPosts(selectCategory));
   if (isError) {
     return <div>Error loading posts</div>;
   }
-
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  console.log(selectCategory);
   return (
     <St.Container>
       <St.Post_container>

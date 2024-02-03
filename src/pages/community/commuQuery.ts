@@ -23,11 +23,12 @@ export const fetchRangePosts = async (page: number, selectCategory: string) => {
   return { data, count };
 };
 
-export const fetchPosts = async () => {
+export const fetchPosts = async (selectCategory: string) => {
   const { data, error } = await supabase
     .from('community')
     .select('*', { count: 'exact' })
-    .order('post_id', { ascending: false });
+    .order('post_id', { ascending: false })
+    .ilike('category', selectCategory === '전체' ? '%' : selectCategory);
 
   if (error) {
     throw error;
