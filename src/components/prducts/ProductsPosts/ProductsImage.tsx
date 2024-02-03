@@ -79,46 +79,45 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
   // },[files])
 
   return (
-    <St.UpLoadImageContainer>
-      <St.SemiTitle>
-        사진
-        <St.Required>*</St.Required>
-        <St.ImgCount>{uploadedFileUrl.length}/12</St.ImgCount>
-      </St.SemiTitle>
-      <St.ImageWrapper>
-        <St.ImageOrderWrapper>
-          <St.ImageOrder>대표사진</St.ImageOrder>
-        </St.ImageOrderWrapper>
-        {uploadedFileUrl.map((img: string, idx: number) => (
-          <St.ImageCard id={img} key={idx}>
-            <St.Image
-              id={img}
-              onClick={handleImageOrder}
-              src={img}
-              alt={`${img}-${idx}`}
-            />
-            <St.ImageDeleteBtn onClick={() => handleDeleteImage(idx)}>
-              <St.ImageDeleteIcon />
-            </St.ImageDeleteBtn>
-          </St.ImageCard>
-        ))}
-        {uploadedFileUrl.length >= 12 ? (
-          <></>
-        ) : (
-          <St.UpLoadBox htmlFor="file">
-            <input
-              type="file"
-              id="file"
-              name="file"
-              onChange={handleFiles}
-              multiple
-              hidden
-            />
-            +
-          </St.UpLoadBox>
-        )}
-      </St.ImageWrapper>
-    </St.UpLoadImageContainer>
+    <>
+      <St.UpLoadImageContainer>
+        <St.SemiTitle>
+          사진
+          <St.Required>*</St.Required>
+          <St.ImgCount>{uploadedFileUrl.length}/12</St.ImgCount>
+        </St.SemiTitle>
+        <St.ImageWrapper>
+          <St.ImageOrderWrapper>
+          </St.ImageOrderWrapper>
+          {uploadedFileUrl.map((img: string, idx: number) => (
+            <St.ImageCard id={img} key={idx}>
+              <St.Image src={img} alt={`${img}-${idx}`} />
+              <St.ImageOrderBtn  id={img} onClick={handleImageOrder}>
+              <St.ImageOrder $idx={idx}>대표사진</St.ImageOrder>
+            </St.ImageOrderBtn>
+              <St.ImageDeleteBtn onClick={() => handleDeleteImage(idx)}>
+                <St.ImageDeleteIcon />
+              </St.ImageDeleteBtn>
+            </St.ImageCard>
+          ))}
+          {uploadedFileUrl.length >= 12 ? (
+            <></>
+          ) : (
+            <St.UpLoadBox htmlFor="file">
+              <input
+                type="file"
+                id="file"
+                name="file"
+                onChange={handleFiles}
+                multiple
+                hidden
+              />
+              +
+            </St.UpLoadBox>
+          )}
+        </St.ImageWrapper>
+      </St.UpLoadImageContainer>
+    </>
   );
 };
 
