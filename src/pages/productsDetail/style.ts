@@ -59,6 +59,7 @@ const StImageWrapper = styled.div`
   overflow: hidden;
   background-color: aliceblue;
   position: relative;
+  cursor: pointer;
 
   @media screen and (max-width: 768px) {
     width: 100%;

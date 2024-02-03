@@ -36,6 +36,7 @@ import { TbCircleNumber1 } from 'react-icons/tb';
 import { HiSparkles } from 'react-icons/hi2';
 import { FaLocationDot, FaTruckFast } from 'react-icons/fa6';
 import { RiExchangeFill } from 'react-icons/ri';
+import ImageViewer from '../../components/productDetailInfoBody/ImageViewer';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
@@ -54,6 +55,7 @@ const ProductDetail = () => {
   const [selectedUser, setSelectedUser] = useState<string>('');
   const [likesCount, setLikesCount] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [showViewer, setShowViewer] = useState<boolean>(false);
 
   const makeChatRoom = async (e: MouseEvent<HTMLDivElement>) => {
     // curUser, targetUser 준비
@@ -254,11 +256,16 @@ const ProductDetail = () => {
           setShowChatList={setShowChatList}
         />
       )}
+      {showViewer && (
+        // 모바일 때 위치 조정 //
+        <ImageViewer product={product} setShowViewer={setShowViewer} />
+      )}
+      ;
       <ToastContainer />
       {/* 본체 */}
       <St.StDetailContainer>
         <St.StDetailInfoSection>
-          <St.StImageWrapper>
+          <St.StImageWrapper onClick={() => setShowViewer(true)}>
             <ProductDetailCarousel
               carouselImages={
                 product[0]?.image_url === null ? [] : product[0]?.image_url

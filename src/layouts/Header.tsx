@@ -10,7 +10,6 @@ import { BiWon } from 'react-icons/bi';
 import { BiSolidBell } from 'react-icons/bi';
 import Hamburger from '../components/layout/header/Hamburger';
 import { BsChatDotsFill } from 'react-icons/bs';
-import styled, { keyframes } from 'styled-components';
 
 interface User {
   username: string;

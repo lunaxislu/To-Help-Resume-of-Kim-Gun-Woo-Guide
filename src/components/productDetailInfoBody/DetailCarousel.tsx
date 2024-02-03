@@ -8,7 +8,7 @@ interface InfiniteCarouselProps {
   carouselImages: string[];
 }
 
-const ProductDetailCarousel: React.FC<InfiniteCarouselProps> = ({
+const DetailViewerCarousel: React.FC<InfiniteCarouselProps> = ({
   carouselImages
 }) => {
   const slickRef = useRef<Slider | null>(null);
@@ -62,22 +62,12 @@ const ProductDetailCarousel: React.FC<InfiniteCarouselProps> = ({
         ))}
       </StSlider>
       <CarouselButtons>
-        <ArrowButton
-          onClick={(e) => {
-            e.stopPropagation();
-            previous();
-          }}
-        >
+        <ArrowButton onClick={previous}>
           <ColoredIcon>
             <FaChevronLeft />
           </ColoredIcon>
         </ArrowButton>
-        <ArrowButton
-          onClick={(e) => {
-            e.stopPropagation();
-            next();
-          }}
-        >
+        <ArrowButton onClick={next}>
           <ColoredIcon>
             <FaChevronRight className="rightarrow" />
           </ColoredIcon>
@@ -87,11 +77,12 @@ const ProductDetailCarousel: React.FC<InfiniteCarouselProps> = ({
   );
 };
 
-export default ProductDetailCarousel;
+export default DetailViewerCarousel;
 
 const CarouselContainer = styled.div`
   position: relative;
   width: 100%;
+  height: 70rem;
   max-height: 100%;
   justify-content: center;
   align-items: center;
@@ -136,19 +127,17 @@ const CarouselContainer = styled.div`
 
 const StSlider = styled(Slider)`
   width: 100%;
-  height: 43.5rem;
+  height: 100%;
 `;
 
 const CarouselImage = styled.img`
-  object-fit: cover;
+  object-fit: contain;
   width: 100%;
-  height: 100%;
-  max-height: 43.5rem;
-  height: 100vh;
+  height: 75vh;
 
   @media screen and (max-width: 768px) {
-    height: 100vh;
-    max-height: 43.5rem;
+    height: 50vh;
+    max-height: 70rem;
   }
 `;
 const CarouselButtons = styled.div`
