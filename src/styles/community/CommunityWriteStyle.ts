@@ -1,7 +1,28 @@
 import { GoChevronLeft } from 'react-icons/go';
+import { GrDocumentPdf } from 'react-icons/gr';
+import { RiFileHwpLine } from 'react-icons/ri';
 import ReactQuill from 'react-quill';
 import styled from 'styled-components';
 import { StFadeAni } from '../../pages/chat/style';
+
+export const PdfIcon = styled(GrDocumentPdf)`
+  width: 2rem;
+  height: 2rem;
+  color: var(--opc-100);
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+`;
+export const HwpIcon = styled(RiFileHwpLine)`
+  width: 2rem;
+  height: 2rem;
+  color: var(--opc-100);
+  display: none;
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+`;
 export const LayoutContentArea = styled.div`
   display: flex;
   @media screen and (max-width: 768px) {
@@ -9,7 +30,13 @@ export const LayoutContentArea = styled.div`
     gap: 1rem;
   }
 `;
-
+export const LayoutFileListArea = styled.div`
+  display: flex;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
+`;
 export const LayoutFileArea = styled.div`
   display: flex;
   @media screen and (max-width: 768px) {
@@ -24,9 +51,38 @@ export const LayoutAnonArea = styled.div`
     gap: 1rem;
   }
 `;
+export const FileListContainer = styled.div`
+  width: 100%;
+`;
 
+export const FileList = styled.ul`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  & div {
+    display: flex;
+    gap: 5px;
+  }
+  & li {
+    background-color: var(--8-gray);
+    color: var(--2-gray);
+    /* height: 2rem; */
+    font-size: var(--fontSize-H5);
+    border-radius: 1rem;
+    padding: 0.5rem 1rem;
+  }
+  & button {
+    background-color: transparent;
+    border: none;
+    color: var(--10-gray);
+    cursor: pointer;
+  }
+`;
 export const LayoutValueText = styled.div`
-  width: 16rem;
+  width: 20%;
+  max-width: 16rem;
   font-size: var(--fontSize-body);
   display: flex;
   align-items: center;
@@ -45,15 +101,15 @@ export const LayoutTitleContainer = styled.div`
     height: 54px;
     width: 100%;
     max-width: 90.6rem;
-    background-color: var(--3-gray);
+    /* background-color: var(--3-gray); */
     border: none;
     border-radius: 5px;
     padding-left: 16px;
-    color: var(--12-gray);
-    font-family: 'Pretendard-Medium';
+    /* color: var(--12-gray); */
+
     font-size: var(--fontSize-body);
     &::placeholder {
-      color: var(--5-gray);
+      color: var(--gray);
       font-size: var(--fontSize-H5);
     }
   }
@@ -94,7 +150,7 @@ export const LayoutBottom = styled.div`
     border-radius: 1rem;
     width: 10rem;
     height: 4rem;
-    font-family: 'Pretendard-Medium';
+
     background-color: var(--opc-100);
     font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-bold);
@@ -159,6 +215,7 @@ export const LayoutCategoryContainer = styled.div`
   }
 `;
 export const CategoryGrid = styled.div`
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   @media screen and (max-width: 768px) {
@@ -167,7 +224,7 @@ export const CategoryGrid = styled.div`
 `;
 
 export const LayoutFileUploader = styled.label`
-  background-color: var(--3-gray);
+  background-color: var(--opc-30);
   border-radius: 5px;
   height: 54px;
   display: flex;
@@ -176,19 +233,20 @@ export const LayoutFileUploader = styled.label`
   font-size: var(--fontSize-H5);
   width: 100%;
   max-width: 90.6rem;
-  color: var(--5-gray);
+  /* color: var(--6-gray); */
   margin-bottom: 1.5rem;
   & input {
     display: none;
   }
   @media screen and (max-width: 768px) {
     height: 3rem;
+    margin-bottom: 0.5rem;
 
     font-size: var(--fontSize-H6);
   }
 `;
 export const LayoutQuillEditor = styled(ReactQuill)`
-  background-color: var(--3-gray);
+  background-color: var(--opc-30);
   border-radius: 5px;
   width: 100%;
   max-width: 906px;
@@ -198,7 +256,8 @@ export const LayoutQuillEditor = styled(ReactQuill)`
     height: 70rem;
     overflow: scroll;
     border: none;
-    font-family: 'Pretendard-Medium';
+    font-family: 'BM-JUA';
+
     font-size: var(--fontSize-H6);
     scrollbar-width: none;
 
@@ -229,13 +288,13 @@ export const LayoutQuillEditor = styled(ReactQuill)`
   }
   .ql-snow .ql-fill,
   .ql-snow .ql-stroke.ql-fill {
-    fill: var(--8-gray);
+    /* fill: var(--8-gray); */
   }
   .ql-snow .ql-stroke {
-    stroke: var(--8-gray);
+    /* stroke: var(--8-gray); */
   }
   .ql-editor.ql-blank::before {
-    color: var(--5-gray);
+    /* color: var(--5-gray); */
     font-size: var(--fontSize-H5);
     font-style: normal;
   }
@@ -259,7 +318,7 @@ export const CheckBoxs = styled.input`
   appearance: none;
   width: 20px;
   height: 20px;
-  background-color: var(--4-gray);
+  background-color: var(--opc-30);
   border: none;
   border-radius: 4px;
   position: relative;
@@ -283,7 +342,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 5rem;
-  color: #f3f3f3;
+  /* color: #f3f3f3; */
   animation: ${StFadeAni} 0.3s ease;
 `;
 export const ContentContainer = styled.div`

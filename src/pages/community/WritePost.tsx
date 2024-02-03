@@ -9,15 +9,13 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import * as St from '../../styles/community/CommunityWriteStyle';
 import WriteLayout from './WriteLayout';
 import { ProfileObject } from './model';
-export const categoryArray = [
+export const CATEGORY_ARRAY = [
   '전체',
-  '작업',
-  '고민',
-  '구인',
   '공구',
+  '고민',
   '피드백',
-  '진로',
-  '수다'
+  '수다',
+  '구인'
 ];
 Quill.register('modules/imageActions', ImageActions);
 Quill.register('modules/imageFormats', ImageFormats);

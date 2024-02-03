@@ -1,11 +1,73 @@
 import { AiFillAlert } from 'react-icons/ai';
 import { BsThreeDots } from 'react-icons/bs';
 import { GoChevronLeft } from 'react-icons/go';
+import { GrDocumentExcel, GrDocumentPdf } from 'react-icons/gr';
 import { IoTrashOutline } from 'react-icons/io5';
-import { RiBallPenLine } from 'react-icons/ri';
+import { LiaFileSolid } from 'react-icons/lia';
+import { RiBallPenLine, RiFileHwpLine } from 'react-icons/ri';
 import styled from 'styled-components';
 import { StFadeAni } from '../../pages/productsDetail/style';
+export const HwpIcon = styled(RiFileHwpLine)`
+  font-size: 2rem;
+  color: #0085ff;
+`;
+export const PdfIcon = styled(GrDocumentPdf)`
+  font-size: 2rem;
+  color: red;
+`;
 
+export const ExcelIcon = styled(GrDocumentExcel)`
+  font-size: 2.2rem;
+  color: green;
+`;
+export const DefaultIcon = styled(LiaFileSolid)`
+  font-size: 2rem;
+  color: var(--1-gray);
+`;
+export const ProfileImage = styled.img`
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+`;
+
+export const DefaultImage = styled.div`
+  background-color: var(--10-gray);
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+`;
+export const DetailFiles = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  margin-bottom: 2rem;
+
+  & a {
+    color: var(--1-gray);
+    text-decoration: none;
+    /* overflow: hidden; */
+    /* display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    white-space: normal; */
+  }
+  & div {
+    background-color: var(--10-gray);
+    /* width: 25rem; */
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1rem;
+    border-radius: 0.8rem;
+  }
+  @media screen and (max-width: 768px) {
+    & div {
+      height: 3rem;
+    }
+  }
+`;
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -95,6 +157,11 @@ export const IconContainer = styled.div`
   justify-content: end;
   font-size: var(--fontSize-H5);
   align-items: center;
+`;
+export const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `;
 export const Category = styled.p`
   /* margin-left: 1.5rem; */
