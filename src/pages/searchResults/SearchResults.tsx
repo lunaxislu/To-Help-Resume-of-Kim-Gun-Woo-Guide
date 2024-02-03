@@ -7,12 +7,22 @@ import parseDate from '../../util/getDate';
 import { setSearchResults } from '../../redux/modules/searchSlice';
 import { FaArrowRight } from 'react-icons/fa';
 import { researchItems, ResearchResults } from './researchItem';
-import DropDown from '../../styles/searchresults/Dropdown';
+import Dropdown from '../../styles/searchresults/Dropdown';
+import { sortBy } from 'lodash';
+import { Communityy, UsedItem } from '../home/usedtypes';
 
 interface ListCount {
   usedItemCount: number;
   communityCount: number;
 }
+
+type CommonItemProps = {
+  id: number;
+  image_url: string[]; // 이미지 배열로 가정
+  quality: string;
+  title: string;
+  price: number;
+};
 
 const SearchResults: React.FC = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -45,6 +55,18 @@ const SearchResults: React.FC = () => {
   const checkWindowSize = () => {
     setIsMobile(window.innerWidth <= 768);
   };
+
+  // 정렬 함수
+  const sortByLikes = <T extends { likes: number }>(list: T[]): T[] => {
+    return [...list].sort((a, b) => b.likes - a.likes);
+  };
+
+  // 정렬된 결과
+  const sortedUsedItemResults =
+    clickMenu === '인기순' ? sortByLikes(usedItemResults) : usedItemResults;
+
+  const sortedCommunityResults =
+    clickMenu === '인기순' ? sortByLikes(communityResults) : communityResults;
 
   useEffect(() => {
     checkWindowSize();
@@ -129,7 +151,7 @@ const SearchResults: React.FC = () => {
                   커뮤니티({communityCount})
                 </CommunityCount>
               </CountPost>
-              <DropDown
+              <Dropdown
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 clickMenu={clickMenu}
@@ -153,7 +175,7 @@ const SearchResults: React.FC = () => {
               usedItemCount={usedItemCount}
               showClickedList={showClickedList}
             >
-              {usedItemResults.slice(0, 5).map((item) => (
+              {sortedUsedItemResults.slice(0, 5).map((item) => (
                 <ToProductsPage
                   key={item.id}
                   to={`/products/detail/${item.id}`}
@@ -207,7 +229,7 @@ const SearchResults: React.FC = () => {
             ''
           ) : (
             <CommunityPostsList>
-              {communityResults.slice(0, 6).map((item) => (
+              {sortedCommunityResults.slice(0, 6).map((item) => (
                 <ToCommunityPage
                   key={item.post_id}
                   to={`/community/detail/${item.post_id}`}
