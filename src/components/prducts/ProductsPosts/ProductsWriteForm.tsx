@@ -1,16 +1,11 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import AddressBtn from './AddressBtn';
-import { ProductsInputType, AddressValueType, ProductsInputFinalType, ProductsEditType } from '../ProductsType';
+import { ProductsInputType, ProductsInputFinalType } from '../ProductsType';
 import ProductsImage from './ProductsImage';
 import { useLocation, useNavigate } from 'react-router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as St from '../../../styles/products/ProductsPostsStyle'
-
-const AddressInit: AddressValueType = {
-  address: "",
-  detailAddress: ""
-}
 
 const MAJOR = [
   '회화',
@@ -77,21 +72,11 @@ const ProductsWriteForm = ({productData}: any) => {
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string[]>([]);
   const location  = useLocation()
   
-  // address value
-  const [addressValue, setAddressValue] = useState(AddressInit)
-  
-  const handleOnChangeAddressValue = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setAddressValue({ ...addressValue, [name]: value });
-  };
-  
   // react-hook-form
   const {
     register,
     handleSubmit,
     watch,
-    getValues,
-    setError,
     setValue,
     formState: {errors, isSubmitting}} = useForm<ProductsInputType>({
       mode: 'onBlur',
@@ -103,7 +88,7 @@ const ProductsWriteForm = ({productData}: any) => {
       if (location.pathname.includes('edit')) {
         setUploadedFileUrl(productData.image_url);
         setValue('tags', tagsString)
-        setAddressValue({address: productData.address, detailAddress: productData.detailAddress})
+        // setAddressValue({address: productData.address, detailAddress: productData.detailAddress})
       }
     },[])
 
@@ -187,15 +172,11 @@ const ProductsWriteForm = ({productData}: any) => {
     }
 
     const tagsArray = data.tags.split(',', 9).map((tag) => tag.trim());
-    const address = {address: addressValue.address}
-    const detailAddress = {detailAddress: addressValue.detailAddress}
     const imgUrl = {image_url: uploadedFileUrl}
 
     const EntireData = {
       ...data,
       tags: tagsArray,
-      address: address.address,
-      detailAddress: detailAddress.detailAddress,
       image_url: imgUrl.image_url,
       post_user_uid: userState.post_user_uid,
       post_user_name: userState.post_user_name,
@@ -205,12 +186,6 @@ const ProductsWriteForm = ({productData}: any) => {
     !productData?.id && addPosts(EntireData);
     productData?.id && upDatePosts(EntireData);
 
-  };
-
-  // 모바일 환경에서 물품 상태에 관한 내용 토글 State
-  const [showQualityToggle, setShowQualityToggle] = useState<boolean>(false);
-  const handleOnClickToggle = () => {
-    setShowQualityToggle(prev => !prev);
   };
 
   return (
@@ -326,53 +301,38 @@ const ProductsWriteForm = ({productData}: any) => {
       <St.WrapperStyle>
         <St.SemiTitle>직거래 지역</St.SemiTitle>
           <St.InputWrapperStyle>
-          <AddressBtn register={register} addressValue={addressValue} setAddressValue={setAddressValue} />
+          <AddressBtn watch={watch} setValue={setValue} />
             <St.GapStyle/>
-            <St.InputStyle readOnly type='text' name='address' 
-            required={watch("deal_type") === '직거래' ? true : false} 
-            value={addressValue.address} 
-            onChange={handleOnChangeAddressValue} 
-            placeholder='주소검색을 이용해주세요.' />
+            <St.InputStyle readOnly type='text' 
+              {...register("address", {required: watch("deal_type") === '직거래' ? "주소를 입력해주세요." : false})} 
+            placeholder={watch('deal_type') === "직거래" ? '주소검색을 이용해주세요.' : '-'} />
             <St.GapStyle/>
-            <St.InputStyle type='text' name='detailAddress'
-            value={addressValue.detailAddress} 
-            onChange={handleOnChangeAddressValue} 
-            placeholder='상세주소를 기입해주세요.' />
-            <St.GapStyle2/>
+            <St.InputStyle type='text' 
+                {...register("detailAddress")}
+            placeholder={watch('deal_type') === "직거래" ? '상세주소를 기입해주세요.' : '-'} />
           </St.InputWrapperStyle>
       </St.WrapperStyle>
+      <St.MobileWrapperStyle>
+        <St.Validation>
+          <St.ErrorText>{errors.address === undefined ? '' : '* '+ errors.address?.message}</St.ErrorText>
+        </St.Validation>
+      </St.MobileWrapperStyle>
       {/* <St.TagsExplanation>직거래 지역은 지역 필터를 위해 사용됩니다.</St.TagsExplanation> */}
       
       <St.WrapperStyle>
-            <St.SemiTitle>물품상태<St.Required>*</St.Required></St.SemiTitle>
-          <St.QualityInfoBtn onClick={handleOnClickToggle}>
-            <St.QualityInfoIcon />
-          </St.QualityInfoBtn>
-            {/* mobile 상태설명창 토글 */}
-            {showQualityToggle && (
-              <div style={{display: 'flex', justifyContent: 'end'}}>
-              <St.QualityInfoWrapper>
-                {QUALITY.map((quality) => 
-                <St.QualityDetail key={quality.condition}>
-                  <p>{quality.condition}</p><span>{quality.shape}</span>
-                </St.QualityDetail>
-                )}
-              </St.QualityInfoWrapper>
+        <St.SemiTitle>물품상태<St.Required>*</St.Required></St.SemiTitle>
+        <St.InputWrapperStyle>
+          <St.QualityWrapper>
+            {QUALITY.map((quality, idx) => 
+            <div key={idx}>
+              <St.InputCheckBoxLabel htmlFor={quality.condition}>
+                <St.InputCheckBoxStyle type='radio' id={quality.condition} value={quality.condition} 
+                {...register("quality", {required: "물품상태를 선택해주세요."})} />{quality.condition}</St.InputCheckBoxLabel>
+                <St.QualityExplanation key={idx}>{quality.shape}</St.QualityExplanation>
             </div>
             )}
-
-            <St.InputWrapperStyle>
-        <St.QualityWrapper>
-          {QUALITY.map((quality, idx) => 
-          <div key={idx}>
-            <St.InputCheckBoxLabel htmlFor={quality.condition}>
-              <St.InputCheckBoxStyle type='radio' id={quality.condition} value={quality.condition} 
-              {...register("quality", {required: "물품상태를 선택해주세요."})} />{quality.condition}</St.InputCheckBoxLabel>
-              <St.QualityExplanation key={idx}>{quality.shape}</St.QualityExplanation>
-          </div>
-          )}
-        </St.QualityWrapper>
-            </St.InputWrapperStyle>
+          </St.QualityWrapper>
+        </St.InputWrapperStyle>
       </St.WrapperStyle>
       <St.MobileWrapperStyle>
         <St.Validation>
@@ -390,7 +350,11 @@ const ProductsWriteForm = ({productData}: any) => {
                   {...register("changable", {required: "교환 가능 여부를 선택해주세요."})} />{changable}</St.InputCheckBoxLabel>
               )}
             </St.ChangableSelectWrapper>
-            <St.InputStyle type='text' disabled={getValues("changable") === "불가능" ? true : false} {...register("exchange_product", {required: getValues("changable") === "가능" ? "교환을 원하는 물품을 입력해주세요." : false})} placeholder='교환을 원하는 상품을 입력해주세요.' />
+            <St.InputStyle type='text' 
+              disabled={watch("changable") === "불가능" ? true : false} 
+              {...register("exchange_product", {
+                required: watch("changable") === "가능" ? "교환을 원하는 물품을 입력해주세요." : false})} 
+                placeholder={watch("changable") === "가능" ? '교환을 원하는 물품을 입력해주세요.' : '-'} />
           </St.InputWrapperStyle>
       </St.WrapperStyle>
       <St.WrapperStyle>
@@ -449,21 +413,14 @@ const ProductsWriteForm = ({productData}: any) => {
           })} />동의합니다.</St.InputCheckBoxLabel>
         </St.AgreementCheckBoxWrapper> 
       </St.CaveatBox>
-      <St.WrapperStyle>
-      <St.ErrorText>{errors.agreement === undefined ? '' : '* '+errors.agreement?.message}</St.ErrorText>
-      </St.WrapperStyle>
-
       <St.GapStyle/>
-      {productData && (
-        <St.BtnWrapper>
-          <St.WriteBtn type='submit' disabled={isSubmitting}>수정하기</St.WriteBtn>
-        </St.BtnWrapper>
-      )}
-      {!productData && (
-        <St.BtnWrapper>
-          <St.WriteBtn type='submit' disabled={isSubmitting}>등록하기</St.WriteBtn>
-        </St.BtnWrapper>
-      )}
+      
+      <St.BtnWrapper>
+        <St.WrapperStyle>
+          <St.ErrorText>{errors.agreement === undefined ? '' : '* '+errors.agreement?.message}</St.ErrorText>
+        </St.WrapperStyle>
+        <St.WriteBtn type='submit' disabled={isSubmitting}>{productData ? '수정하기' : '등록하기'}</St.WriteBtn>
+      </St.BtnWrapper>
     </form>
   );
 };
