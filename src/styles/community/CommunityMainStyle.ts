@@ -114,19 +114,20 @@ export const CategoryBtn = styled.button<{ $selectCategory: string }>`
       return css`
         background-color: var(--opc-100);
         font-weight: var(--fontWeight-bold);
+        color: var(--white);
       `;
     }
     if (props.children === '전체') {
       return css`
-        background-color: var(--opc-10);
+        background-color: var(--drop);
         border: 0.1rem solid var(--opc-100);
-        color: var(--12-gray);
+        color: var(--black);
       `;
     }
 
     return css`
-      background-color: var(--opc-10);
-      color: var(--6-gray);
+      background-color: var(--drop);
+      color: var(--gray);
       font-weight: var(--fontWeight-medium);
     `;
   }}

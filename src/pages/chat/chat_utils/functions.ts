@@ -223,10 +223,11 @@ export class UtilForChat {
       if (unread && messageTemp.sender_id !== curUser?.id) {
         console.log(unread);
         const updatedCount = unread[0].unread + 1;
-        const { error: countUpdateError } = await supabase
+        const { data: count, error: countUpdateError } = await supabase
           .from('chat_room')
           .update({ unread: updatedCount })
           .eq('id', clicked);
+        console.log(count);
         this.resetInput(setChatInput, setShowFileInput, setImages);
 
         if (error) console.log('전송 실패', error);

@@ -54,9 +54,9 @@ const ProductsList = () => {
       <St.ContentsContainer>
         <St.TitleContainer>
           <St.Title>{`${productsCount}개의 물품이 거래되고 있어요`}</St.Title>
-          <St.MobilePostsWriteBtn onClick={() => navigate('/productsposts')}>
+          <St.PostsWriteBtn onClick={() => navigate('/productsposts')}>
             <St.SellWriteIcon /> 판매하기
-          </St.MobilePostsWriteBtn>
+          </St.PostsWriteBtn>
         </St.TitleContainer>
         <St.BarContainer>
           <St.CategoryContainer>
@@ -72,9 +72,6 @@ const ProductsList = () => {
                 </li>
               ))}
             </St.CategoryWrapper>
-            <St.PostsWriteBtn onClick={() => navigate('/productsposts')}>
-              <St.SellWriteIcon /> 판매하기
-            </St.PostsWriteBtn>
           </St.CategoryContainer>
           {/* <St.SearchBarContainer>
           <ProductsSearchBar />

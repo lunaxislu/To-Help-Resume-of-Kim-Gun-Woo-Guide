@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { Product } from '../../pages/productsDetail/types';
 import ProductDetail from './ProductDetailBody';
 import Maps from '../mapTest/Maps';
@@ -11,7 +10,7 @@ import {
 } from './infoStyle';
 
 type ProductInfo = {
-  labels: string[];
+  labels: { tag: string; icon: any }[];
   productInfo: any[];
   data: Product;
 };
@@ -37,10 +36,13 @@ const ProductDetailInfo = ({ labels, productInfo, data }: ProductInfo) => {
           </StModalBackDrop>
         </>
       )}
-      {labels.map((label: string, i: number) => {
+      {labels.map((label: { tag: string; icon: any }, i: number) => {
         return (
           <StProductRow key={i}>
-            <StRowLabel>* {label}</StRowLabel>
+            <StRowLabel>
+              <span>{label.icon}</span>
+              {label.tag}
+            </StRowLabel>
             <ProductDetail
               productInfo={productInfo}
               data={data}

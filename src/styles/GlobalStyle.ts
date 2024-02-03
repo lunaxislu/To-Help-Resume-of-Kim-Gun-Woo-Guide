@@ -40,11 +40,11 @@ export const GlobalStyles = createGlobalStyle`
     --c-purple: #B5B5FA;
 
     /* 커뮤니티 배경색 */
-    --c-red-30: #FFC1A930; /* 사용감 많음 */
-    --c-yellow-30: #FFEF7730; /* 사용감 있음 */
-    --c-green-30: #A0F4B330; /* 사용감 없음 */
-    --c-blue-30: #94CDFF30;
-    --c-purple-30: #B5B5FA30;
+    --c-red-30: #FFEDE2; /* 사용감 많음 */
+    --c-yellow-30: #FFFBD3; /* 사용감 있음 */
+    --c-green-30: #E3FCE5; /* 사용감 없음 */
+    --c-blue-30: #DFF0FB;
+    --c-purple-30: #E9E9FA;
 
     /* 정렬, 상품상태 설명창 배경색 */
     --drop: #CCE8EA;
@@ -106,11 +106,27 @@ body {
 	line-height: 1;
     font-size: var(--fontSize-body);
     background-color: var(--bgColor);
+    //dot bg
+
+  --s: 100px; /* control the size */
+  
+  --_g: #0000 90deg,#36613610 0;
+  background: 
+    conic-gradient(from 90deg at 0px 0px,var(--_g)),
+    conic-gradient(from 90deg at 1px 1px,var(--_g));
+  background-size: var(--s) var(--s), calc(var(--s)/2) calc(var(--s)/2);
+
+
+    //
     font-family: 'BM-JUA';
     color: var(--black);
     overflow-x: hidden;
 }
 button,
+input,
+textarea {
+    font-family: 'BM-JUA';
+}
 input {
     font-family: 'BM-JUA';
 }
@@ -135,6 +151,7 @@ table {
 
 html {
     font-size: 62.5%;
+    
 }
 
 * {
