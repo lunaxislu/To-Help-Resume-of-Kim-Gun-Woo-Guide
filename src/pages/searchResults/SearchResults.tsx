@@ -32,23 +32,11 @@ const SearchResults: React.FC = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
 
-  //드롭다운메뉴 조건부렌더링
-  const [productsSort, setProductsSort] = useState<
-    '최신순' | '낮은가격순' | '높은가격순'
-  >('최신순');
-  const [communitySort, setCommunitySort] = useState<'최신순' | '인기순'>(
-    '최신순'
-  );
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [clickMenu, setClickMenu] = useState('최신순');
   const [selectedTab, setSelectedTab] = useState('중고물품');
 
-  const handleProductsSort = (sort: '최신순' | '낮은가격순' | '높은가격순') => {
-    setProductsSort(sort);
-    setClickMenu(sort);
-  };
-  const handleCommunitySort = (sort: '최신순' | '인기순') => {
-    setCommunitySort(sort);
+  const handleProductsSort = (sort: '최신순' | '인기순') => {
     setClickMenu(sort);
   };
 
