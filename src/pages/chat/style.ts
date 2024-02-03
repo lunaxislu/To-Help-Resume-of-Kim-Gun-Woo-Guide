@@ -34,11 +34,11 @@ const StChatContainer = styled.div`
   max-width: 1114px;
   max-height: 958px;
   display: flex;
-  border-top: 0.3rem solid var(--3-gray);
-  border-bottom: 0.3rem solid var(--3-gray);
+  border-top: 0.1rem solid #00000050;
+  border-bottom: 0.1rem solid #00000050;
   margin: auto;
   animation: ${StFadeAni} 0.6s forwards;
-  font-family: 'Pretendard-Regular';
+  font-weight: 500;
 
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -70,6 +70,11 @@ const StChatList = styled.div`
 const StChatListItem = styled.div`
   width: 100%;
   max-width: 372px;
+  height: 100%;
+  font-family: 'BM-JUA';
+  font-weight: 500;
+  border-right: 0.1rem solid #00000030;
+
   @media screen and (max-width: 768px) {
     width: 100%;
     max-width: 768px;
@@ -106,10 +111,11 @@ const StChatGround = styled.div`
   height: 100%;
   overflow-y: scroll;
   padding: 1rem 0 15rem 0;
+  background-color: #ffffff;
 
   @media screen and (max-width: 768px) {
     padding: 1rem 0 11rem 0;
-    background-color: var(--2-gray);
+    background-color: #ffffff;
     max-height: 620px;
   }
 `;
@@ -124,10 +130,10 @@ const StChatBoardHeader = styled.div`
   left: 0;
   padding: 2.7rem;
   background-color: transparent;
-  border-bottom: 0.3rem solid var(--3-gray);
+  border-bottom: 0.1rem solid #00000050;
 
   @media screen and (max-width: 768px) {
-    background-color: var(--2-gray);
+    background-color: #ffffff;
     padding: 1rem 1.5rem;
   }
 `;
@@ -146,7 +152,7 @@ const StChatBoardHeaderName = styled.h3`
 
 const StChatForm = styled.form`
   width: 100%;
-  background-color: #1f1f1f;
+  background-color: #fff;
   position: sticky;
   bottom: 0;
   padding-bottom: 1rem;
@@ -168,7 +174,7 @@ const ImageInput = styled.input.attrs({
   padding: 1rem;
   margin-left: 1.2rem;
   margin-bottom: 1rem;
-  background-color: var(--3-gray);
+  background-color: var(--opc-30);
   border-radius: 0.6rem;
 
   &::file-selector-button {
@@ -202,14 +208,15 @@ const StChatInput = styled.textarea.attrs({
   position: sticky;
   bottom: 0;
   border: none;
-  font-family: 'Pretendard-Regular';
-  font-weight: 600;
+  font-weight: 500;
   outline: none;
   border-radius: 0.8rem;
-  background-color: var(--3-gray);
+  background-color: var(--opc-20);
   resize: none;
   &::placeholder {
-    font-weight: 500;
+    font-family: 'BM-JUA';
+    font-weight: 700;
+    letter-spacing: 0.15rem;
   }
 `;
 
@@ -220,6 +227,7 @@ const StListRoom = styled.div<RoomStyledProps>`
   justify-content: space-between;
   gap: 0.8rem;
   padding: 1.25rem;
+  border-bottom: 0.1rem solid var(--opc-100);
   cursor: pointer;
   ${(props) => {
     if (props.$current === props.children) {
@@ -229,7 +237,7 @@ const StListRoom = styled.div<RoomStyledProps>`
     }
   }}
   &:hover {
-    background-color: var(--3-gray);
+    background-color: var(--opc-10);
   }
   position: relative;
 
@@ -305,8 +313,7 @@ const StUnreadCount = styled.div`
   text-align: center;
   padding: 0.3rem 0.6rem;
   border-radius: 50px;
-  color: var(--2-gray);
-  background-color: var(--opc-100);
+  background-color: var(--opc-50);
 
   @media screen and (max-width: 768px) {
     font-size: 1.2rem;

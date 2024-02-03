@@ -10,9 +10,17 @@ const StProductRow = styled.div`
 `;
 
 const StRowLabel = styled.div`
-  width: 150px;
-  font-family: 'Pretendard-Medium';
+  width: 170px;
+  display: flex;
+  align-items: center;
+  gap: 1.26rem;
   color: #878787;
+
+  span {
+    line-height: 0.5;
+    color: #13b3bc;
+    font-size: 2rem;
+  }
 
   @media screen and (max-width: 768px) {
     font-size: 1rem;

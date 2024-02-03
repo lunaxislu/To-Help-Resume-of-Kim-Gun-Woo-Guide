@@ -7,6 +7,7 @@ import { supabase } from '../api/supabase/supabaseClient';
 import styled from 'styled-components';
 import { CustomUser } from '../pages/productsDetail/types';
 import { Participants } from '../components/chat/types';
+import SideBar from '../components/sideBar/SideBar';
 const userId = localStorage.getItem('userId');
 
 const Layout = () => {
@@ -18,12 +19,12 @@ const Layout = () => {
   const [notification, setNotification] = useState<any[]>([]);
   const [newNotiExists, setNewNotiExists] = useState<boolean>(false);
 
+  // 알림 울리기
   const playAlert = () => {
     const ring = new Audio('/assets/Twitter Notification_sound_effect.mp3');
-
     setTimeout(() => {
-      ring.play();
       ring.currentTime = 0.5;
+      ring.play();
     }, 1000);
   };
 
@@ -44,6 +45,8 @@ const Layout = () => {
     };
 
     getUserData();
+
+    // 메세지 테이블 실시간 알림 구독
     const chatMessages = supabase
       .channel('custom-insert-channel')
       .on(
@@ -54,22 +57,22 @@ const Layout = () => {
             .from('chat_room')
             .select('participants')
             .eq('id', payload.new.chat_room_id);
-          console.log(chatRooms);
 
+          // 소속 된 채팅방의 업데이트인지 확인
           if (chatRooms && chatRooms.length > 0) {
-            const exists = chatRooms.map((room) => {
+            const exists = chatRooms.filter((room) => {
               return room.participants.some(
                 (part: Participants) => part.user_id === curUser?.uid
               );
             });
+
+            // 내가 보낸 메세지가 아닐 때 알림 작동
             if (
               exists &&
               exists.length > 0 &&
               payload.new.sender_id !== curUser?.uid
             ) {
-              console.log(exists);
               setNotification((prev) => [payload.new, ...prev]);
-              console.log('알림');
               setNewNotiExists(true);
               playAlert();
             }
@@ -115,6 +118,7 @@ const Layout = () => {
 
   return (
     <Wrapper>
+      <SideBar />
       <Header
         notification={notification}
         newNotiExists={newNotiExists}

@@ -13,6 +13,7 @@ import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
 import PrivateLayout from '../layouts/PrivateLayout/PrivateLayout';
 import Layout from '../layouts/Layout';
+import SideBar from '../components/sideBar/SideBar';
 import ProductsPostsEdit from '../pages/products/ProductsPostsEdit';
 
 const Router = () => {
@@ -28,14 +29,18 @@ const Router = () => {
           <Route path="/products" element={<ProductsList />} />
           <Route path="/products/detail/:id" element={<ProductDetail />} />
           <Route path="/search-results" element={<SearchResults />} />
+          <Route path="/test" element={<SideBar />} />
           <Route path="*" element={<Navigate to={'/'} replace />} />
 
           <Route element={<PrivateLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="/mypage" element={<MyPage />} />
-            <Route path="/chat" element={<ChatRoom />} /> 
+            <Route path="/chat" element={<ChatRoom />} />
             <Route path="/productsposts" element={<ProductsPosts />} />
-            <Route path="/productsposts/edit/:id" element={<ProductsPostsEdit />} />
+            <Route
+              path="/productsposts/edit/:id"
+              element={<ProductsPostsEdit />}
+            />
             <Route path="/community_write" element={<WritePost />} />
             <Route path="*" element={<Navigate to={'/'} replace />} />
           </Route>
