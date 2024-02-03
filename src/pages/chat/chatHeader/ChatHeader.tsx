@@ -8,8 +8,6 @@ import {
   RoomType
 } from '../../../components/chat/types';
 import { BsThreeDots } from 'react-icons/bs';
-import { UtilForChat } from '../chat_utils/functions';
-import { useNavigate } from 'react-router';
 import { supabase } from '../../../api/supabase/supabaseClient';
 
 interface ChatHeaderPropsType {

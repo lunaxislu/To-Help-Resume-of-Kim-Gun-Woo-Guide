@@ -1,4 +1,3 @@
-import { isLikedProduct } from './../../pages/productsDetail/supabase_Detail/supabaseAPI';
 import { SetStateAction } from 'react';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { CustomUser, Product } from '../../pages/productsDetail/types';

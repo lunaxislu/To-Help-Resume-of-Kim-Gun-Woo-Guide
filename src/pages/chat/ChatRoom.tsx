@@ -162,10 +162,10 @@ export default function ChatRoom() {
   useEffect(() => {
     if (scrollRef.current) {
       const scrollContainer = scrollRef.current;
+      console.log(scrollContainer);
       scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
   }, [messages]);
-
   const checkDevice = (agent: string) => {
     const mobileRegex = [
       /Android/i,
@@ -175,7 +175,6 @@ export default function ChatRoom() {
       /BlackBerry/i,
       /Windows Phone/i
     ];
-
     return mobileRegex.some((mobile) => agent.match(mobile));
   };
 
