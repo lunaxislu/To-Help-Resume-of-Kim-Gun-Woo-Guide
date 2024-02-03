@@ -203,13 +203,13 @@ export const ProductsListContainer = styled.div`
     grid-template-columns: repeat(3, 1fr);
   }
   @media screen and (max-width: 768px) {
-    column-gap: 1rem;
-    row-gap: 1.3rem;
+    column-gap: 1.3rem;
+    row-gap: 1.5rem;
     grid-template-columns: repeat(4, 1fr);
   }
   @media screen and (max-width: 670px) {
     grid-template-columns: repeat(3, 1fr);
-    row-gap: 1rem;
+    row-gap: 1.3rem;
   }
   @media screen and (max-width: 520px) {
     grid-template-columns: repeat(2, 1fr);

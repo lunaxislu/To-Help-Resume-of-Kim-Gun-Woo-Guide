@@ -412,19 +412,10 @@ export const CategoryContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  /* display: grid;
-  grid-template-columns: repeat(4, 1fr); */
   gap: 2.2rem;
-  /* @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(6, 1fr);
+  @media screen and (max-width: 768px) {
     height: 2.2rem;
-    gap: 1rem;
   }
-  @media screen and (max-width: 465px) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-  } */
-
 `;
 export const InputCheckBoxLabel = styled.label`
   display: flex;
@@ -559,22 +550,20 @@ export const GapStyle = styled.div`
 export const GapStyle2 = styled.div`
   margin-bottom: 5rem;
   @media screen and (max-width: 768px) {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 `;
 export const QualityWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  @media screen and (max-width: 768px) {
-    flex-direction: row;
-  }
 `;
 export const QualityExplanation = styled.p`
   color: var(--gray);
+  font-size: var(--fontSize-H5);
   padding: 0 4rem;
   @media screen and (max-width: 768px) {
-    display: none;
+    font-size: 1.2rem;
   }
 `;
 export const ChangableSelectWrapper = styled.div`
@@ -609,6 +598,10 @@ export const TextAreaStyle = styled.textarea`
   @media screen and (max-width: 768px) {
     width: 100%;
     font-size: var(--fontSize-H6);
+    &::placeholder {
+    color: var(--gray);
+    font-size: 1.2rem;
+  }
   }
 `;
 export const CountWrapper = styled.div`
@@ -652,9 +645,9 @@ export const CaveatBox = styled.div`
 export const CaveatText = styled.p`
   color: var(--gray);
   line-height: 2;
-  margin-bottom: 2.7rem;
+  margin-bottom: 2.5rem;
   @media screen and (max-width: 768px) {
-    margin-bottom: 2.2rem;
+    margin-bottom: 1.5rem;
     font-size: 1.2rem;
   }
 `;
@@ -678,6 +671,7 @@ export const TagsValidation = styled.div`
 export const AgreementCheckBoxWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
   gap: 2rem;
 `;
 export const AgreementCheckBoxStyle = styled.input`
@@ -708,8 +702,11 @@ export const AgreementCheckBoxStyle = styled.input`
 `;
 export const BtnWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 1.2rem;
+  @media screen and (max-width: 768px) {
+    margin-top: 1rem;
+  }
 `;
 export const WriteBtn = styled.button`
   border: none;
