@@ -238,6 +238,26 @@ const ProductDetail = () => {
     data.changable,
     data.shipping_cost
   ];
+  
+  // 수정할 기본 데이터를 담은 변수 선언(하빈 추가)
+  const selectedProductData = {
+    id: data.id,
+    image_url: data.image_url,
+    title: data.title,
+    category: data.category,
+    price: data.price,
+    shipping_cost: data.shipping_cost,
+    count: data.count,
+    deal_type: data.deal_type,
+    address: data.address,
+    quality: data.quality,
+    changable: data.changable,
+    exchange_product: data.exchange_product,
+    contents: data.contents,
+    detailAddress: data.detailAddress,
+    tags: data?.tags,
+    agreement: data.agreement
+  };
 
   return (
     <>
@@ -276,6 +296,7 @@ const ProductDetail = () => {
               isMobile={isMobile}
               product={product}
               target={target}
+              selectedProductData={selectedProductData}
             ></ProductDetailInfoHeader>
             <St.StHeaderTitle>{data.title}</St.StHeaderTitle>
             <ProductPriceWrapper data={data} isMobile={isMobile} />

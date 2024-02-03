@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import ProductsWriteForm from '../../components/prducts/ProductsPosts/ProductsWriteForm';
 import * as St from '../../styles/products/ProductsPostsStyle';
 
@@ -13,6 +13,8 @@ const ProductsPostsEdit = () => {
       navigate(-1);
     }
   };
+  const location = useLocation();
+  const { productData } = location.state || {};
 
   return (
     <St.EntireContainer>
@@ -25,7 +27,7 @@ const ProductsPostsEdit = () => {
           <St.TetleRequired>*필수항목</St.TetleRequired>
         </St.TitleContainer>
         <St.Hr />
-        <ProductsWriteForm />
+        <ProductsWriteForm productData={productData} />
       </St.ContentsContainer>
     </St.EntireContainer>
   );
