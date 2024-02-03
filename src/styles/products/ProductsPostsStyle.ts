@@ -16,10 +16,10 @@ export const EntireContainer = styled.div`
   }
 `;
 export const ContentsContainer = styled.div`
-  max-width: 111.6rem;
+  width: 77.5%;
   margin: auto;
-  @media screen and (max-width: 1180px) {
-    max-width: 93%;
+  @media screen and (max-width: 768px) {
+    width: 93%;
   }
 `;
 export const BackBtnBox = styled.div`
@@ -34,19 +34,19 @@ export const BackBtnBox = styled.div`
   }
 `;
 export const BackIcon = styled(GoChevronLeft)`
-  width: 100%;
-  height: 100%;
-  color: var(--opc-100);
   display: none;
   @media screen and (max-width: 768px) {
     display: block;
+    width: 100%;
+    height: 100%;
+    color: var(--opc-100);
   }
 `;
 export const Hr = styled.hr`
   width: 100%;
-  height: 0.1rem;
+  height: 0.01rem;
   border: none;
-  background-color: var(--6-gray);
+  background-color: var(--gray);
   margin-bottom: 2rem;
   @media screen and (max-width: 768px) {
     margin-bottom: 1rem;
@@ -64,8 +64,9 @@ export const TitleContainer = styled.div`
   }
 `;
 export const Title = styled.h1`
-  font-size: var(--fontSize-H2);
+  font-size: var(--fontSize-H1);
   margin-right: 1.7rem;
+  font-weight: var(--fontWeight-bold);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
     margin-right: 1rem;
@@ -74,7 +75,7 @@ export const Title = styled.h1`
 export const TetleRequired = styled.p`
   color: var(--opc-100);
   font-size: var(--fontSize-H6);
-  line-height: 200%;
+  line-height: 1.5;
   @media screen and (max-width: 768px) {
     font-size: 1rem;
     line-height: 1.5;
@@ -85,8 +86,9 @@ export const TetleRequired = styled.p`
 export const UpLoadImageContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin-bottom: 5rem;
+  margin-bottom: 2rem;
   gap: 3.2rem;
+  margin-bottom: 5rem;
   @media screen and (max-width: 768px) {
     margin-bottom: 1.6rem;
     flex-direction: column;
@@ -110,10 +112,12 @@ export const ImageCard = styled.div`
   height: 18.5rem;
   display: flex;
   flex-direction: row-reverse;
-  :hover {
-    cursor: pointer;
-  }
+  position: relative;
   @media screen and (max-width: 768px) {
+    width: 11rem;
+    height: 11rem;
+  }
+  @media screen and (max-width: 400px) {
     width: 9rem;
     height: 9rem;
   }
@@ -132,63 +136,94 @@ export const ImageOrderWrapper = styled.div`
   border-radius: 0.5rem;
   padding: 1.2rem 0 0 1.2rem;
   position: absolute;
+  z-index: 1;
   @media screen and (max-width: 768px) {
-    width: 9rem;
-    height: 9rem;
+    width: 11rem;
+    height: 11rem;
     padding: 0.6rem 0 0 0.6rem;
   }
+  @media screen and (max-width: 400px) {
+    width: 9rem;
+    height: 9rem;
+  }
 `;
-export const ImageOrder = styled.div`
+interface Props {
+  $idx: number;
+}
+export const ImageOrder = styled.div<Props>`
   width: 4.9rem;
   height: 1.9rem;
   border-radius: 0.4rem;
-  background-color: var(--opc-80);
-  color: var(--1-gray);
+  background-color: ${props => props.$idx === 0 ? 'var(--opc-100)' : 'var(--gray)'};
+  color: var(--white);
   text-align: center;
   line-height: 2;
   font-size: 1rem;
-  font-weight: var(--fontWeight-semiBold);
   :hover {
     cursor: pointer;
   }
   @media screen and (max-width: 768px) {
+    width: 3.5rem;
+    height: 1.2rem;
+    border-radius: 0.3rem;
+    line-height: 1.8;
+    font-size: 0.8rem;
+  }
+  @media screen and (max-width: 400px) {
     width: 2.4rem;
     height: 0.9rem;
     border-radius: 0.3rem;
-    line-height: 1.4;
+    line-height: 1.7;
     font-size: 0.6rem;
   }
 `;
 export const ImgCount = styled.span`
   height: 100%;
   margin-left: 2rem;
-  color: var(--7-gray);
+  color: var(--gray);
   font-size: var(--fontSize-H6);
-  line-height: 2.7;
+  line-height: 2.5;
   @media screen and (max-width: 768px) {
     font-size: 1rem;
-    line-height: 1.5;
+    line-height: 2;
     margin-left: 0.6rem;
   }
 `;
 export const ImageDeleteBtn = styled.div`
-  width: 2rem;
-  height: 2rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 100%;
+  position: absolute;
+  z-index: 2;
+  :hover {
+    cursor: pointer;
+  }
+  @media screen and (max-width: 768px) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+`;
+export const ImageDeleteIcon = styled(CgCloseO)`
+  width: 100%;
+  height: 100%;
+  color: var(--gray);
+  position: absolute;
+`;
+export const ImageOrderBtn = styled.div`
+  margin: 1.2rem 0 0 1.2rem;
+  left: 0;
+  width: 4.9rem;
+  height: 1.9rem;
   border-radius: 100%;
   position: absolute;
   :hover {
     cursor: pointer;
   }
   @media screen and (max-width: 768px) {
-    width: 1rem;
-    height: 1rem;
+    width: 3.5rem;
+    height: 1.2rem;
+    margin: 0.8rem 0 0 0.8rem;
   }
-`;
-export const ImageDeleteIcon = styled(CgCloseO)`
-  width: 100%;
-  height: 100%;
-  color: var(--5-gray);
-  position: absolute;
 `;
 export const UpLoadBox = styled.label`
   width: 18.5rem;
@@ -199,16 +234,35 @@ export const UpLoadBox = styled.label`
   color: var(--opc-100);
   font-size: 5rem;
   text-align: center;
-  line-height: 3.5;
+  line-height: 3.7;
   position: relative;
+  z-index: 2;
   &:hover {
     cursor: pointer;
   }
   @media screen and (max-width: 768px) {
+    width: 11rem;
+    height: 11rem;
+    font-size: 2rem;
+    line-height: 5.5;
+  }
+  @media screen and (max-width: 400px) {
     width: 9rem;
     height: 9rem;
     font-size: 2rem;
-    line-height: 4.1;
+    line-height: 4.5;
+  }
+`;
+export const UpLoadExplanation = styled.p`
+  font-size: var(--fontSize-H5);
+  color: var(--gray);
+  line-height: 1.5;
+  margin: 0.7rem 0 0 19rem;
+  @media screen and (max-width: 768px) {
+    font-size: 1.2rem;
+    gap: 0.4rem;
+    line-height: 1.3;
+    margin: 0.7rem 0 0 1rem;
   }
 `;
 
@@ -225,6 +279,7 @@ export const SemiTitle = styled.h2`
   width: 18.8rem;
   display: flex;
   flex-direction: row;
+  font-weight: var(--fontWeight-bold);
   line-height: 2;
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
@@ -243,14 +298,11 @@ export const Required = styled.p`
   }
 `;
 export const InputStyle = styled.input`
-  width: 80%;
+  width: 87%;
   height: 5rem;
-  background-color: var(--3-gray);
-  font-family: 'Pretendard-Medium';
   font-size: var(--fontSize-H5);
   border: none;
-  border-radius: 0.7rem;
-  color: var(--12-gray);
+  border-radius: 0.5rem;
   padding-left: 2rem;
   /* Chrome, Safari, Edge, Opera */
   &::-webkit-outer-spin-button,
@@ -262,18 +314,18 @@ export const InputStyle = styled.input`
     -moz-appearance: textfield;
   } */
   &::placeholder {
-    color: var(--5-gray);
+    color: var(--gray);
+    font-size: var(--fontSize-H5);
   }
   @media screen and (max-width: 768px) {
     width: 100%;
     height: 3rem;
     font-size: var(--fontSize-H6);
-    border-radius: 0.6rem;
-    color: var(--12-gray);
     padding-left: 1rem;
     &::placeholder {
-      color: var(--5-gray);
-    }
+    color: var(--gray);
+    font-size: 1.2rem;
+  }
   }
 `;
 export const InputWrapperStyle = styled.div`
@@ -287,12 +339,9 @@ export const InputWrapperStyle = styled.div`
 export const InputStyle2 = styled.input`
   width: 100%;
   height: 5rem;
-  background-color: var(--3-gray);
-  font-family: 'Pretendard-Medium';
   font-size: var(--fontSize-H5);
   border: none;
-  border-radius: 0.7rem;
-  color: var(--12-gray);
+  border-radius: 0.5rem;
   padding-left: 2rem;
   /* Chrome, Safari, Edge, Opera */
   &::-webkit-outer-spin-button,
@@ -304,56 +353,57 @@ export const InputStyle2 = styled.input`
     -moz-appearance: textfield;
   } */
   &::placeholder {
-    color: var(--5-gray);
+    color: var(--gray);
   }
   @media screen and (max-width: 768px) {
     width: 100%;
     height: 3rem;
-    font-size: var(--fontSize-H6);
-    border-radius: 0.6rem;
-    color: var(--12-gray);
+    font-size: 1.2rem;
     padding-left: 1rem;
-    &::placeholder {
-      color: var(--5-gray);
-    }
   }
 `;
 export const MobileTextValidationWrapper = styled.div`
-  display: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  
   @media screen and (max-width: 768px) {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 1.6rem;
   }
 `;
 export const MobileTitleCount = styled.span`
-  display: none;
+  height: 100%;
+  margin: 0.5rem 0 0 auto;
+  color: var(--gray);
+  font-size: var(--fontSize-H6);
   @media screen and (max-width: 768px) {
-    display: block;
-    color: var(--7-gray);
-    font-size: var(--fontSize-H6);
-    height: 100%;
-    margin: 0.5rem 0 0 auto;
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1;
   }
 `;
 export const MobileTextValidation = styled.div`
-  display: none;
+  display: flex;
+  flex-direction: column;
+  height: 5rem;
+  padding: 1rem 0 0 19rem;
+  @media screen and (max-width: 1240px) {
+    padding: 1rem 0 0 18rem;
+  }
+  @media screen and (max-width: 950px) {
+    padding: 1rem 0 0 17rem;
+  }
   @media screen and (max-width: 768px) {
-    display: block;
-    font-size: 1rem;
-    font-weight: var(--fontWeight-regular);
+    font-size: 1.2rem;
     height: 1rem;
     padding: 0.5rem 0 0 0;
   }
 `;
 export const TitleCount = styled.span`
   height: 100%;
-  margin-left: 2rem;
-  color: var(--7-gray);
+  margin-left: 1rem;
+  color: var(--gray);
   font-size: var(--fontSize-H6);
-  line-height: 4;
+  line-height: 3.7;
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -373,11 +423,11 @@ export const TextValidation = styled.div`
     display: none;
   }
 `;
-export const ValidationText = styled.p`
+export const ErrorText = styled.p`
   color: #ea4949;
   line-height: 1.8;
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 `;
 export const MobileWrapperStyle = styled.div`
@@ -390,29 +440,24 @@ export const MobileWrapperStyle = styled.div`
 `;
 export const CategoryContainer = styled.div`
   height: 4rem;
+  width: 100%;
   display: flex;
   align-items: center;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* display: grid;
+  grid-template-columns: repeat(4, 1fr); */
   gap: 2.2rem;
-  @media screen and (max-width: 940px) {
-    height: 12rem;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.5rem;
-  }
-  @media screen and (max-width: 768px) {
-    height: 6rem;
-    grid-template-columns: repeat(5, 1fr);
+  /* @media screen and (max-width: 768px) {
+    grid-template-columns: repeat(6, 1fr);
+    height: 2.2rem;
     gap: 1rem;
   }
-  @media screen and (max-width: 520px) {
-    height: 9rem;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
+  @media screen and (max-width: 465px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  } */
+
 `;
 export const InputCheckBoxLabel = styled.label`
-  color: var(--11-gray);
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -425,7 +470,6 @@ export const InputCheckBoxStyle = styled.input`
   appearance: none;
   width: 2.8rem;
   height: 2.8rem;
-  background-color: var(--3-gray);
   border: none;
   border-radius: 0.4rem;
   position: relative;
@@ -442,7 +486,7 @@ export const InputCheckBoxStyle = styled.input`
   &:checked:before {
     content: '✔';
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 1.4rem;
@@ -494,19 +538,18 @@ export const Validation = styled.div`
   }
   @media screen and (max-width: 768px) {
     font-size: 1rem;
-    font-weight: var(--fontWeight-regular);
     height: 1rem;
     padding: 0.5rem 0 0 0;
   }
 `;
 export const AddressBtn = styled.button`
   width: 10rem;
-  height: 5rem;
+  height: 4.5rem;
   border: none;
-  border-radius: 0.7rem;
-  background-color: var(--3-gray);
-  font-family: 'Pretendard-Medium';
-  color: var(--10-gray);
+  border-radius: 0.5rem;
+  color: var(--black);
+  background-color: var(--opc-80);
+  font-size: var(--fontSize-body);
   &:hover {
     cursor: pointer;
   }
@@ -514,28 +557,28 @@ export const AddressBtn = styled.button`
     font-size: var(--fontSize-H6);
     width: 6.8rem;
     height: 3rem;
-    border-radius: 0.6rem;
+    border-radius: 0.5rem;
   }
 `;
 // 우편번호 넣는 칸 추가해야함..
 export const AddressInputStyle = styled.input`
   width: 50%;
   height: 5rem;
-  background-color: var(--3-gray);
-  font-size: var(--fontSize-H5);
-  font-family: 'Pretendard-Medium';
   border: none;
-  border-radius: 0.7rem;
-  color: var(--8-gray);
+  border-radius: 0.5rem;
   padding-left: 2rem;
   &::placeholder {
-    color: var(--5-gray);
+    color: var(--gray);
+    font-size: var(--fontSize-H5);
   }
   @media screen and (max-width: 768px) {
     width: 100%;
     height: 3rem;
     padding-left: 1rem;
     font-size: var(--fontSize-H6);
+    &::placeholder {
+    font-size: 1.2rem;
+  }
   }
 `;
 export const GapStyle = styled.div`
@@ -551,26 +594,16 @@ export const GapStyle2 = styled.div`
   }
 `;
 export const QualityWrapper = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(1, 1fr 3fr);
-  gap: 2.3rem;
-  margin-right: 2rem;
-  @media screen and (max-width: 910px) {
-    grid-template-columns: repeat(1, 1fr 2fr);
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
   @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.2rem;
-    margin-right: 0.7rem;
-  }
-  @media screen and (max-width: 450px) {
-    grid-template-columns: repeat(2, 1fr);
+    flex-direction: row;
   }
 `;
 export const QualityExplanation = styled.p`
-  color: var(--6-gray);
-  padding: 0.6rem;
+  color: var(--gray);
+  padding: 0 4rem;
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -585,16 +618,14 @@ export const ChangableSelectWrapper = styled.div`
   }
 `;
 export const TextAreaStyle = styled.textarea`
-  width: 92%;
+  width: 100%;
   height: 19.6rem;
   resize: none;
-  background-color: var(--3-gray);
+  background-color: var(--opc-30);
   font-size: var(--fontSize-H5);
   border: none;
   border-radius: 0.7rem;
-  color: var(--12-gray);
   padding: 2rem;
-  font-family: 'Pretendard-Medium';
   overflow: hidden;
   &::-moz-input-placeholder {
     line-height: 2;
@@ -603,16 +634,7 @@ export const TextAreaStyle = styled.textarea`
     line-height: 2;
   }
   &::placeholder {
-    color: var(--5-gray);
-  }
-  @media screen and (max-width: 1185px) {
-    width: 90%;
-  }
-  @media screen and (max-width: 1010px) {
-    width: 88%;
-  }
-  @media screen and (max-width: 865px) {
-    width: 86%;
+    color: var(--gray);
   }
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -625,7 +647,7 @@ export const CountWrapper = styled.div`
 export const ContentsCount = styled.span`
   height: 100%;
   margin-left: 1rem;
-  color: var(--7-gray);
+  color: var(--gray);
   font-size: var(--fontSize-H6);
   @media screen and (max-width: 768px) {
     display: none;
@@ -640,17 +662,17 @@ export const MobileTextAreaWrapperStyle = styled.div`
 `;
 export const TagsExplanation = styled.p`
   font-size: var(--fontSize-H5);
-  color: var(--7-gray);
+  color: var(--gray);
   line-height: 1.5;
   margin-top: 0.7rem;
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 1.2rem;
     gap: 0.4rem;
-    line-height: 1.5;
+    line-height: 1.3;
   }
 `;
 export const CaveatBox = styled.div`
-  background-color: var(--3-gray);
+  background-color: var(--opc-30);
   border-radius: 1rem;
   padding: 3.5rem;
   @media screen and (max-width: 768px) {
@@ -658,12 +680,12 @@ export const CaveatBox = styled.div`
   }
 `;
 export const CaveatText = styled.p`
-  color: var(--7-gray);
+  color: var(--gray);
   line-height: 2;
   margin-bottom: 2.7rem;
   @media screen and (max-width: 768px) {
     margin-bottom: 2.2rem;
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 `;
 export const TagsInputWrapper = styled.div`
@@ -692,7 +714,7 @@ export const AgreementCheckBoxStyle = styled.input`
   appearance: none;
   width: 2.8rem;
   height: 2.8rem;
-  background-color: var(--5-gray);
+  background-color: var(--opc-30);
   border: none;
   border-radius: 0.4rem;
   position: relative;
@@ -703,7 +725,7 @@ export const AgreementCheckBoxStyle = styled.input`
   &:checked:before {
     content: '✔';
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: var(--fontSize-H5);
@@ -723,28 +745,26 @@ export const WriteBtn = styled.button`
   border: none;
   border-radius: 0.5rem;
   background-color: var(--opc-100);
-  color: var(--2-gray);
+  color: var(--white);
   width: 10.3rem;
-  height: 4.8rem;
+  height: 4.5rem;
   font-size: var(--fontSize-H4);
-  font-weight: var(--fontWeight-bold);
-  font-family: 'Pretendard-Medium';
   &:hover {
     cursor: pointer;
   }
   @media screen and (max-width: 768px) {
     width: 6.5rem;
     height: 3rem;
-    font-size: var(--fontSize-H5);
+    font-size: var(--fontSize-H6);
   }
 `;
 
 export const QualityInfoWrapper = styled.div`
   max-width: 29.7rem;
-  height: 22.4rem;
+  height: 16.5rem;
   border-radius: 1rem;
-  border: 0.1rem solid rgba(204, 255, 0, 0.5);
-  background-color: var(--3-gray);
+  border: 0.1rem solid var(--opc-100);
+  background-color: var(--drop);
   padding: 1.4rem;
   position: absolute;
   margin-top: 2rem;
@@ -755,13 +775,13 @@ export const QualityDetail = styled.div`
   display: grid;
   grid-template-columns: repeat(1, 1fr 2fr);
   p {
-    color: var(--12-gray);
+    color: var(--black);
     font-size: var(--fontSize-H6);
     margin-top: 0.2rem;
   }
   span {
-    color: var(--7-gray);
-    font-size: 1rem;
+    color: var(--gray);
+    font-size: 1.2rem;
     line-height: 1.5;
     margin-bottom: 1.5rem;
   }
