@@ -63,7 +63,7 @@ export type InsertObject = {
   anon: boolean;
 };
 export type CommuListProps = {
-  selectCategory: string;
+  posts: Post[] | undefined;
 };
 export type QuillLayoutProps = {
   content: string;
@@ -141,4 +141,7 @@ export type UpdateComment = {
     secret: boolean;
   };
   commentId: number | undefined;
+};
+export type Postcolor = {
+  $postcolor: string;
 };

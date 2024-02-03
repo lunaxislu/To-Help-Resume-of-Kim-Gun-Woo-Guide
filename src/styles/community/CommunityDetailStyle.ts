@@ -29,6 +29,7 @@ export const ProfileImage = styled.img`
   height: 2.2rem;
   border-radius: 50%;
 `;
+
 export const DefaultImage = styled.div`
   background-color: var(--10-gray);
   width: 2.2rem;
@@ -156,6 +157,11 @@ export const IconContainer = styled.div`
   justify-content: end;
   font-size: var(--fontSize-H5);
   align-items: center;
+`;
+export const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `;
 export const Category = styled.p`
   /* margin-left: 1.5rem; */

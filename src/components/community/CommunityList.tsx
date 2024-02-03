@@ -1,50 +1,15 @@
-import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { fetchRangePosts } from '../../pages/community/commuQuery';
 import { CommuListProps, Post } from '../../pages/community/model';
 import * as St from '../../styles/community/CommunityListStyle';
 import parseDate from '../../util/getDate';
-const RANGE_POST_NUMBER = 12;
-const CommuList: React.FC<CommuListProps> = ({
-  selectCategory
-}: {
-  selectCategory: string;
-}) => {
+const RANDOM_COLORS = ['red', 'yellow', 'green', 'blue', 'purple'];
+const CommunityList: React.FC<CommuListProps> = ({ posts }) => {
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-  const {
-    data: postInfo,
-    isLoading,
-    isError
-  } = useQuery(
-    ['posts', currentPage, selectCategory],
-    () => fetchRangePosts(currentPage, selectCategory),
-    {
-      onSuccess: (data) => {
-        if (data.count) {
-          setTotalPages(Math.ceil(data.count / RANGE_POST_NUMBER));
-        }
-      }
-      // staleTime: 300000
-    }
-  );
 
-  useEffect(() => {
-    setCurrentPage(1); // 카테고리가 바뀔 때마다 첫 페이지로 리셋
-  }, [selectCategory]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  if (isLoading) {
-    // return <SkeletonCommunityCard cards={2} />;
-    return <></>;
-  }
-
-  if (isError) {
-    return <div>Error loading posts</div>;
-  }
 
   const handleText = (content: string): string => {
     // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
@@ -52,19 +17,23 @@ const CommuList: React.FC<CommuListProps> = ({
 
     return textOnly;
   };
-  const posts = postInfo?.data;
-  const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+  //색 랜덤 지정
+
+  const generateRandomColorName = (): string =>
+    RANDOM_COLORS[Math.floor(Math.random() * RANDOM_COLORS.length)];
 
   return (
     <div>
       <St.Container>
         {posts?.map((post: Post) => {
+          const postColor = generateRandomColorName();
           return (
             <St.Posts
               key={post.post_id}
               onClick={() => {
                 navigate(`/community/detail/${post.post_id}`);
               }}
+              $postcolor={postColor}
             >
               <div>
                 {' '}
@@ -82,9 +51,9 @@ const CommuList: React.FC<CommuListProps> = ({
               <St.RightSide>
                 {' '}
                 <St.CommentArea>
-                  <St.LikesIcon />
+                  <St.LikesIcon $postcolor={postColor} />
                   <p>{post.likes}</p>
-                  <St.CommentIcon />
+                  <St.CommentIcon $postcolor={postColor} />
                   <p>{post.comments_count}</p>
                 </St.CommentArea>
                 <div>
@@ -95,23 +64,8 @@ const CommuList: React.FC<CommuListProps> = ({
           );
         })}
       </St.Container>
-      <St.PageNumber>
-        {pages.map((number) => (
-          <St.PageBtn
-            $currentPage={currentPage}
-            $pageNumber={number}
-            key={number}
-            onClick={() => {
-              setCurrentPage(number);
-              window.scrollTo({ top: 0 });
-            }}
-          >
-            {number}
-          </St.PageBtn>
-        ))}
-      </St.PageNumber>
     </div>
   );
 };
 
-export default CommuList;
+export default CommunityList;

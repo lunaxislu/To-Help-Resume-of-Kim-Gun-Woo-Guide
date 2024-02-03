@@ -26,7 +26,9 @@ export const fetchRangePosts = async (page: number, selectCategory: string) => {
 export const fetchPosts = async () => {
   const { data, error } = await supabase
     .from('community')
-    .select('*', { count: 'exact' });
+    .select('*', { count: 'exact' })
+    .order('post_id', { ascending: false });
+
   if (error) {
     throw error;
   }

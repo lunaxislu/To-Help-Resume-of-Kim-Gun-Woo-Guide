@@ -1,6 +1,6 @@
 import { FaComment, FaThumbsUp } from 'react-icons/fa';
 import styled from 'styled-components';
-import { PageBtnProps } from '../../pages/community/model';
+import { PageBtnProps, Postcolor } from '../../pages/community/model';
 export const Container = styled.ul`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -35,7 +35,7 @@ export const ContentsContainer = styled.div`
   display: flex;
   gap: 1rem;
 `;
-export const Posts = styled.li`
+export const Posts = styled.li<Postcolor>`
   display: flex;
   flex-direction: column;
   font-size: 2rem;
@@ -44,12 +44,28 @@ export const Posts = styled.li`
   height: 19.5rem;
   gap: 1.6rem;
   border: none;
-  border-radius: 1rem;
-
+  /* border-radius: 1rem; */
   justify-content: space-between;
-
   cursor: pointer;
+  background-color: ${(props) => `var(--c-${props.$postcolor}-30)`};
+  position: relative;
+  &:hover {
+    clip-path: polygon(0 0, calc(100% - 3rem) 0, 100% 3rem, 100% 100%, 0 100%);
+  }
 
+  &:hover::after {
+    content: '';
+    position: absolute;
+    top: 3rem;
+    right: 0px;
+    width: 3rem;
+    height: 3rem;
+    background: ${(props) => `var(--c-${props.$postcolor})`};
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    /* transition: all 10s ease; */
+    transform: rotate(90deg);
+    transform-origin: 100% 0;
+  }
   & h2 {
     font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-medium);
@@ -107,13 +123,14 @@ export const CommentArea = styled.div`
     margin-top: 0.3rem;
   }
 `;
-export const CommentIcon = styled(FaComment)`
-  color: var(--opc-100);
+export const CommentIcon = styled(FaComment)<Postcolor>`
+  color: ${(props) => `var(--c-${props.$postcolor})`};
+
   /* opacity: 50%; */
   transform: scaleX(-1);
 `;
-export const LikesIcon = styled(FaThumbsUp)`
-  color: var(--opc-100);
+export const LikesIcon = styled(FaThumbsUp)<Postcolor>`
+  color: ${(props) => `var(--c-${props.$postcolor})`};
   /* opacity: 50%; */
 `;
 export const Title = styled.h2`

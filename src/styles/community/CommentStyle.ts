@@ -6,16 +6,18 @@ import { FormProps } from '../../pages/community/model';
 
 export const Name = styled.p`
   font-size: var(--fontSize-body);
+  white-space: nowrap;
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
   }
 `;
 export const Time = styled.p`
-  font-size: var(--fontSize-H5);
-  color: var(--9-gray);
-  margin-top: 0.3rem;
+  font-size: var(--fontSize-H6);
+  color: var(--gray);
+  /* margin-top: 0.3rem; */
+  white-space: nowrap;
+
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H6);
   }
 `;
 export const ProfileImage = styled.img`
@@ -181,7 +183,7 @@ export const CommentInput = styled.input`
   padding-left: 1rem;
   &::placeholder {
     color: var(--5-gray);
-    font-size: var(--fontSize-body);
+    font-size: var(--fontSize-H5);
   }
   @media screen and (max-width: 768px) {
     /* height: 24px; */
@@ -232,12 +234,14 @@ export const CommentContainer = styled.div`
   gap: 2rem;
   /* white-space: nowrap; */
   & button {
-    padding: 10px;
+    padding: 0.5rem;
     border-radius: 20px;
+    height: fit-content;
     border: none;
     white-space: nowrap;
-    background-color: transparent;
+    background-color: var(--opc-30);
     cursor: pointer;
+    margin-top: 2.5rem;
   }
   & input {
     background-color: var(--7-gray);
@@ -247,10 +251,6 @@ export const CommentContainer = styled.div`
     width: 100%;
     /* min-width: 20rem; */
   }
-
-  @media screen and (max-width: 768px) {
-    /* background-color: #1f1f1f; */
-  }
 `;
 export const ParentComment = styled.div`
   display: flex;
@@ -259,11 +259,11 @@ export const ParentComment = styled.div`
   justify-content: space-between;
   /* border-bottom: 0.1rem solid var(--opc-100); */
   /* padding-bottom: 1.5rem; */
-  margin-bottom: 1.5rem;
+  /* margin-bottom: 1.5rem; */
 `;
 export const ChildComment = styled.div`
-  margin-left: 3rem;
-  margin-bottom: 1.5rem;
+  margin-left: 1rem;
+
   display: flex;
   width: 100%;
   flex-direction: row;
@@ -272,6 +272,7 @@ export const ChildComment = styled.div`
 export const ChildCommentContainer = styled.div`
   display: flex;
   width: 100%;
+  margin-top: 2rem;
 `;
 export const Comment = styled.div`
   display: flex;
@@ -280,10 +281,15 @@ export const Comment = styled.div`
   justify-content: space-between;
   height: fit-content;
 `;
+
+export const PContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
 export const LeftSide = styled.div`
   display: flex;
   gap: 20px;
-  align-items: start;
+  /* align-items: center; */
 
   & p {
     margin-bottom: 20px;

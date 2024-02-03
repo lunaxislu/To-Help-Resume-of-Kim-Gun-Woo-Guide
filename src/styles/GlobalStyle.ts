@@ -39,6 +39,13 @@ export const GlobalStyles = createGlobalStyle`
     --c-blue: #94CDFF;
     --c-purple: #B5B5FA;
 
+    /* 커뮤니티 배경색 */
+    --c-red-30: #FFC1A930; /* 사용감 많음 */
+    --c-yellow-30: #FFEF7730; /* 사용감 있음 */
+    --c-green-30: #A0F4B330; /* 사용감 없음 */
+    --c-blue-30: #94CDFF30;
+    --c-purple-30: #B5B5FA30;
+
     /* 정렬, 상품상태 설명창 배경색 */
     --drop: #CCE8EA;
 

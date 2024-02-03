@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
-import CommuList from '../../components/community/CommuList';
+// import CommuList from '../../components/community/CommuList';
+import CommunityList from '../../components/community/CommunityList';
 import * as St from '../../styles/community/CommunityMainStyle';
 import { CATEGORY_ARRAY } from './WritePost';
 import { fetchPosts } from './commuQuery';
@@ -77,7 +78,7 @@ const CommunityMain: React.FC = () => {
             </St.EditDropdown>
           )}
         </St.Topper2> */}
-        <CommuList selectCategory={selectCategory} />
+        <CommunityList posts={posts} />
       </St.Post_container>
     </St.Container>
   );

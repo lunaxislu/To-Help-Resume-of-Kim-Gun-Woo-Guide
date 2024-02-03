@@ -75,7 +75,6 @@ const Reply: React.FC<CommentProps> = ({
   const [secret, setSecret] = useState(false);
   const [parentId, setParentId] = useState<number | null>(null);
   const [parentUserId, setParentUserId] = useState<string | null>(null);
-
   const [isReply, setIsReply] = useState(false);
   const [liked, setLiked] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -376,6 +375,7 @@ const Reply: React.FC<CommentProps> = ({
                           <St.LeftCommentSide>
                             <St.LeftSide>
                               <St.ProfileImage src={comment.user.avatar_url} />
+
                               <St.Name>
                                 {comment.anon
                                   ? '익명의 작업자'

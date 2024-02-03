@@ -119,7 +119,7 @@ export const CategoryBtn = styled.button<{ $selectCategory: string }>`
     if (props.children === '전체') {
       return css`
         background-color: var(--opc-10);
-        border: 0.1rem solid #dbff00;
+        border: 0.1rem solid var(--opc-100);
         color: var(--12-gray);
       `;
     }

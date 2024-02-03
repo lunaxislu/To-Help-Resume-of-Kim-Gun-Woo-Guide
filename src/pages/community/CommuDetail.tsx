@@ -23,6 +23,12 @@ const CommuDetail: React.FC = () => {
   const [editToolOpen, setEditToolOpen] = useState(false);
   const [postUser, setPostUser] = useState<ProfileObject[]>([]);
 
+  const queryClient = useQueryClient();
+  const {
+    data: posts,
+    isLoading,
+    isError
+  } = useQuery(['posts', param.id], () => fetchDetailPost(param.id));
   useEffect(() => {
     // 로컬 스토리지에서 userId 가져오기
     const storedUserId = localStorage.getItem('userId');
@@ -32,13 +38,6 @@ const CommuDetail: React.FC = () => {
       setUserId(storedUserId);
     }
   }, []);
-  const queryClient = useQueryClient();
-  const {
-    data: posts,
-    isLoading,
-    isError
-  } = useQuery(['posts', param.id], () => fetchDetailPost(param.id));
-  console.log(userId);
   useEffect(() => {
     const getPostUser = async () => {
       // posts 데이터가 로드되었는지 확인
@@ -195,16 +194,18 @@ const CommuDetail: React.FC = () => {
                       <St.FeatureArea>
                         {posts![0].post_user === userId ? (
                           <St.IconContainer>
-                            <St.PenIcon />
-                            <St.BtnStyle
+                            <St.IconWrapper
                               onClick={() => {
                                 setIsEditState(true);
                               }}
                             >
-                              수정
-                            </St.BtnStyle>
-                            <St.TrachIcon />
-                            <St.BtnStyle onClick={deletePost}>삭제</St.BtnStyle>
+                              <St.PenIcon />
+                              <St.BtnStyle>수정</St.BtnStyle>
+                            </St.IconWrapper>
+                            <St.IconWrapper onClick={deletePost}>
+                              <St.TrachIcon />
+                              <St.BtnStyle>삭제</St.BtnStyle>
+                            </St.IconWrapper>
                           </St.IconContainer>
                         ) : (
                           ''
