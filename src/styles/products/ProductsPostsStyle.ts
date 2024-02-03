@@ -297,37 +297,6 @@ export const Required = styled.p`
     line-height: 1.5;
   }
 `;
-export const InputStyle = styled.input`
-  width: 87%;
-  height: 5rem;
-  font-size: var(--fontSize-H5);
-  border: none;
-  border-radius: 0.5rem;
-  padding-left: 2rem;
-  /* Chrome, Safari, Edge, Opera */
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
-  /* Firefox */
-  /* &input[type=number] {
-    -moz-appearance: textfield;
-  } */
-  &::placeholder {
-    color: var(--gray);
-    font-size: var(--fontSize-H5);
-  }
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    height: 3rem;
-    font-size: var(--fontSize-H6);
-    padding-left: 1rem;
-    &::placeholder {
-    color: var(--gray);
-    font-size: 1.2rem;
-  }
-  }
-`;
 export const InputWrapperStyle = styled.div`
   width: 87%;
   display: grid;
@@ -336,7 +305,7 @@ export const InputWrapperStyle = styled.div`
     width: 100%;
   }
 `;
-export const InputStyle2 = styled.input`
+export const InputStyle = styled.input`
   width: 100%;
   height: 5rem;
   font-size: var(--fontSize-H5);
@@ -560,13 +529,13 @@ export const AddressBtn = styled.button`
     border-radius: 0.5rem;
   }
 `;
-// 우편번호 넣는 칸 추가해야함..
 export const AddressInputStyle = styled.input`
   width: 50%;
   height: 5rem;
   border: none;
   border-radius: 0.5rem;
   padding-left: 2rem;
+  font-size: var(--fontSize-H5);
   &::placeholder {
     color: var(--gray);
     font-size: var(--fontSize-H5);
@@ -627,6 +596,7 @@ export const TextAreaStyle = styled.textarea`
   border-radius: 0.7rem;
   padding: 2rem;
   overflow: hidden;
+  line-height: 1.5;
   &::-moz-input-placeholder {
     line-height: 2;
   }
