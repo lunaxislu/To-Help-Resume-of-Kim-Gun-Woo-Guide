@@ -349,7 +349,7 @@ export const PageButton = styled.button<PageBtnProps>`
       ? 'var(--opc-100)'
       : 'var(--11-gray)'};
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H6);
+    font-size: 1.2rem;
   }
 `;
 export const LoadingStyle = styled.div`
