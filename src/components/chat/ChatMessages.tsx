@@ -46,6 +46,7 @@ const ChatMessages = ({
         .map((msg: MessageType, i: number) => {
           return msg.sender_id === curUser?.id ? (
             <ChatMyMsg
+              key={msg.id}
               msg={msg}
               curUser={curUser}
               findChatRoom={findChatRoom}
@@ -53,6 +54,7 @@ const ChatMessages = ({
             />
           ) : (
             <ChatMsg
+              key={msg.id}
               msg={msg}
               findChatRoom={findChatRoom}
               handleShowImage={handleShowImage}

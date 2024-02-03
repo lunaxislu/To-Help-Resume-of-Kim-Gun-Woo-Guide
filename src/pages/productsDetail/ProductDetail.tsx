@@ -238,6 +238,7 @@ const ProductDetail = () => {
     data.changable,
     data.shipping_cost
   ];
+
   return (
     <>
       {showChatList && (

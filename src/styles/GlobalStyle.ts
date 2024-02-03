@@ -116,6 +116,10 @@ body {
     overflow-x: hidden;
 }
 button,
+input,
+textarea {
+    font-family: 'BM-JUA';
+}
 input {
     font-family: 'BM-JUA';
 }

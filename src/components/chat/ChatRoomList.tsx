@@ -149,8 +149,6 @@ const ChatRoomList: React.FC<Props> = ({
     if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
   }, []);
 
-  console.log(rooms);
-
   return (
     <St.StChatListItem>
       {rooms

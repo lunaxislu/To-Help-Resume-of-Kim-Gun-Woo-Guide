@@ -2,7 +2,6 @@ import React from 'react';
 import { MessageType } from './types';
 import { StMyChatballoon, StMyImageballoon } from './messageStyle';
 import { User } from '@supabase/supabase-js';
-import { Function } from 'lodash';
 
 type MessageProps = {
   msg: MessageType;
@@ -13,7 +12,6 @@ type MessageProps = {
 
 export default function ChatMyMsg({
   msg,
-  curUser,
   findChatRoom,
   handleShowImage
 }: MessageProps) {

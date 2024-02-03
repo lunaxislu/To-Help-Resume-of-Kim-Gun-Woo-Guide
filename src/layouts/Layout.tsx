@@ -23,8 +23,8 @@ const Layout = () => {
   const playAlert = () => {
     const ring = new Audio('/assets/Twitter Notification_sound_effect.mp3');
     setTimeout(() => {
-      ring.play();
       ring.currentTime = 0.5;
+      ring.play();
     }, 1000);
   };
 
@@ -60,7 +60,7 @@ const Layout = () => {
 
           // 소속 된 채팅방의 업데이트인지 확인
           if (chatRooms && chatRooms.length > 0) {
-            const exists = chatRooms.map((room) => {
+            const exists = chatRooms.filter((room) => {
               return room.participants.some(
                 (part: Participants) => part.user_id === curUser?.uid
               );
@@ -73,7 +73,6 @@ const Layout = () => {
               payload.new.sender_id !== curUser?.uid
             ) {
               setNotification((prev) => [payload.new, ...prev]);
-              console.log('알림');
               setNewNotiExists(true);
               playAlert();
             }
