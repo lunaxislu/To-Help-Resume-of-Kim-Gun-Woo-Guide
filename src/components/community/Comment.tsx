@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 import { supabase } from '../../api/supabase/supabaseClient';
 import * as St from '../../styles/community/CommentStyle';
 
+import { useNavigate } from 'react-router';
 import {
   fetchDetailPost,
   updatePostMutation
@@ -46,7 +47,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
     isLoading,
     isError
   } = useQuery(['post', paramId], () => fetchDetailPost(paramId));
-
+  const navigate = useNavigate();
   const [isEdit, setisEdit] = useState(false);
   const [comments, setComments] = useState<Comments>([]);
   const [profile, setProfile] = useState<ProfileObject[]>([]);
@@ -65,7 +66,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
       setLiked(true);
     }
   }, [posts, userId]);
-
+  console.log(profile);
   const toggleLike = async () => {
     const newLikedStatus = !liked;
     setLiked(newLikedStatus);
@@ -171,6 +172,19 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
       upsertMutation.mutate(commentObject);
     }
   };
+  const commentFocusHandler = () => {
+    if (profile.length > 0) {
+      setIsFocused(true);
+    } else {
+      if (
+        window.confirm('댓글은 로그인 후에 가능합니다. 로그인하시겠습니까?')
+      ) {
+        navigate('/login');
+      } else {
+        alert('로그인 취소');
+      }
+    }
+  };
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -194,7 +208,7 @@ const Comment: React.FC<CommentProps> = ({ userId, paramId, likes }) => {
       <St.Form
         onSubmit={updateComment}
         $isFocused={isFocused}
-        onFocus={() => setIsFocused(true)}
+        onFocus={commentFocusHandler}
         onBlur={() => setIsFocused(false)}
       >
         <div>

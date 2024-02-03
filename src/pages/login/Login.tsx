@@ -1,12 +1,12 @@
-import { supabase } from '../../api/supabase/supabaseClient';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
+import { useEffect } from 'react';
+import { supabase } from '../../api/supabase/supabaseClient';
 import {
   StLoginContainer,
   StLoginText,
   StLoginTitle
 } from '../../styles/loginStyle/LoginStyle';
-import { useEffect } from 'react';
 
 const Login = () => {
   useEffect(() => {
