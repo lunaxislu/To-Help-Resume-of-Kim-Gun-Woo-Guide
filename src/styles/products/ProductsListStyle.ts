@@ -191,6 +191,7 @@ export const SearchBarInput = styled.input`
 
 // ProductsList(components)
 export const ProductsListContainer = styled.div`
+  max-width: 111.6rem;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   margin: auto;
@@ -397,4 +398,7 @@ export const LikesWrapper = styled.div`
 export const Likes = styled.div`
   color: #ceb1b1;
   font-size: var(--fontSize-H6);
+  @media screen and (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 `

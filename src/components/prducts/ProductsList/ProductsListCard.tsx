@@ -1,4 +1,4 @@
-import PostsNothing from '../../../pages/products/PostsNothing';
+import PostsNothing from './PostsNothing';
 import ProductsCard from '../ProductsCard';
 import { ProductsPostsType } from '../ProductsType';
 
@@ -12,9 +12,7 @@ const ProductListCard = ({ posts, selectCategory }: Props) => {
   return (
     <div>
       {posts && posts.length > 0 ? (
-        <>
           <ProductsCard posts={posts} />
-        </>
       ) : (
         <PostsNothing selectCategory={selectCategory}/>
       )}
