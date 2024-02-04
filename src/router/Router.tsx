@@ -13,7 +13,6 @@ import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
 import PrivateLayout from '../layouts/PrivateLayout/PrivateLayout';
 import Layout from '../layouts/Layout';
-import SideBar from '../components/sideBar/SideBar';
 import ProductsPostsEdit from '../pages/products/ProductsPostsEdit';
 import PostersProducts from '../pages/postersProducts/PostersProducts';
 
@@ -31,7 +30,6 @@ const Router = () => {
           <Route path="/postersProducts/:id" element={<PostersProducts />} />
           <Route path="/products/detail/:id" element={<ProductDetail />} />
           <Route path="/search-results" element={<SearchResults />} />
-          <Route path="/test" element={<SideBar />} />
           <Route path="*" element={<Navigate to={'/'} replace />} />
 
           <Route element={<PrivateLayout />}>

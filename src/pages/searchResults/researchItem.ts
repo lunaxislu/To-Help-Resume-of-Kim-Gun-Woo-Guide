@@ -1,6 +1,6 @@
 import { supabase } from '../../api/supabase/supabaseClient';
-import { Post } from '../community/model';
-import { Communityy, UsedItem } from '../home/usedtypes';
+import { Post } from '../community/api/model';
+import { UsedItem } from '../home/usedtypes';
 
 export interface ResearchResults {
   usedItemsWithImages: UsedItem[];

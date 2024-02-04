@@ -1,5 +1,5 @@
 import React from 'react';
-import { FilesObject } from '../../pages/community/model';
+import { FilesObject } from '../../pages/community/api/model';
 import * as St from '../../styles/community/CommunityDetailStyle';
 
 interface FileListProps {

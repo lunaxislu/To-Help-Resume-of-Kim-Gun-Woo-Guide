@@ -10,8 +10,8 @@ import {
   addPostMutation,
   fetchDetailPost,
   updatePostMutation
-} from '../../pages/community/commuQuery';
-import { WriteLayoutProps } from '../../pages/community/model';
+} from '../../pages/community/api/commuQuery';
+import { WriteLayoutProps } from '../../pages/community/api/model';
 import * as St from '../../styles/community/CommunityWriteStyle';
 
 const WriteLayout: React.FC<WriteLayoutProps> = ({

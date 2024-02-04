@@ -3,24 +3,27 @@ import { useNavigate, useParams } from 'react-router';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ProductDetailInfo from '../../components/productDetailInfoBody/ProductDetailInfo';
+import ProductDetailInfo from '../../components/productDetail/ProductDetailInfo';
 import * as St from './style';
 import type { CustomUser, Product } from './types';
 import { RoomType } from '../../components/chat/types';
 import { v4 as uuid } from 'uuid';
-import ProductDetailCarousel from '../../components/productDetailInfoBody/ProductDetailCarousel';
+import ProductDetailCarousel from '../../components/productDetail/ProductDetailCarousel';
 import {
   createRoom,
+  getOthers,
   getProductInfo,
+  getSimilar,
   handleAddRoomIntoUsers,
   handleCheckIsSoldOut,
   isLikedProduct,
+  makeChatRoom,
   sendInitMessage
 } from './supabase_Detail/supabaseAPI';
-import ProductChatList from '../../components/productDetailChatList/ProductChatList';
-import ProductDetailInfoHeader from '../../components/productDetailInfoBody/ProductDetailInfoHeader';
-import ProductPriceWrapper from '../../components/productDetailInfoBody/ProductPriceWrapper';
-import ProductButton from '../../components/productDetailInfoBody/ProductButton';
+import ProductChatList from '../../components/productDetail/ProductChatList';
+import ProductDetailInfoHeader from '../../components/productDetail/ProductDetailInfoHeader';
+import ProductPriceWrapper from '../../components/productDetail/ProductPriceWrapper';
+import ProductButton from '../../components/productDetail/ProductButton';
 import {
   getProduct,
   getTargetData,
@@ -31,15 +34,13 @@ import {
   handleLike,
   handleSellComplete,
   isExistsRoom
-} from '../../components/productDetailInfoBody/ProductDetailFn';
+} from '../../components/productDetail/ProductDetailFn';
 import { TbCircleNumber1 } from 'react-icons/tb';
 import { HiSparkles } from 'react-icons/hi2';
 import { FaLocationDot, FaTruckFast } from 'react-icons/fa6';
 import { RiExchangeFill } from 'react-icons/ri';
-import ImageViewer from '../../components/productDetailInfoBody/ImageViewer';
-import styled from 'styled-components';
-import ProductsCard from '../../components/prducts/ProductsCard';
-import { FaArrowRight } from 'react-icons/fa';
+import ImageViewer from '../../components/productDetail/ImageViewer';
+import Recommend from '../../components/productDetail/Recommend';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
@@ -61,80 +62,6 @@ const ProductDetail = () => {
   const [showViewer, setShowViewer] = useState<boolean>(false);
   const [similar, setSimilar] = useState<Product[]>([]);
   const [otherPosts, setOtherPosts] = useState<Product[]>([]);
-
-  const getOthers = async (targetId: string) => {
-    const { data: otherPosts, error: failFetchPosts } = await supabase
-      .from('products')
-      .select('*')
-      .eq('post_user_uid', targetId);
-
-    if (failFetchPosts)
-      console.log('작성자 게시물 가져오기 오류', failFetchPosts);
-
-    if (otherPosts) {
-      setOtherPosts(otherPosts);
-    }
-  };
-
-  const getSilmilar = async (productTags: string[]) => {
-    const { data: similarProducts, error: failFetchSimilar } = await supabase
-      .from('products')
-      .select('*')
-      .contains('tags', productTags);
-
-    if (failFetchSimilar)
-      console.log('추천 상품 가져오기 오류', failFetchSimilar);
-
-    if (similarProducts) {
-      setSimilar(similarProducts);
-    }
-  };
-
-  const makeChatRoom = async (e: MouseEvent<HTMLDivElement>) => {
-    // curUser, targetUser 준비
-    const currentUserId = localStorage.getItem('userId');
-    const targetUserID = e.currentTarget.id;
-
-    // user 테이블에서 채팅 상대 정보 가져오기
-    const [targetUserRes, currentUserRes] = await Promise.all([
-      supabase.from('user').select('*').eq('uid', targetUserID),
-      supabase.from('user').select('*').eq('uid', currentUserId)
-    ]);
-
-    // 에러 처리
-    if (targetUserRes.error || currentUserRes.error) {
-      alert('로그인 정보 또는 작성자 정보를 찾을 수 없습니다');
-      targetUserRes && console.log(targetUserRes);
-      currentUserRes && console.log(currentUserRes);
-      return;
-    }
-
-    const targetUser = targetUserRes.data;
-    const currentUser = currentUserRes.data;
-
-    // 둘 중 하나라도 데이터가 없다면 중단
-    if (
-      !targetUser ||
-      targetUser.length === 0 ||
-      !currentUser ||
-      currentUser.length === 0
-    ) {
-      console.log('TargetUser or currentUser is null');
-      if (window.confirm('로그인 후 이용 부탁드립니다') === true) {
-        navi('/login');
-      }
-      return;
-    }
-
-    // 에러가 없다면 실행
-    setTarget(targetUser[0]);
-    setCurUser(currentUser[0]);
-    if (targetUser && currentUser) {
-      await insertUserIntoChatRoom(currentUser[0], targetUser[0]);
-    } else {
-      console.log('TargetUser or currentUser is null');
-    }
-  };
 
   // 생성된 채팅방 row에 참여자 정보, 채팅방 이름 삽입
   const insertUserIntoChatRoom = async (
@@ -169,9 +96,7 @@ const ProductDetail = () => {
           ]
         }
       ];
-
       const chatRoom = await createRoom(roomForm);
-
       ////////////////// 방 생성 후 유저들에게 소속된 방을 추가 //////////////
 
       // 방이 생겼다면 유저들의 chat_room 필드에 생성 된 채팅방을 넣어주자
@@ -204,11 +129,12 @@ const ProductDetail = () => {
     setShowChatList(true);
   };
 
-  // 상품추천란 네비게이션 함수
-  const navigateTo = (e: MouseEvent<HTMLButtonElement>) => {
-    const { id } = e.currentTarget;
-    if (id && id === product![0].post_user_uid) navi(`/postersProducts/${id}`);
-    else navi('/products');
+  const checkWindowSize = () => {
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
   };
 
   useEffect(() => {
@@ -221,10 +147,10 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (target) {
-      getOthers(target?.uid);
+      getOthers(target?.uid, setOtherPosts);
     }
     if (product) {
-      getSilmilar(product[0].tags);
+      getSimilar(product[0].tags, setSimilar);
     }
   }, [target, product]);
 
@@ -234,14 +160,6 @@ const ProductDetail = () => {
       isExistsRoom({ id, curUser, setIsExist });
     }
   }, [curUser]);
-
-  const checkWindowSize = () => {
-    if (window.matchMedia('(max-width: 768px)').matches) {
-      setIsMobile(true);
-    } else {
-      setIsMobile(false);
-    }
-  };
 
   useEffect(() => {
     checkWindowSize();
@@ -390,7 +308,15 @@ const ProductDetail = () => {
               isLiked={isLiked}
               isSoldOut={isSoldOut}
               likesCount={likesCount}
-              makeChatRoom={makeChatRoom}
+              makeChatRoom={(e: any) =>
+                makeChatRoom({
+                  e,
+                  insertUserIntoChatRoom,
+                  navi,
+                  setCurUser,
+                  setTarget
+                })
+              }
               product={product}
             />
           </St.StProductInfo>
@@ -406,73 +332,14 @@ const ProductDetail = () => {
           </St.StProductCategory>
         </St.StProductIntroSection>
         {/* 상품 추천 섹션 */}
-        <div>
-          <StSimilarProductTitleWrapper>
-            비슷한 상품
-            <StToSectionButton onClick={navigateTo}>
-              전체보기 <FaArrowRight />
-            </StToSectionButton>
-          </StSimilarProductTitleWrapper>
-          <ProductsCard
-            posts={similar
-              .filter((product) => product.isSell !== true)
-              .slice(0, 5)}
-          />
-        </div>
-        <div>
-          <StOtherPostsTitleWrapper>
-            이 판매자의 다른 상품
-            <StToSectionButton
-              id={product[0].post_user_uid}
-              onClick={navigateTo}
-            >
-              전체보기 <FaArrowRight />
-            </StToSectionButton>
-          </StOtherPostsTitleWrapper>
-          <ProductsCard
-            posts={otherPosts
-              .filter((product) => product.isSell !== true)
-              .slice(0, 5)}
-          />
-        </div>
+        <Recommend
+          otherPosts={otherPosts}
+          similar={similar}
+          product={product}
+        />
       </St.StDetailContainer>
     </>
   );
 };
 
 export default ProductDetail;
-
-const StSimilarProductTitleWrapper = styled.h2`
-  width: 100%;
-  font-size: 2rem;
-  margin-block: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const StOtherPostsTitleWrapper = styled.h2`
-  width: 100%;
-  font-size: 2rem;
-  margin-block: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const StToSectionButton = styled.button`
-  background: var(--opc-100);
-  color: white;
-  border-radius: 50px;
-  padding: 0.8rem;
-  border: none;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #414141;
-    color: var(--opc-100);
-  }
-`;
