@@ -5,44 +5,8 @@ import { ProductsInputType, ProductsInputFinalType } from '../ProductsType';
 import ProductsImage from './ProductsImage';
 import { useLocation, useNavigate } from 'react-router';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import * as St from '../../../styles/products/ProductsPostsStyle'
-
-const MAJOR = [
-  '회화',
-  '조소',
-  '공예',
-  '기타'
-];
-const SHIPPING_COST = ['배송비 포함', '배송비 별도'];
-const DEAL_TYPE = ['택배', '직거래', '협의 후 결정'];
-const CHANGABLE = ['가능', '불가능'];
-const QUALITY = [
-  {
-    condition: '사용감 없음',
-    shape:
-      '사용은 했지만 눈에 띄는 흔적이나 얼룩이 없어요 / 아주 조금 사용했어요'
-  },
-  {
-    condition: '사용감 있음',
-    shape: '눈에 띄는 흔적이나 얼룩이 약간 있어요 / 절반정도 사용했어요'
-  },
-  {
-    condition: '사용감 많음',
-    shape: '눈에 띄는 흔적이나 얼룩이 많이 있어요 / 많이 사용했어요'
-  }
-];
-const CAVEAT = `
-  불순한 의도는 처벌을 피할 수 없습니다.
-  불순한 의도는 처벌을 피할 수 없습니다.
-  불순한 의도는 처벌을 피할 수 없습니다.
-  불순한 의도는 처벌을 피할 수 없습니다.
-  불순한 의도는 처벌을 피할 수 없습니다.
-  불순한 의도는 처벌을 피할 수 없습니다.
-  불순한 의도는 처벌을 피할 수 없습니다.
-  불순한 의도는 처벌을 피할 수 없습니다.
-  불순한 의도는 처벌을 피할 수 없습니다.
-  불순한 의도는 처벌을 피할 수 없습니다.
-  불순한 의도는 처벌을 피할 수 없습니다.`;
+import * as St from '../../../styles/products/productsPosts/StProductsWriteForm'
+import { MAJOR, SHIPPING_COST, DEAL_TYPE, CHANGABLE, QUALITY, CAVEAT } from '../ProductsSetData'
 
 const InputDefaultValue = {
   title: '',

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import {
   ExclamationMark,
   NothingIcon
-} from '../../styles/products/ProductsNothingStyle';
+} from '../../styles/products/productsList/StProductsNothing';
 
 interface NothingProps {
   type: string;

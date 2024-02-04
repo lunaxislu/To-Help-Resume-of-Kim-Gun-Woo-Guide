@@ -8,9 +8,10 @@ import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
 import parseDate from '../../util/getDate';
 import { FaArrowRight } from 'react-icons/fa6';
 import { StFadeAni } from '../../pages/productsDetail/style';
-import * as St from '../../styles/products/ProductsListStyle';
+import * as St from '../../styles/products/productsList/StProductsList';
 import CommunityList from '../../components/community/CommunityList';
 import { Posts } from '../../styles/community/CommunityListStyle';
+import ProductsCard from '../../components/prducts/ProductsCard';
 
 type UsedItemsCountData = {
   count: number | null;
@@ -77,6 +78,9 @@ const Home = () => {
     window.scrollTo({ top: height, behavior: 'smooth' });
   };
 
+  // 중고목록 map 돌리기 위한 변수 선언(하빈 추가)
+  const productsPosts = usedItems.slice(0, isMobile ? 6 : 10)
+
   return (
     <HomeContainer>
       <BannerContainer>
@@ -125,42 +129,8 @@ const Home = () => {
               <FaArrowRight />
             </ProductsLink>
           </ProductsTitle>
-
-          <St.ProductsListContainer>
-            {usedItems.slice(0, isMobile ? 6 : 10)?.map((item) => (
-              <St.ProductsCardContainer
-                key={item.id}
-                onClick={() => navigate(`/products/detail/${item.id}`)}
-              >
-                <St.CardImageWrapper>
-                  {item.isSell === true ? (
-                    <St.IsSellProducts>
-                      <St.SoldOut>판매완료</St.SoldOut>
-                    </St.IsSellProducts>
-                  ) : (
-                    <div></div>
-                  )}
-                  {item.image_url !== null && item.image_url !== undefined ? (
-                    <St.CardImage src={item.image_url[0]} alt="상품 이미지" />
-                  ) : (
-                    <div></div>
-                  )}
-                </St.CardImageWrapper>
-                {[item.quality].map((condition) => (
-                  <St.CardQuality $quality={condition} key={condition}>
-                    {condition}
-                  </St.CardQuality>
-                ))}
-                <St.CardTitle>{item.title}</St.CardTitle>
-                <St.LikesWrapper>
-                  <St.CardPrice>
-                    {item.price.toLocaleString('kr-KO')}원
-                  </St.CardPrice>
-                  <St.Likes>♥ {item.likes}</St.Likes>
-                </St.LikesWrapper>
-              </St.ProductsCardContainer>
-            ))}
-          </St.ProductsListContainer>
+          {/* 하빈 수정 */}
+          <ProductsCard posts={productsPosts} />
         </ProductsContainer>
 
         <ComunityContainer>
