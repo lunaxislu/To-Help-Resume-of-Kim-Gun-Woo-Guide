@@ -1,6 +1,7 @@
 import React, { MouseEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import styled, { keyframes } from 'styled-components';
+import SearchBar from '../layout/header/SearchBar';
 
 const StSideBtnContainer = styled.div`
   width: fit-content;
@@ -98,10 +99,22 @@ const StMenuButtons = styled.button<ButtonProps>`
   }
 `;
 
+const StSearchBarContainer = styled.div`
+  position: absolute;
+  top: 385%;
+  right: 10rem;
+`;
+
 const SideBar = () => {
   const [isShow, setIsShow] = useState<boolean>(false);
+  const [isSearchBarVisible, setIsSearchBarVisible] = useState<boolean>(false);
+
+  const navigate = useNavigate();
   const navi = useNavigate();
 
+  const toggleSearchBar = () => {
+    setIsSearchBarVisible((prev) => !prev);
+  };
   const arr = [
     '판매하기',
     '중고거래',
@@ -123,11 +136,29 @@ const SideBar = () => {
     innerText === '커뮤니티' && navi('/community');
     innerText === '채팅' && navi('/chat');
     innerText === '프로필' && navi('/mypage');
+    innerText === '검색' && toggleSearchBar();
   };
 
   return (
     <StSideBtnContainer>
-      <StMainButton onClick={setMenuToggle}>Menu</StMainButton>
+      <StMainButton
+        onClick={() => {
+          setMenuToggle();
+          if (isShow && isSearchBarVisible) {
+            toggleSearchBar();
+          }
+        }}
+      >
+        Menu
+      </StMainButton>
+      {isShow && isSearchBarVisible && (
+        <StSearchBarContainer>
+          <SearchBar
+            showSearchComp={isSearchBarVisible}
+            setShowSearchComp={setIsSearchBarVisible}
+          />
+        </StSearchBarContainer>
+      )}
       {arr.map((menu, i) => {
         return (
           isShow && (

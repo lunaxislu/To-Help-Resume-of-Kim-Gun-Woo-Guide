@@ -64,13 +64,15 @@ const Header = ({
   // 반응형 대응 서치 컴포넌트 관련
   const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
   const [showHamburger, setShowHamburger] = useState<boolean>(false);
-  // 반응형 대응 서치 컴포넌트 두두둥장
   const handleShowSearchComp = () => {
     setShowSearchComp((prev) => !prev);
   };
-  // 반응형 대응 햄버거 버튼
+  // 반응형 대응 햄버거 버튼 , 검색바 열려있으면 검색바 닫기
   const handlShowSearchBurger = () => {
     setShowHamburger((prev) => !prev);
+    if (showSearchComp) {
+      setShowSearchComp((prev) => !prev);
+    }
   };
   // 페이지 이동 시 검색어 초기화 함수
   const handlePageChange = () => {
@@ -158,7 +160,7 @@ const Header = ({
 
   return (
     <>
-      {notification.length > 0 && showNoti && (
+      {/* {notification.length > 0 && showNoti && (
         <>
           <St.StNotiContainer>
             {notification.map((noti) => {
@@ -175,8 +177,8 @@ const Header = ({
             </St.StNoticeButtonContainer>
           </St.StNotiContainer>
         </>
-      )}
-      {notification.length === 0 && showNoti && (
+      )} */}
+      {/* {notification.length === 0 && showNoti && (
         <St.StNotiContainer>
           <St.StNotiItem onClick={() => setShowNoti(false)}>
             알림이 없습니다
@@ -187,18 +189,18 @@ const Header = ({
             </St.StNoticeDeleteBtn>
           </St.StNoticeButtonContainer>
         </St.StNotiContainer>
-      )}
+      )} */}
       <St.HeaderTopContainer>
         <St.HeaderContainer>
           <St.HeaderWrapper>
             <St.HeaderSection>
               <St.Logo
-                src="/assets/logo2.png"
+                src="/assets/paletteMarketLogo.svg"
                 alt="작업자들"
                 onClick={handleLogoClick}
               />
               <St.ButtonContainer>
-                <St.Sell onClick={handleSellbuttonClick}>
+                {/* <St.Sell onClick={handleSellbuttonClick}>
                   <BiWon
                     style={{
                       width: '1.6rem',
@@ -207,8 +209,8 @@ const Header = ({
                     }}
                   />
                   <p>판매하기</p>
-                </St.Sell>
-                {isLogin ? (
+                </St.Sell> */}
+                {/* {isLogin ? (
                   <St.Chat onClick={handleNavigateToChat}>
                     <BsChatDotsFill
                       style={{
@@ -222,8 +224,8 @@ const Header = ({
                   </St.Chat>
                 ) : (
                   ''
-                )}
-                {isLogin ? (
+                )} */}
+                {/* {isLogin ? (
                   <St.Alert onClick={showNotiToggle}>
                     <BiSolidBell
                       style={{
@@ -239,13 +241,16 @@ const Header = ({
                   </St.Alert>
                 ) : (
                   ''
-                )}
+                )} */}
                 {isLogin ? (
                   <>
-                    <St.UserIcon
-                      src={`${avatarUrl}`}
-                      onClick={handleMyPageButtonClick}
-                    />
+                    <St.LogoutButton onClick={handleLogOutButtonClick}>
+                      <St.LogoutImage
+                        src="/assets/logout.svg"
+                        alt="로그아웃이미지"
+                      />
+                      <St.LogoutWord>로그아웃</St.LogoutWord>
+                    </St.LogoutButton>
                     <St.MobileSearchIcon
                       src="/assets/mobile_search.svg"
                       onClick={handleShowSearchComp}
@@ -270,7 +275,14 @@ const Header = ({
                 )}
               </St.ButtonContainer>
             </St.HeaderSection>
-            <St.NavSection>
+            <St.VisibleSearchBar>
+              <SearchBar
+                showSearchComp={showSearchComp}
+                setShowSearchComp={setShowSearchComp}
+              />
+            </St.VisibleSearchBar>
+
+            {/* <St.NavSection>
               <St.NavBar>
                 <St.NavButton to="/products" onClick={handlePageChange}>
                   중고거래
@@ -280,12 +292,9 @@ const Header = ({
                 </St.NavButton>
               </St.NavBar>
 
-              <SearchBar
-                showSearchComp={showSearchComp}
-                setShowSearchComp={setShowSearchComp}
-              />
-            </St.NavSection>
-            <div style={{ position: 'relative' }}></div>
+             
+            </St.NavSection> */}
+            {/* <div style={{ position: 'relative' }}></div> */}
           </St.HeaderWrapper>
         </St.HeaderContainer>
       </St.HeaderTopContainer>

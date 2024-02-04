@@ -37,20 +37,11 @@ const DropDownMenu: React.FC<DropdownProps> = ({
         </DropdownItem>
         <DropdownItem
           onClick={() => {
-            currentClickMenu('낮은가격순');
-            toggleDropdownButton();
-            alert('개발 중인 기능입니다...!');
-          }}
-        >
-          낮은가격순
-        </DropdownItem>
-        <DropdownItem
-          onClick={() => {
-            currentClickMenu('높은가격순');
+            currentClickMenu('인기순');
             toggleDropdownButton();
           }}
         >
-          높은가격순
+          인기순
         </DropdownItem>
       </DropdownContent>
     </DropdownMenu>
