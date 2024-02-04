@@ -44,6 +44,7 @@ const Header = ({
 
   const deleteAllNotification = () => {
     setNotification([]);
+    localStorage.removeItem('notifications');
   };
 
   const filterPrevNoti = (noti_id: string) => {
@@ -154,9 +155,6 @@ const Header = ({
 
   useEffect(() => {
     getSession();
-  }, []);
-
-  useEffect(() => {
     getAuth();
   }, []);
 
@@ -182,7 +180,9 @@ const Header = ({
       )}
       {notification.length === 0 && showNoti && (
         <St.StNotiContainer>
-          <St.StNotiItem>알림이 없습니다</St.StNotiItem>
+          <St.StNotiItem onClick={() => setShowNoti(false)}>
+            알림이 없습니다
+          </St.StNotiItem>
           <St.StNoticeButtonContainer>
             <St.StNoticeDeleteBtn onClick={deleteAllNotification}>
               알림 지우기

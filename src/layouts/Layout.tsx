@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import { Outlet, useLocation, useNavigate } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 import ScrollTopButton from './ScrollTopButton';
 import { supabase } from '../api/supabase/supabaseClient';
 import styled from 'styled-components';
 import { CustomUser } from '../pages/productsDetail/types';
 import { Participants } from '../components/chat/types';
 import SideBar from '../components/sideBar/SideBar';
-const userId = localStorage.getItem('userId');
 
 const Layout = () => {
   const location = useLocation();
@@ -28,6 +27,17 @@ const Layout = () => {
     }, 1000);
   };
 
+  // 로컬스토리지에 알림 저장
+  const saveNotiToLocal = (notification: any[]) => {
+    localStorage.setItem('notification', JSON.stringify(notification));
+  };
+
+  // 로컬 스토리지에서 알림 데이터를 불러오는 함수
+  const getNotificationsFromLocal = () => {
+    const notifications = localStorage.getItem('notification');
+    setNotification(notifications ? JSON.parse(notifications) : []);
+  };
+
   useEffect(() => {
     const getUserData = async () => {
       const currentUserId = localStorage.getItem('userId');
@@ -45,6 +55,8 @@ const Layout = () => {
     };
 
     getUserData();
+    // 캐싱된 알림 가져오기
+    getNotificationsFromLocal();
 
     // 메세지 테이블 실시간 알림 구독
     const chatMessages = supabase
@@ -60,7 +72,7 @@ const Layout = () => {
 
           // 소속 된 채팅방의 업데이트인지 확인
           if (chatRooms && chatRooms.length > 0) {
-            const exists = chatRooms.filter((room) => {
+            const exists = chatRooms.map((room) => {
               return room.participants.some(
                 (part: Participants) => part.user_id === curUser?.uid
               );
@@ -88,6 +100,11 @@ const Layout = () => {
   }, []);
 
   useEffect(() => {
+    saveNotiToLocal(notification);
+    if (notification.length > 0) setNewNotiExists(true);
+  }, [notification]);
+
+  useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
@@ -111,6 +128,7 @@ const Layout = () => {
       }
     };
     window.addEventListener('scroll', handleScroll);
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };

@@ -240,7 +240,7 @@ const ProductDetail = () => {
     data.changable,
     data.shipping_cost
   ];
-  
+
   // 수정할 기본 데이터를 담은 변수 선언(하빈 추가)
   const selectedProductData = {
     id: data.id,
