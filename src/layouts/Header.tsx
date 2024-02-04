@@ -130,7 +130,7 @@ const Header = () => {
           <St.HeaderWrapper>
             <St.HeaderSection>
               <St.Logo
-                src="/assets/logo2.png"
+                src="/assets/paletteMarketLogo.svg"
                 alt="작업자들"
                 onClick={handleLogoClick}
               />

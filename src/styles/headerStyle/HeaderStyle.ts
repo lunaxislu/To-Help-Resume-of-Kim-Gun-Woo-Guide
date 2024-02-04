@@ -85,8 +85,8 @@ export const HeaderSection = styled.section`
 `;
 
 export const Logo = styled.img`
-  width: 10.1rem;
-  height: 2.6rem;
+  width: 23.4rem;
+  height: 5.4rem;
   cursor: pointer;
   user-select: none;
   margin: auto 0;
@@ -204,11 +204,13 @@ export const Alert = styled.button`
 
 export const Button = styled.button`
   align-items: center;
+  justify-content: center;
   display: flex;
-  width: 9rem;
-  height: 2.7rem;
+  width: 13.7rem;
+  height: 3.4rem;
   border: 0;
-  background: transparent;
+  border-radius: 3rem;
+  background: #a0e0d6;
   font-family: 'Pretendard-Medium';
   cursor: pointer;
   color: var(--11-gray);
