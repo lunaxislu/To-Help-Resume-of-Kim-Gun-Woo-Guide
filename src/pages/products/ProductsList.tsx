@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router';
 import { fetchProductsPosts } from '../../components/prducts/productsQuery';
 import { useInView } from 'react-intersection-observer';
 import { ProductsPostsType } from '../../components/prducts/ProductsType';
+import SkeletonProductCard from '../../components/skeleton/SkeletonProductCard';
+import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
 
 const major = [
   '전체',
@@ -84,9 +86,8 @@ const ProductsList = () => {
       <St.ContentsContainer>
         <St.TitleContainer>
           <St.Title>
-            {data?.pages[0].count ? 
-              `${data?.pages[0].count}개의 물품이 거래되고 있어요` : 
-              `거래되고 있는 ${selectCategory} 물품이 없어요`}
+            {data?.pages[0].count && `${data?.pages[0].count}개의 ${selectCategory} 물품이 거래되고 있어요`}
+            {isLoading && `Loading....`}
           </St.Title>
           <St.PostsWriteBtn onClick={handleOnClickSellWriteBtn}>
             <St.SellWriteIcon /> 판매하기
@@ -112,12 +113,18 @@ const ProductsList = () => {
         </St.SearchBarContainer> */}
         </St.BarContainer>
         {isLoading ? (
-          <St.LoadingStyle>스켈레톤 이미지 props는 몇장 보여줄 것인지 갯수</St.LoadingStyle>
+          <ProductsSkeleton count={15}/>
         ) : (
           <ProductListCard posts={posts} selectCategory={selectCategory} />
         )}
         {hasNextPage && !isFetchingNextPage && <div ref={ref}></div>}
-        {isFetchingNextPage && <div>스켈레톤 이미지 props는 몇장 보여줄 것인지 갯수</div>}
+        {isFetchingNextPage && <ProductsSkeleton count={10}/>}
+        {!isFetchingNextPage && !isLoading && 
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '3rem auto', gap: '2rem', width: '100%'}}>
+          <p>마지막 물품입니다.</p>
+          <p>'판매하기'를 눌러 판매를 시작해보세요!</p>
+        </div>
+        }
       </St.ContentsContainer>
     </St.EntireContainer>
   );
