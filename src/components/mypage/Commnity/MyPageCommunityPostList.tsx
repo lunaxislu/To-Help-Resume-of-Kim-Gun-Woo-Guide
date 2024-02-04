@@ -16,62 +16,42 @@ import {
   setFavPost,
   setMyPost
 } from '../../../redux/modules/countPostsAndItemsSlice';
+import useInfiniteQueryHook from '../../../hooks/useInfiniteQuery';
 
 const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
   const dispatch = useAppDispatch();
+
   const {
-    data: myPost,
-    hasNextPage: hasNextPageMyPost,
-    fetchNextPage: fetchNextPageMyPost,
-    status: statusMyPost
-  } = useInfiniteQuery({
-    queryKey: ['myPost'],
-    queryFn: getCommunityPosts,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage && lastPage.page < lastPage.total_pages) {
-        return lastPage.page + 1;
-      }
-    },
-    select: (data) => {
-      return {
-        pages: data.pages.map((pageData) => pageData.data).flat(),
-        pageParams: data.pageParams
-      };
-    }
+    data: myPosts,
+    hasNextPage: hasNextPageMyPosts,
+    fetchNextPage: fetchNextPageMyPosts,
+    status: statusMyPosts
+  } = useInfiniteQueryHook({
+    queryKey: ['myPosts'],
+    queryFn: getCommunityPosts
   });
 
   const {
-    data: myFavPost,
-    hasNextPage: hasNextPageMyFavPost,
-    fetchNextPage: fetchNextPageMyFavPost,
-    status: statusMyFavPost
-  } = useInfiniteQuery({
-    queryKey: ['myFavPost'],
-    queryFn: getFavCommunityPosts,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage && lastPage.page < lastPage.total_pages) {
-        return lastPage.page + 1;
-      }
-    },
-    select: (data) => {
-      return {
-        pages: data.pages.map((pageData) => pageData.data).flat(),
-        pageParams: data.pageParams
-      };
-    }
+    data: myFavPosts,
+    hasNextPage: hasNextPageMyFavPosts,
+    fetchNextPage: fetchNextPageMyFavPosts,
+    status: statusMyFavPosts
+  } = useInfiniteQueryHook({
+    queryKey: ['myFavPosts'],
+    queryFn: getFavCommunityPosts
   });
 
-  dispatch(setMyPost(myPost?.pages.length));
-  dispatch(setFavPost(myFavPost?.pages.length));
+  dispatch(setMyPost(myPosts?.pages.length));
+  dispatch(setFavPost(myFavPosts?.pages.length));
 
   const { ref } = useInView({
     threshold: 0,
     onChange: (inView) => {
-      if (!inView || !hasNextPageMyPost) return;
-      fetchNextPageMyPost();
+      if (!inView || !hasNextPageMyPosts) return;
+      fetchNextPageMyPosts();
 
-      if (!inView || !hasNextPageMyPost) return;
-      fetchNextPageMyPost();
+      if (!inView || !hasNextPageMyPosts) return;
+      fetchNextPageMyPosts();
     }
   });
 
@@ -84,14 +64,32 @@ const MyPageCommunityPostList: React.FC<CommunityActive> = ({ activeTab }) => {
     <>
       {activeTab === 3 && (
         <StPostContainer ref={ref}>
-          <CommunityList posts={myPost?.pages}></CommunityList>
+          <CommunityList posts={myPosts?.pages}></CommunityList>
         </StPostContainer>
+      )}
+      {myPosts?.pages.length === 0 && activeTab !== 4 && (
+        <Nothing
+          type={'글쓰기'}
+          content={'아직 작성한 게시물이 없습니다.'}
+          icon={''}
+          to={'/community_write'}
+          show={true}
+        />
       )}
 
       {activeTab === 4 && (
         <StPostContainer ref={ref}>
-          <CommunityList posts={myFavPost?.pages}></CommunityList>
+          <CommunityList posts={myFavPosts?.pages}></CommunityList>
         </StPostContainer>
+      )}
+      {myFavPosts?.pages.length === 0 && activeTab !== 3 && (
+        <Nothing
+          type={'커뮤니티 보러가기'}
+          content={'아직 추천한 게시물이 없습니다.'}
+          icon={''}
+          to={'/community'}
+          show={true}
+        />
       )}
     </>
   );

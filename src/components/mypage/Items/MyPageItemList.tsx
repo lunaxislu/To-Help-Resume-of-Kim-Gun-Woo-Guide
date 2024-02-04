@@ -6,40 +6,31 @@ import { useInView } from 'react-intersection-observer';
 import Nothing from '../Nothing';
 import ProductsCard from '../../prducts/ProductsCard';
 import {
+  getCommunityPosts,
   getFavoriteItems,
   getMyItems,
   getPurchasedItems
 } from '../../../api/supabase/mypage';
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery, useQuery } from 'react-query';
 import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
 import {
   setFavItem,
   setMyItem,
   setPurchasedItem
 } from '../../../redux/modules/countPostsAndItemsSlice';
+import useInfiniteQueryHook from '../../../hooks/useInfiniteQuery';
 
 const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const dispatch = useAppDispatch();
 
   const {
     data: myItems,
-    hasNextPage: hasNextPageMyItem,
-    fetchNextPage: fetchNextPageMyItem,
-    status: statusMyItem
-  } = useInfiniteQuery({
-    queryKey: ['myItem'],
-    queryFn: getMyItems,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage && lastPage.page < lastPage.total_pages) {
-        return lastPage.page + 1;
-      }
-    },
-    select: (data) => {
-      return {
-        pages: data.pages.map((pageData) => pageData.data).flat(),
-        pageParams: data.pageParams
-      };
-    }
+    hasNextPage: hasNextPageMyItems,
+    fetchNextPage: fetchNextPageMyItems,
+    status: statusMyItems
+  } = useInfiniteQueryHook({
+    queryKey: ['myItems'],
+    queryFn: getMyItems
   });
 
   const {
@@ -47,20 +38,9 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
     hasNextPage: hasNextPagePurchasedItems,
     fetchNextPage: fetchNextPagePurchasedItems,
     status: statusPurchasedItems
-  } = useInfiniteQuery({
+  } = useInfiniteQueryHook({
     queryKey: ['purchasedItems'],
-    queryFn: getPurchasedItems,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage && lastPage.page < lastPage.total_pages) {
-        return lastPage.page + 1;
-      }
-    },
-    select: (data) => {
-      return {
-        pages: data.pages.map((pageData) => pageData.data).flat(),
-        pageParams: data.pageParams
-      };
-    }
+    queryFn: getPurchasedItems
   });
 
   const {
@@ -68,20 +48,9 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
     hasNextPage: hasNextPageFavItems,
     fetchNextPage: fetchNextPageFavItems,
     status: statusFavItems
-  } = useInfiniteQuery({
+  } = useInfiniteQueryHook({
     queryKey: ['favItems'],
-    queryFn: getFavoriteItems,
-    getNextPageParam: (lastPage, allPages) => {
-      if (lastPage && lastPage.page < lastPage.total_pages) {
-        return lastPage.page + 1;
-      }
-    },
-    select: (data) => {
-      return {
-        pages: data.pages.map((pageData) => pageData?.data).flat(),
-        pageParams: data.pageParams
-      };
-    }
+    queryFn: getFavoriteItems
   });
 
   dispatch(setMyItem(myItems?.pages.length));
@@ -91,8 +60,8 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const { ref } = useInView({
     threshold: 0,
     onChange: (inView) => {
-      if (!inView || !hasNextPageMyItem) return;
-      fetchNextPageMyItem();
+      if (!inView || !hasNextPageMyItems) return;
+      fetchNextPageMyItems();
 
       if (!inView || !hasNextPagePurchasedItems) return;
       fetchNextPagePurchasedItems();
@@ -109,16 +78,27 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
 
   return (
     <>
+      {/* 판매한 물품 */}
       {activeTab === 0 && (
         <StCardContainer ref={ref}>
-          {statusMyItem === 'loading' ? (
+          {statusMyItems === 'loading' ? (
             <SkeletonProductCard cards={5} />
           ) : (
             <ProductsCard posts={myItems?.pages} />
           )}
         </StCardContainer>
       )}
+      {myItems?.pages.length === 0 && activeTab !== 1 && activeTab !== 2 && (
+        <Nothing
+          type={''}
+          content={'판매한 물품이 없습니다.'}
+          icon={''}
+          to={'판매하기'}
+          show={true}
+        />
+      )}
 
+      {/* 구매한 물품 */}
       {activeTab === 1 && (
         <StCardContainer ref={ref}>
           {statusPurchasedItems === 'loading' ? (
@@ -128,7 +108,19 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
           )}
         </StCardContainer>
       )}
+      {purchasedItems?.pages.length === 0 &&
+        activeTab !== 0 &&
+        activeTab !== 2 && (
+          <Nothing
+            type={'중고거래 구경가기'}
+            content={'구매하신 물품이 없습니다.'}
+            icon={''}
+            to={'/products'}
+            show={true}
+          />
+        )}
 
+      {/* 찜한 물품 */}
       {activeTab === 2 && (
         <StCardContainer ref={ref}>
           {statusFavItems === 'loading' ? (
@@ -137,6 +129,15 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
             <ProductsCard posts={favItems?.pages} />
           )}
         </StCardContainer>
+      )}
+      {favItems?.pages.length === 0 && activeTab !== 1 && activeTab !== 0 && (
+        <Nothing
+          type={'중고거래 구경가기'}
+          content={'찜한 물품이 없습니다.'}
+          icon={''}
+          to={'/products'}
+          show={true}
+        />
       )}
     </>
   );
