@@ -34,7 +34,7 @@ const CommunityMain: React.FC = () => {
       }
     }
   );
-  console.log(data);
+
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
@@ -62,7 +62,11 @@ const CommunityMain: React.FC = () => {
   };
 
   const posts: Post[] = data?.pages?.flat() || [];
-
+  if (isError) {
+    alert(
+      '데이터 불러오기 중 오류가 발생했습니다. 새로고침후 현상이 유지된다면 개발자에게 문의주세요'
+    );
+  }
   return (
     <St.Container>
       <St.Post_container>

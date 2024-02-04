@@ -9,16 +9,12 @@ const CommunityMainCount: React.FC<CommunityMainCountProps> = ({
 }) => {
   const { data: count } = useQuery(
     ['posts_count', selectCategory],
-    () => getPostCount(selectCategory)
-    // {
-    //   staleTime: 60000,
-    //   onSuccess: (count) => {
-    //     // 여기서 selectCategory를 이용한 작업을 수행
-    //     console.log('Data fetched successfully', count);
-    //   }
-    // }
+    () => getPostCount(selectCategory),
+    {
+      staleTime: 60000
+    }
   );
-  console.log(count);
+
   return <St.Title>{`${count ?? 0}개의 이야기를 확인해보세요`}</St.Title>;
 };
 
