@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
   StCancelAndSaveWrapper,
-  StContentButtonWrapper,
   StEditUserPhoto,
   StNicknameWrapper,
   StProfileContainer,
@@ -23,9 +22,9 @@ import {
   updateUserNickname
 } from '../../../api/supabase/profile';
 import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
-import { StProfileButtonWrapper } from '../../../styles/mypageStyle/ProfileMobileNavStyle';
 import { setSuccessLogout } from '../../../redux/modules/authSlice';
 import { useNavigate } from 'react-router';
+import ProfileMobileNav from './ProfileMobileNav';
 
 interface User {
   username: string;
@@ -159,6 +158,7 @@ const Profile = () => {
 
   return (
     <StProfileContainer>
+      <ProfileMobileNav />
       {userData?.map((user) => {
         return (
           <StProfileContentContainer key={user.id}>
