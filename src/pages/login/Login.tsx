@@ -14,7 +14,7 @@ const Login = () => {
     localStorage.setItem('prevUrl', currentUrl);
   }, []);
 
-  const redirectTo = localStorage.getItem('prevUrl') || '/';
+  // const redirectTo = localStorage.getItem('prevUrl') || '/';
 
   return (
     <StLoginContainer>
@@ -26,7 +26,7 @@ const Login = () => {
         appearance={{ theme: ThemeSupa }}
         providers={['google', 'facebook', 'kakao']}
         // redirectTo="https://jmxcfojtfaoeuzxaoncm.supabase.co/auth/v1/callback"
-        redirectTo={redirectTo}
+        redirectTo={'/'}
         onlyThirdPartyProviders={true}
         theme="dark"
       />
