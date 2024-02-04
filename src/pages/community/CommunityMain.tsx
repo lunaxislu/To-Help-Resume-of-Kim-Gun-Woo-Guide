@@ -81,7 +81,7 @@ const CommunityMain: React.FC = () => {
           </St.WriteBtn>
         </St.FeatureBar>
         {isLoading ? (
-          <SkeletonCommunityCard cards={6} /> // 초기 로딩 중에 보여줄 카드 수 조정 가능
+          <SkeletonCommunityCard cards={6} />
         ) : (
           <CommunityList posts={posts} />
         )}

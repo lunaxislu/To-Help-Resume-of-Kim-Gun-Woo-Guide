@@ -6,22 +6,7 @@ import {
   LikesObject,
   UpdateObject
 } from './model';
-//쿼리 넘 많다..
-const PAGE_POST_NUMBER = 12;
-export const fetchRangePosts = async (page: number, selectCategory: string) => {
-  const startIndex = (page - 1) * PAGE_POST_NUMBER;
-  const endIndex = startIndex + PAGE_POST_NUMBER - 1; // 수정된 부분
-  const { data, count, error } = await supabase
-    .from('community')
-    .select('*', { count: 'exact' })
-    .order('post_id', { ascending: false })
-    .ilike('category', selectCategory === '전체' ? '%' : selectCategory)
-    .range(startIndex, endIndex); // 수정된 부분
-  if (error) {
-    throw error;
-  }
-  return { data, count };
-};
+
 export const getPostCount = async (selectCategory: string) => {
   const { count, error } = await supabase
     .from('community')
@@ -32,47 +17,7 @@ export const getPostCount = async (selectCategory: string) => {
   }
   return count;
 };
-// export const getPostCount = async (selectCategory: string) => {
-//   let query = supabase.from('community').select('count', { count: 'exact' });
 
-//   if (selectCategory !== '전체') {
-//     query = query.ilike('category', `%${selectCategory}%`);
-//   }
-
-//   const { data, error, count } = await query; // `data`와 `error` 뿐만 아니라 `count`도 구조 분해 할당
-
-//   if (error) {
-//     throw error;
-//   }
-
-//   // count 값을 숫자로 직접 반환
-//   return count; // 여기서 count는 숫자 값이어야 합니다.
-// };
-// export const fetchPosts = async (selectCategory: string) => {
-//   const { data, error } = await supabase
-//     .from('community')
-//     .select('*', { count: 'exact' })
-//     .order('post_id', { ascending: false })
-//     .ilike('category', selectCategory === '전체' ? '%' : selectCategory);
-
-//   if (error) {
-//     throw error;
-//   }
-//   return data;
-// };
-export const fetchInitialPosts = async (selectCategory: string) => {
-  const { data, error } = await supabase
-    .from('community')
-    .select('*')
-    .order('post_id', { ascending: false })
-    .ilike('category', selectCategory === '전체' ? '%' : selectCategory)
-    .range(0, 11);
-
-  if (error) {
-    throw error;
-  }
-  return data;
-};
 export const fetchPosts = async (
   selectCategory: string,
   page: number,
