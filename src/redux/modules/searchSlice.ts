@@ -1,12 +1,13 @@
 // searchSlice.ts
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Communityy, UsedItem } from '../../pages/home/usedtypes';
+import { Post } from '../../pages/community/model';
 
 interface SearchState {
   searchQuery: string;
   searchResults: {
     usedItemResults: UsedItem[];
-    communityResults: Communityy[];
+    communityResults: Post[];
   };
 }
 
@@ -29,7 +30,7 @@ const searchSlice = createSlice({
       state,
       action: PayloadAction<{
         usedItemResults: UsedItem[];
-        communityResults: Communityy[];
+        communityResults: Post[];
       }>
     ) => {
       state.searchResults = action.payload;

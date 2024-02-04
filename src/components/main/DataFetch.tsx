@@ -1,9 +1,10 @@
 import { supabase } from '../../api/supabase/supabaseClient';
 import { UsedItem, Communityy } from '../../pages//home/usedtypes';
+import { Post } from '../../pages/community/model';
 
 export const fetchData = async (): Promise<{
   usedItems: UsedItem[];
-  communityItems: Communityy[];
+  communityItems: Post[];
 }> => {
   try {
     const { data: usedItemsData, error: usedItemsError } = await supabase

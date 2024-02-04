@@ -19,6 +19,7 @@ export const HeaderTopContainer = styled.div`
   height: 12rem;
   display: flex;
   margin: auto;
+  background: #fffefa;
   @media screen and (max-width: 768px) {
     width: 100%;
   }
@@ -220,6 +221,9 @@ export const Button = styled.button`
   font-size: var(--fontSize-H6);
   line-height: 2.6768rem;
   margin-left: 2rem;
+  &:hover {
+    background: #18b3bc;
+  }
 `;
 
 export const LogoutButton = styled.button`

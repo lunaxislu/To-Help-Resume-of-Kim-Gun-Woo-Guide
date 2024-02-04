@@ -10,6 +10,7 @@ import { researchItems, ResearchResults } from './researchItem';
 import Dropdown from '../../styles/searchresults/Dropdown';
 import { sortBy } from 'lodash';
 import { Communityy, UsedItem } from '../home/usedtypes';
+import { Post } from '../community/model';
 
 interface ListCount {
   usedItemCount: number;
@@ -57,16 +58,36 @@ const SearchResults: React.FC = () => {
   };
 
   // 정렬 함수
-  const sortByLikes = <T extends { likes: number }>(list: T[]): T[] => {
+  const ProductsSortByLikes = <T extends { likes: number }>(list: T[]): T[] => {
     return [...list].sort((a, b) => b.likes - a.likes);
+  };
+
+  const CommunitySortByLikes = <T extends { likes: number | null }>(
+    list: T[]
+  ): T[] => {
+    return [...list].sort((a, b) => {
+      // null 값이 있는 경우를 고려하여 정렬
+      if (a.likes === null && b.likes !== null) {
+        return 1; // a.likes가 null이면 b.likes가 있다면 a는 b보다 작다고 처리
+      } else if (a.likes !== null && b.likes === null) {
+        return -1; // b.likes가 null이면 a.likes가 있다면 b는 a보다 작다고 처리
+      } else {
+        // 둘 다 null이거나 둘 다 숫자인 경우 정상적으로 비교
+        return (b.likes || 0) - (a.likes || 0);
+      }
+    });
   };
 
   // 정렬된 결과
   const sortedUsedItemResults =
-    clickMenu === '인기순' ? sortByLikes(usedItemResults) : usedItemResults;
+    clickMenu === '인기순'
+      ? ProductsSortByLikes(usedItemResults)
+      : usedItemResults;
 
   const sortedCommunityResults =
-    clickMenu === '인기순' ? sortByLikes(communityResults) : communityResults;
+    clickMenu === '인기순'
+      ? CommunitySortByLikes(communityResults)
+      : communityResults;
 
   useEffect(() => {
     checkWindowSize();
@@ -334,7 +355,7 @@ const SearchResults: React.FC = () => {
                             fillOpacity="0.7"
                           />
                         </svg>
-                        <span>{item.comment.length}</span>
+                        <span>{item.comment?.length}</span>
                         <h4>{parseDate(item.created_at)}</h4>
                       </div>
                     </PostList>
@@ -399,7 +420,7 @@ const SearchResults: React.FC = () => {
                             fillOpacity="0.7"
                           />
                         </svg>
-                        <span>{item.comment.length}</span>
+                        <span>{item.comment?.length}</span>
                         <h4>{parseDate(item.created_at)}</h4>
                       </div>
                     </PostList>

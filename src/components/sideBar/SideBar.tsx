@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import styled, { keyframes } from 'styled-components';
 
 const StSideBtnContainer = styled.div`
@@ -97,6 +98,7 @@ const StMenuButtons = styled.button<ButtonProps>`
 
 const SideBar = () => {
   const [isShow, setIsShow] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const setMenuToggle = () => {
     setIsShow((prev) => !prev);
@@ -110,6 +112,35 @@ const SideBar = () => {
     '알림',
     '프로필'
   ];
+
+  const navigateToPage = (menu: string) => {
+    switch (menu) {
+      case '판매하기':
+        navigate('/productsposts');
+        break;
+      case '중고거래':
+        navigate('/products');
+        break;
+      case '커뮤니티':
+        navigate('/community');
+        break;
+      case '검색':
+        //
+        break;
+      case '채팅':
+        navigate('/chat');
+        break;
+      case '알림':
+        //
+        break;
+      case '프로필':
+        navigate('/mypage');
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <StSideBtnContainer>
       <StMainButton onClick={setMenuToggle}>Menu</StMainButton>
@@ -119,6 +150,7 @@ const SideBar = () => {
             <StMenuButtons
               onClick={(e) => {
                 e.stopPropagation();
+                navigateToPage(menu);
               }}
               $isShow
               $index={i + 1}

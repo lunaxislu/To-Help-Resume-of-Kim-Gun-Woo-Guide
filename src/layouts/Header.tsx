@@ -278,6 +278,10 @@ const Header = ({
                 )}
               </St.ButtonContainer>
             </St.HeaderSection>
+            <SearchBar
+              showSearchComp={showSearchComp}
+              setShowSearchComp={setShowSearchComp}
+            />
             {/* <St.NavSection>
               <St.NavBar>
                 <St.NavButton to="/products" onClick={handlePageChange}>
@@ -288,10 +292,7 @@ const Header = ({
                 </St.NavButton>
               </St.NavBar>
 
-              <SearchBar
-                showSearchComp={showSearchComp}
-                setShowSearchComp={setShowSearchComp}
-              />
+             
             </St.NavSection> */}
             {/* <div style={{ position: 'relative' }}></div> */}
           </St.HeaderWrapper>
