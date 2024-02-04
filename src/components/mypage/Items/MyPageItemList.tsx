@@ -90,10 +90,10 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
       )}
       {myItems?.pages.length === 0 && activeTab !== 1 && activeTab !== 2 && (
         <Nothing
-          type={''}
+          type={'판매하기'}
           content={'판매한 물품이 없습니다.'}
           icon={''}
-          to={'판매하기'}
+          to={'/productsposts'}
           show={true}
         />
       )}
