@@ -14,8 +14,6 @@ const Login = () => {
     localStorage.setItem('prevUrl', currentUrl);
   }, []);
 
-  // const redirectTo = localStorage.getItem('prevUrl') || '/';
-
   return (
     <StLoginContainer>
       <StLoginTitle>로그인/회원가입</StLoginTitle>
@@ -25,7 +23,6 @@ const Login = () => {
         supabaseClient={supabase}
         appearance={{ theme: ThemeSupa }}
         providers={['google', 'facebook', 'kakao']}
-        // redirectTo="https://jmxcfojtfaoeuzxaoncm.supabase.co/auth/v1/callback"
         redirectTo={'/'}
         onlyThirdPartyProviders={true}
         theme="dark"
