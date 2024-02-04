@@ -1,20 +1,18 @@
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import * as St from '../../../styles/products/ProductsPostsStyle';
-import { ProductsInputType, AddressValueType } from '../ProductsType';
-import { UseFormRegister } from 'react-hook-form';
+import { ProductsInputType } from '../ProductsType';
+import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 
 interface Props {
   scriptUrl?: string;
-  register?: UseFormRegister<ProductsInputType>;
-  addressValue: AddressValueType;
-  setAddressValue: React.Dispatch<React.SetStateAction<AddressValueType>>;
+  watch?:UseFormWatch<ProductsInputType>;
+  setValue?:UseFormSetValue<ProductsInputType>;
 }
 
 const AddressBtn = ({
   scriptUrl,
-  register,
-  addressValue,
-  setAddressValue
+  watch,
+  setValue,
 }: Props) => {
   const open = useDaumPostcodePopup(scriptUrl);
 
@@ -34,7 +32,7 @@ const AddressBtn = ({
     }
 
     // 입력된 주소 값(fullAddress)을 상태 값의 address에 바꿔 넣기
-    setAddressValue((prev) => ({ ...prev, address: fullAddress }));
+    setValue && setValue("address", fullAddress);
   };
 
   const handleOnClickAddressBtn = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -45,7 +43,7 @@ const AddressBtn = ({
   /* 최근검색 필요없이 전에 쓴 검색이 그대로 유지되는 방향은? */
   return (
     <div className="adress_find">
-      <St.AddressBtn type="button" onClick={handleOnClickAddressBtn}>
+      <St.AddressBtn disabled={watch && watch('deal_type') === '직거래' ? false : true} type="button" onClick={handleOnClickAddressBtn}>
         주소 검색
       </St.AddressBtn>
     </div>

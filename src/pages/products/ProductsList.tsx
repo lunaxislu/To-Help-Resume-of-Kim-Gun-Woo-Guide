@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import ProductListCard from '../../components/prducts/ProductsList/ProductsListCard';
 import ProductsSearchBar from '../../components/prducts/ProductsList/ProductsSearchBar';
 import ProductsSortBtn from '../../components/prducts/ProductsList/ProductsSortBtn';
