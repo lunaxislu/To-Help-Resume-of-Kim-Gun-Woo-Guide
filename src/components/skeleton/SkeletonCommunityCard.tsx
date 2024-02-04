@@ -1,11 +1,16 @@
 import React from 'react';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import {
+  ActionSkeleton,
+  Container,
+  ContentsSkeleton,
+  ImgSkeleton,
   StPostSkeletonContainer,
   StPostSkeletonContentWrapper,
   StPostSkeletonIconAndDate,
-  StPostSkeletonWrapper
+  StPostSkeletonWrapper,
+  TitleSkeleton
 } from '../../styles/skeleton/Skeleton';
 
 interface SkeletonCommunityCardProps {
@@ -16,32 +21,32 @@ const SkeletonCommunityCard: React.FC<SkeletonCommunityCardProps> = ({
   cards
 }) => {
   return (
-    <>
+    <Container>
       {Array(cards)
         .fill(0)
-        .map((item) => (
-          <div key={item.id}>
-            <SkeletonTheme baseColor="#191919" highlightColor="#1d1d1d">
+        .map((_, index) => (
+          <div key={index}>
+            <SkeletonTheme baseColor="#f8f8f8" highlightColor="#f8f8f8">
               <StPostSkeletonContainer>
-                <Skeleton width={490} height={25} />
+                <TitleSkeleton />
 
                 <StPostSkeletonWrapper>
-                  <Skeleton width={70} height={70} />
+                  <ImgSkeleton />
                   <StPostSkeletonContentWrapper>
-                    <Skeleton width={300} />
-                    <Skeleton width={300} />
+                    <ContentsSkeleton />
+                    {/* <ContentsSkeleton /> */}
                   </StPostSkeletonContentWrapper>
                 </StPostSkeletonWrapper>
 
                 <StPostSkeletonIconAndDate>
-                  <Skeleton width={100} />
-                  <Skeleton width={100} />
+                  <ActionSkeleton />
+                  <ActionSkeleton />
                 </StPostSkeletonIconAndDate>
               </StPostSkeletonContainer>
             </SkeletonTheme>
           </div>
         ))}
-    </>
+    </Container>
   );
 };
 

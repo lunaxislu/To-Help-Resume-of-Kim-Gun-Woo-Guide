@@ -6,28 +6,29 @@ import {
   LikesObject,
   UpdateObject
 } from './model';
-//쿼리 넘 많다..
-const PAGE_POST_NUMBER = 12;
-export const fetchRangePosts = async (page: number, selectCategory: string) => {
-  const startIndex = (page - 1) * PAGE_POST_NUMBER;
-  const endIndex = startIndex + PAGE_POST_NUMBER - 1; // 수정된 부분
-  const { data, count, error } = await supabase
+
+export const getPostCount = async (selectCategory: string) => {
+  const { count, error } = await supabase
     .from('community')
-    .select('*', { count: 'exact' })
-    .order('post_id', { ascending: false })
-    .ilike('category', selectCategory === '전체' ? '%' : selectCategory)
-    .range(startIndex, endIndex); // 수정된 부분
+    .select('count', { count: 'exact' })
+    .ilike('category', selectCategory === '전체' ? '%' : selectCategory);
   if (error) {
     throw error;
   }
-  return { data, count };
+  return count;
 };
 
-export const fetchPosts = async (selectCategory: string) => {
+export const fetchPosts = async (
+  selectCategory: string,
+  page: number,
+  limit: number = 12
+) => {
+  const startIndex = (page - 1) * limit;
   const { data, error } = await supabase
     .from('community')
-    .select('*', { count: 'exact' })
+    .select('*')
     .order('post_id', { ascending: false })
+    .range(startIndex, startIndex + limit - 1)
     .ilike('category', selectCategory === '전체' ? '%' : selectCategory);
 
   if (error) {

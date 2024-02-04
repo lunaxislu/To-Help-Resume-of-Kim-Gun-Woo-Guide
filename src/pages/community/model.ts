@@ -145,3 +145,6 @@ export type UpdateComment = {
 export type Postcolor = {
   $postcolor: string;
 };
+export type CommunityMainCountProps = {
+  selectCategory: string;
+};
