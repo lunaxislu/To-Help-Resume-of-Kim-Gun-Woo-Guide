@@ -16,6 +16,9 @@ const StSideBtnContainer = styled.div`
   right: 3%;
   transform: translate(0%, -50%);
   z-index: 100;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const StMainButton = styled.button`

@@ -9,9 +9,13 @@ export type Post = {
   comment: Comments | null;
   likes: number | null;
   like_user: string[];
-  files: [];
+  files: {
+    name: string;
+    url: string | null[];
+  }[];
   main_image: string;
   anon: boolean;
+  comments_count: number;
 };
 export type FilesObject = {
   url: string;
@@ -20,7 +24,7 @@ export type FilesObject = {
 export type ProfileObject = {
   id: string;
   created_at: string;
-  avartar_url: string;
+  avatar_url: string;
   username: string;
   nickname: string;
   email: string;
@@ -59,7 +63,7 @@ export type InsertObject = {
   anon: boolean;
 };
 export type CommuListProps = {
-  selectCategory: string;
+  posts: Post[] | undefined;
 };
 export type QuillLayoutProps = {
   content: string;
@@ -75,6 +79,7 @@ export type CommentProps = {
   userId: string;
   paramId: string | undefined;
   likes: number | undefined;
+  postUserId: string | undefined;
 };
 export type CommentUpload = {
   updateData: {
@@ -107,4 +112,36 @@ export type EditCommentInputProps = {
 };
 export type FormProps = {
   $isFocused: boolean;
+};
+export type ReplyInsertObject = {
+  parent_id: number | null;
+  parentUser_id: string | null;
+  user_id: string;
+  post_id: string | undefined;
+  content: string;
+  anon: boolean;
+  secret: boolean;
+};
+export type ReplyObject = {
+  id: number;
+  parent_id: number;
+  user_id: string;
+  post_id: number;
+  content: string;
+  anon: boolean;
+  secret: boolean;
+  created_at: string;
+  user: ProfileObject;
+  parentUser_id: string;
+};
+export type UpdateComment = {
+  updateData: {
+    content: string;
+    anon: boolean;
+    secret: boolean;
+  };
+  commentId: number | undefined;
+};
+export type Postcolor = {
+  $postcolor: string;
 };

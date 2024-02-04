@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router';
 import { v4 as uuid } from 'uuid';
 import { supabase } from '../../api/supabase/supabaseClient';
 import * as St from '../../styles/community/CommunityWriteStyle';
-import { categoryArray } from './WritePost';
+import { CATEGORY_ARRAY } from './WritePost';
 import {
   addPostMutation,
   fetchDetailPost,
@@ -38,11 +38,11 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   const [formValues, setFormValues] = useState({
     title: isEdit ? posts![0].title : '',
     category: isEdit ? posts![0].category : '',
-    files: [],
+    files: isEdit ? posts![0].files : [],
     content: isEdit
       ? posts![0].content.replace(/<p>(.*?)<\/p>/g, ' <div>$1</div>')
       : '',
-    uploadedFileUrl: isEdit ? posts![0].uploadedFileUrl : [],
+    uploadedFileUrl: isEdit ? posts![0].files[0].url : [],
     anon: isEdit ? posts![0].anon : false,
     mainImage: isEdit ? posts![0].mainImage : ''
   });
@@ -79,7 +79,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
 
   const handleFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileList = e.target.files;
-    console.log(fileList);
     if (fileList) {
       const filesArray = Array.from(fileList);
       filesArray.forEach((file) => {
@@ -89,13 +88,14 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   };
 
   const handleFilesUpload = async (file: File) => {
-    setFormValues((prevValues: any) => ({
+    setFormValues((prevValues) => ({
       ...prevValues,
-      files: [],
-      uploadedFileUrl: []
+      files: [...prevValues.files],
+      uploadedFileUrl: [...prevValues.uploadedFileUrl]
     }));
     try {
       const newFileName = uuid();
+      //쿼리로 바꾸기
       const { data, error } = await supabase.storage
         .from('files')
         .upload(`files/${newFileName}`, file);
@@ -122,11 +122,27 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       navigate('/community');
     }
   });
-  const fileArr = formValues.files.map((file: File) => ({
+
+  const removeFile = (index: number) => {
+    if (formValues.files && formValues.files.length > 0) {
+      const newFiles = formValues.files.filter(
+        (_: File, i: number) => i !== index
+      );
+      const newUploadedFileUrls = formValues.uploadedFileUrl.filter(
+        (_: File, i: number) => i !== index
+      );
+
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        files: newFiles,
+        uploadedFileUrl: newUploadedFileUrls
+      }));
+    }
+  };
+  const fileArr = formValues.files.map((file: File, index: number) => ({
     name: file.name,
     url: formValues.uploadedFileUrl
   }));
-
   const addPost = async () => {
     if (!validateForm()) {
       return;
@@ -263,7 +279,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
             분류<span>*</span>
           </St.LayoutValueText>{' '}
           <St.CategoryGrid>
-            {categoryArray.map((item, index) => {
+            {CATEGORY_ARRAY.map((item, index) => {
               return index !== 0 ? (
                 <label key={item}>
                   <St.CheckBoxs
@@ -322,12 +338,28 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         <St.LayoutFileArea>
           <St.LayoutValueText>파일</St.LayoutValueText>
           <St.LayoutFileUploader>
-            {formValues.files.length !== 0
-              ? formValues.files.map((file: File) => file.name)
-              : '파일을 업로드하려면 클릭하세요'}
-            <input type="file" onChange={handleFiles} multiple />
+            파일을 업로드하려면 클릭하세요 (hwp, pdf, xlsx, xls)
+            <input
+              type="file"
+              onChange={handleFiles}
+              accept=".pdf, .xls, .xlsx, .hwp"
+              multiple
+            />
           </St.LayoutFileUploader>
         </St.LayoutFileArea>
+        <St.LayoutFileListArea>
+          <St.LayoutValueText></St.LayoutValueText>
+          {/* <St.FileListContainer> */}
+          <St.FileList>
+            {formValues.files.map((file: File, index: number) => (
+              <div>
+                <li key={index}>{file.name}</li>
+                <button onClick={() => removeFile(index)}>X</button>
+              </div>
+            ))}
+          </St.FileList>
+          {/* </St.FileListContainer> */}
+        </St.LayoutFileListArea>
         <St.LayoutAnonArea>
           <St.LayoutValueText></St.LayoutValueText>
           <St.LayoutBottom>
