@@ -101,7 +101,7 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
         productInfo[i] !== data.address && <></>}
 
       {productInfo[i] === data.changable && data.changable === '불가능' && (
-        <></>
+        <>{data.changable}</>
       )}
       {productInfo[i] === data.changable && data.changable === '가능' && (
         <>

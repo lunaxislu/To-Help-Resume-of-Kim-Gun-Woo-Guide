@@ -77,6 +77,9 @@ const ChatHeader = ({
     if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
     getRoomInfo(clicked);
   }, [clicked]);
+  useEffect(() => {
+    setShowMenu(false);
+  }, [clicked]);
 
   return (
     <St.StChatBoardHeader>
@@ -98,7 +101,9 @@ const ChatHeader = ({
           >
             채팅방 나가기
           </St.StMenu>
-          <St.StMenu>신고하기</St.StMenu>
+          <St.StMenu onClick={() => alert('개발 중인 기능입니다!')}>
+            신고하기
+          </St.StMenu>
         </St.StMenuBox>
       )}
       <St.StChatBoardHeaderName>

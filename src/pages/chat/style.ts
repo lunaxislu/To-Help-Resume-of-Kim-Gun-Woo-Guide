@@ -391,19 +391,19 @@ const StMenuBox = styled.div`
   top: 50%;
   right: 8%;
   z-index: 5;
-  background-color: #1d1d1d;
+  background-color: var(--bgColor);
 `;
 
 const StMenu = styled.div`
   width: 100%;
   padding: 1.25rem;
-  font-weight: 600;
-  color: white;
+  font-weight: 400;
+  color: black;
   cursor: pointer;
 
   &:hover {
-    color: var(--opc-100);
-    background-color: var(--1-gray);
+    color: white;
+    background-color: var(--opc-100);
   }
 `;
 

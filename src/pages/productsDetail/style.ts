@@ -315,8 +315,10 @@ const StProductIntroSection = styled.section`
   width: 100%;
   max-width: 111.6rem;
   line-height: 3.1rem;
+  padding: 0 1.5rem;
   color: var(--8-gray);
   margin: auto;
+  border-bottom: 0.1rem solid #5a5a5a;
 
   @media screen and (max-width: 768px) {
     width: 100%;
