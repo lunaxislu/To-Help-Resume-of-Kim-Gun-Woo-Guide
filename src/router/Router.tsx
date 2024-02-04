@@ -15,6 +15,7 @@ import PrivateLayout from '../layouts/PrivateLayout/PrivateLayout';
 import Layout from '../layouts/Layout';
 import SideBar from '../components/sideBar/SideBar';
 import ProductsPostsEdit from '../pages/products/ProductsPostsEdit';
+import PostersProducts from '../pages/postersProducts/PostersProducts';
 
 const Router = () => {
   return (
@@ -27,6 +28,7 @@ const Router = () => {
           <Route path="/community" element={<CommunityMain />} />
           <Route path="/community/detail/:id" element={<CommuDetail />} />
           <Route path="/products" element={<ProductsList />} />
+          <Route path="/postersProducts/:id" element={<PostersProducts />} />
           <Route path="/products/detail/:id" element={<ProductDetail />} />
           <Route path="/search-results" element={<SearchResults />} />
           <Route path="/test" element={<SideBar />} />

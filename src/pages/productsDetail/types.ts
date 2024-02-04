@@ -20,10 +20,10 @@ export interface Product {
   count: number;
   category: string[];
   address: string;
-  detailAddress: string;
   image_url: string[];
   isSell: boolean;
   buyer: string;
+  detailAddress: string;
 }
 
 export type CustomUser = {

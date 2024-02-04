@@ -255,12 +255,14 @@ export default function ChatRoom() {
               setClickedImages={setClickedImages}
             />
           </St.StChatGround>
-          <ChatForm
-            clicked={clicked}
-            curUser={curUser}
-            setShowFileInput={setShowFileInput}
-            showFileInput={showFileInput}
-          />
+          {clicked && (
+            <ChatForm
+              clicked={clicked}
+              curUser={curUser}
+              setShowFileInput={setShowFileInput}
+              showFileInput={showFileInput}
+            />
+          )}
         </St.StChatBoard>
       </St.StChatContainer>
     </St.StChatWrapper>

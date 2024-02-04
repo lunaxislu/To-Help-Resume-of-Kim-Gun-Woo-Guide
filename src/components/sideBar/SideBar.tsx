@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
+import { useNavigate } from 'react-router';
 import styled, { keyframes } from 'styled-components';
 
 const StSideBtnContainer = styled.div`
@@ -87,20 +88,20 @@ const StMenuButtons = styled.button<ButtonProps>`
   animation-fill-mode: backwards;
   animation-delay: ${(props) => 0.06 * props.$index}s;
   cursor: pointer;
-  transition: opacity 0.1s ease;
+  transition: all 0.2s ease;
   opacity: 0.6;
 
   &:hover {
     opacity: 1;
+    width: 100px;
+    border-radius: 5px;
   }
 `;
 
 const SideBar = () => {
   const [isShow, setIsShow] = useState<boolean>(false);
+  const navi = useNavigate();
 
-  const setMenuToggle = () => {
-    setIsShow((prev) => !prev);
-  };
   const arr = [
     '판매하기',
     '중고거래',
@@ -110,6 +111,20 @@ const SideBar = () => {
     '알림',
     '프로필'
   ];
+
+  const setMenuToggle = () => {
+    setIsShow((prev) => !prev);
+  };
+
+  const handleNavigate = (e: MouseEvent<HTMLButtonElement>) => {
+    const { innerText } = e.currentTarget;
+    innerText === '판매하기' && navi('/productsposts');
+    innerText === '중고거래' && navi('/products');
+    innerText === '커뮤니티' && navi('/community');
+    innerText === '채팅' && navi('/chat');
+    innerText === '프로필' && navi('/mypage');
+  };
+
   return (
     <StSideBtnContainer>
       <StMainButton onClick={setMenuToggle}>Menu</StMainButton>
@@ -119,6 +134,7 @@ const SideBar = () => {
             <StMenuButtons
               onClick={(e) => {
                 e.stopPropagation();
+                handleNavigate(e);
               }}
               $isShow
               $index={i + 1}

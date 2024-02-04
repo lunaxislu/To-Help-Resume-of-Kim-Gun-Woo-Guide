@@ -164,6 +164,7 @@ export const handleLike = async ({
   isLikedProduct,
   setIsLiked
 }: LikeFnProps) => {
+  // 로컬 스토리지 비우기
   if (!curUser) {
     alert('로그인 후 이용바랍니다');
     return;
@@ -184,6 +185,12 @@ export const handleLike = async ({
     const likeList =
       likeListRes.status === 'fulfilled' ? likeListRes.value.data : null;
     ////////////////////////////// 유저 관련 처리 ////////////////////////////////
+    if (
+      likesFieldRes.status === 'rejected' ||
+      existingDataRes.status === 'rejected' ||
+      likeListRes.status === 'rejected'
+    )
+      console.error('필요한 정보를 찾을 수 없습니다');
 
     // 유저에게 좋아요한 게시물 추가
     const like_userList =
