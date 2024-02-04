@@ -97,7 +97,8 @@ export const Category = styled.p<CategoryProps>`
   }
   // 배경색 조건부 렌더링
   ${(props) => {
-    if (props.$selectCategory.length === 1 && props.$selectCategory.includes(props.children as string)) {
+    if (props.$selectCategory.length === 1 && 
+      props.$selectCategory.includes(props.children as string)) {
       return css`
         background-color: var(--opc-100);
         color: var(--white);
@@ -230,10 +231,13 @@ export const ProductsCardContainer = styled.div`
   padding: 1.5rem;
   &:hover {
     cursor: pointer;
-    transform: scale(1.02);
+    transform: translateY(-0.8rem);
   }
   @media screen and (max-width: 768px) {
     padding: 1rem;
+    &:hover {
+    transform: translateY(-0.6rem);
+  }
   }
 `;
 
@@ -373,7 +377,6 @@ export const SoldOut = styled.div`
   background-color: var(--black);
   width: 100%;
   max-height: 5rem;
-  //border-radius: 0.5rem;
   margin: auto;
   text-align: center;
   line-height: 2;
