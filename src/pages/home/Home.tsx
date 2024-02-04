@@ -103,7 +103,7 @@ const Home = () => {
               src="/assets/커뮤니티.svg"
               alt="커뮤니티"
             />
-            <ScrollButton onClick={() => scrollToSection(1500)}>
+            <ScrollButton onClick={() => scrollToSection(1570)}>
               <img
                 style={{ width: '36.8rem', height: '9.2rem' }}
                 src="/assets/커뮤버튼.svg"
@@ -118,7 +118,7 @@ const Home = () => {
         <ProductsContainer>
           <ProductsTitle>
             <div>
-              {usedItemsCountData?.data?.length}개의 상품이 거래되고 있어요!
+              {usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!
             </div>
             <ProductsLink to="/products">
               전체보기
@@ -171,76 +171,7 @@ const Home = () => {
               <FaArrowRight />
             </CommunityLink>
           </Communitytitle>
-          <ComunityWrapper>
-            {communityItems.map((item) => (
-              <ToCommunityDetailPage
-                key={item.post_id}
-                to={`/community/detail/${item.post_id}`}
-              >
-                {/* <ComunityList>
-                  <div className="commucontent">
-                    <div className="ttitle">
-                      <h3>{item.title}</h3>
-                    </div>
-                    <div className="commupic">
-                      {item.main_image ? (
-                        <img
-                          className="community-pic"
-                          src={item.main_image}
-                          alt="Community Post"
-                        />
-                      ) : (
-                        ''
-                      )}
-                      <p
-                        className={
-                          item.main_image
-                            ? 'withcommu-image'
-                            : 'withoutcommu-image'
-                        }
-                      >
-                        {handleText(item.content)}
-                      </p>
-                    </div>
-                  </div>
-                  <div>
-                    <svg
-                      className="thumbs"
-                      width="13"
-                      height="13"
-                      viewBox="0 0 13 13"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M0.00242571 5.92305C-0.00533256 5.83585 0.00556749 5.74802 0.0344343 5.66515C0.0633011 5.58227 0.109504 5.50616 0.170112 5.44164C0.23072 5.37711 0.304409 5.32559 0.386503 5.29034C0.468598 5.25508 0.557305 5.23686 0.646996 5.23684H1.88275C2.05438 5.23684 2.21899 5.30338 2.34036 5.42183C2.46172 5.54027 2.5299 5.70092 2.5299 5.86842V11.8684C2.5299 12.0359 2.46172 12.1966 2.34036 12.315C2.21899 12.4335 2.05438 12.5 1.88275 12.5H1.18187C1.0199 12.5 0.863797 12.4408 0.7444 12.334C0.625002 12.2272 0.55099 12.0805 0.536979 11.9231L0.00242571 5.92305ZM4.47138 5.67105C4.47138 5.40705 4.63964 5.17084 4.88394 5.05842C5.41753 4.81274 6.32646 4.31916 6.73643 3.65189C7.26484 2.79168 7.3645 1.23768 7.38068 0.881788C7.38295 0.831893 7.38165 0.781998 7.38845 0.732735C7.47614 0.115998 8.69571 0.836314 9.16328 1.598C9.41729 2.01105 9.44965 2.55389 9.42311 2.978C9.39432 3.43147 9.25809 3.86947 9.12445 4.30463L8.8397 5.23211H12.3528C12.4528 5.2321 12.5514 5.2547 12.641 5.29815C12.7305 5.34159 12.8085 5.40469 12.8688 5.48249C12.9292 5.56029 12.9702 5.65069 12.9888 5.74658C13.0073 5.84246 13.0028 5.94124 12.9757 6.03516L11.2381 12.0402C11.1997 12.1727 11.1181 12.2892 11.0056 12.3722C10.8931 12.4552 10.7559 12.5001 10.6149 12.5H5.11854C4.9469 12.5 4.78229 12.4335 4.66093 12.315C4.53956 12.1966 4.47138 12.0359 4.47138 11.8684V5.67105Z"
-                        fill="#DBFF00"
-                        fillOpacity="0.7"
-                      />
-                    </svg>
-                    <span className="likescount">{item.likes}</span>
-
-                    <svg
-                      className="commentss"
-                      width="12"
-                      height="13"
-                      viewBox="0 0 12 13"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M4.8 0.5H7.2C8.47304 0.5 9.69394 1.01868 10.5941 1.94194C11.4943 2.86519 12 4.1174 12 5.42308C12 6.72876 11.4943 7.98096 10.5941 8.90422C9.81235 9.70602 8.7887 10.2027 7.69908 10.3195C7.42451 10.3489 7.2 10.57 7.2 10.8462V11.7544C7.2 12.11 6.8397 12.3527 6.51214 12.2142C3.59783 10.9824 0 9.12524 0 5.42308C0 4.1174 0.505713 2.86519 1.40589 1.94194C2.30606 1.01868 3.52696 0.5 4.8 0.5Z"
-                        fill="#DBFF00"
-                        fillOpacity="0.7"
-                      />
-                    </svg>
-                    <span>{item.comment.length}</span>
-                    <h4>{parseDate(item.created_at)}</h4>
-                  </div>
-                </ComunityList> */}
-              </ToCommunityDetailPage>
-            ))}
-          </ComunityWrapper>
+          <ComunityWrapper></ComunityWrapper>
           <CommunityList posts={communityItems} />
         </ComunityContainer>
       </AllCardContainer>
