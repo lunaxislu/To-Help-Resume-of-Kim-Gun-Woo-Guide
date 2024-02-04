@@ -17,6 +17,7 @@ const Layout = () => {
   // 실시간 알림
   const [notification, setNotification] = useState<any[]>([]);
   const [newNotiExists, setNewNotiExists] = useState<boolean>(false);
+  const userID = localStorage.getItem('userId');
 
   // 알림 울리기
   const playAlert = () => {
@@ -82,7 +83,7 @@ const Layout = () => {
             if (
               exists &&
               exists.length > 0 &&
-              payload.new.sender_id !== curUser?.uid
+              payload.new.sender_id !== userID
             ) {
               setNotification((prev) => [payload.new, ...prev]);
               setNewNotiExists(true);

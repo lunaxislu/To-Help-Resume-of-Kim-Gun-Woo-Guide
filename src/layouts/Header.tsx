@@ -48,8 +48,6 @@ const Header = ({
   };
 
   const filterPrevNoti = (noti_id: string) => {
-    console.log(noti_id);
-    console.log(notification);
     const filtered = notification.filter((noti) => {
       return noti.id !== noti_id;
     });
