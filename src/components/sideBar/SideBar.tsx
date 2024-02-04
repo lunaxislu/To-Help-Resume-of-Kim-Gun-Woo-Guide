@@ -5,7 +5,6 @@ import {
   StMenuButtons,
   StSideBtnContainer
 } from './SideBarStyles';
-import SideSearchBar from './SiedSearchBar';
 
 const SideBar = () => {
   const isLogined = localStorage.getItem('userId');
@@ -55,24 +54,7 @@ const SideBar = () => {
       {isLogined &&
         arr.map((menu, i) => {
           return (
-            isShow &&
-            (menu === '검색' ? (
-              <div key={i}>
-                <StMenuButtons
-                  $isShow={isShow}
-                  $index={i + 1}
-                  onClick={searchInputToggle}
-                >
-                  {menu}
-                </StMenuButtons>
-                {showSearchComp && (
-                  <SideSearchBar
-                    showSearchComp={showSearchComp}
-                    setShowSearchComp={setShowSearchComp}
-                  />
-                )}
-              </div>
-            ) : (
+            isShow && (
               <StMenuButtons
                 onClick={(e) => {
                   e.stopPropagation();
@@ -84,30 +66,13 @@ const SideBar = () => {
               >
                 {menu}
               </StMenuButtons>
-            ))
+            )
           );
         })}
       {!isLogined &&
         NoLogined.map((menu, i) => {
           return (
-            isShow &&
-            (menu === '검색' ? (
-              <div key={i}>
-                <StMenuButtons
-                  $isShow={isShow}
-                  $index={i + 1}
-                  onClick={searchInputToggle}
-                >
-                  {menu}
-                </StMenuButtons>
-                {showSearchComp && (
-                  <SideSearchBar
-                    showSearchComp={showSearchComp}
-                    setShowSearchComp={setShowSearchComp}
-                  />
-                )}
-              </div>
-            ) : (
+            isShow && (
               <StMenuButtons
                 onClick={(e) => {
                   e.stopPropagation();
@@ -119,7 +84,7 @@ const SideBar = () => {
               >
                 {menu}
               </StMenuButtons>
-            ))
+            )
           );
         })}
     </StSideBtnContainer>
