@@ -32,8 +32,8 @@ export const FooterArea = styled.div`
 export const Logo = styled.div`
   img {
     max-width: 100%;
-    width: 10.1rem;
-    height: 2.6rem;
+    width: 33.3rem;
+    height: 5.4rem;
     cursor: pointer;
     user-select: none;
 

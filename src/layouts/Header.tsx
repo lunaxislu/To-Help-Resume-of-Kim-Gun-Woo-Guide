@@ -10,7 +10,6 @@ import { BiWon } from 'react-icons/bi';
 import { BiSolidBell } from 'react-icons/bi';
 import Hamburger from '../components/layout/header/Hamburger';
 import { BsChatDotsFill } from 'react-icons/bs';
-import styled, { keyframes } from 'styled-components';
 
 interface User {
   username: string;
@@ -45,11 +44,10 @@ const Header = ({
 
   const deleteAllNotification = () => {
     setNotification([]);
+    localStorage.removeItem('notifications');
   };
 
   const filterPrevNoti = (noti_id: string) => {
-    console.log(noti_id);
-    console.log(notification);
     const filtered = notification.filter((noti) => {
       return noti.id !== noti_id;
     });
@@ -157,9 +155,6 @@ const Header = ({
 
   useEffect(() => {
     getSession();
-  }, []);
-
-  useEffect(() => {
     getAuth();
   }, []);
 
@@ -185,7 +180,9 @@ const Header = ({
       )} */}
       {/* {notification.length === 0 && showNoti && (
         <St.StNotiContainer>
-          <St.StNotiItem>알림이 없습니다</St.StNotiItem>
+          <St.StNotiItem onClick={() => setShowNoti(false)}>
+            알림이 없습니다
+          </St.StNotiItem>
           <St.StNoticeButtonContainer>
             <St.StNoticeDeleteBtn onClick={deleteAllNotification}>
               알림 지우기

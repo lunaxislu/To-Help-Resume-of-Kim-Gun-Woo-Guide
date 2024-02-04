@@ -338,7 +338,7 @@ export const StNotiContainer = styled.div`
   overflow-y: scroll;
   border: 0.1rem solid var(--opc-100);
   border-radius: 3px;
-  background-color: var(--3-gray);
+  background-color: var(--bgColor);
   display: -webkit-flex;
   display: flex;
   flex-direction: column;

@@ -1,6 +1,10 @@
 import React from 'react';
 import { StContainer } from '../../styles/mypageStyle/Nothing';
 import { useNavigate } from 'react-router';
+import {
+  ExclamationMark,
+  NothingIcon
+} from '../../styles/products/ProductsNothingStyle';
 
 interface NothingProps {
   type: string;
@@ -14,7 +18,9 @@ const Nothing: React.FC<NothingProps> = ({ type, content, icon, to, show }) => {
   const navigate = useNavigate();
   return (
     <StContainer>
-      <img src="/assets/nothing.svg" alt="" />
+      <NothingIcon>
+        <ExclamationMark />
+      </NothingIcon>
       <p>{content}</p>
       {show ? (
         <button onClick={() => navigate(to)}>

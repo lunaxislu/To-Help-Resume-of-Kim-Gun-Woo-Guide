@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import styled, { keyframes } from 'styled-components';
 import SearchBar from '../layout/header/SearchBar';
@@ -89,18 +89,20 @@ const StMenuButtons = styled.button<ButtonProps>`
   animation-fill-mode: backwards;
   animation-delay: ${(props) => 0.06 * props.$index}s;
   cursor: pointer;
-  transition: opacity 0.1s ease;
+  transition: all 0.2s ease;
   opacity: 0.6;
 
   &:hover {
     opacity: 1;
+    width: 100px;
+    border-radius: 5px;
   }
 `;
 
 const StSearchBarContainer = styled.div`
   position: absolute;
   top: 385%;
-  right: 8rem;
+  right: 10rem;
 `;
 
 const SideBar = () => {
@@ -108,10 +110,8 @@ const SideBar = () => {
   const [isSearchBarVisible, setIsSearchBarVisible] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const navi = useNavigate();
 
-  const setMenuToggle = () => {
-    setIsShow((prev) => !prev);
-  };
   const toggleSearchBar = () => {
     setIsSearchBarVisible((prev) => !prev);
   };
@@ -125,32 +125,18 @@ const SideBar = () => {
     '프로필'
   ];
 
-  const navigateToPage = (menu: string) => {
-    switch (menu) {
-      case '판매하기':
-        navigate('/productsposts');
+  const setMenuToggle = () => {
+    setIsShow((prev) => !prev);
+  };
 
-        break;
-      case '중고거래':
-        navigate('/products');
-        break;
-      case '커뮤니티':
-        navigate('/community');
-        break;
-      case '검색':
-        toggleSearchBar();
-        break;
-      case '채팅':
-        navigate('/chat');
-        break;
-      case '알림':
-        break;
-      case '프로필':
-        navigate('/mypage');
-        break;
-      default:
-        break;
-    }
+  const handleNavigate = (e: MouseEvent<HTMLButtonElement>) => {
+    const { innerText } = e.currentTarget;
+    innerText === '판매하기' && navi('/productsposts');
+    innerText === '중고거래' && navi('/products');
+    innerText === '커뮤니티' && navi('/community');
+    innerText === '채팅' && navi('/chat');
+    innerText === '프로필' && navi('/mypage');
+    innerText === '검색' && toggleSearchBar();
   };
 
   return (
@@ -179,7 +165,7 @@ const SideBar = () => {
             <StMenuButtons
               onClick={(e) => {
                 e.stopPropagation();
-                navigateToPage(menu);
+                handleNavigate(e);
               }}
               $isShow
               $index={i + 1}
