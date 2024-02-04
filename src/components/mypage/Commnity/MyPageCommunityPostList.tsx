@@ -9,7 +9,6 @@ import {
   getCommunityPosts,
   getFavCommunityPosts
 } from '../../../api/supabase/mypage';
-import { useInfiniteQuery } from 'react-query';
 import CommunityList from '../../community/CommunityList';
 import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
 import {
