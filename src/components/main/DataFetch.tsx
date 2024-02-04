@@ -1,6 +1,6 @@
 import { supabase } from '../../api/supabase/supabaseClient';
-import { UsedItem, Communityy } from '../../pages//home/usedtypes';
-import { Post } from '../../pages/community/model';
+import { UsedItem } from '../../pages//home/usedtypes';
+import { Post } from '../../pages/community/api/model';
 
 export const fetchData = async (): Promise<{
   usedItems: UsedItem[];

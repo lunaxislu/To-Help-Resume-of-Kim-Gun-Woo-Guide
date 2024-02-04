@@ -10,17 +10,18 @@ import {
   deleteCommentMutation,
   fetchComments,
   updateCommentMutation
-} from '../../pages/community/ReplyQuery';
+} from '../../pages/community/api/ReplyQuery';
 import {
   fetchDetailPost,
   updatePostMutation
-} from '../../pages/community/commuQuery';
+} from '../../pages/community/api/commuQuery';
 import {
   CommentProps,
   ProfileObject,
   ReplyObject
-} from '../../pages/community/model';
+} from '../../pages/community/api/model';
 import parseDate from '../../util/getDate';
+import ReplyContent from './ReplyContent';
 const Reply: React.FC<CommentProps> = ({
   userId,
   paramId,
@@ -53,7 +54,7 @@ const Reply: React.FC<CommentProps> = ({
     };
     fetchData();
   }, []);
-  // post에 관한거 가져오는 건데  리팩토링 때 community에 likes랑 likes 유저만 필요한데 프롭스로 내릴까.?
+
   const {
     data: posts,
     isLoading,
@@ -120,6 +121,8 @@ const Reply: React.FC<CommentProps> = ({
       setAnon(false);
       setComment('');
       setSecret(false);
+      setParentId(null);
+      setParentUserId(null);
     }
   });
 
@@ -130,13 +133,15 @@ const Reply: React.FC<CommentProps> = ({
   // console.log(commentUserInfo);
   //댓글 추가 쿼리 변환 완료
   const addMutation = useMutation(addCommentMutation, {
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       queryClient.invalidateQueries('comments');
       setAnon(false);
       setComment('');
       setSecret(false);
       setReplyingToComment(null);
+      setParentId(null);
+      setParentUserId(null);
+      setIsFocused(false);
     }
   });
 
@@ -161,7 +166,7 @@ const Reply: React.FC<CommentProps> = ({
   };
   const updateMutation = useMutation(updateCommentMutation, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments']);
+      queryClient.invalidateQueries('comments');
       setAnon(false);
       setComment('');
       setSecret(false);
@@ -182,7 +187,7 @@ const Reply: React.FC<CommentProps> = ({
   };
   const deleteMutation = useMutation(deleteCommentMutation, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['comments']);
+      queryClient.invalidateQueries('comments');
       setEditedCommentIndex(null);
     }
   });
@@ -303,58 +308,17 @@ const Reply: React.FC<CommentProps> = ({
                   <St.SecretComment>이 댓글은 비밀댓글입니다.</St.SecretComment>
                 ) : (
                   <St.ParentComment>
-                    <St.LeftCommentSide>
-                      <St.LeftSide>
-                        <St.ProfileImage src={comment.user.avatar_url} />
-                        <St.Name>
-                          {comment.anon
-                            ? '익명의 작업자'
-                            : comment.user.nickname
-                            ? comment.user.nickname
-                            : comment.user.username}
-                        </St.Name>
-                        <St.Time>{parseTime}</St.Time>
-                        <St.UpdateBtnContainer>
-                          {profile.length > 0 &&
-                          comment.user_id === profile[0].id ? (
-                            isEdit && editedCommentIndex === comment.id ? (
-                              <p
-                                onClick={() => updateCommentDetail(comment.id)}
-                              >
-                                수정완료
-                              </p>
-                            ) : (
-                              <>
-                                <p
-                                  onClick={() =>
-                                    startEditComment(
-                                      comment.id,
-                                      comment.content
-                                    )
-                                  }
-                                >
-                                  수정
-                                </p>
-                                <p>|</p>
-                                <p onClick={() => deleteComment(comment.id)}>
-                                  삭제
-                                </p>
-                              </>
-                            )
-                          ) : (
-                            <p>신고</p>
-                          )}
-                        </St.UpdateBtnContainer>
-                      </St.LeftSide>
-                      {isEdit && editedCommentIndex === comment.id ? (
-                        <input
-                          value={editComment}
-                          onChange={(e) => setEditComment(e.target.value)}
-                        />
-                      ) : (
-                        <St.CommentContent>{comment.content}</St.CommentContent>
-                      )}
-                    </St.LeftCommentSide>{' '}
+                    <ReplyContent
+                      comment={comment}
+                      profile={profile}
+                      isEdit={isEdit}
+                      editComment={editComment}
+                      editedCommentIndex={editedCommentIndex}
+                      startEditComment={startEditComment}
+                      updateCommentDetail={updateCommentDetail}
+                      deleteComment={deleteComment}
+                      setEditComment={setEditComment}
+                    />
                     <button onClick={() => handleReplyClick(comment)}>
                       대댓글
                     </button>
@@ -372,71 +336,17 @@ const Reply: React.FC<CommentProps> = ({
                         </St.CommentContent>
                       ) : (
                         <St.ChildComment>
-                          <St.LeftCommentSide>
-                            <St.LeftSide>
-                              <St.ProfileImage src={comment.user.avatar_url} />
-
-                              <St.Name>
-                                {comment.anon
-                                  ? '익명의 작업자'
-                                  : comment.user.nickname
-                                  ? comment.user.nickname
-                                  : comment.user.username}
-                              </St.Name>
-                              <St.Time>{parseTime}</St.Time>
-                              <St.UpdateBtnContainer>
-                                {profile.length > 0 &&
-                                comment.user_id === profile[0].id ? (
-                                  isEdit &&
-                                  editedCommentIndex === comment.id ? (
-                                    <p
-                                      onClick={() =>
-                                        updateCommentDetail(comment.id)
-                                      }
-                                    >
-                                      수정완료
-                                    </p>
-                                  ) : (
-                                    <>
-                                      <p
-                                        onClick={() =>
-                                          startEditComment(
-                                            comment.id,
-                                            comment.content
-                                          )
-                                        }
-                                      >
-                                        수정
-                                      </p>
-                                      <p>|</p>
-                                      <p
-                                        onClick={() =>
-                                          deleteComment(comment.id)
-                                        }
-                                      >
-                                        삭제
-                                      </p>
-                                    </>
-                                  )
-                                ) : (
-                                  <p>신고</p>
-                                )}
-                              </St.UpdateBtnContainer>
-                            </St.LeftSide>
-                            {isEdit && editedCommentIndex === comment.id ? (
-                              <input
-                                value={editComment}
-                                onChange={(e) => setEditComment(e.target.value)}
-                              />
-                            ) : (
-                              <St.CommentContent>
-                                {comment.content}
-                              </St.CommentContent>
-                            )}
-                          </St.LeftCommentSide>{' '}
-                          {/* <button onClick={() => handleReplyClick(comment)}>
-                            대댓글
-                          </button> */}
+                          <ReplyContent
+                            comment={comment}
+                            profile={profile}
+                            isEdit={isEdit}
+                            editComment={editComment}
+                            editedCommentIndex={editedCommentIndex}
+                            startEditComment={startEditComment}
+                            updateCommentDetail={updateCommentDetail}
+                            deleteComment={deleteComment}
+                            setEditComment={setEditComment}
+                          />
                         </St.ChildComment>
                       )}
                     </St.ChildCommentContainer>
