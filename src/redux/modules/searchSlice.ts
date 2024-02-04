@@ -1,7 +1,7 @@
 // searchSlice.ts
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Communityy, UsedItem } from '../../pages/home/usedtypes';
-import { Post } from '../../pages/community/model';
+import { Post } from '../../pages/community/api/model';
+import { UsedItem } from '../../pages/home/usedtypes';
 
 interface SearchState {
   searchQuery: string;

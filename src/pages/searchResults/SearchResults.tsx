@@ -1,16 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store/store';
-import styled, { css } from 'styled-components';
-import parseDate from '../../util/getDate';
-import { setSearchResults } from '../../redux/modules/searchSlice';
 import { FaArrowRight } from 'react-icons/fa';
-import { researchItems, ResearchResults } from './researchItem';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+import { setSearchResults } from '../../redux/modules/searchSlice';
+import { RootState } from '../../redux/store/store';
 import Dropdown from '../../styles/searchresults/Dropdown';
-import { sortBy } from 'lodash';
-import { Communityy, UsedItem } from '../home/usedtypes';
-import { Post } from '../community/model';
+import parseDate from '../../util/getDate';
+import { ResearchResults, researchItems } from './researchItem';
 
 interface ListCount {
   usedItemCount: number;
