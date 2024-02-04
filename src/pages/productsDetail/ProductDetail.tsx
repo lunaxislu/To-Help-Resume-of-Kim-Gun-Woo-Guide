@@ -260,7 +260,7 @@ const ProductDetail = () => {
         // 모바일 때 위치 조정 //
         <ImageViewer product={product} setShowViewer={setShowViewer} />
       )}
-      ;
+
       <ToastContainer />
       {/* 본체 */}
       <St.StDetailContainer>

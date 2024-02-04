@@ -16,14 +16,14 @@ export const StFadeAni = keyframes`
 `;
 
 const StDetailContainer = styled.div`
-  width: 100%;
+  width: 77.5%;
   height: 100%;
   max-width: 1116px;
   margin: auto;
   animation: ${StFadeAni} 0.3s ease;
 
   @media screen and (max-width: 768px) {
-    width: 100%;
+    width: 77.5%;
     max-width: 768px;
     padding: 0;
   }

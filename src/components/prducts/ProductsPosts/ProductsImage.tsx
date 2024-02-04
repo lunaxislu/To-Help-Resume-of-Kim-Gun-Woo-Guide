@@ -87,14 +87,13 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
           <St.ImgCount>{uploadedFileUrl.length}/12</St.ImgCount>
         </St.SemiTitle>
         <St.ImageWrapper>
-          <St.ImageOrderWrapper>
-          </St.ImageOrderWrapper>
+          <St.ImageOrderWrapper></St.ImageOrderWrapper>
           {uploadedFileUrl.map((img: string, idx: number) => (
             <St.ImageCard id={img} key={idx}>
               <St.Image src={img} alt={`${img}-${idx}`} />
-              <St.ImageOrderBtn  id={img} onClick={handleImageOrder}>
-              <St.ImageOrder $idx={idx}>대표사진</St.ImageOrder>
-            </St.ImageOrderBtn>
+              <St.ImageOrderBtn id={img} onClick={handleImageOrder}>
+                <St.ImageOrder $idx={idx}>대표사진</St.ImageOrder>
+              </St.ImageOrderBtn>
               <St.ImageDeleteBtn onClick={() => handleDeleteImage(idx)}>
                 <St.ImageDeleteIcon />
               </St.ImageDeleteBtn>

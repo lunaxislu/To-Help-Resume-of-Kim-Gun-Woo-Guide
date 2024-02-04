@@ -23,6 +23,7 @@ export interface Product {
   image_url: string[];
   isSell: boolean;
   buyer: string;
+  detailAddress: string;
 }
 
 export type CustomUser = {
