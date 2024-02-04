@@ -25,6 +25,7 @@ export interface UsedItem {
   publicUrL: string;
   images: string;
   error: string;
+  isSell: boolean;
 }
 
 export interface Communityy {

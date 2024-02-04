@@ -16,9 +16,10 @@ export const Hr = styled.hr`
 export const HeaderTopContainer = styled.div`
   max-width: 144rem;
   width: 111.6rem;
-  height: 15rem;
+  height: 12rem;
   display: flex;
   margin: auto;
+  background: #fffefa;
   @media screen and (max-width: 768px) {
     width: 100%;
   }
@@ -85,9 +86,17 @@ export const HeaderSection = styled.section`
   }
 `;
 
+export const VisibleSearchBar = styled.div`
+  display: none;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+`;
+
 export const Logo = styled.img`
-  width: 10.1rem;
-  height: 2.6rem;
+  width: 23.4rem;
+  height: 5.4rem;
   cursor: pointer;
   user-select: none;
   margin: auto 0;
@@ -206,24 +215,34 @@ export const Alert = styled.button`
 
 export const Button = styled.button`
   align-items: center;
+  justify-content: center;
   display: flex;
-  width: 9rem;
-  height: 2.7rem;
+  width: 13.7rem;
+  height: 3.4rem;
   border: 0;
-  background: transparent;
-  font-family: 'Pretendard-Medium';
+  border-radius: 3rem;
+  background: #a0e0d6;
+  font-family: 'BM-JUA';
   cursor: pointer;
-  color: var(--11-gray);
+  color: #ffffff;
   font-weight: var(--fontWeight-medium);
-  font-size: var(--fontSize-H5);
+  font-size: var(--fontSize-H6);
   line-height: 2.6768rem;
   margin-left: 2rem;
+  &:hover {
+    background: #18b3bc;
+  }
 `;
 
-export const UserIcon = styled.img`
-  border-radius: 50%;
-  width: 3.5rem;
-  height: 3.5rem;
+export const LogoutButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.66rem;
+  border: none;
+  background-color: transparent;
+  width: 8.5rem;
+  height: 3rem;
   cursor: pointer;
 
   @media screen and (max-width: 768px) {
@@ -231,6 +250,13 @@ export const UserIcon = styled.img`
   }
 `;
 
+export const LogoutImage = styled.img`
+  width: 1.84rem;
+  height: 1.57rem;
+`;
+export const LogoutWord = styled.div`
+  font-size: var(--fontSize-body);
+`;
 export const NavSection = styled.section`
   width: 100%;
   display: flex;
@@ -318,8 +344,8 @@ export const StNotiContainer = styled.div`
   flex-direction: column;
   position: absolute;
   padding-top: 2rem;
-  top: 7%;
-  right: 18%;
+  top: 75%;
+  right: 9%;
   z-index: 3;
   transition: all 0.3s ease;
   animation: ${NotiAni} 0.3s ease;
@@ -362,6 +388,6 @@ export const StNotiDot = styled.div`
   background-color: red;
   border-radius: 50%;
   position: absolute;
-  top: 0;
-  right: 0.5rem;
+  top: 18%;
+  right: 0.4rem;
 `;

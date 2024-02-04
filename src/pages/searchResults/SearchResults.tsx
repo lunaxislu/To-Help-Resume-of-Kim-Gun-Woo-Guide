@@ -2,17 +2,28 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/store';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import parseDate from '../../util/getDate';
 import { setSearchResults } from '../../redux/modules/searchSlice';
 import { FaArrowRight } from 'react-icons/fa';
 import { researchItems, ResearchResults } from './researchItem';
-import DropDown from '../../styles/searchresults/Dropdown';
+import Dropdown from '../../styles/searchresults/Dropdown';
+import { sortBy } from 'lodash';
+import { Communityy, UsedItem } from '../home/usedtypes';
+import { Post } from '../community/model';
 
 interface ListCount {
   usedItemCount: number;
   communityCount: number;
 }
+
+type CommonItemProps = {
+  id: number;
+  image_url: string[]; // 이미지 배열로 가정
+  quality: string;
+  title: string;
+  price: number;
+};
 
 const SearchResults: React.FC = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -32,23 +43,11 @@ const SearchResults: React.FC = () => {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
 
-  //드롭다운메뉴 조건부렌더링
-  const [productsSort, setProductsSort] = useState<
-    '최신순' | '낮은가격순' | '높은가격순'
-  >('최신순');
-  const [communitySort, setCommunitySort] = useState<'최신순' | '인기순'>(
-    '최신순'
-  );
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [clickMenu, setClickMenu] = useState('최신순');
   const [selectedTab, setSelectedTab] = useState('중고물품');
 
-  const handleProductsSort = (sort: '최신순' | '낮은가격순' | '높은가격순') => {
-    setProductsSort(sort);
-    setClickMenu(sort);
-  };
-  const handleCommunitySort = (sort: '최신순' | '인기순') => {
-    setCommunitySort(sort);
+  const handleProductsSort = (sort: '최신순' | '인기순') => {
     setClickMenu(sort);
   };
 
@@ -57,6 +56,38 @@ const SearchResults: React.FC = () => {
   const checkWindowSize = () => {
     setIsMobile(window.innerWidth <= 768);
   };
+
+  // 정렬 함수
+  const ProductsSortByLikes = <T extends { likes: number }>(list: T[]): T[] => {
+    return [...list].sort((a, b) => b.likes - a.likes);
+  };
+
+  const CommunitySortByLikes = <T extends { likes: number | null }>(
+    list: T[]
+  ): T[] => {
+    return [...list].sort((a, b) => {
+      // null 값이 있는 경우를 고려하여 정렬
+      if (a.likes === null && b.likes !== null) {
+        return 1; // a.likes가 null이면 b.likes가 있다면 a는 b보다 작다고 처리
+      } else if (a.likes !== null && b.likes === null) {
+        return -1; // b.likes가 null이면 a.likes가 있다면 b는 a보다 작다고 처리
+      } else {
+        // 둘 다 null이거나 둘 다 숫자인 경우 정상적으로 비교
+        return (b.likes || 0) - (a.likes || 0);
+      }
+    });
+  };
+
+  // 정렬된 결과
+  const sortedUsedItemResults =
+    clickMenu === '인기순'
+      ? ProductsSortByLikes(usedItemResults)
+      : usedItemResults;
+
+  const sortedCommunityResults =
+    clickMenu === '인기순'
+      ? CommunitySortByLikes(communityResults)
+      : communityResults;
 
   useEffect(() => {
     checkWindowSize();
@@ -112,172 +143,295 @@ const SearchResults: React.FC = () => {
   }, []);
 
   return (
-    <SearchResultsContainer>
-      <SearchResultsCountContainer>
-        <CheckImage src="/assets/checkresults.png" alt="검색결과" />
-        <FullCounts>
-          {isLoading
-            ? '검색 중...'
-            : usedItemCount === 0 && communityCount === 0
-            ? '해당 검색어에 대한 결과를 찾을 수 없어요'
-            : `${usedItemCount + communityCount}개의 결과가 검색되었어요`}
-        </FullCounts>
-      </SearchResultsCountContainer>
-      <ResultListContainer>
-        <UsedItemResultsContainer>
-          {isMobile ? (
-            <CountBar>
-              <CountPost>
-                <ProductsCount
-                  showClickedList={showClickedList}
-                  onClick={() => handleTabClick('중고물품')}
-                >
-                  중고거래({usedItemCount})
-                </ProductsCount>
-                <CommunityCount
-                  showClickedList={showClickedList}
-                  onClick={() => handleTabClick('커뮤니티')}
-                >
-                  커뮤니티({communityCount})
-                </CommunityCount>
-              </CountPost>
-              <DropDown
-                isOpen={isOpen}
-                setIsOpen={setIsOpen}
-                clickMenu={clickMenu}
-                setClickMenu={setClickMenu}
-              />
-            </CountBar>
-          ) : (
-            <CountBar>
-              <CountList>{usedItemCount}개의 상품이 거래되고 있어요</CountList>
-              <LinktoUsedProducts to="/products">
-                <p>전체보기</p>
+    <>
+      <SearchResultsContainer>
+        <SearchResultsCountContainer>
+          <CheckImage src="/assets/checkresults.png" alt="검색결과" />
+          <FullCounts>
+            {isLoading
+              ? '검색 중...'
+              : usedItemCount === 0 && communityCount === 0
+              ? '해당 검색어에 대한 결과를 찾을 수 없어요'
+              : `${usedItemCount + communityCount}개의 결과가 검색되었어요`}
+          </FullCounts>
+        </SearchResultsCountContainer>
+        <ResultListContainer>
+          <UsedItemResultsContainer>
+            {/* TAB */}
+            {isMobile ? (
+              <CountBar>
+                <CountPost>
+                  <ProductsCount
+                    showClickedList={showClickedList}
+                    onClick={() => handleTabClick('중고물품')}
+                  >
+                    중고거래({usedItemCount})
+                  </ProductsCount>
+                  <CommunityCount
+                    showClickedList={showClickedList}
+                    onClick={() => handleTabClick('커뮤니티')}
+                  >
+                    커뮤니티({communityCount})
+                  </CommunityCount>
+                </CountPost>
+                <Dropdown
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                  clickMenu={clickMenu}
+                  setClickMenu={setClickMenu}
+                />
+              </CountBar>
+            ) : (
+              // 데스크탑
+              <CountBar>
+                <CountList>
+                  {usedItemCount}개의 상품이 거래되고 있어요
+                </CountList>
+                <LinktoUsedProducts to="/products">
+                  <p>전체보기</p>
 
+                  <FaArrowRight />
+                </LinktoUsedProducts>
+              </CountBar>
+            )}
+            {/* 검색 결과 */}
+            {isMobile && !showClickedList && (
+              <UsedItemsList
+                usedItemCount={usedItemCount}
+                showClickedList={showClickedList}
+              >
+                {sortedUsedItemResults.map((item) => (
+                  <ToProductsPage
+                    key={item.id}
+                    to={`/products/detail/${item.id}`}
+                  >
+                    <ProductList>
+                      <div>
+                        {item.image_url ? (
+                          <img src={item.image_url[0]} alt="Item" />
+                        ) : (
+                          <svg
+                            width="208"
+                            height="208"
+                            viewBox="0 0 208 208"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              width="208"
+                              height="208"
+                              rx="15"
+                              fill="#F8F8F8"
+                            />
+                          </svg>
+                        )}
+                      </div>
+
+                      <ProductsCardQuality
+                        $quality={item.quality}
+                        key={item.quality}
+                      >
+                        {item.quality}
+                      </ProductsCardQuality>
+                      <h3>{item.title}</h3>
+                      <p>{item.price.toLocaleString('kr-KO')}원</p>
+                    </ProductList>
+                  </ToProductsPage>
+                ))}
+              </UsedItemsList>
+            )}{' '}
+            {!isMobile && (
+              // 중고 데스크탑
+              <UsedItemsList
+                usedItemCount={usedItemCount}
+                showClickedList={showClickedList}
+              >
+                {sortedUsedItemResults.slice(0, 5).map((item) => (
+                  <ToProductsPage
+                    key={item.id}
+                    to={`/products/detail/${item.id}`}
+                  >
+                    <ProductList>
+                      <div>
+                        {item.image_url ? (
+                          <img src={item.image_url[0]} alt="Item" />
+                        ) : (
+                          <svg
+                            width="208"
+                            height="208"
+                            viewBox="0 0 208 208"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <rect
+                              width="208"
+                              height="208"
+                              rx="15"
+                              fill="#F8F8F8"
+                            />
+                          </svg>
+                        )}
+                      </div>
+
+                      <ProductsCardQuality
+                        $quality={item.quality}
+                        key={item.quality}
+                      >
+                        {item.quality}
+                      </ProductsCardQuality>
+                      <h3>{item.title}</h3>
+                      <p>{item.price.toLocaleString('kr-KO')}원</p>
+                    </ProductList>
+                  </ToProductsPage>
+                ))}
+              </UsedItemsList>
+            )}
+          </UsedItemResultsContainer>
+
+          {/* ////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
+          {/* 커뮤니티 */}
+          <CommunityResultsContainer showClickedList={showClickedList}>
+            <CommunityTitle showClickedList={showClickedList}>
+              <CountList>{communityCount}개의 이야기가 있어요</CountList>
+              <LinktoCommunityPosts to="/community">
+                <p>전체보기</p>
                 <FaArrowRight />
-              </LinktoUsedProducts>
-            </CountBar>
-          )}
-          {isMobile && showClickedList ? (
-            ''
-          ) : (
-            <UsedItemsList
-              usedItemCount={usedItemCount}
-              showClickedList={showClickedList}
-            >
-              {usedItemResults.slice(0, 5).map((item) => (
-                <ToProductsPage
-                  key={item.id}
-                  to={`/products/detail/${item.id}`}
-                >
-                  <ProductList>
-                    <div>
-                      {item.image_url ? (
-                        <img src={item.image_url[0]} alt="Item" />
-                      ) : (
+              </LinktoCommunityPosts>
+            </CommunityTitle>
+            {/* 커뮤니티 모바일 */}
+            {isMobile && showClickedList && (
+              <CommunityPostsList>
+                {sortedCommunityResults.map((item) => (
+                  <ToCommunityPage
+                    key={item.post_id}
+                    to={`/community/detail/${item.post_id}`}
+                  >
+                    <PostList>
+                      <div className="commucontent">
+                        <div className="ttitle">
+                          <h3>{item.title}</h3>
+                        </div>
+                        <div className="commupic">
+                          {item.main_image ? (
+                            <img
+                              className="community-pic"
+                              src={item.main_image}
+                              alt="Community Post"
+                            />
+                          ) : (
+                            ''
+                          )}
+                          <p>{handleText(item.content)}</p>{' '}
+                        </div>
+                      </div>
+                      <div>
                         <svg
-                          width="208"
-                          height="208"
-                          viewBox="0 0 208 208"
+                          className="thumbs"
+                          width="13"
+                          height="13"
+                          viewBox="0 0 13 13"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
                         >
-                          <rect
-                            width="208"
-                            height="208"
-                            rx="15"
-                            fill="#F8F8F8"
+                          <path
+                            d="M0.00242571 5.92305C-0.00533256 5.83585 0.00556749 5.74802 0.0344343 5.66515C0.0633011 5.58227 0.109504 5.50616 0.170112 5.44164C0.23072 5.37711 0.304409 5.32559 0.386503 5.29034C0.468598 5.25508 0.557305 5.23686 0.646996 5.23684H1.88275C2.05438 5.23684 2.21899 5.30338 2.34036 5.42183C2.46172 5.54027 2.5299 5.70092 2.5299 5.86842V11.8684C2.5299 12.0359 2.46172 12.1966 2.34036 12.315C2.21899 12.4335 2.05438 12.5 1.88275 12.5H1.18187C1.0199 12.5 0.863797 12.4408 0.7444 12.334C0.625002 12.2272 0.55099 12.0805 0.536979 11.9231L0.00242571 5.92305ZM4.47138 5.67105C4.47138 5.40705 4.63964 5.17084 4.88394 5.05842C5.41753 4.81274 6.32646 4.31916 6.73643 3.65189C7.26484 2.79168 7.3645 1.23768 7.38068 0.881788C7.38295 0.831893 7.38165 0.781998 7.38845 0.732735C7.47614 0.115998 8.69571 0.836314 9.16328 1.598C9.41729 2.01105 9.44965 2.55389 9.42311 2.978C9.39432 3.43147 9.25809 3.86947 9.12445 4.30463L8.8397 5.23211H12.3528C12.4528 5.2321 12.5514 5.2547 12.641 5.29815C12.7305 5.34159 12.8085 5.40469 12.8688 5.48249C12.9292 5.56029 12.9702 5.65069 12.9888 5.74658C13.0073 5.84246 13.0028 5.94124 12.9757 6.03516L11.2381 12.0402C11.1997 12.1727 11.1181 12.2892 11.0056 12.3722C10.8931 12.4552 10.7559 12.5001 10.6149 12.5H5.11854C4.9469 12.5 4.78229 12.4335 4.66093 12.315C4.53956 12.1966 4.47138 12.0359 4.47138 11.8684V5.67105Z"
+                            fill="#DBFF00"
+                            fillOpacity="0.7"
                           />
                         </svg>
-                      )}
-                    </div>
-                    <h1>{item.quality}</h1>
-                    <h3>{item.title}</h3>
-                    <p>{item.price.toLocaleString('kr-KO')}원</p>
-                  </ProductList>
-                </ToProductsPage>
-              ))}
-            </UsedItemsList>
-          )}
-        </UsedItemResultsContainer>
+                        <span className="likescount">{item.likes}</span>
 
-        <CommunityResultsContainer showClickedList={showClickedList}>
-          <CommunityTitle showClickedList={showClickedList}>
-            <CountList>{communityCount}개의 이야기가 있어요</CountList>
-            <LinktoCommunityPosts to="/community">
-              <p>전체보기</p>
-              <FaArrowRight />
-            </LinktoCommunityPosts>
-          </CommunityTitle>
-          {isMobile && !showClickedList ? (
-            ''
-          ) : (
-            <CommunityPostsList>
-              {communityResults.slice(0, 6).map((item) => (
-                <ToCommunityPage
-                  key={item.post_id}
-                  to={`/community/detail/${item.post_id}`}
-                >
-                  <PostList>
-                    <div className="commucontent">
-                      <div className="ttitle">
-                        <h3>{item.title}</h3>
-                      </div>
-                      <div className="commupic">
-                        {item.main_image ? (
-                          <img
-                            className="community-pic"
-                            src={item.main_image}
-                            alt="Community Post"
+                        <svg
+                          className="commentss"
+                          width="12"
+                          height="13"
+                          viewBox="0 0 12 13"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M4.8 0.5H7.2C8.47304 0.5 9.69394 1.01868 10.5941 1.94194C11.4943 2.86519 12 4.1174 12 5.42308C12 6.72876 11.4943 7.98096 10.5941 8.90422C9.81235 9.70602 8.7887 10.2027 7.69908 10.3195C7.42451 10.3489 7.2 10.57 7.2 10.8462V11.7544C7.2 12.11 6.8397 12.3527 6.51214 12.2142C3.59783 10.9824 0 9.12524 0 5.42308C0 4.1174 0.505713 2.86519 1.40589 1.94194C2.30606 1.01868 3.52696 0.5 4.8 0.5Z"
+                            fill="#DBFF00"
+                            fillOpacity="0.7"
                           />
-                        ) : (
-                          ''
-                        )}
-                        <p>{handleText(item.content)}</p>{' '}
+                        </svg>
+                        <span>{item.comment?.length}</span>
+                        <h4>{parseDate(item.created_at)}</h4>
                       </div>
-                    </div>
-                    <div>
-                      <svg
-                        className="thumbs"
-                        width="13"
-                        height="13"
-                        viewBox="0 0 13 13"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M0.00242571 5.92305C-0.00533256 5.83585 0.00556749 5.74802 0.0344343 5.66515C0.0633011 5.58227 0.109504 5.50616 0.170112 5.44164C0.23072 5.37711 0.304409 5.32559 0.386503 5.29034C0.468598 5.25508 0.557305 5.23686 0.646996 5.23684H1.88275C2.05438 5.23684 2.21899 5.30338 2.34036 5.42183C2.46172 5.54027 2.5299 5.70092 2.5299 5.86842V11.8684C2.5299 12.0359 2.46172 12.1966 2.34036 12.315C2.21899 12.4335 2.05438 12.5 1.88275 12.5H1.18187C1.0199 12.5 0.863797 12.4408 0.7444 12.334C0.625002 12.2272 0.55099 12.0805 0.536979 11.9231L0.00242571 5.92305ZM4.47138 5.67105C4.47138 5.40705 4.63964 5.17084 4.88394 5.05842C5.41753 4.81274 6.32646 4.31916 6.73643 3.65189C7.26484 2.79168 7.3645 1.23768 7.38068 0.881788C7.38295 0.831893 7.38165 0.781998 7.38845 0.732735C7.47614 0.115998 8.69571 0.836314 9.16328 1.598C9.41729 2.01105 9.44965 2.55389 9.42311 2.978C9.39432 3.43147 9.25809 3.86947 9.12445 4.30463L8.8397 5.23211H12.3528C12.4528 5.2321 12.5514 5.2547 12.641 5.29815C12.7305 5.34159 12.8085 5.40469 12.8688 5.48249C12.9292 5.56029 12.9702 5.65069 12.9888 5.74658C13.0073 5.84246 13.0028 5.94124 12.9757 6.03516L11.2381 12.0402C11.1997 12.1727 11.1181 12.2892 11.0056 12.3722C10.8931 12.4552 10.7559 12.5001 10.6149 12.5H5.11854C4.9469 12.5 4.78229 12.4335 4.66093 12.315C4.53956 12.1966 4.47138 12.0359 4.47138 11.8684V5.67105Z"
-                          fill="#DBFF00"
-                          fillOpacity="0.7"
-                        />
-                      </svg>
-                      <span className="likescount">{item.likes}</span>
+                    </PostList>
+                  </ToCommunityPage>
+                ))}
+              </CommunityPostsList>
+            )}
+            {!isMobile && (
+              // 커뮤니티 데스크탑
+              <CommunityPostsList>
+                {sortedCommunityResults.slice(0, 6).map((item) => (
+                  <ToCommunityPage
+                    key={item.post_id}
+                    to={`/community/detail/${item.post_id}`}
+                  >
+                    <PostList>
+                      <div className="commucontent">
+                        <div className="ttitle">
+                          <h3>{item.title}</h3>
+                        </div>
+                        <div className="commupic">
+                          {item.main_image ? (
+                            <img
+                              className="community-pic"
+                              src={item.main_image}
+                              alt="Community Post"
+                            />
+                          ) : (
+                            ''
+                          )}
+                          <p>{handleText(item.content)}</p>{' '}
+                        </div>
+                      </div>
+                      <div>
+                        <svg
+                          className="thumbs"
+                          width="13"
+                          height="13"
+                          viewBox="0 0 13 13"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M0.00242571 5.92305C-0.00533256 5.83585 0.00556749 5.74802 0.0344343 5.66515C0.0633011 5.58227 0.109504 5.50616 0.170112 5.44164C0.23072 5.37711 0.304409 5.32559 0.386503 5.29034C0.468598 5.25508 0.557305 5.23686 0.646996 5.23684H1.88275C2.05438 5.23684 2.21899 5.30338 2.34036 5.42183C2.46172 5.54027 2.5299 5.70092 2.5299 5.86842V11.8684C2.5299 12.0359 2.46172 12.1966 2.34036 12.315C2.21899 12.4335 2.05438 12.5 1.88275 12.5H1.18187C1.0199 12.5 0.863797 12.4408 0.7444 12.334C0.625002 12.2272 0.55099 12.0805 0.536979 11.9231L0.00242571 5.92305ZM4.47138 5.67105C4.47138 5.40705 4.63964 5.17084 4.88394 5.05842C5.41753 4.81274 6.32646 4.31916 6.73643 3.65189C7.26484 2.79168 7.3645 1.23768 7.38068 0.881788C7.38295 0.831893 7.38165 0.781998 7.38845 0.732735C7.47614 0.115998 8.69571 0.836314 9.16328 1.598C9.41729 2.01105 9.44965 2.55389 9.42311 2.978C9.39432 3.43147 9.25809 3.86947 9.12445 4.30463L8.8397 5.23211H12.3528C12.4528 5.2321 12.5514 5.2547 12.641 5.29815C12.7305 5.34159 12.8085 5.40469 12.8688 5.48249C12.9292 5.56029 12.9702 5.65069 12.9888 5.74658C13.0073 5.84246 13.0028 5.94124 12.9757 6.03516L11.2381 12.0402C11.1997 12.1727 11.1181 12.2892 11.0056 12.3722C10.8931 12.4552 10.7559 12.5001 10.6149 12.5H5.11854C4.9469 12.5 4.78229 12.4335 4.66093 12.315C4.53956 12.1966 4.47138 12.0359 4.47138 11.8684V5.67105Z"
+                            fill="#DBFF00"
+                            fillOpacity="0.7"
+                          />
+                        </svg>
+                        <span className="likescount">{item.likes}</span>
 
-                      <svg
-                        className="commentss"
-                        width="12"
-                        height="13"
-                        viewBox="0 0 12 13"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M4.8 0.5H7.2C8.47304 0.5 9.69394 1.01868 10.5941 1.94194C11.4943 2.86519 12 4.1174 12 5.42308C12 6.72876 11.4943 7.98096 10.5941 8.90422C9.81235 9.70602 8.7887 10.2027 7.69908 10.3195C7.42451 10.3489 7.2 10.57 7.2 10.8462V11.7544C7.2 12.11 6.8397 12.3527 6.51214 12.2142C3.59783 10.9824 0 9.12524 0 5.42308C0 4.1174 0.505713 2.86519 1.40589 1.94194C2.30606 1.01868 3.52696 0.5 4.8 0.5Z"
-                          fill="#DBFF00"
-                          fillOpacity="0.7"
-                        />
-                      </svg>
-                      <span>{item.comment.length}</span>
-                      <h4>{parseDate(item.created_at)}</h4>
-                    </div>
-                  </PostList>
-                </ToCommunityPage>
-              ))}
-            </CommunityPostsList>
-          )}
-        </CommunityResultsContainer>
-      </ResultListContainer>
-    </SearchResultsContainer>
+                        <svg
+                          className="commentss"
+                          width="12"
+                          height="13"
+                          viewBox="0 0 12 13"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M4.8 0.5H7.2C8.47304 0.5 9.69394 1.01868 10.5941 1.94194C11.4943 2.86519 12 4.1174 12 5.42308C12 6.72876 11.4943 7.98096 10.5941 8.90422C9.81235 9.70602 8.7887 10.2027 7.69908 10.3195C7.42451 10.3489 7.2 10.57 7.2 10.8462V11.7544C7.2 12.11 6.8397 12.3527 6.51214 12.2142C3.59783 10.9824 0 9.12524 0 5.42308C0 4.1174 0.505713 2.86519 1.40589 1.94194C2.30606 1.01868 3.52696 0.5 4.8 0.5Z"
+                            fill="#DBFF00"
+                            fillOpacity="0.7"
+                          />
+                        </svg>
+                        <span>{item.comment?.length}</span>
+                        <h4>{parseDate(item.created_at)}</h4>
+                      </div>
+                    </PostList>
+                  </ToCommunityPage>
+                ))}
+              </CommunityPostsList>
+            )}
+          </CommunityResultsContainer>
+        </ResultListContainer>
+      </SearchResultsContainer>
+    </>
   );
 };
 
@@ -325,8 +479,11 @@ const SearchResultsCountContainer = styled.div`
   margin-top: 6rem;
   display: flex;
   flex-direction: column;
-  /* justify-content: center;
-  align-items: center; */
+  justify-content: center;
+  align-items: center;
+  @media screen and (max-width: 768px) {
+    margin-top: 2rem;
+  }
 `;
 const CheckImage = styled.img`
   margin: 0 auto;
@@ -335,7 +492,6 @@ const CheckImage = styled.img`
   @media screen and (max-width: 768px) {
     width: 4.4rem;
     height: 4.4rem;
-    display: none;
   }
 `;
 const FullCounts = styled.div`
@@ -343,7 +499,7 @@ const FullCounts = styled.div`
   font-size: var(--fontSize-H1);
   font-weight: var(--fontWeight-bold);
   @media screen and (max-width: 768px) {
-    display: none;
+    font-size: var(--fontSize-H4);
   }
 `;
 const ResultListContainer = styled.div`
@@ -355,6 +511,8 @@ const ResultListContainer = styled.div`
   margin-top: 3rem;
   @media screen and (max-width: 768px) {
     width: 100%;
+    margin-top: 2rem;
+    border-top: none;
   }
 `;
 const UsedItemResultsContainer = styled.div`
@@ -476,40 +634,35 @@ const UsedItemsList = styled.ul<{
   @media screen and (max-width: 1160px) {
     grid-template-columns: repeat(4, 1fr);
     margin-top: ${({ usedItemCount }) =>
-      usedItemCount !== 0 ? '4rem' : '2rem'};
+      usedItemCount !== 0 ? '5rem' : '2rem'};
   }
 
   @media screen and (max-width: 1024px) {
     grid-template-columns: repeat(3, 1fr);
-    margin-top: ${({ usedItemCount }) =>
-      usedItemCount !== 0 ? '4rem' : '2rem'};
+    margin-top: ${({ usedItemCount }) => (usedItemCount !== 0 ? '5rem' : '')};
   }
 
   @media screen and (max-width: 768px) {
     column-gap: 1.5rem;
     row-gap: 1.8rem;
     grid-template-columns: repeat(3, 1fr);
-    margin-top: ${({ usedItemCount }) =>
-      usedItemCount !== 0 ? '10rem' : '2rem'};
+    margin-top: ${({ usedItemCount }) => (usedItemCount !== 0 ? '3rem' : '')};
   }
   @media screen and (max-width: 670px) {
     column-gap: 1.5rem;
     row-gap: 1.8rem;
     grid-template-columns: repeat(2, 1fr);
-    margin-top: ${({ usedItemCount }) =>
-      usedItemCount !== 0 ? '10rem' : '2rem'};
+    margin-top: ${({ usedItemCount }) => (usedItemCount !== 0 ? '2rem' : '')};
   }
   @media screen and (max-width: 520px) {
     row-gap: 1.8rem;
     grid-template-columns: repeat(2, 1fr);
-    /* height: ${({ usedItemCount }) =>
-      usedItemCount === 0 ? '0rem' : '6rem'}; */
+    margin-top: ${({ usedItemCount }) => (usedItemCount !== 0 ? '2rem' : '')};
   }
 
   @media screen and (max-width: 349px) {
     grid-template-columns: repeat(1, 1fr);
-    /* height: ${({ usedItemCount }) =>
-      usedItemCount === 0 ? '0rem' : '6rem'}; */
+    margin-top: ${({ usedItemCount }) => (usedItemCount !== 0 ? '2rem' : '')};
   }
 `;
 const ToProductsPage = styled(Link)`
@@ -554,29 +707,7 @@ const ProductList = styled.li`
       border-radius: 0.6rem;
     }
   }
-  h1 {
-    width: 9rem;
-    padding: 0.8rem;
-    color: var(--9-gray);
-    text-align: center;
-    background-color: var(--opc-20);
-    border-radius: 0.3rem;
-    margin-top: 1rem;
-    font-size: var(--fontSize-H6);
-    font-weight: var(--fontWeight-bold);
-    @media screen and (max-width: 768px) {
-      margin-top: 1rem;
-      width: 6.5rem;
-      height: 2rem;
-      font-size: 1rem;
-      font-weight: 500;
-      line-height: 191.2%;
-      text-align: center;
-      background-color: var(--opc-100);
-      color: var(--2-gray);
-      padding: 0;
-    }
-  }
+
   h3 {
     font-size: var(--fontSize-body);
     color: var(--11-gray);
@@ -608,11 +739,52 @@ const ProductList = styled.li`
     margin-top: 1rem;
     text-align: left;
     @media screen and (max-width: 768px) {
-      width: 6rem;
       height: 2.3rem;
       font-weight: var(--fontWeight-bold);
       font-size: var(--fontSize-H5);
     }
+  }
+`;
+
+interface QualityProps {
+  $quality: string;
+}
+
+const ProductsCardQuality = styled.h1<QualityProps>`
+  width: 9rem;
+  padding: 0 0.8rem;
+  text-align: center;
+  line-height: 1.7;
+  border-radius: 0.3rem;
+  margin-top: 1rem;
+  background-color: #fcfcfc;
+
+  color: var(--2-gray);
+  margin-bottom: 0.6rem;
+  font-size: var(--fontSize-H6);
+  // 배경색 조건부 렌더링
+  ${(props) => {
+    if (props.children === '새상품(미사용)') {
+      return css`
+        background-color: var(--opc-100);
+        color: var(--2-gray);
+      `;
+    }
+    if (props.children === '고장/파손 상품') {
+      return css`
+        background-color: var(--4-gray);
+        color: var(--11-gray);
+      `;
+    }
+  }}
+  @media screen and (max-width: 768px) {
+    margin-top: 1rem;
+    width: 8rem;
+    height: 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 191.2%;
+    text-align: center;
   }
 `;
 
@@ -632,13 +804,13 @@ const CommunityResultsContainer = styled.div<{
   }
   @media screen and (max-width: 530px) {
     width: 100%;
-
+    margin-top: 0;
     padding: 0 1rem;
   }
   @media screen and (max-width: 349px) {
     width: 100%;
 
-    margin-top: ${({ showClickedList }) => (showClickedList ? '5rem' : '')};
+    margin-top: 0;
     padding: 0 1rem;
   }
 `;
@@ -714,6 +886,7 @@ const CommunityPostsList = styled.ul`
   @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
     margin: 0 auto;
+    /* margin-top */
   }
 
   @media screen and (max-width: 768px) {

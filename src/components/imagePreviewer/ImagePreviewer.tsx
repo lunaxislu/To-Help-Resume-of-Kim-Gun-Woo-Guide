@@ -68,7 +68,7 @@ const StPreviewContainer = styled.div`
   gap: 1.65rem;
   align-items: center;
   overflow-x: scroll;
-  background-color: var(--4-gray);
+  background-color: #1d1d1d30;
 `;
 type ItemType = {
   $url: string | undefined;
