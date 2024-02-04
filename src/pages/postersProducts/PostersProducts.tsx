@@ -10,6 +10,8 @@ const PostersProducts = () => {
   const { id } = useParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState<number>(9);
+  const [isEnd, setIsEnd] = useState<boolean>(false);
+  const [cachedData, setCachedData] = useState<Product[]>([]);
 
   const fetchPage = async (page: number) => {
     let { data: productsRes, error } = await supabase
@@ -20,9 +22,12 @@ const PostersProducts = () => {
 
     if (error) console.log('Products fetch failed');
 
-    if (productsRes) {
-      setProducts(productsRes);
+    // 캐싱 된 이전 데이터와 새로 가져온 데이터의 길이가 같다면 요청 중단
+    if (cachedData.length === productsRes?.length) {
+      setIsEnd(true);
     }
+
+    if (productsRes) setProducts(productsRes);
   };
 
   // 스크롤 높이에 따라 데이터를 더 가져오는 함수
@@ -32,10 +37,12 @@ const PostersProducts = () => {
 
   // 스크롤 제어 - 스크롤양 + 창의 높이가 전체 body의 높이보다 커지면 이미지 추가 호출 실행
   const onScrollHandler = () => {
+    // isEnd가 false일 때만 데이터를 요청
     if (
-      window.innerHeight + window.scrollY >=
-      document.body.offsetHeight * 0.99
+      !isEnd &&
+      window.innerHeight + window.scrollY >= document.body.offsetHeight * 0.99
     ) {
+      setCachedData(products);
       setPage(page + 1);
       loadMoreImages();
     } else {
@@ -66,6 +73,11 @@ const PostersProducts = () => {
       <StProductsListContainer>
         <ProductsCard posts={products} />
       </StProductsListContainer>
+      {isEnd && (
+        <StEndPoint>
+          <h1>더이상 상품이 없습니다</h1>
+        </StEndPoint>
+      )}
     </div>
   );
 };
