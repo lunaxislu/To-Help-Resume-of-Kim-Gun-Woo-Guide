@@ -147,12 +147,7 @@ const Layout = () => {
         setNewNotiExists={setNewNotiExists}
         setNotification={setNotification}
       />
-      <Header
-        notification={notification}
-        newNotiExists={newNotiExists}
-        setNewNotiExists={setNewNotiExists}
-        setNotification={setNotification}
-      />
+      <Header />
       <ContentWrapper>
         <Outlet />
       </ContentWrapper>
