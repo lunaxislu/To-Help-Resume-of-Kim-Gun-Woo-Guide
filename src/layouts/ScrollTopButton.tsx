@@ -29,7 +29,7 @@ const ScrollTopButton = () => {
         />
       ) : (
         <img
-          src={process.env.PUBLIC_URL + '/assets/upupbutton.svg'}
+          src={process.env.PUBLIC_URL + '/assets/topbutton.svg'}
           alt="상단으로 이동"
         />
       )}
@@ -40,7 +40,7 @@ const ScrollTopButton = () => {
 const TopButton = styled.button`
   position: fixed;
   bottom: 130px;
-  right: 6%;
+  right: -0.5%;
   padding: 10px;
   border: none;
   cursor: pointer;
@@ -53,8 +53,8 @@ const TopButton = styled.button`
   }
 
   img {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     @media screen and (max-width: 768px) {
       max-width: 30px;
       max-height: 30px;

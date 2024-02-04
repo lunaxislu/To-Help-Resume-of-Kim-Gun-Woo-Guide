@@ -1,16 +1,17 @@
 import { supabase } from '../../api/supabase/supabaseClient';
-import { UsedItem, Communityy } from '../../pages//home/usedtypes';
+import { UsedItem } from '../../pages//home/usedtypes';
+import { Post } from '../../pages/community/api/model';
 
 export const fetchData = async (): Promise<{
   usedItems: UsedItem[];
-  communityItems: Communityy[];
+  communityItems: Post[];
 }> => {
   try {
     const { data: usedItemsData, error: usedItemsError } = await supabase
       .from('products')
       .select('*')
-      .order('created_at', { ascending: false })
-      .limit(6);
+      .order('created_at', { ascending: false });
+    // .limit(6);
 
     const { data: communityItemsData, error: communityItemsError } =
       await supabase

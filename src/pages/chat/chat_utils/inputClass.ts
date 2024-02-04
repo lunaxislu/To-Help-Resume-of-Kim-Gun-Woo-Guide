@@ -9,6 +9,8 @@ export class InputHandler {
     setChatInput: React.Dispatch<SetStateAction<string>>
   ) => {
     const { name, value } = e.target;
+    console.log(value, 'in InputHandler');
+
     name === 'chat' && setChatInput(value);
   };
 
@@ -24,24 +26,20 @@ export class InputHandler {
     images: (string | undefined)[],
     setShowFileInput: React.Dispatch<SetStateAction<boolean>>
   ) => {
+    const util = new UtilForChat();
     if (e.key === 'Enter') {
       if (e.shiftKey) {
         return;
       } else {
+        console.log(chatInput, 'in pressEnter');
         // 폼 제출
         const formElement = formRef.current;
-        const util = new UtilForChat();
         if (formElement) {
-          util.sendMessage(
-            e,
-            curUser,
-            clicked,
-            chatInput,
-            images,
-            setChatInput,
-            setImages,
-            setShowFileInput
-          );
+          util.sendMessage(e, curUser, clicked, chatInput, images).then(() => {
+            setImages([]);
+            setShowFileInput(false);
+            setChatInput('');
+          });
         }
       }
     }

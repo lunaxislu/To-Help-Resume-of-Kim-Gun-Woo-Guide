@@ -3,11 +3,14 @@ import styled, { css } from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
 import { fetchData } from '../../components/main/DataFetch';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
 import parseDate from '../../util/getDate';
 import { FaArrowRight } from 'react-icons/fa6';
 import { StFadeAni } from '../../pages/productsDetail/style';
+import * as St from '../../styles/products/ProductsListStyle';
+import CommunityList from '../../components/community/CommunityList';
+import { Posts } from '../../styles/community/CommunityListStyle';
 
 type UsedItemsCountData = {
   count: number | null;
@@ -15,10 +18,11 @@ type UsedItemsCountData = {
     length: number;
   } | null;
 };
-
 const Home = () => {
+  const navigate = useNavigate();
+
   const carouselImages: string[] = [
-    process.env.PUBLIC_URL + '/assets/carouselmain.png',
+    process.env.PUBLIC_URL + '/assets/bannerMain.jpg',
     process.env.PUBLIC_URL + '/assets/carousel0.png',
     process.env.PUBLIC_URL + '/assets/carousel1.png',
     process.env.PUBLIC_URL + '/assets/carousel2.png',
@@ -69,58 +73,94 @@ const Home = () => {
     return textOnly;
   };
 
+  const scrollToSection = (height: number) => {
+    window.scrollTo({ top: height, behavior: 'smooth' });
+  };
+
   return (
     <HomeContainer>
-      <CarouselWrapper>
-        <InfiniteCarousel carouselImages={carouselImages} />
-      </CarouselWrapper>
+      <BannerContainer>
+        <MainBannerpic src="/assets/MainBannerPic.jpg" alt="메인배너사진" />
+
+        <ButtonContainer>
+          <ProductsBannerContainer>
+            <img
+              style={{ width: '61rem', height: '20rem' }}
+              src="/assets/중고거래.svg"
+              alt="중고거래"
+            />
+            <ScrollButton onClick={() => scrollToSection(800)}>
+              <img
+                style={{ width: '36.8rem', height: '9.2rem' }}
+                src="/assets/중고거래버튼.svg"
+                alt="중고거래버튼"
+              />
+            </ScrollButton>
+          </ProductsBannerContainer>
+          <CommunityBannerContainer>
+            <img
+              style={{ width: '50em', height: '20rem' }}
+              src="/assets/커뮤니티.svg"
+              alt="커뮤니티"
+            />
+            <ScrollButton onClick={() => scrollToSection(1570)}>
+              <img
+                style={{ width: '36.8rem', height: '9.2rem' }}
+                src="/assets/커뮤버튼.svg"
+                alt="커뮤니티버튼"
+              />
+            </ScrollButton>
+          </CommunityBannerContainer>
+        </ButtonContainer>
+      </BannerContainer>
+
       <AllCardContainer>
         <ProductsContainer>
           <ProductsTitle>
             <div>
-              {usedItemsCountData?.data?.length}개의 상품이 거래되고 있어요!
+              {usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!
             </div>
             <ProductsLink to="/products">
               전체보기
               <FaArrowRight />
             </ProductsLink>
           </ProductsTitle>
-          <ProductsListContainer>
-            {/* 지금 데이터 6개 가져오고 있는데, 모바일에서는 6개, 웹에서는 5개 보여져야함 */}
-            {usedItems.slice(0, isMobile ? 6 : 5).map((item) => (
-              <ToUsedItemDetailPage
-                key={item.id}
-                to={`/products/detail/${item.id}`}
-              >
-                <ProductsList>
-                  {item.image_url && item.image_url.length !== undefined ? (
-                    <div className="imageWrapper">
-                      <img src={item.image_url[0]} alt="Item" />
-                    </div>
-                  ) : (
-                    <svg
-                      width="208"
-                      height="208"
-                      viewBox="0 0 208 208"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <rect width="208" height="208" rx="15" fill="#F8F8F8" />
-                    </svg>
-                  )}
 
-                  <ProductsCardQuality
-                    $quality={item.quality}
-                    key={item.quality}
-                  >
-                    {item.quality}
-                  </ProductsCardQuality>
-                  <h3>{item.title}</h3>
-                  <p>{item.price.toLocaleString('kr-KO')}원</p>
-                </ProductsList>
-              </ToUsedItemDetailPage>
+          <St.ProductsListContainer>
+            {usedItems.slice(0, isMobile ? 6 : 10)?.map((item) => (
+              <St.ProductsCardContainer
+                key={item.id}
+                onClick={() => navigate(`/products/detail/${item.id}`)}
+              >
+                <St.CardImageWrapper>
+                  {item.isSell === true ? (
+                    <St.IsSellProducts>
+                      <St.SoldOut>판매완료</St.SoldOut>
+                    </St.IsSellProducts>
+                  ) : (
+                    <div></div>
+                  )}
+                  {item.image_url !== null && item.image_url !== undefined ? (
+                    <St.CardImage src={item.image_url[0]} alt="상품 이미지" />
+                  ) : (
+                    <div></div>
+                  )}
+                </St.CardImageWrapper>
+                {[item.quality].map((condition) => (
+                  <St.CardQuality $quality={condition} key={condition}>
+                    {condition}
+                  </St.CardQuality>
+                ))}
+                <St.CardTitle>{item.title}</St.CardTitle>
+                <St.LikesWrapper>
+                  <St.CardPrice>
+                    {item.price.toLocaleString('kr-KO')}원
+                  </St.CardPrice>
+                  <St.Likes>♥ {item.likes}</St.Likes>
+                </St.LikesWrapper>
+              </St.ProductsCardContainer>
             ))}
-          </ProductsListContainer>
+          </St.ProductsListContainer>
         </ProductsContainer>
 
         <ComunityContainer>
@@ -131,76 +171,8 @@ const Home = () => {
               <FaArrowRight />
             </CommunityLink>
           </Communitytitle>
-          <ComunityWrapper>
-            {communityItems.map((item) => (
-              <ToCommunityDetailPage
-                key={item.post_id}
-                to={`/community/detail/${item.post_id}`}
-              >
-                <ComunityList>
-                  <div className="commucontent">
-                    <div className="ttitle">
-                      <h3>{item.title}</h3>
-                    </div>
-                    <div className="commupic">
-                      {item.main_image ? (
-                        <img
-                          className="community-pic"
-                          src={item.main_image}
-                          alt="Community Post"
-                        />
-                      ) : (
-                        ''
-                      )}
-                      <p
-                        className={
-                          item.main_image
-                            ? 'withcommu-image'
-                            : 'withoutcommu-image'
-                        }
-                      >
-                        {handleText(item.content)}
-                      </p>
-                    </div>
-                  </div>
-                  <div>
-                    <svg
-                      className="thumbs"
-                      width="13"
-                      height="13"
-                      viewBox="0 0 13 13"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M0.00242571 5.92305C-0.00533256 5.83585 0.00556749 5.74802 0.0344343 5.66515C0.0633011 5.58227 0.109504 5.50616 0.170112 5.44164C0.23072 5.37711 0.304409 5.32559 0.386503 5.29034C0.468598 5.25508 0.557305 5.23686 0.646996 5.23684H1.88275C2.05438 5.23684 2.21899 5.30338 2.34036 5.42183C2.46172 5.54027 2.5299 5.70092 2.5299 5.86842V11.8684C2.5299 12.0359 2.46172 12.1966 2.34036 12.315C2.21899 12.4335 2.05438 12.5 1.88275 12.5H1.18187C1.0199 12.5 0.863797 12.4408 0.7444 12.334C0.625002 12.2272 0.55099 12.0805 0.536979 11.9231L0.00242571 5.92305ZM4.47138 5.67105C4.47138 5.40705 4.63964 5.17084 4.88394 5.05842C5.41753 4.81274 6.32646 4.31916 6.73643 3.65189C7.26484 2.79168 7.3645 1.23768 7.38068 0.881788C7.38295 0.831893 7.38165 0.781998 7.38845 0.732735C7.47614 0.115998 8.69571 0.836314 9.16328 1.598C9.41729 2.01105 9.44965 2.55389 9.42311 2.978C9.39432 3.43147 9.25809 3.86947 9.12445 4.30463L8.8397 5.23211H12.3528C12.4528 5.2321 12.5514 5.2547 12.641 5.29815C12.7305 5.34159 12.8085 5.40469 12.8688 5.48249C12.9292 5.56029 12.9702 5.65069 12.9888 5.74658C13.0073 5.84246 13.0028 5.94124 12.9757 6.03516L11.2381 12.0402C11.1997 12.1727 11.1181 12.2892 11.0056 12.3722C10.8931 12.4552 10.7559 12.5001 10.6149 12.5H5.11854C4.9469 12.5 4.78229 12.4335 4.66093 12.315C4.53956 12.1966 4.47138 12.0359 4.47138 11.8684V5.67105Z"
-                        fill="#DBFF00"
-                        fillOpacity="0.7"
-                      />
-                    </svg>
-                    <span className="likescount">{item.likes}</span>
-
-                    <svg
-                      className="commentss"
-                      width="12"
-                      height="13"
-                      viewBox="0 0 12 13"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M4.8 0.5H7.2C8.47304 0.5 9.69394 1.01868 10.5941 1.94194C11.4943 2.86519 12 4.1174 12 5.42308C12 6.72876 11.4943 7.98096 10.5941 8.90422C9.81235 9.70602 8.7887 10.2027 7.69908 10.3195C7.42451 10.3489 7.2 10.57 7.2 10.8462V11.7544C7.2 12.11 6.8397 12.3527 6.51214 12.2142C3.59783 10.9824 0 9.12524 0 5.42308C0 4.1174 0.505713 2.86519 1.40589 1.94194C2.30606 1.01868 3.52696 0.5 4.8 0.5Z"
-                        fill="#DBFF00"
-                        fillOpacity="0.7"
-                      />
-                    </svg>
-                    <span>{item.comment.length}</span>
-                    <h4>{parseDate(item.created_at)}</h4>
-                  </div>
-                </ComunityList>
-              </ToCommunityDetailPage>
-            ))}
-          </ComunityWrapper>
+          <ComunityWrapper></ComunityWrapper>
+          <CommunityList posts={communityItems} />
         </ComunityContainer>
       </AllCardContainer>
     </HomeContainer>
@@ -224,21 +196,50 @@ const HomeContainer = styled.section`
   }
 `;
 
-const CarouselWrapper = styled.div`
+const MainBannerpic = styled.img`
   width: 100%;
-  /* @media screen and (max-width: 1116px) {
-    max-width: 111.6rem;
-  }
-  @media screen and (max-width: 1024px) {
-    max-width: 102.4rem;
-  }
-  @media screen and (max-width: 768px) {
-    max-width: 76.8rem;
-  }
-  @media screen and (max-width: 530px) {
-    max-width: 53rem;
-  } */
+  max-width: 144rem;
+  height: 63rem;
 `;
+
+const BannerContainer = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 144rem;
+`;
+
+const ButtonContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 10rem;
+`;
+
+const ProductsBannerContainer = styled.div`
+  width: 120rem;
+  height: 20rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 10rem;
+`;
+const CommunityBannerContainer = styled.div`
+  width: 120rem;
+  height: 20rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 10rem;
+`;
+const ScrollButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
+
 const AllCardContainer = styled.div`
   width: 100%;
   @media screen and (max-width: 1300px) {
@@ -268,6 +269,7 @@ const ProductsTitle = styled.div`
   margin: 0 auto;
   padding: 0 1.5rem;
   width: 100%;
+  margin-bottom: 5rem;
   font-size: var(--fontSize-H3);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
@@ -299,8 +301,8 @@ const ProductsLink = styled(Link)`
     gap: 0.3rem;
   }
   &:hover {
-    background-color: #83ad2e;
-    color: #101d1c;
+    background-color: var(--opc-100);
+    color: var(--bgColor);
   }
   svg {
     width: 1rem;
@@ -310,171 +312,6 @@ const ProductsLink = styled(Link)`
       height: 0.9rem;
       color: var(--opc-100);
     }
-  }
-`;
-
-const ProductsListContainer = styled.ul`
-  display: grid;
-  margin: auto;
-  padding: 1.5rem;
-  grid-template-columns: repeat(5, 1fr);
-  margin-top: 2rem;
-  row-gap: 1.5rem;
-  column-gap: 1.8rem;
-  /* align-items: flex-start;
-  justify-content: center;
-  place-items: center; */
-  @media screen and (max-width: 1160px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  @media screen and (max-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  @media screen and (max-width: 768px) {
-    column-gap: 1.5rem;
-    row-gap: 1.8rem;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  @media screen and (max-width: 670px) {
-    column-gap: 1.5rem;
-    row-gap: 1.8rem;
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media screen and (max-width: 520px) {
-    row-gap: 1.8rem;
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media screen and (max-width: 349px) {
-    grid-template-columns: repeat(1, 1fr);
-  }
-`;
-
-const ProductsList = styled.li`
-  /* display: inline-block; */
-  width: 100%;
-  /* height: 31.5rem; */
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  border-radius: 0.6rem;
-  @media screen and (max-width: 768px) {
-    width: 100%;
-  }
-  @media screen and (max-width: 520px) {
-    width: 100%;
-  }
-
-  .imageWrapper {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1/1;
-    border-radius: 0.6rem;
-    border-style: none;
-    margin-bottom: 2rem;
-    @media screen and (max-width: 768px) {
-      margin-bottom: 1rem;
-    }
-  }
-  img {
-    object-fit: cover;
-    object-position: center;
-    width: 100%;
-    aspect-ratio: 1/1;
-    border-style: none;
-    border-radius: 0.6rem;
-  }
-
-  h3 {
-    font-size: var(--fontSize-body);
-    color: var(--11-gray);
-    margin-top: 1rem;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    white-space: normal;
-    overflow: hidden;
-    height: 2.5rem;
-    white-space: wrap;
-    text-overflow: ellipsis;
-    line-height: 1.5;
-    @media screen and (max-width: 768px) {
-      width: 15rem;
-      height: 2rem;
-      line-height: 1.5;
-      margin-top: 0.6rem;
-      overflow: hidden;
-      white-space: normal;
-      text-overflow: ellipsis;
-      color: var(--11-gray, #f8f8f8);
-      font-weight: var(--fontWeight-medium);
-      font-size: var(--fontSize-H5);
-      /* line-height: 191.2%; */
-    }
-  }
-
-  p {
-    font-size: var(--fontSize-body);
-    font-weight: var(--fontWeight-bold);
-    color: var(--11-gray);
-    margin-top: 1rem;
-    text-align: left;
-    @media screen and (max-width: 768px) {
-      height: 2.3rem;
-      font-weight: var(--fontWeight-bold);
-      font-size: var(--fontSize-H5);
-    }
-  }
-`;
-interface QualityProps {
-  $quality: string;
-}
-const ProductsCardQuality = styled.h1<QualityProps>`
-  width: 9rem;
-  padding: 0 0.8rem;
-  text-align: center;
-  line-height: 1.7;
-  border-radius: 0.3rem;
-  margin-top: 1rem;
-  background-color: #fcfcfc;
-
-  color: var(--2-gray);
-  margin-bottom: 0.6rem;
-  font-size: var(--fontSize-H6);
-  // 배경색 조건부 렌더링
-  ${(props) => {
-    if (props.children === '새상품(미사용)') {
-      return css`
-        background-color: var(--opc-100);
-        color: var(--2-gray);
-      `;
-    }
-    if (props.children === '고장/파손 상품') {
-      return css`
-        background-color: var(--4-gray);
-        color: var(--11-gray);
-      `;
-    }
-  }}
-  @media screen and (max-width: 768px) {
-    margin-top: 1rem;
-    width: 8rem;
-    height: 2rem;
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 191.2%;
-    text-align: center;
-  }
-`;
-
-const ToUsedItemDetailPage = styled(Link)`
-  text-decoration: none;
-  cursor: pointer;
-  color: black;
-  @media screen and (max-width: 768px) {
   }
 `;
 
@@ -538,8 +375,8 @@ const CommunityLink = styled(Link)`
     gap: 0.3rem;
   }
   &:hover {
-    background-color: #83ad2e;
-    color: #101d1c;
+    background-color: var(--opc-100);
+    color: var(--bgColor);
   }
   /* p {
     @media screen and (max-width: 768px) {

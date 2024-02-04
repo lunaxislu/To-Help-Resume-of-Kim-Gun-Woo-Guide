@@ -19,7 +19,11 @@ export default function ChatMyMsg({
     <>
       <div key={msg.id}>
         {msg.isFirst ? (
-          <div id={msg.chat_room_id} onClick={(e) => findChatRoom(e)}>
+          <div
+            id={msg.chat_room_id}
+            onClick={(e) => findChatRoom(e)}
+            key={msg.id}
+          >
             <StMyChatballoon style={{ cursor: 'pointer' }} key={msg.id}>
               <p style={{ textDecoration: 'underline', color: 'blue' }}>
                 {msg.content === null ? null : msg.content}
