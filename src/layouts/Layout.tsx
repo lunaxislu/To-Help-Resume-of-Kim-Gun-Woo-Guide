@@ -81,10 +81,11 @@ const Layout = () => {
               );
             });
             console.log(exists, '내가 소속 된 채팅방이 맞는지 확인');
+            console.log(exists);
 
             // 내가 보낸 메세지가 아닐 때 알림 작동
             if (
-              exists[0] &&
+              exists &&
               exists.length > 0 &&
               payload.new.sender_id !== userID
             ) {
@@ -140,7 +141,12 @@ const Layout = () => {
 
   return (
     <Wrapper>
-      <SideBar />
+      <SideBar
+        notification={notification}
+        newNotiExists={newNotiExists}
+        setNewNotiExists={setNewNotiExists}
+        setNotification={setNotification}
+      />
       <Header
         notification={notification}
         newNotiExists={newNotiExists}

@@ -344,8 +344,8 @@ export const StNotiContainer = styled.div`
   flex-direction: column;
   position: absolute;
   padding-top: 2rem;
-  top: 7%;
-  right: 18%;
+  top: 75%;
+  right: 9%;
   z-index: 3;
   transition: all 0.3s ease;
   animation: ${NotiAni} 0.3s ease;
@@ -388,6 +388,6 @@ export const StNotiDot = styled.div`
   background-color: red;
   border-radius: 50%;
   position: absolute;
-  top: 0;
-  right: 0.5rem;
+  top: 18%;
+  right: 0.4rem;
 `;
