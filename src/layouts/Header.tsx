@@ -278,10 +278,13 @@ const Header = ({
                 )}
               </St.ButtonContainer>
             </St.HeaderSection>
-            <SearchBar
-              showSearchComp={showSearchComp}
-              setShowSearchComp={setShowSearchComp}
-            />
+            <St.VisibleSearchBar>
+              <SearchBar
+                showSearchComp={showSearchComp}
+                setShowSearchComp={setShowSearchComp}
+              />
+            </St.VisibleSearchBar>
+
             {/* <St.NavSection>
               <St.NavBar>
                 <St.NavButton to="/products" onClick={handlePageChange}>

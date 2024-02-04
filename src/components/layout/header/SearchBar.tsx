@@ -203,13 +203,13 @@ const SearchInputContainer = styled.div<MobileProps>`
 `;
 
 const SearchInputBar = styled.input`
-  width: 48.8rem;
+  width: 33rem;
   height: 3.7rem;
   padding-left: 2rem;
   border-radius: 1.9rem;
-  background: var(--3-gray, #2c2c2c);
+  background: var(--opc-30);
   border: none;
-  color: var(--11-gray, #717171);
+  color: var(--black);
   font-size: var(--fontSize-H5);
   font-weight: var(--fontWeight-medium);
   line-height: 2.4856rem;

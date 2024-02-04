@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import styled, { keyframes } from 'styled-components';
+import SearchBar from '../layout/header/SearchBar';
 
 const StSideBtnContainer = styled.div`
   width: fit-content;
@@ -96,12 +97,23 @@ const StMenuButtons = styled.button<ButtonProps>`
   }
 `;
 
+const StSearchBarContainer = styled.div`
+  position: absolute;
+  top: 385%;
+  right: 8rem;
+`;
+
 const SideBar = () => {
   const [isShow, setIsShow] = useState<boolean>(false);
+  const [isSearchBarVisible, setIsSearchBarVisible] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   const setMenuToggle = () => {
     setIsShow((prev) => !prev);
+  };
+  const toggleSearchBar = () => {
+    setIsSearchBarVisible((prev) => !prev);
   };
   const arr = [
     '판매하기',
@@ -117,6 +129,7 @@ const SideBar = () => {
     switch (menu) {
       case '판매하기':
         navigate('/productsposts');
+
         break;
       case '중고거래':
         navigate('/products');
@@ -125,13 +138,12 @@ const SideBar = () => {
         navigate('/community');
         break;
       case '검색':
-        //
+        toggleSearchBar();
         break;
       case '채팅':
         navigate('/chat');
         break;
       case '알림':
-        //
         break;
       case '프로필':
         navigate('/mypage');
@@ -143,7 +155,24 @@ const SideBar = () => {
 
   return (
     <StSideBtnContainer>
-      <StMainButton onClick={setMenuToggle}>Menu</StMainButton>
+      <StMainButton
+        onClick={() => {
+          setMenuToggle();
+          if (isShow && isSearchBarVisible) {
+            toggleSearchBar();
+          }
+        }}
+      >
+        Menu
+      </StMainButton>
+      {isShow && isSearchBarVisible && (
+        <StSearchBarContainer>
+          <SearchBar
+            showSearchComp={isSearchBarVisible}
+            setShowSearchComp={setIsSearchBarVisible}
+          />
+        </StSearchBarContainer>
+      )}
       {arr.map((menu, i) => {
         return (
           isShow && (

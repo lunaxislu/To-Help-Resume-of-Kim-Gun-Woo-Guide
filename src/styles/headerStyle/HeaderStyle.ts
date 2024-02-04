@@ -86,6 +86,14 @@ export const HeaderSection = styled.section`
   }
 `;
 
+export const VisibleSearchBar = styled.div`
+  display: none;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+`;
+
 export const Logo = styled.img`
   width: 23.4rem;
   height: 5.4rem;

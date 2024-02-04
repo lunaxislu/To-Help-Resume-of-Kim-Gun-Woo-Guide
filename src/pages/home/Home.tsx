@@ -338,6 +338,7 @@ const ProductsTitle = styled.div`
   margin: 0 auto;
   padding: 0 1.5rem;
   width: 100%;
+  margin-bottom: 5rem;
   font-size: var(--fontSize-H3);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
@@ -369,8 +370,8 @@ const ProductsLink = styled(Link)`
     gap: 0.3rem;
   }
   &:hover {
-    background-color: #83ad2e;
-    color: #101d1c;
+    background-color: var(--opc-100);
+    color: var(--bgColor);
   }
   svg {
     width: 1rem;
@@ -443,8 +444,8 @@ const CommunityLink = styled(Link)`
     gap: 0.3rem;
   }
   &:hover {
-    background-color: #83ad2e;
-    color: #101d1c;
+    background-color: var(--opc-100);
+    color: var(--bgColor);
   }
   /* p {
     @media screen and (max-width: 768px) {
