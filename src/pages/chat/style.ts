@@ -161,7 +161,7 @@ const StChatForm = styled.form`
     width: 100%;
     margin: auto;
     bottom: -1rem;
-    background-color: var(--2-gray);
+    background-color: var(--bgColor);
     padding: 1rem;
   }
 `;

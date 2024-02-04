@@ -71,6 +71,8 @@ const Layout = () => {
             .select('participants')
             .eq('id', payload.new.chat_room_id);
 
+          console.log(chatRooms, '메세지 따라가서 연결 된 채팅방 가져옴');
+
           // 소속 된 채팅방의 업데이트인지 확인
           if (chatRooms && chatRooms.length > 0) {
             const exists = chatRooms.map((room) => {
@@ -78,6 +80,8 @@ const Layout = () => {
                 (part: Participants) => part.user_id === curUser?.uid
               );
             });
+            console.log(exists, '내가 소속 된 채팅방이 맞는지 확인');
+            console.log(exists);
 
             // 내가 보낸 메세지가 아닐 때 알림 작동
             if (
@@ -137,13 +141,13 @@ const Layout = () => {
 
   return (
     <Wrapper>
-      <SideBar />
-      <Header
+      <SideBar
         notification={notification}
         newNotiExists={newNotiExists}
         setNewNotiExists={setNewNotiExists}
         setNotification={setNotification}
       />
+      <Header />
       <ContentWrapper>
         <Outlet />
       </ContentWrapper>
