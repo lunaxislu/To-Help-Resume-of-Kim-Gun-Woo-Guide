@@ -1,5 +1,4 @@
-import React from 'react';
-import * as St from '../../styles/products/ProductsNothingStyle';
+import * as St from '../../../styles/products/ProductsNothingStyle';
 
 interface Props {
   selectCategory: string[];
