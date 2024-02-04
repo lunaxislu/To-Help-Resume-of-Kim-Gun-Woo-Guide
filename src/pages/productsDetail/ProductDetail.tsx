@@ -36,6 +36,10 @@ import { TbCircleNumber1 } from 'react-icons/tb';
 import { HiSparkles } from 'react-icons/hi2';
 import { FaLocationDot, FaTruckFast } from 'react-icons/fa6';
 import { RiExchangeFill } from 'react-icons/ri';
+import ImageViewer from '../../components/productDetailInfoBody/ImageViewer';
+import styled from 'styled-components';
+import ProductsCard from '../../components/prducts/ProductsCard';
+import { FaArrowRight } from 'react-icons/fa';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
@@ -54,6 +58,37 @@ const ProductDetail = () => {
   const [selectedUser, setSelectedUser] = useState<string>('');
   const [likesCount, setLikesCount] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [showViewer, setShowViewer] = useState<boolean>(false);
+  const [similar, setSimilar] = useState<Product[]>([]);
+  const [otherPosts, setOtherPosts] = useState<Product[]>([]);
+
+  const getOthers = async (targetId: string) => {
+    const { data: otherPosts, error: failFetchPosts } = await supabase
+      .from('products')
+      .select('*')
+      .eq('post_user_uid', targetId);
+
+    if (failFetchPosts)
+      console.log('작성자 게시물 가져오기 오류', failFetchPosts);
+
+    if (otherPosts) {
+      setOtherPosts(otherPosts);
+    }
+  };
+
+  const getSilmilar = async (productTags: string[]) => {
+    const { data: similarProducts, error: failFetchSimilar } = await supabase
+      .from('products')
+      .select('*')
+      .contains('tags', productTags);
+
+    if (failFetchSimilar)
+      console.log('추천 상품 가져오기 오류', failFetchSimilar);
+
+    if (similarProducts) {
+      setSimilar(similarProducts);
+    }
+  };
 
   const makeChatRoom = async (e: MouseEvent<HTMLDivElement>) => {
     // curUser, targetUser 준비
@@ -169,6 +204,13 @@ const ProductDetail = () => {
     setShowChatList(true);
   };
 
+  // 상품추천란 네비게이션 함수
+  const navigateTo = (e: MouseEvent<HTMLButtonElement>) => {
+    const { id } = e.currentTarget;
+    if (id && id === product![0].post_user_uid) navi(`/postersProducts/${id}`);
+    else navi('/products');
+  };
+
   useEffect(() => {
     getUserData({ setCurUser });
     getTargetData({ id, setTarget });
@@ -176,6 +218,15 @@ const ProductDetail = () => {
     handleCheckIsSoldOut({ id, setIsSoldOut });
     handleGetLikeCount({ id, setLikesCount });
   }, []);
+
+  useEffect(() => {
+    if (target) {
+      getOthers(target?.uid);
+    }
+    if (product) {
+      getSilmilar(product[0].tags);
+    }
+  }, [target, product]);
 
   useEffect(() => {
     if (curUser) {
@@ -238,7 +289,7 @@ const ProductDetail = () => {
     data.changable,
     data.shipping_cost
   ];
-  
+
   // 수정할 기본 데이터를 담은 변수 선언(하빈 추가)
   const selectedProductData = {
     id: data.id,
@@ -274,11 +325,16 @@ const ProductDetail = () => {
           setShowChatList={setShowChatList}
         />
       )}
+      {showViewer && (
+        // 모바일 때 위치 조정 //
+        <ImageViewer product={product} setShowViewer={setShowViewer} />
+      )}
+
       <ToastContainer />
       {/* 본체 */}
       <St.StDetailContainer>
         <St.StDetailInfoSection>
-          <St.StImageWrapper>
+          <St.StImageWrapper onClick={() => setShowViewer(true)}>
             <ProductDetailCarousel
               carouselImages={
                 product[0]?.image_url === null ? [] : product[0]?.image_url
@@ -349,9 +405,74 @@ const ProductDetail = () => {
             })}
           </St.StProductCategory>
         </St.StProductIntroSection>
+        {/* 상품 추천 섹션 */}
+        <div>
+          <StSimilarProductTitleWrapper>
+            비슷한 상품
+            <StToSectionButton onClick={navigateTo}>
+              전체보기 <FaArrowRight />
+            </StToSectionButton>
+          </StSimilarProductTitleWrapper>
+          <ProductsCard
+            posts={similar
+              .filter((product) => product.isSell !== true)
+              .slice(0, 5)}
+          />
+        </div>
+        <div>
+          <StOtherPostsTitleWrapper>
+            이 판매자의 다른 상품
+            <StToSectionButton
+              id={product[0].post_user_uid}
+              onClick={navigateTo}
+            >
+              전체보기 <FaArrowRight />
+            </StToSectionButton>
+          </StOtherPostsTitleWrapper>
+          <ProductsCard
+            posts={otherPosts
+              .filter((product) => product.isSell !== true)
+              .slice(0, 5)}
+          />
+        </div>
       </St.StDetailContainer>
     </>
   );
 };
 
 export default ProductDetail;
+
+const StSimilarProductTitleWrapper = styled.h2`
+  width: 100%;
+  font-size: 2rem;
+  margin-block: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const StOtherPostsTitleWrapper = styled.h2`
+  width: 100%;
+  font-size: 2rem;
+  margin-block: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const StToSectionButton = styled.button`
+  background: var(--opc-100);
+  color: white;
+  border-radius: 50px;
+  padding: 0.8rem;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #414141;
+    color: var(--opc-100);
+  }
+`;

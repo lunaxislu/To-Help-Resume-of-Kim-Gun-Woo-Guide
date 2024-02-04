@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { CommuListProps, Post } from '../../pages/community/model';
 import * as St from '../../styles/community/CommunityListStyle';
@@ -18,7 +18,6 @@ const CommunityList: React.FC<CommuListProps> = ({ posts }) => {
     return textOnly;
   };
   //색 랜덤 지정
-
   const generateRandomColorName = (): string =>
     RANDOM_COLORS[Math.floor(Math.random() * RANDOM_COLORS.length)];
 
@@ -63,9 +62,10 @@ const CommunityList: React.FC<CommuListProps> = ({ posts }) => {
             </St.Posts>
           );
         })}
+        {/* {isLoading && <SkeletonCommunityCard cards={4} />} */}
       </St.Container>
     </div>
   );
 };
 
-export default CommunityList;
+export default React.memo(CommunityList);

@@ -6,8 +6,8 @@ import 'react-quill/dist/quill.snow.css';
 
 import { useNavigate } from 'react-router';
 import { supabase } from '../../api/supabase/supabaseClient';
+import WriteLayout from '../../components/community/WriteLayout';
 import * as St from '../../styles/community/CommunityWriteStyle';
-import WriteLayout from './WriteLayout';
 import { ProfileObject } from './model';
 export const CATEGORY_ARRAY = [
   '전체',

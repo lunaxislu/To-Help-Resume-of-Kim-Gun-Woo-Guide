@@ -16,14 +16,14 @@ export const StFadeAni = keyframes`
 `;
 
 const StDetailContainer = styled.div`
-  width: 100%;
+  width: 77.5%;
   height: 100%;
   max-width: 1116px;
   margin: auto;
   animation: ${StFadeAni} 0.3s ease;
 
   @media screen and (max-width: 768px) {
-    width: 100%;
+    width: 77.5%;
     max-width: 768px;
     padding: 0;
   }
@@ -59,6 +59,7 @@ const StImageWrapper = styled.div`
   overflow: hidden;
   background-color: aliceblue;
   position: relative;
+  cursor: pointer;
 
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -314,8 +315,10 @@ const StProductIntroSection = styled.section`
   width: 100%;
   max-width: 111.6rem;
   line-height: 3.1rem;
+  padding: 0 1.5rem;
   color: var(--8-gray);
   margin: auto;
+  border-bottom: 0.1rem solid #5a5a5a;
 
   @media screen and (max-width: 768px) {
     width: 100%;

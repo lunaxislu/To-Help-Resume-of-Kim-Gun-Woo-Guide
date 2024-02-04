@@ -1,22 +1,18 @@
-import { ImageActions } from '@xeger/quill-image-actions';
-import { ImageFormats } from '@xeger/quill-image-formats';
 import React, { useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import ReactQuill, { Quill } from 'react-quill';
+import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router';
 import { v4 as uuid } from 'uuid';
 import { supabase } from '../../api/supabase/supabaseClient';
-import * as St from '../../styles/community/CommunityWriteStyle';
-import { CATEGORY_ARRAY } from './WritePost';
+import { CATEGORY_ARRAY } from '../../pages/community/WritePost';
 import {
   addPostMutation,
   fetchDetailPost,
   updatePostMutation
-} from './commuQuery';
-import { WriteLayoutProps } from './model';
-Quill.register('modules/imageActions', ImageActions);
-Quill.register('modules/imageFormats', ImageFormats);
+} from '../../pages/community/commuQuery';
+import { WriteLayoutProps } from '../../pages/community/model';
+import * as St from '../../styles/community/CommunityWriteStyle';
 
 const WriteLayout: React.FC<WriteLayoutProps> = ({
   profile,

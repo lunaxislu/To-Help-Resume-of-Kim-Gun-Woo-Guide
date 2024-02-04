@@ -105,16 +105,18 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
     font-size: var(--fontSize-body);
-    background-color: var(--bgColor);
+    
+    
     //dot bg
 
-  --s: 100px; /* control the size */
-  
-  --_g: #0000 90deg,#36613610 0;
-  background: 
+    --s: 100px; /* control the size */
+
+    --_g: #0000 90deg,#36613610 0;
+    background:
     conic-gradient(from 90deg at 0px 0px,var(--_g)),
     conic-gradient(from 90deg at 1px 1px,var(--_g));
-  background-size: var(--s) var(--s), calc(var(--s)/2) calc(var(--s)/2);
+    background-size: var(--s) var(--s), calc(var(--s)/2) calc(var(--s)/2);
+    background-color: var(--bgColor);
 
 
     //
