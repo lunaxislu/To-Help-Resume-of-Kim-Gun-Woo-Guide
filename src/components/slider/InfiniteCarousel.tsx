@@ -68,7 +68,7 @@ const InfiniteCarousel: React.FC<InfiniteCarouselProps> = ({
           />
         ))}
       </Slider> */}
-      <MainImage src="/assets/mainbanner.png" alt="메인화면" />
+      <MainImage src="/assets/MainBannerPic.jpg" alt="메인화면" />
       {/* <CarouselButtons>
         <ArrowButton onClick={previous}>
           <ColoredIcon>
@@ -89,7 +89,7 @@ export default InfiniteCarousel;
 
 const MainImage = styled.img`
   width: 100%;
-  min-height: 40.1rem;
+  height: 67rem;
   object-fit: cover;
   object-position: center;
   @media screen and (max-width: 768px) {
