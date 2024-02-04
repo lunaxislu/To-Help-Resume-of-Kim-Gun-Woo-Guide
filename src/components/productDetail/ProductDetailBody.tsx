@@ -59,24 +59,17 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
             {isHover && (
               <StQualityInfoBox>
                 <p>
-                  <span>새 상품</span> &nbsp;사용하지 않은 새 상품이에요
-                </p>
-                <p>
                   <span>사용감 없음</span> &nbsp;사용은 했지만 눈에 띄는
                   흔적이나 얼룩이 없어요 / 아주 조금 사용했어요
                 </p>
 
                 <p>
-                  <span>사용감 적음</span> &nbsp;눈에 띄는 흔적이나 얼룩이 약간
+                  <span>사용감 있음</span> &nbsp;눈에 띄는 흔적이나 얼룩이 약간
                   있어요 / 절반정도 사용했어요
                 </p>
                 <p>
                   <span>사용감 많음</span> &nbsp;눈에 띄는 흔적이나 얼룩이 많이
                   있어요 / 많이 사용했어요
-                </p>
-                <p>
-                  <span>고장 / 파손 상품</span> &nbsp;기능 이상이나 외관 손상
-                  등으로 수리가 필요해요{' '}
                 </p>
               </StQualityInfoBox>
             )}
@@ -150,7 +143,7 @@ const StQualityInfo = styled.div`
 const StQualityInfoBox = styled.div`
   width: fit-content;
   height: fit-content;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: var(--bgColor);
   position: absolute;
   left: -500px;
   bottom: -100px;
@@ -170,6 +163,7 @@ const StQualityInfoBox = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
+    color: black;
   }
 
   span {
