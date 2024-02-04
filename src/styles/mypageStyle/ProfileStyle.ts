@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { RiBallPenLine } from 'react-icons/ri';
+import { MdAddAPhoto } from 'react-icons/md';
+import { IoMdSettings } from 'react-icons/io';
 
 export const StProfileContainer = styled.div`
   width: 100%;
@@ -11,59 +12,6 @@ export const StProfileContainer = styled.div`
   @media screen and (max-width: 1024px) {
     padding: 1.5rem;
   }
-`;
-
-export const StMobileNav = styled.div`
-  display: none;
-
-  & button {
-    background: transparent;
-    font-size: var(--fontSize-H5);
-    color: var(--10-gray);
-    border: none;
-    cursor: pointer;
-    &:hover {
-      color: var(--opc-90);
-    }
-  }
-
-  & div {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    white-space: nowrap;
-
-    & img {
-      cursor: pointer;
-    }
-  }
-
-  & p {
-    font-size: var(--fontSize-H5);
-  }
-
-  @media screen and (max-width: 768px) {
-    display: flex;
-    justify-content: space-between;
-    padding: 1.5rem;
-  }
-`;
-
-export const StMobileCancelButton = styled.button`
-  background: transparent;
-  border: none;
-`;
-
-export const StMobileSaveButton = styled.button`
-  background: transparent;
-  border: none;
-`;
-
-export const StMobileEditButton = styled.button`
-  background: transparent;
-  border: none;
-  font-size: 1rem;
-  color: var(--9-gray);
 `;
 
 export const StProfileContentContainer = styled.div`
@@ -85,8 +33,8 @@ export const StProfileImageWrapper = styled.div`
   position: relative;
 
   & img {
-    width: 18rem;
-    height: 18rem;
+    width: 16rem;
+    height: 16rem;
     border-radius: 50%;
   }
 
@@ -94,19 +42,19 @@ export const StProfileImageWrapper = styled.div`
     display: none;
   }
 
-  & button {
-    position: absolute;
-    background: var(--opc-100);
-    border: none;
-    padding: 0.7rem 2rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-weight: var(--fontWeight-semiBold);
-  }
-
   @media screen and (max-width: 1024px) {
     justify-content: center;
   }
+`;
+
+export const StEditUserPhoto = styled(MdAddAPhoto)`
+  position: absolute;
+  background: var(--opc-100);
+  padding: 1.2rem;
+  border-radius: 50%;
+  font-size: 5rem;
+  color: var(--white);
+  cursor: pointer;
 `;
 
 export const StProfileContentWrapper = styled.div`
@@ -117,20 +65,9 @@ export const StProfileContentWrapper = styled.div`
   gap: 2rem;
 `;
 
-export const StProfileButtonWrapper = styled.div`
+export const StProfileContentButtonWrapper = styled.div`
   display: flex;
-  align-items: center;
   gap: 1rem;
-  margin-left: 1rem;
-
-  @media screen and (max-width: 1024px) {
-    display: none;
-  }
-`;
-
-export const StButtonCotainer = styled.div`
-  display: flex;
-  justify-content: space-between;
 
   & button {
     background: transparent;
@@ -144,18 +81,22 @@ export const StButtonCotainer = styled.div`
   }
   @media screen and (max-width: 768px) {
     justify-content: center;
-    & button {
-      display: none;
-    }
   }
 `;
 
-export const StNicknameAndButton = styled.div`
+export const StNicknameWrapper = styled.div`
   display: flex;
   align-items: center;
+  gap: 1rem;
+
+  & div {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+  }
 
   & input {
-    background: var(--4-gray);
+    background: var(--opc-30);
     outline: none;
     border: none;
     border-radius: 8px;
@@ -165,18 +106,63 @@ export const StNicknameAndButton = styled.div`
     &:focus {
       border: 1px solid var(--opc-90);
     }
-  }
 
-  & h2 {
-    font-size: var(--fontSize-H2);
-    font-weight: var(--fontWeight-semiBold);
-    text-align: center;
-
-    @media screen and (max-width: 768px) {
+    & h2 {
+      font-size: var(--fontSize-H2);
+      font-weight: var(--fontWeight-semiBold);
       text-align: center;
-      font-size: var(--fontSize-H5);
     }
   }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+export const StSettingButton = styled(IoMdSettings)`
+  cursor: pointer;
+  font-size: var(--fontSize-H4);
+  &:hover {
+    color: var(--opc-90);
+  }
+`;
+
+export const StSettingMenu = styled.ul`
+  background: var(--opc-50);
+  display: flex;
+  text-align: center;
+  border-radius: 10px;
+  color: var(--black);
+
+  & li {
+    cursor: pointer;
+    padding: 1rem 1.2rem;
+    font-size: var(--fontSize-H6);
+
+    &:last-child {
+      color: red;
+    }
+
+    &:hover {
+      color: var(--opc-100);
+    }
+  }
+`;
+
+export const StCancelAndSaveWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 1rem;
+`;
+
+export const StContentButtonWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   & button {
     background: transparent;
@@ -187,10 +173,6 @@ export const StNicknameAndButton = styled.div`
     &:hover {
       color: var(--opc-90);
     }
-  }
-
-  @media screen and (max-width: 768px) {
-    justify-content: center;
   }
 `;
 
@@ -217,9 +199,4 @@ export const StProfileContent = styled.div`
   @media screen and (max-width: 768px) {
     display: none;
   }
-`;
-
-export const Pen = styled(RiBallPenLine)`
-  color: #dbff00;
-  text-align: center;
 `;
