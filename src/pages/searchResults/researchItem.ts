@@ -1,9 +1,10 @@
 import { supabase } from '../../api/supabase/supabaseClient';
+import { Post } from '../community/model';
 import { Communityy, UsedItem } from '../home/usedtypes';
 
 export interface ResearchResults {
   usedItemsWithImages: UsedItem[];
-  communityItemsWithImages: Communityy[];
+  communityItemsWithImages: Post[];
 }
 export async function researchItems(searchQuery: string) {
   const { data: usedItemData, error: usedItemError } = await supabase

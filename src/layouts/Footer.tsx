@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
       <St.FooterWrapper>
         <St.FooterArea>
           <St.Logo>
-            <img src="/assets/logo2.png" alt="로고" />
+            <img src="/assets/paletteMarketLogoSide.svg" alt="로고" />
           </St.Logo>
           <St.TextArea>
             <h1>
