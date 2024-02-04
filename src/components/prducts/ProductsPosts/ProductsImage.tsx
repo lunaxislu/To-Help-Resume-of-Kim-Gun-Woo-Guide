@@ -2,6 +2,7 @@ import React, { MouseEvent, useEffect, useState } from 'react';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import { v4 as uuid } from 'uuid';
 import * as St from '../../../styles/products/ProductsPostsStyle';
+import { ProductsEditType } from '../ProductsType';
 
 interface Props {
   uploadedFileUrl: string[];
@@ -45,7 +46,7 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
       }
       const res = supabase.storage.from('images').getPublicUrl(data.path);
       setFiles((prevFiles) => [file, ...prevFiles]);
-      setUploadedFileUrl((prev: any) => [...prev, res.data.publicUrl]);
+        setUploadedFileUrl((prev: any) => [...prev, res.data.publicUrl]);
     } catch (error) {
       console.error(
         '알 수 없는 문제가 발생하였습니다. 다시 시도하여 주십시오.',
@@ -70,8 +71,8 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
 
   // X 버튼 클릭 시 이미지 삭제
   const handleDeleteImage = (idx: any) => {
-    setUploadedFileUrl(uploadedFileUrl.filter((_, index) => index !== idx));
-    setFiles(files.filter((_, index) => index !== idx));
+      setUploadedFileUrl(uploadedFileUrl.filter((_, index) => index !== idx));
+      setFiles(files.filter((_, index) => index !== idx));
   };
 
   // useEffect(() => {
@@ -79,46 +80,45 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
   // },[files])
 
   return (
-    <St.UpLoadImageContainer>
-      <St.SemiTitle>
-        사진
-        <St.Required>*</St.Required>
-        <St.ImgCount>{uploadedFileUrl.length}/12</St.ImgCount>
-      </St.SemiTitle>
-      <St.ImageWrapper>
-        <St.ImageOrderWrapper>
-          <St.ImageOrder>대표사진</St.ImageOrder>
-        </St.ImageOrderWrapper>
-        {uploadedFileUrl.map((img: string, idx: number) => (
-          <St.ImageCard id={img} key={idx}>
-            <St.Image
-              id={img}
-              onClick={handleImageOrder}
-              src={img}
-              alt={`${img}-${idx}`}
-            />
-            <St.ImageDeleteBtn onClick={() => handleDeleteImage(idx)}>
-              <St.ImageDeleteIcon />
-            </St.ImageDeleteBtn>
-          </St.ImageCard>
-        ))}
-        {uploadedFileUrl.length >= 12 ? (
-          <></>
-        ) : (
-          <St.UpLoadBox htmlFor="file">
-            <input
-              type="file"
-              id="file"
-              name="file"
-              onChange={handleFiles}
-              multiple
-              hidden
-            />
-            +
-          </St.UpLoadBox>
-        )}
-      </St.ImageWrapper>
-    </St.UpLoadImageContainer>
+    <>
+      <St.UpLoadImageContainer>
+        <St.SemiTitle>
+          사진
+          <St.Required>*</St.Required>
+          <St.ImgCount>{uploadedFileUrl.length}/12</St.ImgCount>
+        </St.SemiTitle>
+        <St.ImageWrapper>
+          <St.ImageOrderWrapper>
+          </St.ImageOrderWrapper>
+          {uploadedFileUrl.map((img: string, idx: number) => (
+            <St.ImageCard id={img} key={idx}>
+              <St.Image src={img} alt={`${img}-${idx}`} />
+              <St.ImageOrderBtn  id={img} onClick={handleImageOrder}>
+              <St.ImageOrder $idx={idx}>대표사진</St.ImageOrder>
+            </St.ImageOrderBtn>
+              <St.ImageDeleteBtn onClick={() => handleDeleteImage(idx)}>
+                <St.ImageDeleteIcon />
+              </St.ImageDeleteBtn>
+            </St.ImageCard>
+          ))}
+          {uploadedFileUrl.length >= 12 ? (
+            <></>
+          ) : (
+            <St.UpLoadBox htmlFor="file">
+              <input
+                type="file"
+                id="file"
+                name="file"
+                onChange={handleFiles}
+                multiple
+                hidden
+              />
+              +
+            </St.UpLoadBox>
+          )}
+        </St.ImageWrapper>
+      </St.UpLoadImageContainer>
+    </>
   );
 };
 

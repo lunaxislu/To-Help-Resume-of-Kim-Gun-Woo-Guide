@@ -5,7 +5,6 @@ import { MessageType, RoomType } from './types';
 import parseDate from '../../util/getDate';
 import styled from 'styled-components';
 import { Product } from '../../api/supabase/products';
-import { UtilForChat } from '../../pages/chat/chat_utils/functions';
 import { User } from '@supabase/supabase-js';
 
 type Props = {
@@ -29,8 +28,6 @@ const ChatRoomList: React.FC<Props> = ({
   const [allMessage, setAllMessage] = useState<MessageType[] | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  const util = new UtilForChat();
 
   const updateToRead = async (room_id: string) => {
     await supabase
@@ -132,7 +129,6 @@ const ChatRoomList: React.FC<Props> = ({
     handleRealtime();
     getAllMessage();
     getProductsforRoom();
-    updateToRead(clicked as string);
   }, []);
 
   const checkDevice = (agent: string) => {
@@ -152,8 +148,6 @@ const ChatRoomList: React.FC<Props> = ({
     if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
     if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
   }, []);
-
-  console.log(rooms);
 
   return (
     <St.StChatListItem>

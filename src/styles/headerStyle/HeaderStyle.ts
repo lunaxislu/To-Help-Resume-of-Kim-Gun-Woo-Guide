@@ -1,5 +1,6 @@
+import { SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const Hr = styled.hr`
   width: 100%;
@@ -182,6 +183,7 @@ export const Alert = styled.button`
   border: 0;
   background: transparent;
   font-family: 'Pretendard-Medium';
+  position: relative;
 
   cursor: pointer;
   gap: 0.6rem;
@@ -293,4 +295,75 @@ export const MobileSearchIcon = styled.img`
     display: block;
     margin-right: 1.5rem;
   }
+`;
+
+// notification
+
+export const NotiAni = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+export const StNotiContainer = styled.div`
+  width: 200px;
+  max-height: 150px;
+  overflow-y: scroll;
+  border: 0.1rem solid var(--opc-100);
+  border-radius: 3px;
+  background-color: var(--3-gray);
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding-top: 2rem;
+  top: 7%;
+  right: 18%;
+  z-index: 3;
+  transition: all 0.3s ease;
+  animation: ${NotiAni} 0.3s ease;
+
+  @media screen and (max-width: 768px) {
+    width: 150px;
+  }
+`;
+
+export const StNoticeButtonContainer = styled.div`
+  width: 100%;
+  padding: 0.3rem;
+  background-color: var(--2-gray);
+  position: absolute;
+  top: 0;
+`;
+
+export const StNoticeDeleteBtn = styled.button`
+  background: var(--2-gray);
+  outline: none;
+  border: none;
+  color: var(--opc-100);
+  cursor: pointer;
+`;
+
+export const StNotiItem = styled.div`
+  width: 100%;
+  padding: 1.2rem 0.8rem;
+  border-bottom: 0.1rem solid var(--opc-20);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--opc-100);
+    color: var(--3-gray);
+  }
+`;
+
+export const StNotiDot = styled.div`
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: red;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
 `;

@@ -18,12 +18,8 @@ export const EntireContainer = styled.div`
   }
 `;
 export const ContentsContainer = styled.div`
-  //max-width: 111.6rem;
   width: 77.5%;
   margin: auto;
-  @media screen and (max-width: 970px) {
-    width: 90%;
-  }
   @media screen and (max-width: 768px) {
     width: 93%;
   }
@@ -31,13 +27,16 @@ export const ContentsContainer = styled.div`
 export const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin: 3.5rem 0 1rem 0;
+  @media screen and (max-width: 768px) {  
+    margin: 1.5rem 0 1rem 0;
+  }
 `;
 export const Title = styled.h1`
   font-size: var(--fontSize-H3);
-  margin: 4rem 0 2.6rem 0;
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-body);
-    margin: 2rem 0 1.4rem 0;
   }
 `;
 
@@ -60,7 +59,6 @@ export const CategoryContainer = styled.div`
 `;
 
 export const CategoryWrapper = styled.div`
-  //width: 100%;
   display: flex;
   flex-direction: row;
   list-style: none;
@@ -84,43 +82,44 @@ interface CategoryProps {
 
 export const Category = styled.p<CategoryProps>`
   width: fit-content;
-  padding: 0 1.5rem;
+  padding: 0 2.5rem;
   text-align: center;
   vertical-align: middle;
-  line-height: 1.8;
+  line-height: 1.5;
   border-radius: 5.6rem;
-  color: var(--6-gray);
-  background-color: var(--opc-10);
+  color: var(--gray);
+  background-color: var(--opc-30);
   white-space: nowrap;
   &:hover {
     cursor: pointer;
     background-color: var(--opc-100);
-    font-weight: var(--fontWeight-bold);
-    color: var(--1-gray);
+    color: var(--white);
   }
   // 배경색 조건부 렌더링
   ${(props) => {
     if (props.$selectCategory.length === 1 && props.$selectCategory.includes(props.children as string)) {
       return css`
         background-color: var(--opc-100);
-        font-weight: var(--fontWeight-bold);
-        color: var(--1-gray);
+        color: var(--white);
       `;
     }
     if (props.children === '전체') {
       return css`
+        font-weight: var(--fontWeight-bold);
         background-color: transparent;
         border: 0.1rem solid var(--opc-100);
-        color: var(--12-gray);
+        color: var(--black);
       `;
     }
   }}
-  @media screen and (max-width: 860px) {
+  /* @media screen and (max-width: 860px) {
     font-size: var(--fontSize-H5);
     padding: 0 1.3rem;
-  }
+  } */
   @media screen and (max-width: 768px) {
-    padding: 0 0.8rem;
+    font-size: var(--fontSize-H5);
+    line-height: 1.5;
+    padding: 0 1.5rem;
   }
 `;
 
@@ -133,65 +132,31 @@ export const SellWriteIcon = styled(BiWon)`
     height: 1.5rem;
   }
 `;
-
 export const PostsWriteBtn = styled.div`
   width: 11rem;
   height: fit-content;
-  line-height: 175%;
+  line-height: 1.8;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border-radius: 7rem;
+  border-radius: 5rem;
   gap: 0.5rem;
   background-color: var(--opc-20);
   white-space: nowrap;
   &:hover {
     cursor: pointer;
     background-color: var(--opc-100);
-    font-weight: var(--fontWeight-bold);
-    color: var(--1-gray);
+    color: var(--white);
     ${SellWriteIcon} {
-      color: var(--2-gray);
-    }
-  }
-  @media screen and (max-width: 1130px) {
-    display: none;
-  }
-`;
-export const MobilePostsWriteBtn = styled.div`
-  display: none;
-  @media screen and (max-width: 1130px) {
-    margin: 4rem 0 2.6rem 0;
-    width: 9.5rem;
-    height: fit-content;
-    line-height: 1.8;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    border-radius: 7rem;
-    gap: 0.5rem;
-    background-color: var(--opc-20);
-    white-space: nowrap;
-    &:hover {
-      cursor: pointer;
-      background-color: var(--opc-100);
-      font-weight: var(--fontWeight-bold);
-      color: var(--1-gray);
-      ${SellWriteIcon} {
-      color: var(--2-gray);
-    }
+      color: var(--white);
     }
   }
   @media screen and (max-width: 768px) {
-    width: 8.1rem;
-    height: 2rem;
-    border-radius: 5.6rem;
+    width: 9rem;
+    height: 3rem;
     gap: 0.5rem;
     font-size: var(--fontSize-H5);
-    background-color: transparent;
-    margin: 1.8rem 0 1.4rem 0;
   }
 `;
 
@@ -228,23 +193,23 @@ export const ProductsListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   margin: auto;
-  column-gap: 1.9rem;
-  row-gap: 4rem;
+  column-gap: 1.5rem;
+  row-gap: 2rem;
   @media screen and (max-width: 1220px) {
-    row-gap: 3rem;
+    row-gap: 2rem;
     grid-template-columns: repeat(4, 1fr);
   }
   @media screen and (max-width: 950px) {
-    row-gap: 2.5rem;
     grid-template-columns: repeat(3, 1fr);
   }
   @media screen and (max-width: 768px) {
-    column-gap: 1.5rem;
-    row-gap: 1.8rem;
+    column-gap: 1.3rem;
+    row-gap: 1.5rem;
     grid-template-columns: repeat(4, 1fr);
   }
   @media screen and (max-width: 670px) {
     grid-template-columns: repeat(3, 1fr);
+    row-gap: 1.3rem;
   }
   @media screen and (max-width: 520px) {
     grid-template-columns: repeat(2, 1fr);
@@ -260,20 +225,26 @@ export const ProductsCardContainer = styled.div`
   list-style: none;
   border-radius: 0.6rem;
   transition: all 0.2s linear;
+  background-color: var(--bgColor);
+  border: 0.1rem solid #71717130;
+  padding: 1.5rem;
   &:hover {
     cursor: pointer;
     transform: scale(1.02);
+  }
+  @media screen and (max-width: 768px) {
+    padding: 1rem;
   }
 `;
 
 export const CardImageWrapper = styled.div`
   width: 100%;
   aspect-ratio: 1/1;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   border-radius: 0.6rem;
   position: relative;
   @media screen and (max-width: 768px) {
-    margin-bottom: 1rem;
+    margin-bottom: 0.6rem;
   }
 `;
 
@@ -292,24 +263,21 @@ export const CardQuality = styled.li<QualityProps>`
   width: fit-content;
   padding: 0 0.7rem;
   text-align: center;
-  line-height: 1.7;
+  line-height: 1.3;
   border-radius: 0.4rem;
-  background-color: #FCFCFC;
-  color: var(--2-gray);
+  background-color: var(--c-green);
   margin-bottom: 0.6rem;
   font-size: var(--fontSize-H6);
   // 배경색 조건부 렌더링
   ${(props) => {
-    if (props.children === '새상품(미사용)') {
+    if (props.children === '사용감 있음') {
       return css`
-        background-color: var(--opc-100);
-        color: var(--2-gray);
+        background-color: var(--c-yellow);
       `;
     }
-    if (props.children === '고장/파손 상품') {
+    if (props.children === '사용감 많음') {
       return css`
-        background-color: var(--4-gray);
-        color: var(--11-gray);
+        background-color: var(--c-red);
       `;
     }
   }}
@@ -318,8 +286,6 @@ export const CardQuality = styled.li<QualityProps>`
     padding: 0 0.5rem;
     font-size: 1rem;
     line-height: 2.1;
-    background-color: rgba(219, 255, 0, 0.8);
-    color: var(--2-gray);
   }
 `;
 export const CardTitle = styled.h2`
@@ -331,6 +297,7 @@ export const CardTitle = styled.h2`
   -webkit-box-orient: vertical;
   white-space: normal;
   line-height: 1.3;
+  //font-weight: var(--fontWeight-bold);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
   }
@@ -338,7 +305,6 @@ export const CardTitle = styled.h2`
 
 export const CardPrice = styled.h2`
   font-weight: var(--fontWeight-bold);
-  color: var(--12-gray);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
   }
@@ -383,7 +349,7 @@ export const PageButton = styled.button<PageBtnProps>`
       ? 'var(--opc-100)'
       : 'var(--11-gray)'};
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H6);
+    font-size: 1.2rem;
   }
 `;
 export const LoadingStyle = styled.div`
@@ -395,25 +361,37 @@ export const LoadingStyle = styled.div`
 `;
 export const IsSellProducts = styled.div`
   width: 100%;
-  height: 100%;
+  height: 97%;
   position: absolute;
   display: flex;
   opacity: 90%;
-  background-color: var(--3-gray);
   border-radius: 0.6rem;
+  //background-color: var(--black);
 `
 export const SoldOut = styled.div`
-  background-color: var(--3-gray);
-  width: 50%;
+  color: var(--white);
+  background-color: var(--black);
+  width: 100%;
   max-height: 5rem;
-  border-radius: 0.5rem;
+  //border-radius: 0.5rem;
   margin: auto;
   text-align: center;
-  line-height: 2.5;
+  line-height: 2;
   font-size: var(--fontSize-H2);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
-    width: 40%;
+    width: 100%;
     line-height: 2.5;
   }
+`
+export const LikesWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`
+export const Likes = styled.div`
+  color: #ceb1b1;
+  font-size: var(--fontSize-H6);
 `

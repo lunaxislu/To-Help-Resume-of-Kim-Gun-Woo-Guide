@@ -1,6 +1,7 @@
-import { supabase } from '../../api/supabase/supabaseClient';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
+import { useEffect } from 'react';
+import { supabase } from '../../api/supabase/supabaseClient';
 import {
   StLoginContainer,
   StLoginText,
@@ -8,6 +9,13 @@ import {
 } from '../../styles/loginStyle/LoginStyle';
 
 const Login = () => {
+  useEffect(() => {
+    const currentUrl = window.location.href;
+    localStorage.setItem('prevUrl', currentUrl);
+  }, []);
+
+  const redirectTo = localStorage.getItem('prevUrl') || '/';
+
   return (
     <StLoginContainer>
       <StLoginTitle>로그인/회원가입</StLoginTitle>
@@ -17,7 +25,8 @@ const Login = () => {
         supabaseClient={supabase}
         appearance={{ theme: ThemeSupa }}
         providers={['google', 'facebook', 'kakao']}
-        redirectTo="https://jmxcfojtfaoeuzxaoncm.supabase.co/auth/v1/callback"
+        // redirectTo="https://jmxcfojtfaoeuzxaoncm.supabase.co/auth/v1/callback"
+        redirectTo={redirectTo}
         onlyThirdPartyProviders={true}
         theme="dark"
       />

@@ -1,20 +1,28 @@
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router';
-import CommuList from '../../components/community/CommuList';
+// import CommuList from '../../components/community/CommuList';
+import CommunityList from '../../components/community/CommunityList';
 import * as St from '../../styles/community/CommunityMainStyle';
-import { categoryArray } from './WritePost';
+import { CATEGORY_ARRAY } from './WritePost';
 import { fetchPosts } from './commuQuery';
+
 const CommunityMain: React.FC = () => {
   const [selectCategory, setSelectCategory] = useState('전체');
   const [editToolOpen, setEditToolOpen] = useState(false);
   const navigate = useNavigate();
-  const { data: posts, isLoading, isError } = useQuery('posts', fetchPosts);
-
+  const {
+    data: posts,
+    isLoading,
+    isError
+  } = useQuery(['posts', selectCategory], () => fetchPosts(selectCategory));
   if (isError) {
     return <div>Error loading posts</div>;
   }
-
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  console.log(selectCategory);
   return (
     <St.Container>
       <St.Post_container>
@@ -25,7 +33,7 @@ const CommunityMain: React.FC = () => {
         </St.Title>
         <St.FeatureBar>
           <St.Categorys>
-            {categoryArray.map((category) => {
+            {CATEGORY_ARRAY.map((category) => {
               return (
                 <St.CategoryBtn
                   onClick={(event) => {
@@ -77,7 +85,7 @@ const CommunityMain: React.FC = () => {
             </St.EditDropdown>
           )}
         </St.Topper2> */}
-        <CommuList selectCategory={selectCategory} />
+        <CommunityList posts={posts} />
       </St.Post_container>
     </St.Container>
   );

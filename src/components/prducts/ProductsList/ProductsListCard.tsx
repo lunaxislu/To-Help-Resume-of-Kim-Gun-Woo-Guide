@@ -1,29 +1,26 @@
 import * as St from '../../../styles/products/ProductsListStyle';
-import { useNavigate } from 'react-router';
 import { useQuery } from 'react-query';
 import { PAGE_POST_NUMBER, fetchRangeProductsPosts } from '../productsQuery';
 import { useEffect, useState } from 'react';
-import { ProductsPostsType } from '../ProductsType';
 import Pagination from '../../../pages/products/Pagination';
 import PostsNothing from '../../../pages/products/PostsNothing';
+import ProductsCard from '../ProductsCard';
 
 interface Props {
   selectCategory: string[];
 }
 
 const ProductListCard = ({ selectCategory }: Props) => {
-  const navigate = useNavigate();
 
   // Pagination을 위한 State
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsTest, setPostsTest] = useState<any>();
-  //const [filteredItems, setFilteredItems] = useState<ProductsPostsType[] | null>(null);
+  const [posts, setPosts] = useState<any>();
 
   const fetchTest = async () => {
     try {
       const res = await fetchRangeProductsPosts(currentPage, selectCategory);
-      setPostsTest(res.data);
+      setPosts(res.data);
 
       if (res.count) {
         setTotalPages(Math.ceil(res.count / PAGE_POST_NUMBER));
@@ -76,34 +73,9 @@ const ProductListCard = ({ selectCategory }: Props) => {
 
   return (
     <div>
-      {postsTest && postsTest.length > 0 ? (
+      {posts && posts.length > 0 ? (
         <>
-          <St.ProductsListContainer>
-            {postsTest?.map((posts: ProductsPostsType) => (
-              <St.ProductsCardContainer
-                key={posts.id}
-                onClick={() => navigate(`/products/detail/${posts.id}`)}
-              >
-                <St.CardImageWrapper>
-                  {posts.isSell === true ? (
-                    <St.IsSellProducts>
-                      <St.SoldOut>판매완료</St.SoldOut>
-                    </St.IsSellProducts>
-                  ) : (<div></div>)}
-                  {posts.image_url !== null && posts.image_url !== undefined ? (
-                    <St.CardImage src={posts.image_url[0]} alt="상품 이미지" />
-                  ) : (
-                    <div></div>
-                  )}
-                </St.CardImageWrapper>
-                {[posts.quality].map((condition) => (
-                  <St.CardQuality $quality={condition} key={condition}>{condition}</St.CardQuality>
-                ))}
-                <St.CardTitle>{posts.title}</St.CardTitle>
-                <St.CardPrice>{posts.price.toLocaleString('kr-KO')}원</St.CardPrice>
-              </St.ProductsCardContainer>
-            ))}
-          </St.ProductsListContainer>
+          <ProductsCard posts={posts} />
           <Pagination
             totalPages={totalPages}
             currentPage={currentPage}

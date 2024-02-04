@@ -18,11 +18,8 @@ export const StFadeAni = keyframes`
 const StDetailContainer = styled.div`
   width: 100%;
   height: 100%;
-  max-width: 1440px;
-  max-height: 2828px;
-  padding: 4.9rem 0;
+  max-width: 1116px;
   margin: auto;
-  font-family: 'Pretendard-Regular';
   animation: ${StFadeAni} 0.3s ease;
 
   @media screen and (max-width: 768px) {
@@ -35,14 +32,15 @@ const StDetailContainer = styled.div`
 const StDetailInfoSection = styled.section`
   width: 100%;
   max-width: 1116px;
-  margin:auto;
+  margin: auto;
   height: fit-content;
   display: flex;
   gap: 4.6rem;
   align-items: start;
   justify-content: center;
-  border-bottom: 0.1rem solid var(--3-gray);
-  margin-bottom: 3rem;
+  border-bottom: 0.1rem solid #5a5a5a;
+  margin-bottom: 4rem;
+  padding-bottom: 4rem;
 
   @media screen and (max-width: 768px) {
     display: block;
@@ -54,8 +52,8 @@ const StDetailInfoSection = styled.section`
 
 const StImageWrapper = styled.div`
   width: 100%;
-  max-width: 510px;
-  height: 43.5rem;
+  max-width: 43rem;
+  height: 43rem;
   max-height: 100%;
   border-radius: 12px;
   overflow: hidden;
@@ -68,7 +66,6 @@ const StImageWrapper = styled.div`
     height: 100%;
     max-height: 43.5rem;
     margin-bottom: 1.5rem;
-    border-radius: 0;
   }
 `;
 
@@ -151,13 +148,12 @@ const StAlertButton = styled.button`
 
 const StAlertIcon = styled(AiFillAlert)`
   font-size: 1.8rem;
-  color: #dbff00e5;
+  color: #13b3bc;
 `;
 
 const StHeaderTitle = styled.div`
   width: 100%;
-  font-family: 'Pretendard-Medium';
-  margin-block: 2.1rem;
+  margin-block: 1.5rem;
   font-size: var(--fontSize-H2);
 
   @media screen and (max-width: 768px) {
@@ -168,7 +164,6 @@ const StHeaderTitle = styled.div`
 `;
 const StHeaderPriceWrapper = styled.div`
   width: 100%;
-  margin-block: 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -180,9 +175,7 @@ const StHeaderPriceWrapper = styled.div`
     margin-block: 0.6rem;
   }
 `;
-const StPrice = styled.h3`
-  font-family: 'Pretendard-Bold';
-`;
+const StPrice = styled.h3``;
 const StTimeLeft = styled.div`
   max-width: 20%;
   font-size: var(--fontSize-H5);
@@ -203,9 +196,10 @@ const StProductInfoBody = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  background-color: var(--3-gray);
-  color: var(--9-gray);
+  background-color: var(--opc-20);
+  color: black;
   border-radius: 1rem;
+  margin-block: 1.6rem;
 
   @media screen and (max-width: 768px) {
     width: 94%;
@@ -222,7 +216,7 @@ const ButtonWrapper = styled.div`
   text-align: center;
   align-items: center;
   gap: 1.4rem;
-  margin-block: 2rem;
+  margin-block: 1rem;
 
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -230,28 +224,6 @@ const ButtonWrapper = styled.div`
     margin-right: auto;
     padding: 2rem 1.5rem;
     margin-block: 0.1rem;
-  }
-`;
-
-const PopAni = keyframes`
-  0% {
-    transform: scale(1);
-  }
-
-  25% {
-    transform: scale(4);
-  }
-
-  50% {
-    transform: scale(9);
-  }
-
-  75% {
-    transform: scale(9);
-  }
-
-  100% {
-    transform: scale(1);
   }
 `;
 
@@ -265,12 +237,20 @@ const Button = styled.div<ButtonProps>`
   height: 6.8rem;
   border-radius: 5px;
   background-color: ${(props) =>
-    props.$role === 'like' ? 'var(--3-gray)' : 'var(--opc-100)'};
+    props.$role === 'like' ? 'var(--opc-20)' : 'var(--opc-100)'};
   text-align: center;
   display: flex;
   flex-direction: column;
   position: relative;
   cursor: pointer;
+  ${(props) => {
+    if (props.$role === 'sold-out') {
+      return css`
+        background-color: #eee;
+        color: black;
+      `;
+    }
+  }}
 
   p {
     position: absolute;
@@ -289,15 +269,30 @@ const Button = styled.div<ButtonProps>`
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 1.8rem;
-    color: var(--2-gray);
-    font-weight: var(--fontWeight-bold);
+    color: white;
+    font-weight: var(--fontWeight-500);
+    ${(props) => {
+      if (props.$role === 'sold-out') {
+        return css`
+          color: black;
+        `;
+      }
+    }}
   }
   &:hover {
     h3,
     p {
-      color: var(--opc-100);
+      color: black;
     }
-    background-color: var(--3-gray);
+    background-color: var(--opc-100);
+
+    ${(props) => {
+      if (props.$role === 'sold-out') {
+        return css`
+          color: var(--opc-100);
+        `;
+      }
+    }}
   }
 
   @media screen and (max-width: 768px) {
@@ -330,11 +325,13 @@ const StProductIntroSection = styled.section`
 const StProductIntroTitle = styled.h4`
   width: 100%;
   margin-block: 1.6rem;
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 2.2rem;
+  font-weight: var(--fontWeight-semiBold);
+  color: var(--12-gray);
 `;
 const StProductContent = styled.div`
   width: 100%;
+  font-weight: 500;
   font-size: 1.6rem;
   white-space: break-spaces;
 `;
@@ -349,7 +346,7 @@ const StCategoryTag = styled.li`
   width: fit-content;
   font-size: 1.6rem;
   font-weight: 600;
-  color: #4f4f4f;
+  color: gray;
   list-style: none;
   border-radius: 6px;
 `;
@@ -378,7 +375,7 @@ const StChatList = styled.div`
   transform: translate(-50%, -50%);
   width: 36rem;
   height: 25rem;
-  background: var(--3-gray);
+  background: #eee;
   color: var(--opc-100);
   padding: 1rem;
   display: flex;
@@ -392,7 +389,6 @@ const StChatList = styled.div`
 
 const StChatListItem = styled.div`
   padding: 2rem 1rem;
-  height: 100%;
 
   cursor: pointer;
 

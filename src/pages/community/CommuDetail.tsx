@@ -6,11 +6,12 @@ import { useNavigate, useParams } from 'react-router';
 import * as St from '../../styles/community/CommunityDetailStyle';
 
 import { supabase } from '../../api/supabase/supabaseClient';
-import Comment from '../../components/community/Comment';
+import CommuFileList from '../../components/community/CommuFileList';
+import Reply from '../../components/community/Reply';
 import parseDate from '../../util/getDate';
 import WriteLayout from './WriteLayout';
 import { deletePostMutation, fetchDetailPost } from './commuQuery';
-import { FilesObject, ProfileObject } from './model';
+import { ProfileObject } from './model';
 // Quill.register('modules/imageActions', ImageActions);
 // Quill.register('modules/imageFormats', ImageFormats);
 
@@ -22,28 +23,21 @@ const CommuDetail: React.FC = () => {
   const [editToolOpen, setEditToolOpen] = useState(false);
   const [postUser, setPostUser] = useState<ProfileObject[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const {
-          data: { user }
-        } = await supabase.auth.getUser();
-        setUserId(user!.id);
-      } catch (error: any) {
-        console.log(error.message);
-      }
-    };
-
-    fetchData();
-  }, []);
-
   const queryClient = useQueryClient();
   const {
     data: posts,
     isLoading,
     isError
   } = useQuery(['posts', param.id], () => fetchDetailPost(param.id));
+  useEffect(() => {
+    // 로컬 스토리지에서 userId 가져오기
+    const storedUserId = localStorage.getItem('userId');
 
+    if (storedUserId) {
+      // 로컬 스토리지에 userId가 있으면 상태 업데이트
+      setUserId(storedUserId);
+    }
+  }, []);
   useEffect(() => {
     const getPostUser = async () => {
       // posts 데이터가 로드되었는지 확인
@@ -69,6 +63,7 @@ const CommuDetail: React.FC = () => {
 
     getPostUser();
   }, [isLoading, posts]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -153,6 +148,12 @@ const CommuDetail: React.FC = () => {
 
                     <St.SubTopper>
                       <St.TitleCategory>
+                        {postUser.length > 0 ? (
+                          <St.ProfileImage src={postUser[0].avatar_url} />
+                        ) : (
+                          <St.DefaultImage></St.DefaultImage>
+                        )}
+
                         <St.NameP>
                           {!!post.anon
                             ? '익명의 작업자'
@@ -193,16 +194,18 @@ const CommuDetail: React.FC = () => {
                       <St.FeatureArea>
                         {posts![0].post_user === userId ? (
                           <St.IconContainer>
-                            <St.PenIcon />
-                            <St.BtnStyle
+                            <St.IconWrapper
                               onClick={() => {
                                 setIsEditState(true);
                               }}
                             >
-                              수정
-                            </St.BtnStyle>
-                            <St.TrachIcon />
-                            <St.BtnStyle onClick={deletePost}>삭제</St.BtnStyle>
+                              <St.PenIcon />
+                              <St.BtnStyle>수정</St.BtnStyle>
+                            </St.IconWrapper>
+                            <St.IconWrapper onClick={deletePost}>
+                              <St.TrachIcon />
+                              <St.BtnStyle>삭제</St.BtnStyle>
+                            </St.IconWrapper>
                           </St.IconContainer>
                         ) : (
                           ''
@@ -212,22 +215,7 @@ const CommuDetail: React.FC = () => {
                   </div>{' '}
                   <St.Content>{parse(post.content)}</St.Content>
                   {post.files && post.files.length > 0 && (
-                    <div>
-                      {post.files.map((file: FilesObject, index: number) => (
-                        <>
-                          <a
-                            key={index}
-                            href={file.url[index]}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {file.name}
-                          </a>
-                          <br />
-                          <br />
-                        </>
-                      ))}
-                    </div>
+                    <CommuFileList files={post.files} />
                   )}{' '}
                 </div>
               );
@@ -236,10 +224,11 @@ const CommuDetail: React.FC = () => {
           <St.NoticeLike>글이 마음에 든다면 추천을 눌러보세요!</St.NoticeLike>
 
           <div>
-            <Comment
+            <Reply
               userId={userId}
               paramId={param.id}
               likes={posts![0].likes}
+              postUserId={posts![0].post_user}
             />
           </div>
         </St.ContentsContainer>

@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { MouseEvent, SetStateAction, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { supabase } from '../api/supabase/supabaseClient';
 import SearchBar from '../components/layout/header/SearchBar';
 import { setSuccessLogin, setSuccessLogout } from '../redux/modules/authSlice';
@@ -7,23 +7,63 @@ import { setSearchQuery, setSearchResults } from '../redux/modules/searchSlice';
 import { useAppDispatch, useAppSelector } from '../redux/reduxHooks/reduxBase';
 import * as St from '../styles/headerStyle/HeaderStyle';
 import { BiWon } from 'react-icons/bi';
-import { BiSolidHeart } from 'react-icons/bi';
 import { BiSolidBell } from 'react-icons/bi';
 import Hamburger from '../components/layout/header/Hamburger';
 import { BsChatDotsFill } from 'react-icons/bs';
+import styled, { keyframes } from 'styled-components';
 
 interface User {
   username: string;
 }
 
-const Header = () => {
+type HeaderProps = {
+  notification: any[];
+  newNotiExists: boolean;
+  setNewNotiExists: React.Dispatch<SetStateAction<boolean>>;
+  setNotification: React.Dispatch<SetStateAction<any[]>>;
+};
+
+const Header = ({
+  notification,
+  newNotiExists,
+  setNewNotiExists,
+  setNotification
+}: HeaderProps) => {
   const [user, setUser] = useState<User | boolean>(false);
-  const [loading, setLoading] = useState(true);
   const [avatarUrl, setAvatarUrl] = useState<string>();
   const { isLogin } = useAppSelector((state) => state.auth);
-  const location = useLocation();
   const dispatch = useAppDispatch();
 
+  // 알림 관련
+  const [showNoti, setShowNoti] = useState<boolean>(false);
+  const navi = useNavigate();
+
+  const showNotiToggle = () => {
+    setShowNoti((prev) => !prev);
+    setNewNotiExists(false);
+  };
+
+  const deleteAllNotification = () => {
+    setNotification([]);
+  };
+
+  const filterPrevNoti = (noti_id: string) => {
+    console.log(noti_id);
+    console.log(notification);
+    const filtered = notification.filter((noti) => {
+      return noti.id !== noti_id;
+    });
+    setNotification(filtered);
+  };
+
+  const clickNoti = (e: MouseEvent<HTMLDivElement>) => {
+    const clickedItem = e.currentTarget.id;
+    filterPrevNoti(clickedItem);
+    setShowNoti(false);
+    navi('/chat');
+  };
+
+  // 반응형 대응 서치 컴포넌트 관련
   const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
   const [showHamburger, setShowHamburger] = useState<boolean>(false);
   const handleShowSearchComp = () => {
@@ -125,6 +165,34 @@ const Header = () => {
 
   return (
     <>
+      {notification.length > 0 && showNoti && (
+        <>
+          <St.StNotiContainer>
+            {notification.map((noti) => {
+              return (
+                <St.StNotiItem id={noti.id} onClick={clickNoti} key={noti.id}>
+                  새로운 메세지가 있습니다.
+                </St.StNotiItem>
+              );
+            })}
+            <St.StNoticeButtonContainer>
+              <St.StNoticeDeleteBtn onClick={deleteAllNotification}>
+                알림 지우기
+              </St.StNoticeDeleteBtn>
+            </St.StNoticeButtonContainer>
+          </St.StNotiContainer>
+        </>
+      )}
+      {notification.length === 0 && showNoti && (
+        <St.StNotiContainer>
+          <St.StNotiItem>알림이 없습니다</St.StNotiItem>
+          <St.StNoticeButtonContainer>
+            <St.StNoticeDeleteBtn onClick={deleteAllNotification}>
+              알림 지우기
+            </St.StNoticeDeleteBtn>
+          </St.StNoticeButtonContainer>
+        </St.StNotiContainer>
+      )}
       <St.HeaderTopContainer>
         <St.HeaderContainer>
           <St.HeaderWrapper>
@@ -161,7 +229,7 @@ const Header = () => {
                   ''
                 )}
                 {isLogin ? (
-                  <St.Alert>
+                  <St.Alert onClick={showNotiToggle}>
                     <BiSolidBell
                       style={{
                         width: '1.6rem',
@@ -169,6 +237,9 @@ const Header = () => {
                         color: 'var(--opc-100)'
                       }}
                     />
+                    {notification && newNotiExists && (
+                      <St.StNotiDot></St.StNotiDot>
+                    )}
                     <p>알림</p>
                   </St.Alert>
                 ) : (

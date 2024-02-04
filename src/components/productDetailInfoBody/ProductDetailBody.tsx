@@ -115,7 +115,6 @@ const ProductDetail = ({ productInfo, data, i, setShowMap }: BodyInfo) => {
 const StRowValue = styled.div`
   width: 100%;
   font-size: 1.4rem;
-  font-family: 'Pretendard-Medium';
   text-align: left;
   display: flex;
   align-items: center;
@@ -132,7 +131,7 @@ const StValueParagraph = styled.div`
   padding: 0.6rem;
   border-radius: 0.3rem;
   color: var(--11-gray);
-  background-color: var(--4-gray);
+  background-color: #a0f4b3;
 `;
 
 const StQualityInfo = styled.div`
@@ -141,7 +140,7 @@ const StQualityInfo = styled.div`
   border-radius: 50%;
   text-align: center;
   background-color: transparent;
-  color: var(--opc-60);
+  color: var(--opc-100);
   line-height: 1.2;
   font-size: 2rem;
   cursor: pointer;
@@ -151,12 +150,13 @@ const StQualityInfo = styled.div`
 const StQualityInfoBox = styled.div`
   width: fit-content;
   height: fit-content;
-  background-color: rgba(0, 0, 0, .8);
+  background-color: rgba(0, 0, 0, 0.8);
   position: absolute;
   left: -500px;
   bottom: -100px;
   color: white;
   border-radius: 12px;
+  display: -webkit-flex; /* iOS Safari에서 Flexbox 지정 */
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -164,6 +164,7 @@ const StQualityInfoBox = styled.div`
   animation: ${StFadeAni} 0.2s forwards;
   text-align: left;
   font-size: 1.4rem;
+  font-weight: 500;
 
   p {
     display: flex;
