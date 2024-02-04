@@ -1,7 +1,3 @@
-export type AddressValueType = {
-  address: string,
-  detailAddress: string
-}
 
 export type ProductsPostsType = {
   id:string,
@@ -38,7 +34,7 @@ export type ProductsInputType = {
   shipping_cost: string,
   count: number, 
   deal_type: string,
-  address: string,
+  address: string | any,
   detailAddress: string,
   quality: string,
   changable: string,
@@ -62,7 +58,24 @@ export type ProductsInputFinalType = {
   changable: string,
   exchange_product: string,
   contents: string,
-  tags: string[], 
+  tags: string[] | "", 
+  agreement: boolean,
+  image_url: string[]
+};
+
+export type ProductsEditType = {
+  title: string,
+  category: string[],
+  price: number,
+  shipping_cost: string,
+  count: number, 
+  deal_type: string,
+  address: string,
+  quality: string,
+  changable: string,
+  exchange_product: string,
+  contents: string,
+  //tags: string[], 
   agreement: boolean,
   image_url: string[]
 };

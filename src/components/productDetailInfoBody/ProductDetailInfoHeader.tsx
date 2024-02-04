@@ -3,6 +3,9 @@ import * as St from '../../pages/productsDetail/style';
 import { CustomUser, Product } from '../../pages/productsDetail/types';
 import parseDate from '../../util/getDate';
 import { FaPencil, FaTrash } from 'react-icons/fa6';
+import ProductsPostsEdit from '../../pages/products/ProductsPostsEdit';
+import { useNavigate } from 'react-router';
+import { ProductsEditType } from '../prducts/ProductsType';
 
 type DetailHeaderProps = {
   product: Product[];
@@ -11,6 +14,7 @@ type DetailHeaderProps = {
   handleDeletePost: any;
   isMobile: boolean;
   data: Product;
+  selectedProductData: ProductsEditType;
 };
 
 const ProductDetailInfoHeader = ({
@@ -19,8 +23,21 @@ const ProductDetailInfoHeader = ({
   target,
   handleDeletePost,
   isMobile,
-  data
+  data,
+  selectedProductData
 }: DetailHeaderProps) => {
+
+  // 수정하기(하빈 추가)
+  const navigate = useNavigate();
+
+  const handleOnClickEditButton = () => {
+
+    navigate(`/productsposts/edit/${product[0].id}`, {
+      state: {productData: selectedProductData},
+    });
+  };
+
+
   return (
     <>
       <St.StProductInfoHeader>
@@ -59,9 +76,7 @@ const ProductDetailInfoHeader = ({
           {product[0].post_user_uid === curUser?.uid && (
             <>
               <div
-                onClick={() => {
-                  alert('개발 중인 기능입니다!');
-                }}
+                onClick={() => {handleOnClickEditButton()}}
                 style={{
                   display: 'flex',
                   alignItems: 'center',

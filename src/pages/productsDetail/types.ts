@@ -14,12 +14,13 @@ export interface Product {
   likes: number;
   quality: string;
   changable: string;
-  shipping_cost: boolean;
+  shipping_cost: string;
   agreement: boolean;
   exchange_product: string;
   count: number;
   category: string[];
   address: string;
+  detailAddress: string;
   image_url: string[];
   isSell: boolean;
   buyer: string;

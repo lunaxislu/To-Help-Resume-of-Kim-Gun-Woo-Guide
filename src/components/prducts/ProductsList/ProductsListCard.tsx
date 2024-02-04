@@ -1,9 +1,7 @@
 import * as St from '../../../styles/products/ProductsListStyle';
-import { useNavigate } from 'react-router';
 import { useQuery } from 'react-query';
 import { PAGE_POST_NUMBER, fetchRangeProductsPosts } from '../productsQuery';
 import { useEffect, useState } from 'react';
-import { ProductsPostsType } from '../ProductsType';
 import Pagination from '../../../pages/products/Pagination';
 import PostsNothing from '../../../pages/products/PostsNothing';
 import ProductsCard from '../ProductsCard';
@@ -13,13 +11,11 @@ interface Props {
 }
 
 const ProductListCard = ({ selectCategory }: Props) => {
-  const navigate = useNavigate();
 
   // Pagination을 위한 State
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [posts, setPosts] = useState<any>();
-  //const [filteredItems, setFilteredItems] = useState<ProductsPostsType[] | null>(null);
 
   const fetchTest = async () => {
     try {

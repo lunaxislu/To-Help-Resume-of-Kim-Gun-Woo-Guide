@@ -297,37 +297,6 @@ export const Required = styled.p`
     line-height: 1.5;
   }
 `;
-export const InputStyle = styled.input`
-  width: 87%;
-  height: 5rem;
-  font-size: var(--fontSize-H5);
-  border: none;
-  border-radius: 0.5rem;
-  padding-left: 2rem;
-  /* Chrome, Safari, Edge, Opera */
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
-  /* Firefox */
-  /* &input[type=number] {
-    -moz-appearance: textfield;
-  } */
-  &::placeholder {
-    color: var(--gray);
-    font-size: var(--fontSize-H5);
-  }
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    height: 3rem;
-    font-size: var(--fontSize-H6);
-    padding-left: 1rem;
-    &::placeholder {
-    color: var(--gray);
-    font-size: 1.2rem;
-  }
-  }
-`;
 export const InputWrapperStyle = styled.div`
   width: 87%;
   display: grid;
@@ -336,7 +305,7 @@ export const InputWrapperStyle = styled.div`
     width: 100%;
   }
 `;
-export const InputStyle2 = styled.input`
+export const InputStyle = styled.input`
   width: 100%;
   height: 5rem;
   font-size: var(--fontSize-H5);
@@ -443,19 +412,10 @@ export const CategoryContainer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  /* display: grid;
-  grid-template-columns: repeat(4, 1fr); */
   gap: 2.2rem;
-  /* @media screen and (max-width: 768px) {
-    grid-template-columns: repeat(6, 1fr);
+  @media screen and (max-width: 768px) {
     height: 2.2rem;
-    gap: 1rem;
   }
-  @media screen and (max-width: 465px) {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-  } */
-
 `;
 export const InputCheckBoxLabel = styled.label`
   display: flex;
@@ -560,13 +520,13 @@ export const AddressBtn = styled.button`
     border-radius: 0.5rem;
   }
 `;
-// 우편번호 넣는 칸 추가해야함..
 export const AddressInputStyle = styled.input`
   width: 50%;
   height: 5rem;
   border: none;
   border-radius: 0.5rem;
   padding-left: 2rem;
+  font-size: var(--fontSize-H5);
   &::placeholder {
     color: var(--gray);
     font-size: var(--fontSize-H5);
@@ -590,22 +550,20 @@ export const GapStyle = styled.div`
 export const GapStyle2 = styled.div`
   margin-bottom: 5rem;
   @media screen and (max-width: 768px) {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 `;
 export const QualityWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  @media screen and (max-width: 768px) {
-    flex-direction: row;
-  }
 `;
 export const QualityExplanation = styled.p`
   color: var(--gray);
+  font-size: var(--fontSize-H5);
   padding: 0 4rem;
   @media screen and (max-width: 768px) {
-    display: none;
+    font-size: 1.2rem;
   }
 `;
 export const ChangableSelectWrapper = styled.div`
@@ -627,6 +585,7 @@ export const TextAreaStyle = styled.textarea`
   border-radius: 0.7rem;
   padding: 2rem;
   overflow: hidden;
+  line-height: 1.5;
   &::-moz-input-placeholder {
     line-height: 2;
   }
@@ -639,6 +598,10 @@ export const TextAreaStyle = styled.textarea`
   @media screen and (max-width: 768px) {
     width: 100%;
     font-size: var(--fontSize-H6);
+    &::placeholder {
+    color: var(--gray);
+    font-size: 1.2rem;
+  }
   }
 `;
 export const CountWrapper = styled.div`
@@ -682,9 +645,9 @@ export const CaveatBox = styled.div`
 export const CaveatText = styled.p`
   color: var(--gray);
   line-height: 2;
-  margin-bottom: 2.7rem;
+  margin-bottom: 2.5rem;
   @media screen and (max-width: 768px) {
-    margin-bottom: 2.2rem;
+    margin-bottom: 1.5rem;
     font-size: 1.2rem;
   }
 `;
@@ -708,6 +671,7 @@ export const TagsValidation = styled.div`
 export const AgreementCheckBoxWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  width: 100%;
   gap: 2rem;
 `;
 export const AgreementCheckBoxStyle = styled.input`
@@ -738,8 +702,11 @@ export const AgreementCheckBoxStyle = styled.input`
 `;
 export const BtnWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 1.2rem;
+  @media screen and (max-width: 768px) {
+    margin-top: 1rem;
+  }
 `;
 export const WriteBtn = styled.button`
   border: none;
