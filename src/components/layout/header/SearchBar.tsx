@@ -18,7 +18,7 @@ import {
   researchItems
 } from '../../../pages/searchResults/researchItem';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
-import { IoIosArrowBack, IoIosClose } from 'react-icons/io';
+import { IoIosClose } from 'react-icons/io';
 
 type SearchBarProps = {
   showSearchComp: boolean;

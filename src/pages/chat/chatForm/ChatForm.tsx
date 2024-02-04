@@ -2,6 +2,7 @@ import React, {
   ChangeEvent,
   MouseEvent,
   SetStateAction,
+  useEffect,
   useRef,
   useState
 } from 'react';
@@ -63,6 +64,10 @@ const ChatForm = ({
     const filtered = images.filter((url) => url !== targetURL);
     setImages(filtered);
   };
+
+  useEffect(() => {
+    console.log(chatInput);
+  }, [chatInput]);
 
   return (
     <St.StChatForm ref={formRef}>

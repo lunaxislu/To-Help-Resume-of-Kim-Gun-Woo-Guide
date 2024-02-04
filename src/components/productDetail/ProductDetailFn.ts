@@ -2,9 +2,9 @@ import { SetStateAction } from 'react';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { CustomUser, Product } from '../../pages/productsDetail/types';
 import { Participants } from '../chat/types';
-import CustomToastSuccess from './CustomToastSuccess';
-import CustomToastError from './CustomToastError';
-import CustomToastInfo from './CustomToast';
+import CustomToastSuccess from './customToast/CustomToastSuccess';
+import CustomToastError from './customToast/CustomToastError';
+import CustomToastInfo from './customToast/CustomToast';
 
 type GetLikeCountType = {
   id: string | undefined;

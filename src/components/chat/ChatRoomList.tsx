@@ -20,7 +20,6 @@ const ChatRoomList: React.FC<Props> = ({
   rooms,
   handleCurClicked,
   clicked,
-  unread,
   handleBoardPosition,
   curUser
 }: Props) => {
@@ -28,6 +27,24 @@ const ChatRoomList: React.FC<Props> = ({
   const [allMessage, setAllMessage] = useState<MessageType[] | null>(null);
   const [products, setProducts] = useState<Product[]>([]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [unread, setUnread] = useState<(number | undefined)[]>([]);
+
+  const unreadCount = async (
+    room_id: string,
+    curUser: User | null | undefined
+  ) => {
+    let { data: chat_messages, error } = await supabase
+      .from('chat_messages')
+      .select()
+      .eq('chat_room_id', room_id)
+      .eq('isNew', true);
+
+    if (error) console.log('count error', error);
+
+    return chat_messages?.filter(
+      (msg: MessageType) => msg.sender_id !== curUser?.id
+    ).length;
+  };
 
   const updateToRead = async (room_id: string) => {
     await supabase
@@ -149,6 +166,17 @@ const ChatRoomList: React.FC<Props> = ({
     if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
   }, []);
 
+  useEffect(() => {
+    // 각 채팅방 목록이 업데이트될 때마다 안 읽은 메세지 수를 가져오고 상태에 저장
+    if (rooms) {
+      Promise.all(rooms.map((room) => unreadCount(room.id, curUser))).then(
+        (counts) => {
+          setUnread(counts);
+        }
+      );
+    }
+  }, [rooms, clicked]);
+
   return (
     <St.StChatListItem>
       {rooms
@@ -199,7 +227,7 @@ const ChatRoomList: React.FC<Props> = ({
                       </p>
                     </div>
                   </St.StUserInfoBox>
-                  <St.StUnreadCount>{room.unread}</St.StUnreadCount>
+                  <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
                 </St.StListUpper>
 
                 <St.StListLower>
@@ -253,7 +281,7 @@ const ChatRoomList: React.FC<Props> = ({
                       </p>
                     </div>
                   </St.StUserInfoBox>
-                  <St.StUnreadCount>{room.unread}</St.StUnreadCount>
+                  <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
                 </St.StListUpper>
 
                 <St.StListLower>
