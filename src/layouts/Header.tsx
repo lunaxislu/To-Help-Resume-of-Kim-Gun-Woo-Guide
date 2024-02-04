@@ -32,7 +32,9 @@ const Header = () => {
   // 반응형 대응 햄버거 버튼 , 검색바 열려있으면 검색바 닫기
   const handlShowSearchBurger = () => {
     setShowHamburger((prev) => !prev);
-    setShowSearchComp((prev) => !prev);
+    if (showSearchComp) {
+      setShowSearchComp((prev) => !prev);
+    }
   };
   // 페이지 이동 시 검색어 초기화 함수
   const handlePageChange = () => {
