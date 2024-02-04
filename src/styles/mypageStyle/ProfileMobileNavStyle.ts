@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { IoIosArrowBack } from 'react-icons/io';
 
 export const StMobileNav = styled.div`
   display: none;
@@ -19,10 +20,6 @@ export const StMobileNav = styled.div`
     gap: 1rem;
     align-items: center;
     white-space: nowrap;
-
-    & img {
-      cursor: pointer;
-    }
   }
 
   & p {
@@ -36,30 +33,6 @@ export const StMobileNav = styled.div`
   }
 `;
 
-export const StMobileCancelButton = styled.button`
-  background: transparent;
-  border: none;
-`;
-
-export const StMobileSaveButton = styled.button`
-  background: transparent;
-  border: none;
-`;
-
-export const StMobileEditButton = styled.button`
-  background: transparent;
-  border: none;
-  font-size: 1rem;
-  color: var(--9-gray);
-`;
-
-export const StProfileButtonWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-left: 1rem;
-
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
+export const StMobileBack = styled(IoIosArrowBack)`
+  cursor: pointer;
 `;
