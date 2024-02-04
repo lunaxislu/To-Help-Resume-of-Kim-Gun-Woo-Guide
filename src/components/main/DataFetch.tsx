@@ -9,8 +9,8 @@ export const fetchData = async (): Promise<{
     const { data: usedItemsData, error: usedItemsError } = await supabase
       .from('products')
       .select('*')
-      .order('created_at', { ascending: false })
-      .limit(6);
+      .order('created_at', { ascending: false });
+    // .limit(6);
 
     const { data: communityItemsData, error: communityItemsError } =
       await supabase

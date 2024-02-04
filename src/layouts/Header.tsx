@@ -165,7 +165,7 @@ const Header = ({
 
   return (
     <>
-      {notification.length > 0 && showNoti && (
+      {/* {notification.length > 0 && showNoti && (
         <>
           <St.StNotiContainer>
             {notification.map((noti) => {
@@ -182,8 +182,8 @@ const Header = ({
             </St.StNoticeButtonContainer>
           </St.StNotiContainer>
         </>
-      )}
-      {notification.length === 0 && showNoti && (
+      )} */}
+      {/* {notification.length === 0 && showNoti && (
         <St.StNotiContainer>
           <St.StNotiItem>알림이 없습니다</St.StNotiItem>
           <St.StNoticeButtonContainer>
@@ -192,7 +192,7 @@ const Header = ({
             </St.StNoticeDeleteBtn>
           </St.StNoticeButtonContainer>
         </St.StNotiContainer>
-      )}
+      )} */}
       <St.HeaderTopContainer>
         <St.HeaderContainer>
           <St.HeaderWrapper>
@@ -203,7 +203,7 @@ const Header = ({
                 onClick={handleLogoClick}
               />
               <St.ButtonContainer>
-                <St.Sell onClick={handleSellbuttonClick}>
+                {/* <St.Sell onClick={handleSellbuttonClick}>
                   <BiWon
                     style={{
                       width: '1.6rem',
@@ -212,8 +212,8 @@ const Header = ({
                     }}
                   />
                   <p>판매하기</p>
-                </St.Sell>
-                {isLogin ? (
+                </St.Sell> */}
+                {/* {isLogin ? (
                   <St.Chat onClick={handleNavigateToChat}>
                     <BsChatDotsFill
                       style={{
@@ -227,8 +227,8 @@ const Header = ({
                   </St.Chat>
                 ) : (
                   ''
-                )}
-                {isLogin ? (
+                )} */}
+                {/* {isLogin ? (
                   <St.Alert onClick={showNotiToggle}>
                     <BiSolidBell
                       style={{
@@ -244,13 +244,16 @@ const Header = ({
                   </St.Alert>
                 ) : (
                   ''
-                )}
+                )} */}
                 {isLogin ? (
                   <>
-                    <St.UserIcon
-                      src={`${avatarUrl}`}
-                      onClick={handleMyPageButtonClick}
-                    />
+                    <St.LogoutButton onClick={handleLogOutButtonClick}>
+                      <St.LogoutImage
+                        src="/assets/logout.svg"
+                        alt="로그아웃이미지"
+                      />
+                      <St.LogoutWord>로그아웃</St.LogoutWord>
+                    </St.LogoutButton>
                     <St.MobileSearchIcon
                       src="/assets/mobile_search.svg"
                       onClick={handleShowSearchComp}
@@ -275,7 +278,7 @@ const Header = ({
                 )}
               </St.ButtonContainer>
             </St.HeaderSection>
-            <St.NavSection>
+            {/* <St.NavSection>
               <St.NavBar>
                 <St.NavButton to="/products" onClick={handlePageChange}>
                   중고거래
@@ -289,8 +292,8 @@ const Header = ({
                 showSearchComp={showSearchComp}
                 setShowSearchComp={setShowSearchComp}
               />
-            </St.NavSection>
-            <div style={{ position: 'relative' }}></div>
+            </St.NavSection> */}
+            {/* <div style={{ position: 'relative' }}></div> */}
           </St.HeaderWrapper>
         </St.HeaderContainer>
       </St.HeaderTopContainer>

@@ -16,7 +16,7 @@ export const Hr = styled.hr`
 export const HeaderTopContainer = styled.div`
   max-width: 144rem;
   width: 111.6rem;
-  height: 15rem;
+  height: 12rem;
   display: flex;
   margin: auto;
   @media screen and (max-width: 768px) {
@@ -213,19 +213,24 @@ export const Button = styled.button`
   border: 0;
   border-radius: 3rem;
   background: #a0e0d6;
-  font-family: 'Pretendard-Medium';
+  font-family: 'BM-JUA';
   cursor: pointer;
-  color: var(--11-gray);
+  color: #ffffff;
   font-weight: var(--fontWeight-medium);
-  font-size: var(--fontSize-H5);
+  font-size: var(--fontSize-H6);
   line-height: 2.6768rem;
   margin-left: 2rem;
 `;
 
-export const UserIcon = styled.img`
-  border-radius: 50%;
-  width: 3.5rem;
-  height: 3.5rem;
+export const LogoutButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.66rem;
+  border: none;
+  background-color: transparent;
+  width: 8.5rem;
+  height: 3rem;
   cursor: pointer;
 
   @media screen and (max-width: 768px) {
@@ -233,6 +238,13 @@ export const UserIcon = styled.img`
   }
 `;
 
+export const LogoutImage = styled.img`
+  width: 1.84rem;
+  height: 1.57rem;
+`;
+export const LogoutWord = styled.div`
+  font-size: var(--fontSize-body);
+`;
 export const NavSection = styled.section`
   width: 100%;
   display: flex;

@@ -8,6 +8,7 @@ import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
 import parseDate from '../../util/getDate';
 import { FaArrowRight } from 'react-icons/fa6';
 import { StFadeAni } from '../../pages/productsDetail/style';
+import { StringNullableChain } from 'lodash';
 
 type UsedItemsCountData = {
   count: number | null;
@@ -18,7 +19,7 @@ type UsedItemsCountData = {
 
 const Home = () => {
   const carouselImages: string[] = [
-    process.env.PUBLIC_URL + '/assets/carouselmain.png',
+    process.env.PUBLIC_URL + '/assets/bannerMain.jpg',
     process.env.PUBLIC_URL + '/assets/carousel0.png',
     process.env.PUBLIC_URL + '/assets/carousel1.png',
     process.env.PUBLIC_URL + '/assets/carousel2.png',
@@ -69,11 +70,61 @@ const Home = () => {
     return textOnly;
   };
 
+  const scrollToSection = (height: number) => {
+    window.scrollTo({ top: height, behavior: 'smooth' });
+  };
+
+  // const handleScroll = () => {
+  //   console.log(`Current Scroll Position: ${window.scrollY}px`);
+  // };
+
+  // useEffect(() => {
+  //   window.addEventListener('scroll', handleScroll);
+
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //   };
+  // }, []);
+
   return (
     <HomeContainer>
-      <CarouselWrapper>
+      <BannerContainer>
+        <MainBannerpic src="/assets/MainBannerPic.jpg" alt="메인배너사진" />
+
+        <ButtonContainer>
+          <ProductsBannerContainer>
+            <img
+              style={{ width: '61rem', height: '20rem' }}
+              src="/assets/중고거래.svg"
+              alt="중고거래"
+            />
+            <ScrollButton onClick={() => scrollToSection(800)}>
+              <img
+                style={{ width: '36.8rem', height: '9.2rem' }}
+                src="/assets/중고거래버튼.svg"
+                alt="중고거래버튼"
+              />
+            </ScrollButton>
+          </ProductsBannerContainer>
+          <CommunityBannerContainer>
+            <img
+              style={{ width: '50em', height: '20rem' }}
+              src="/assets/커뮤니티.svg"
+              alt="커뮤니티"
+            />
+            <ScrollButton onClick={() => scrollToSection(1620)}>
+              <img
+                style={{ width: '36.8rem', height: '9.2rem' }}
+                src="/assets/커뮤버튼.svg"
+                alt="커뮤니티버튼"
+              />
+            </ScrollButton>
+          </CommunityBannerContainer>
+        </ButtonContainer>
+      </BannerContainer>
+      {/* <CarouselWrapper>
         <InfiniteCarousel carouselImages={carouselImages} />
-      </CarouselWrapper>
+      </CarouselWrapper> */}
       <AllCardContainer>
         <ProductsContainer>
           <ProductsTitle>
@@ -86,8 +137,8 @@ const Home = () => {
             </ProductsLink>
           </ProductsTitle>
           <ProductsListContainer>
-            {/* 지금 데이터 6개 가져오고 있는데, 모바일에서는 6개, 웹에서는 5개 보여져야함 */}
-            {usedItems.slice(0, isMobile ? 6 : 5).map((item) => (
+            {/* 지금 데이터 6개 가져오고 있는데, 모바일에서는 6개, 웹에서는 10개 보여져야함 */}
+            {usedItems.slice(0, isMobile ? 6 : 10).map((item) => (
               <ToUsedItemDetailPage
                 key={item.id}
                 to={`/products/detail/${item.id}`}
@@ -222,6 +273,47 @@ const HomeContainer = styled.section`
     max-width: 76.8rem;
     min-width: 32rem;
   }
+`;
+
+const MainBannerpic = styled.img`
+  width: 100%;
+  height: 63rem;
+`;
+
+const BannerContainer = styled.div`
+  position: relative;
+`;
+
+const ButtonContainer = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 10rem;
+`;
+
+const ProductsBannerContainer = styled.div`
+  width: 120rem;
+  height: 20rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 10rem;
+`;
+const CommunityBannerContainer = styled.div`
+  width: 120rem;
+  height: 20rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 10rem;
+`;
+const ScrollButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
 `;
 
 const CarouselWrapper = styled.div`
