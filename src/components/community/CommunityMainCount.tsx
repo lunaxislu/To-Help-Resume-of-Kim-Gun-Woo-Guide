@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from 'react-query';
-import { getPostCount } from '../../pages/community/commuQuery';
-import { CommunityMainCountProps } from '../../pages/community/model';
+import { getPostCount } from '../../pages/community/api/commuQuery';
+import { CommunityMainCountProps } from '../../pages/community/api/model';
 import * as St from '../../styles/community/CommunityMainStyle';
 
 const CommunityMainCount: React.FC<CommunityMainCountProps> = ({

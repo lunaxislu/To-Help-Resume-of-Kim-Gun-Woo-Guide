@@ -1,4 +1,4 @@
-import { supabase } from '../../api/supabase/supabaseClient';
+import { supabase } from '../../../api/supabase/supabaseClient';
 import { ReplyInsertObject, UpdateComment } from './model';
 //쿼리 넘 많다..
 const PAGE_POST_NUMBER = 12;

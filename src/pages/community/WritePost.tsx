@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router';
 import { supabase } from '../../api/supabase/supabaseClient';
 import WriteLayout from '../../components/community/WriteLayout';
 import * as St from '../../styles/community/CommunityWriteStyle';
-import { ProfileObject } from './model';
+import { ProfileObject } from './api/model';
 export const CATEGORY_ARRAY = [
   '전체',
   '공구',
@@ -82,4 +82,4 @@ const Write: React.FC = () => {
   );
 };
 
-export default Write;
+export default React.memo(Write);

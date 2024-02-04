@@ -65,10 +65,16 @@ export type InsertObject = {
 export type CommuListProps = {
   posts: Post[] | undefined;
 };
-export type QuillLayoutProps = {
+export type FormValues = {
+  title: string;
+  category: string;
+  files: { name: string; url: string | null[] }[];
   content: string;
-  setContent: (content: string) => void;
+  uploadedFileUrl: string[];
+  anon: boolean;
+  mainImage: string;
 };
+
 export type WriteLayoutProps = {
   profile: ProfileObject[] | undefined;
   isEdit: boolean;
