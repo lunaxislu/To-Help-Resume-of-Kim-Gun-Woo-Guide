@@ -41,6 +41,8 @@ import { FaLocationDot, FaTruckFast } from 'react-icons/fa6';
 import { RiExchangeFill } from 'react-icons/ri';
 import ImageViewer from '../../components/productDetail/ImageViewer';
 import Recommend from '../../components/productDetail/chatList/detailBody/Recommend';
+import QnAFrom from '../../components/mypage/Profile/QnAFrom';
+import { useAppSelector } from '../../redux/reduxHooks/reduxBase';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 
@@ -62,6 +64,8 @@ const ProductDetail = () => {
   const [showViewer, setShowViewer] = useState<boolean>(false);
   const [similar, setSimilar] = useState<Product[]>([]);
   const [otherPosts, setOtherPosts] = useState<Product[]>([]);
+  // 신고하기 폼 열기 (지현추가)
+  const { isOpen } = useAppSelector((state) => state.openForm);
 
   // 생성된 채팅방 row에 참여자 정보, 채팅방 이름 삽입
   const insertUserIntoChatRoom = async (
@@ -337,6 +341,8 @@ const ProductDetail = () => {
           similar={similar}
           product={product}
         />
+        {/* 신고하기 폼 작성 (지현추가) */}
+        {isOpen && <QnAFrom />}
       </St.StDetailContainer>
     </>
   );

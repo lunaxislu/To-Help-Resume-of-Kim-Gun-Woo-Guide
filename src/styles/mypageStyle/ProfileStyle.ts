@@ -142,7 +142,7 @@ export const StSettingMenu = styled.ul`
     font-size: var(--fontSize-H6);
 
     &:last-child {
-      color: red;
+      color: #ea4949;
     }
 
     &:hover {
