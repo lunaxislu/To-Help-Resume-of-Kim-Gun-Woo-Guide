@@ -103,7 +103,7 @@ const SideBar = ({
         {notification.length > 0 && showNoti && (
           <>
             <St.StNotiContainer>
-              {notification.map((noti) => {
+              {notification.reverse().map((noti) => {
                 return (
                   <St.StNotiItem id={noti.id} onClick={clickNoti} key={noti.id}>
                     새로운 메세지가 있습니다.
@@ -151,7 +151,7 @@ const SideBar = ({
           Menu
         </StMainButton>
         {isLogined &&
-          arr.map((menu, i) => {
+          arr.reverse().map((menu, i) => {
             if (isShow && menu === '알림') {
               return (
                 <>
