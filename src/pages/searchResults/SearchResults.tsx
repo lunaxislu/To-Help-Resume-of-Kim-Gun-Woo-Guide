@@ -10,9 +10,9 @@ import { researchItems, ResearchResults } from './researchItem';
 import Dropdown from '../../styles/searchresults/Dropdown';
 import { divide, sortBy } from 'lodash';
 import { Communityy, UsedItem } from '../home/usedtypes';
+import * as St from '../../styles/products/productsList/StProductsCard';
 import CommunityList from '../../components/community/CommunityList';
 import { RootState } from '../../redux/store/store';
-import ProductsCard from '../../components/prducts/ProductsCard';
 
 interface ListCount {
   usedItemCount: number;
@@ -155,8 +155,6 @@ const SearchResults: React.FC = () => {
     return textOnly;
   }, []);
 
-  const productsPosts = sortedUsedItemResults?.slice(0, showAllData ? sortedUsedItemResults.length : 5)
-
   return (
     <>
       <SearchResultsContainer>
@@ -219,12 +217,90 @@ const SearchResults: React.FC = () => {
             )}
             {/* 검색 결과 */}
             {isMobile && !showClickedList && (
-              <ProductsCard posts={sortedUsedItemResults}/>
+              <St.ProductsListContainer>
+                {sortedUsedItemResults?.map((item) => (
+                  <St.ProductsCardContainer
+                    key={item.id}
+                    onClick={() => naviagate(`/products/detail/${item.id}`)}
+                  >
+                    <St.CardImageWrapper>
+                      {item.isSell === true ? (
+                        <St.IsSellProducts>
+                          <St.SoldOut>판매완료</St.SoldOut>
+                        </St.IsSellProducts>
+                      ) : (
+                        <div></div>
+                      )}
+                      {item.image_url !== null &&
+                      item.image_url !== undefined ? (
+                        <St.CardImage
+                          src={item.image_url[0]}
+                          alt="상품 이미지"
+                        />
+                      ) : (
+                        <div></div>
+                      )}
+                    </St.CardImageWrapper>
+                    {[item.quality].map((condition) => (
+                      <St.CardQuality $quality={condition} key={condition}>
+                        {condition}
+                      </St.CardQuality>
+                    ))}
+                    <St.CardTitle>{item.title}</St.CardTitle>
+                    <St.LikesWrapper>
+                      <St.CardPrice>
+                        {item.price.toLocaleString('kr-KO')}원
+                      </St.CardPrice>
+                      <St.Likes>♥ {item.likes}</St.Likes>
+                    </St.LikesWrapper>
+                  </St.ProductsCardContainer>
+                ))}
+              </St.ProductsListContainer>
             )}{' '}
             {!isMobile && (
               // 중고 데스크탑
               <ProductsProtecter>
-                <ProductsCard posts={productsPosts} />
+                <St.ProductsListContainer>
+                  {sortedUsedItemResults
+                    ?.slice(0, showAllData ? sortedUsedItemResults.length : 5)
+                    .map((item) => (
+                      <St.ProductsCardContainer
+                        key={item.id}
+                        onClick={() => naviagate(`/products/detail/${item.id}`)}
+                      >
+                        <St.CardImageWrapper>
+                          {item.isSell === true ? (
+                            <St.IsSellProducts>
+                              <St.SoldOut>판매완료</St.SoldOut>
+                            </St.IsSellProducts>
+                          ) : (
+                            <div></div>
+                          )}
+                          {item.image_url !== null &&
+                          item.image_url !== undefined ? (
+                            <St.CardImage
+                              src={item.image_url[0]}
+                              alt="상품 이미지"
+                            />
+                          ) : (
+                            <div></div>
+                          )}
+                        </St.CardImageWrapper>
+                        {[item.quality].map((condition) => (
+                          <St.CardQuality $quality={condition} key={condition}>
+                            {condition}
+                          </St.CardQuality>
+                        ))}
+                        <St.CardTitle>{item.title}</St.CardTitle>
+                        <St.LikesWrapper>
+                          <St.CardPrice>
+                            {item.price.toLocaleString('kr-KO')}원
+                          </St.CardPrice>
+                          <St.Likes>♥ {item.likes}</St.Likes>
+                        </St.LikesWrapper>
+                      </St.ProductsCardContainer>
+                    ))}
+                </St.ProductsListContainer>
               </ProductsProtecter>
             )}
           </UsedItemResultsContainer>
@@ -237,10 +313,7 @@ const SearchResults: React.FC = () => {
               <LinktoCommunityPosts
                 onClick={handleToggleShowAllData}
                 style={{
-                  display:
-                    communityResults.length <= 6 && !showAllData
-                      ? 'none'
-                      : 'flex'
+                  display: communityResults.length <= 6 ? 'none' : 'flex'
                 }}
               >
                 {showAllData ? <p>숨기기</p> : <p>전체보기</p>}

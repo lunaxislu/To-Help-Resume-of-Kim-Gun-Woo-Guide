@@ -5,7 +5,6 @@ export const Hr = styled.hr`
   width: 100%;
   height: 0.1rem;
   border: none;
-  background-color: var(--7-gray);
   margin-bottom: 2rem;
   @media screen and (max-width: 768px) {
     margin-bottom: 1rem;
@@ -18,7 +17,6 @@ export const HeaderTopContainer = styled.div`
   height: 12rem;
   display: flex;
   margin: auto;
-  background: #fffefa;
   @media screen and (max-width: 768px) {
     width: 100%;
   }
