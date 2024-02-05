@@ -21,7 +21,7 @@ const ProductsPosts = () => {
           <St.BackBtnBox onClick={handleOnClickBack}>
             <St.BackIcon />
           </St.BackBtnBox>
-          <St.Title>'판매글 작성</St.Title>
+          <St.Title>판매글 작성</St.Title>
           <St.TetleRequired>*필수항목</St.TetleRequired>
         </St.TitleContainer>
         <St.Hr />
