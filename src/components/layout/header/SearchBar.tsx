@@ -173,12 +173,12 @@ const SearchInputContainer = styled.div<MobileProps>`
   /* position: relative; */
 
   @media only screen and (max-width: 768px) {
-    width: 100vw;
-    height: 100vh;
+    width: 90vw;
+    height: 90vh;
     position: fixed;
-    margin-top: 15.026rem;
+    margin-top: 7rem;
     top: 0;
-    left: 0;
+    right: 0;
     z-index: 3000;
 
     transition: all 0.3s ease;
@@ -197,7 +197,9 @@ const SearchInputContainer = styled.div<MobileProps>`
         `;
       }
     }};
-    background-color: var(--3-gray);
+    background-color: var(--bgColor);
+    border: 0.1rem solid var(--opc-100);
+    border-radius: 0.5rem;
     padding: 2rem;
   }
 `;
@@ -207,13 +209,16 @@ const SearchInputBar = styled.input`
   height: 3.7rem;
   padding-left: 2rem;
   border-radius: 1.9rem;
-  background: var(--opc-30);
+  background: var(--opc-50);
   border: none;
   color: var(--black);
   font-size: var(--fontSize-H5);
   font-weight: var(--fontWeight-medium);
-  line-height: 2.4856rem;
+  line-height: 2.5rem;
   outline: none;
+  &::placeholder {
+    padding-left: 1rem;
+  }
   @media screen and (max-width: 1300px) {
     width: 48.8rem;
   }
@@ -232,7 +237,6 @@ const SearchInputBar = styled.input`
     /* background-color: var(--2-gray); */
     border: none;
     border-radius: 0;
-    border-bottom: 1px solid #dbff00;
     padding-left: 0.5rem;
   }
   @media screen and (max-width: 400px) {
@@ -244,7 +248,6 @@ const SearchInputBar = styled.input`
     /* background-color: var(--2-gray); */
     border: none;
     border-radius: 0;
-    border-bottom: 1px solid #dbff00;
     padding-left: 0.5rem;
   }
 `;

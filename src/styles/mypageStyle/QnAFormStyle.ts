@@ -23,6 +23,10 @@ export const StFormContainer = styled.div`
   padding: 1.5rem 3rem;
   text-align: right;
   animation: ${StSlideUp} 0.5s ease;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const Close = styled(IoClose)`
@@ -38,6 +42,10 @@ export const StFormWrapper = styled.div`
       font-size: var(--fontSize-H2);
     }
   }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const StInfoWrapper = styled.div`
@@ -45,6 +53,10 @@ export const StInfoWrapper = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-bottom: 3rem;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const StForm = styled.form`
@@ -136,5 +148,9 @@ export const StForm = styled.form`
       height: 3rem;
       font-size: var(--fontSize-H6);
     }
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
   }
 `;
