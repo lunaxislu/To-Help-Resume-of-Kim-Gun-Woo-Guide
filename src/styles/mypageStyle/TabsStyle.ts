@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StTabsContainer = styled.ul`
-  width: 111.6rem;
+  width: 100%;
   display: flex;
   cursor: pointer;
   border-radius: 0.8rem;
@@ -22,8 +22,12 @@ export const StTabsContainer = styled.ul`
   }
 `;
 
-export const StTab = styled.li<{ active: boolean }>`
+interface TabProps {
+  $activetab: boolean;
+}
+export const StTab = styled.li<TabProps>`
   cursor: pointer;
-  font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
-  color: ${(props) => (props.active ? 'var(--opc-100)' : 'var(--10-gray)')};
+  font-weight: 'bold';
+
+  color: ${(props) => (props.$activetab ? 'var(--opc-100)' : 'var(--black)')};
 `;

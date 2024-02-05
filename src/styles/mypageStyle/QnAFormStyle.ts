@@ -14,7 +14,7 @@ export const StSlideUp = keyframes`
 `;
 
 export const StFormContainer = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -22,8 +22,8 @@ export const StFormContainer = styled.div`
   background: var(--drop);
   padding: 1.5rem 3rem;
   text-align: right;
+  z-index: 2;
   animation: ${StSlideUp} 0.5s ease;
-
   @media screen and (max-width: 768px) {
     width: 100%;
   }

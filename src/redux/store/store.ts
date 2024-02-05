@@ -3,13 +3,15 @@ import searchReducer from '../modules/searchSlice';
 import authSlice from '../modules/authSlice';
 import countPostsAndItemsSlice from '../modules/countPostsAndItemsSlice';
 import openFormSlice from '../modules/openForm';
+import tabSlice from '../modules/tabSlice';
 
 export const store = configureStore({
   reducer: {
     search: searchReducer,
     auth: authSlice,
     itemAndPost: countPostsAndItemsSlice,
-    openForm: openFormSlice
+    openForm: openFormSlice,
+    tab: tabSlice
   }
 });
 
