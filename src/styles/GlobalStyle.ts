@@ -123,6 +123,9 @@ body {
     font-family: 'DalseoHealing-bold';
     color: var(--black);
     overflow-x: hidden;
+    @media screen and (max-width: 768px){
+        margin-top: 7rem;
+    }
 }
 button,
 input,

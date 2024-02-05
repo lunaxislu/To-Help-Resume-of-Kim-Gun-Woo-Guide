@@ -4,12 +4,21 @@ import { IoIosClose } from 'react-icons/io';
 import { IoPeopleSharp } from 'react-icons/io5';
 import { IoPersonSharp } from 'react-icons/io5';
 import { BiWon } from 'react-icons/bi';
-import { LuPalette } from "react-icons/lu";
-import { TbLogout } from "react-icons/tb";
+import { LuPalette } from 'react-icons/lu';
+import { TbLogin, TbLogout } from 'react-icons/tb';
 import { BsChatDotsFill } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { supabase } from '../../../api/supabase/supabaseClient';
+import {
+  useAppDispatch,
+  useAppSelector
+} from '../../../redux/reduxHooks/reduxBase';
+import * as St from '../../../styles/headerStyle/HeaderStyle';
+import {
+  setSuccessLogin,
+  setSuccessLogout
+} from '../../../redux/modules/authSlice';
 
 interface HamburgerMenuProps {
   isOpen: boolean;
@@ -18,6 +27,7 @@ interface HamburgerMenuProps {
   user: boolean | User;
   setUser: (value: boolean | User) => void;
   avatarUrl?: string;
+  handleNavigateToLogin: () => void;
 }
 
 interface User {
@@ -36,8 +46,12 @@ const Hamburger: React.FC<HamburgerMenuProps> = ({
   onLogout,
   user,
   setUser,
-  avatarUrl
+  avatarUrl,
+  handleNavigateToLogin
 }) => {
+  const { isLogin } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
   const handleLogOut = () => {
     onLogout();
     onClose();
@@ -50,7 +64,19 @@ const Hamburger: React.FC<HamburgerMenuProps> = ({
     return profile;
   };
 
-  useEffect(() => {}, [user]);
+  // 로그인 상태여부 확인
+  const getSession = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    if (data.session) {
+      dispatch(setSuccessLogin());
+    } else {
+      dispatch(setSuccessLogout());
+    }
+  };
+
+  useEffect(() => {
+    getSession();
+  }, []);
   return (
     <HamburgerModalContainer $isOpen={isOpen}>
       <CloseHamburger>
@@ -70,7 +96,7 @@ const Hamburger: React.FC<HamburgerMenuProps> = ({
 
       <NavToBoard>
         <NavToProducts to="/products" onClick={onClose}>
-          <LuPalette/>
+          <LuPalette />
           <p>중고거래</p>
         </NavToProducts>
 
@@ -79,9 +105,9 @@ const Hamburger: React.FC<HamburgerMenuProps> = ({
           <p>커뮤니티</p>
         </NavToCommunity>
       </NavToBoard>
-          <HrStyle/>
+      <HrStyle />
       <NavToBoard>
-      <NavToProducts to="/productsposts" onClick={onClose}>
+        <NavToProducts to="/productsposts" onClick={onClose}>
           <BiWon />
           <p>판매하기</p>
         </NavToProducts>
@@ -91,7 +117,7 @@ const Hamburger: React.FC<HamburgerMenuProps> = ({
           <p>소통하기</p>
         </NavToCommunity>
       </NavToBoard>
-          <HrStyle/>
+      <HrStyle />
       <UserMenu>
         <NavToMypage to="/mypage" onClick={onClose}>
           <IoPersonSharp />
@@ -102,10 +128,17 @@ const Hamburger: React.FC<HamburgerMenuProps> = ({
           <BsChatDotsFill />
           <p>채팅</p>
         </NavToChatRoom>
-        <Logout>
-          <TbLogout />
-          <p onClick={handleLogOut}>로그아웃</p>
-        </Logout>
+        {isLogin ? (
+          <Logout onClick={onClose}>
+            <TbLogout />
+            <p onClick={handleLogOut}>로그아웃</p>
+          </Logout>
+        ) : (
+          <Logout onClick={onClose}>
+            <TbLogin />
+            <p onClick={handleNavigateToLogin}>로그인</p>
+          </Logout>
+        )}
       </UserMenu>
     </HamburgerModalContainer>
   );
@@ -123,7 +156,7 @@ const HamburgerModalContainer = styled.div<{ $isOpen: boolean }>`
   padding: 1.5rem;
   border: 0.1px solid var(--opc-100);
   border-radius: 1rem;
-  background-color: #FFFEFA;
+  background-color: #fffefa;
   z-index: 1000;
   @media screen and (max-width: 768px) {
     width: 30%;
@@ -246,4 +279,4 @@ const HrStyle = styled.hr`
   border: none;
   background-color: var(--opc-100);
   margin-top: 3rem;
-`
+`;
