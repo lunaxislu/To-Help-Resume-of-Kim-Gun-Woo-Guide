@@ -1,8 +1,8 @@
 import React, { MouseEvent } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import styled from 'styled-components';
-import ProductsCard from '../prducts/ProductsCard';
-import { Product } from '../../pages/productsDetail/types';
+import ProductsCard from '../../../prducts/ProductsCard';
+import { Product } from '../../../../pages/productsDetail/types';
 import { useNavigate } from 'react-router';
 
 type RecommendProps = {

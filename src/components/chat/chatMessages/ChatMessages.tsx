@@ -1,7 +1,7 @@
 import React, { MouseEvent } from 'react';
-import type { MessageCompProps, MessageType } from './types';
+import type { MessageCompProps, MessageType } from '../types';
 import { useNavigate } from 'react-router';
-import { supabase } from '../../api/supabase/supabaseClient';
+import { supabase } from '../../../api/supabase/supabaseClient';
 import ChatMyMsg from './ChatMyMsg';
 import ChatMsg from './ChatMsg';
 

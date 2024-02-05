@@ -422,6 +422,23 @@ const StConfirmSellBtn = styled.button`
   }
 `;
 
+// chat List
+const StNoListText = styled.h1`
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+const StSellTitle = styled.h1`
+  text-align: center;
+  font-weight: 500;
+  margin-block: 1rem;
+  color: black;
+  letter-spacing: 0.1rem;
+`;
+
 export {
   StDetailContainer,
   StDetailInfoSection,
@@ -450,5 +467,7 @@ export {
   StSelectChatBg,
   StChatList,
   StChatListItem,
-  StConfirmSellBtn
+  StConfirmSellBtn,
+  StNoListText,
+  StSellTitle
 };
