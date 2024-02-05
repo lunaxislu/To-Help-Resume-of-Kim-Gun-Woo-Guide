@@ -120,17 +120,17 @@ body {
 
 
     //
-    font-family: 'BM-JUA';
+    font-family: 'DalseoHealing-bold';
     color: var(--black);
     overflow-x: hidden;
 }
 button,
 input,
 textarea {
-    font-family: 'BM-JUA';
+    font-family: 'DalseoHealing-bold';
 }
 input {
-    font-family: 'BM-JUA';
+    font-family: 'DalseoHealing-bold';
 }
 input {
     background-color: var(--opc-30);
