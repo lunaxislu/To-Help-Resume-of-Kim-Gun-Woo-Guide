@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { GiHamburgerMenu } from "react-icons/gi";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { TbLogout } from "react-icons/tb";
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { TbLogout } from 'react-icons/tb';
 import { FaBell } from 'react-icons/fa';
 import styled, { keyframes } from 'styled-components';
 
@@ -9,10 +9,9 @@ export const Hr = styled.hr`
   width: 100%;
   height: 0.1rem;
   border: none;
-  
+
   color: var(--gray);
   @media screen and (max-width: 768px) {
-    
   }
 `;
 
@@ -223,6 +222,7 @@ export const Alert = styled.button`
 `;
 export const Notice = styled.div`
   display: none;
+  position: relative;
   @media screen and (max-width: 768px) {
     cursor: pointer;
     display: flex;
@@ -241,10 +241,10 @@ export const NoticeIcon = styled(FaBell)`
   height: 2rem;
   color: var(--opc-100);
   @media screen and (max-width: 330px) {
-  width: 1.5rem;
-  height: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
-`
+`;
 export const Button = styled.button`
   align-items: center;
   justify-content: center;
@@ -264,6 +264,10 @@ export const Button = styled.button`
   &:hover {
     background: #18b3bc;
   }
+
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const LogoutImage = styled(TbLogout)`
@@ -274,10 +278,9 @@ export const LogoutImage = styled(TbLogout)`
 export const LogoutWord = styled.div`
   font-size: var(--fontSize-body);
   color: var(--opc-100);
-
 `;
 export const LogoutButton = styled.button`
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   gap: 0.66rem;
@@ -406,7 +409,9 @@ export const StNotiContainer = styled.div`
   animation: ${NotiAni} 0.3s ease;
 
   @media screen and (max-width: 768px) {
-    width: 150px;
+    top: 6%;
+    right: 15%;
+    width: 250px;
   }
 `;
 
@@ -435,6 +440,10 @@ export const StNotiItem = styled.div`
     background-color: var(--opc-100);
     color: var(--3-gray);
   }
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 export const StNotiDot = styled.div`
@@ -445,4 +454,9 @@ export const StNotiDot = styled.div`
   position: absolute;
   top: 18%;
   right: 0.4rem;
+
+  @media screen and (max-width: 768px) {
+    top: -25%;
+    right: -20%;
+  }
 `;
