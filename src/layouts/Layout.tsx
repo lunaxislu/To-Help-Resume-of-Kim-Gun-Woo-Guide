@@ -102,7 +102,6 @@ const Layout = () => {
 
   useEffect(() => {
     saveNotiToLocal(notification);
-    if (notification.length > 0) setNewNotiExists(true);
   }, [notification]);
 
   useEffect(() => {

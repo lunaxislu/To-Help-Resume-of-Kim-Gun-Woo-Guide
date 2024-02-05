@@ -330,7 +330,7 @@ export const NotiAni = keyframes`
 `;
 
 export const StNotiContainer = styled.div`
-  width: 200px;
+  width: 250px;
   max-height: 150px;
   overflow-y: scroll;
   border: 0.1rem solid var(--opc-100);
