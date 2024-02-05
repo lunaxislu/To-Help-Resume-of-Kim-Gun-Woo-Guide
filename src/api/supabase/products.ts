@@ -16,6 +16,7 @@ export interface Product {
   like_user: LikeUser[];
   about: string;
   isSell: boolean;
+  post_user_uid: string;
 }
 
 export interface ProductCardProps {
