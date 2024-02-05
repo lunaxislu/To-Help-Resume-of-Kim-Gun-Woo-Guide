@@ -1,5 +1,17 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { IoClose } from 'react-icons/io5';
+
+export const StSlideUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(15%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+`;
 
 export const StFormContainer = styled.div`
   position: absolute;
@@ -10,6 +22,7 @@ export const StFormContainer = styled.div`
   background: var(--drop);
   padding: 1.5rem 3rem;
   text-align: right;
+  animation: ${StSlideUp} 0.5s ease;
 `;
 
 export const Close = styled(IoClose)`
