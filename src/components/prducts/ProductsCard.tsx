@@ -22,7 +22,7 @@ const ProductsCard = ({posts}: any) => {
               </St.IsSellProducts>
             ) : (<div></div>)}
             {posts.image_url !== null && posts.image_url !== undefined ? (
-              <St.CardImage src={posts.image_url[0]} alt="상품 이미지" />
+              <St.CardImage src={posts.image_url[0]} alt="물품 이미지" />
             ) : (
               <div></div>
             )}

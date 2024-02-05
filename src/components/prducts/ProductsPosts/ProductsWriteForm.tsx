@@ -47,14 +47,14 @@ const ProductsWriteForm = ({productData}: any) => {
     defaultValues: productData || InputDefaultValue
   });
   
-    useEffect(() => {
-      const tagsString = productData?.tags.join(',')
-      if (location.pathname.includes('edit')) {
-        setUploadedFileUrl(productData.image_url);
-        setValue('tags', tagsString)
-        // setAddressValue({address: productData.address, detailAddress: productData.detailAddress})
-      }
-    },[])
+  // 수정 시 필요한 데이터 변환 후 default 값 변경
+  useEffect(() => {
+    const tagsString = productData?.tags.join(',')
+    if (location.pathname.includes('edit')) {
+      setUploadedFileUrl(productData.image_url);
+      setValue('tags', tagsString)
+    }
+  },[])
 
   // 유저 테이블에서 같은 id 값 찾아서 원하는 유저정보 가져오기
   const [userState, setUserState] = useState(initialState)
@@ -129,12 +129,14 @@ const ProductsWriteForm = ({productData}: any) => {
 
   const onSubmit: SubmitHandler<ProductsInputType> = (data) => {
 
+    // 사진 파일 있는지 없는지 확인 후 없다면 스크롤 업
     if (!uploadedFileUrl || uploadedFileUrl.length === 0) {
-      alert('이미지를 업로드해주세요.');
+      alert('사진은 필수로 올려야합니다. 사진을 선택해주세요.');
       window.scrollTo({top:0})
       return;
     }
 
+    // DB에 맞는 형태로 변환
     const tagsArray = data.tags.split(',', 9).map((tag) => tag.trim());
     const imgUrl = {image_url: uploadedFileUrl}
 
@@ -146,10 +148,10 @@ const ProductsWriteForm = ({productData}: any) => {
       post_user_name: userState.post_user_name,
       nickname: userState.nickname,
     };
-    console.log(EntireData)
+
+    // 판매 글인지 수정 글인지에 따라 각기 다른 함수 실행
     !productData?.id && addPosts(EntireData);
     productData?.id && upDatePosts(EntireData);
-
   };
 
   return (
