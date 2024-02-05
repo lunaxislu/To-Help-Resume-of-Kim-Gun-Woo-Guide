@@ -2,10 +2,8 @@ import React from 'react';
 import * as St from '../../../pages/productsDetail/style';
 import { CustomUser, Product } from '../../../pages/productsDetail/types';
 import parseDate from '../../../util/getDate';
-import { FaPencil, FaTrash } from 'react-icons/fa6';
 import { useNavigate } from 'react-router';
 import { ProductsEditType } from '../../prducts/ProductsType';
-import styled from 'styled-components';
 import {
   StDeleteBtnBox,
   StEditBtnBox,
@@ -13,6 +11,8 @@ import {
   StTrashCanIcon,
   StUserInfoWrapper
 } from './styles';
+import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
+import { setIsOpenForm } from '../../../redux/modules/openForm';
 
 type DetailHeaderProps = {
   product: Product[];
@@ -35,11 +35,17 @@ const ProductDetailInfoHeader = ({
 }: DetailHeaderProps) => {
   // 수정하기(하빈 추가)
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleOnClickEditButton = () => {
     navigate(`/productsposts/edit/${product[0].id}`, {
       state: { productData: selectedProductData }
     });
+  };
+
+  // 신고버튼 클릭 시 폼 오픈 (지현추가)
+  const handleOpenForm = () => {
+    dispatch(setIsOpenForm());
   };
 
   return (
@@ -99,12 +105,7 @@ const ProductDetailInfoHeader = ({
                 <St.StTimeLeft>{parseDate(data.created_at)}</St.StTimeLeft>
               )}
               {!isMobile && <St.StAlertIcon />}
-              <p
-                style={{ cursor: 'pointer' }}
-                onClick={() => {
-                  alert('개발 중인 기능입니다!');
-                }}
-              >
+              <p style={{ cursor: 'pointer' }} onClick={handleOpenForm}>
                 신고하기
               </p>
             </>
