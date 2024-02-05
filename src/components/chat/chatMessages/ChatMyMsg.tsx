@@ -1,6 +1,11 @@
 import React from 'react';
-import { MessageType } from './types';
-import { StMyChatballoon, StMyImageballoon } from './messageStyle';
+import { MessageType } from '../types';
+import {
+  StChatFirstMsg,
+  StMessageBox,
+  StMyChatballoon,
+  StMyImageballoon
+} from '../ChatCompStyles';
 import { User } from '@supabase/supabase-js';
 
 type MessageProps = {
@@ -17,17 +22,17 @@ export default function ChatMyMsg({
 }: MessageProps) {
   return (
     <>
-      <div key={msg.id}>
+      <StMessageBox key={msg.id}>
         {msg.isFirst ? (
           <div
             id={msg.chat_room_id}
             onClick={(e) => findChatRoom(e)}
             key={msg.id}
           >
-            <StMyChatballoon style={{ cursor: 'pointer' }} key={msg.id}>
-              <p style={{ textDecoration: 'underline', color: 'blue' }}>
+            <StMyChatballoon key={msg.id}>
+              <StChatFirstMsg>
                 {msg.content === null ? null : msg.content}
-              </p>
+              </StChatFirstMsg>
             </StMyChatballoon>
           </div>
         ) : (
@@ -50,7 +55,7 @@ export default function ChatMyMsg({
             )}
           </div>
         )}
-      </div>
+      </StMessageBox>
     </>
   );
 }

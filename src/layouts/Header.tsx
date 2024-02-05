@@ -89,6 +89,7 @@ const Header = () => {
     } else {
       // 로그아웃이 성공 시 로그아웃 상태로 업데이트하기
       dispatch(setSuccessLogout());
+      localStorage.removeItem('userId');
       // 사용자 정보 초기화
       setUser(false);
       setAvatarUrl(undefined);

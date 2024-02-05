@@ -1,6 +1,6 @@
 import { SetStateAction } from 'react';
-import { RoomType } from '../chat/types';
-import { CustomUser } from '../../pages/productsDetail/types';
+import { RoomType } from '../../chat/types';
+import { CustomUser } from '../../../pages/productsDetail/types';
 
 export type ChatListProps = {
   createdChatList: RoomType[];

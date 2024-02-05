@@ -1,26 +1,14 @@
-import React, { MouseEvent, SetStateAction, useEffect, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import * as St from '../../styles/headerStyle/HeaderStyle';
 import {
   StMainButton,
   StMenuButtons,
+  StSearchBarContainer,
   StSideBtnContainer
 } from './SideBarStyles';
-import styled from 'styled-components';
 import SearchBar from '../layout/header/SearchBar';
-
-const StSearchBarContainer = styled.div`
-  position: absolute;
-  top: 120%;
-  right: 10rem;
-`;
-
-type SideBarProps = {
-  notification: any[];
-  newNotiExists: boolean;
-  setNewNotiExists: React.Dispatch<SetStateAction<boolean>>;
-  setNotification: React.Dispatch<SetStateAction<any[]>>;
-};
+import { SideBarProps } from './SideBarTypes';
 
 const SideBar = ({
   notification,

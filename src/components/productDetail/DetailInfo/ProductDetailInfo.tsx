@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Product } from '../../pages/productsDetail/types';
-import ProductDetail from './ProductDetailBody';
-import Maps from '../mapTest/Maps';
+import { Product } from '../../../pages/productsDetail/types';
+import ProductDetail from '../chatList/detailBody/ProductDetailBody';
+import Maps from '../../map/Maps';
 import {
   StMapModal,
   StModalBackDrop,
   StProductRow,
   StRowLabel
-} from './infoStyle';
+} from '../infoStyle';
 
 type ProductInfo = {
   labels: { tag: string; icon: any }[];

@@ -1,8 +1,8 @@
 import React, { MouseEvent } from 'react';
-import * as St from '../../pages/productsDetail/style';
+import * as St from '../../../pages/productsDetail/style';
 import styled from 'styled-components';
 import { ChatListProps } from './ChatListTypes';
-import { Participants, RoomType } from '../chat/types';
+import { Participants, RoomType } from '../../chat/types';
 
 const ProductChatList = ({
   createdChatList,
@@ -47,10 +47,10 @@ const ProductChatList = ({
     <>
       <St.StSelectChatBg onClick={() => setShowChatList(false)}>
         <St.StChatList onClick={(e) => e.stopPropagation()}>
-          <StSellTitle>구매한 사용자를 선택해주세요</StSellTitle>
+          <St.StSellTitle>구매한 사용자를 선택해주세요</St.StSellTitle>
           {!createdChatList ||
             (createdChatList.length === 0 && (
-              <StNoListText>채팅 내역이 없습니다</StNoListText>
+              <St.StNoListText>채팅 내역이 없습니다</St.StNoListText>
             ))}
           {createdChatList &&
             createdChatList?.map((room: RoomType) => {
@@ -79,19 +79,3 @@ const ProductChatList = ({
 };
 
 export default ProductChatList;
-
-const StNoListText = styled.h1`
-  text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
-
-const StSellTitle = styled.h1`
-  text-align: center;
-  font-weight: 500;
-  margin-block: 1rem;
-  color: black;
-  letter-spacing: 0.1rem;
-`;

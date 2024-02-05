@@ -1,12 +1,11 @@
 import React from 'react';
-import { MessageType } from './types';
-import { StChatballoon, StImageballoon } from './messageStyle';
-
-type MessageProps = {
-  msg: MessageType;
-  findChatRoom: any;
-  handleShowImage: any;
-};
+import {
+  StChatFirstMsg,
+  StChatballoon,
+  StImageballoon,
+  StMessageBox
+} from '../ChatCompStyles';
+import { MessageProps } from '../types';
 
 export default function ChatMsg({
   msg,
@@ -15,17 +14,17 @@ export default function ChatMsg({
 }: MessageProps) {
   return (
     <>
-      <div key={msg.id} style={{ cursor: 'pointer' }}>
+      <StMessageBox key={msg.id}>
         {msg.isFirst ? (
           <div id={msg.chat_room_id} onClick={(e) => findChatRoom(e)}>
-            <StChatballoon style={{ cursor: 'pointer' }} key={msg.id}>
-              <p style={{ textDecoration: 'underline', color: 'blue' }}>
+            <StChatballoon key={msg.id}>
+              <StChatFirstMsg>
                 {msg.content === null ? null : msg.content}
-              </p>
+              </StChatFirstMsg>
             </StChatballoon>
           </div>
         ) : (
-          <div key={msg.id}>
+          <StMessageBox key={msg.id}>
             {msg.image_url &&
               msg.image_url?.map((img: string) => {
                 return (
@@ -42,9 +41,9 @@ export default function ChatMsg({
                 {msg.content === null ? null : msg.content}
               </StChatballoon>
             )}
-          </div>
+          </StMessageBox>
         )}
-      </div>
+      </StMessageBox>
     </>
   );
 }

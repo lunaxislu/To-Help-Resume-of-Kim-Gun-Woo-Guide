@@ -96,4 +96,15 @@ const StMenuButtons = styled.button<ButtonProps>`
   }
 `;
 
-export { StMainButton, StMenuButtons, StSideBtnContainer };
+const StSearchBarContainer = styled.div`
+  position: absolute;
+  top: 120%;
+  right: 10rem;
+`;
+
+export {
+  StMainButton,
+  StMenuButtons,
+  StSideBtnContainer,
+  StSearchBarContainer
+};
