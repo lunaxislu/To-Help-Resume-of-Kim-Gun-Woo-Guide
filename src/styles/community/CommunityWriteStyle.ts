@@ -4,6 +4,7 @@ import { RiFileHwpLine } from 'react-icons/ri';
 import ReactQuill from 'react-quill';
 import styled from 'styled-components';
 import { StFadeAni } from '../../pages/chat/style';
+import { ColorProps } from '../../pages/community/api/model';
 
 export const PdfIcon = styled(GrDocumentPdf)`
   width: 2rem;
@@ -28,6 +29,15 @@ export const LayoutContentArea = styled.div`
   @media screen and (max-width: 768px) {
     flex-direction: column;
     gap: 1rem;
+  }
+`;
+export const PickerColorArea = styled.div`
+  display: flex;
+  margin-bottom: 1rem;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 0;
   }
 `;
 export const LayoutFileListArea = styled.div`
@@ -424,4 +434,24 @@ export const BackIcon = styled(GoChevronLeft)`
   @media screen and (max-width: 768px) {
     display: block;
   }
+`;
+export const ColorButton = styled.div<ColorProps>`
+  width: 4rem;
+  height: 4rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  border: 3px solid
+    ${(props) =>
+      props.$isSelected ? `var(--c-${props.$color})` : 'transparent'};
+  background-color: ${(props) => `var(--c-${props.$color}-30)`};
+  @media screen and (max-width: 768px) {
+    width: 3rem;
+    height: 3rem;
+  }
+`;
+// ${(props) => `var(--c-${props.$color}-30)`}
+
+export const ColorPicker = styled.div`
+  display: flex;
+  gap: 1rem;
 `;

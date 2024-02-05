@@ -4,27 +4,6 @@ import { CommuListProps, Post } from '../../pages/community/api/model';
 import * as St from '../../styles/community/CommunityListStyle';
 import parseDate from '../../util/getDate';
 
-//우선 랜덤한 느낌만 들게 인덱스로
-//영상 찍고 글쓰기에 추가하는식으로 변경하자
-const RANDOM_COLORS = [
-  'red',
-  'yellow',
-  'yellow',
-  'green',
-  'blue',
-  'purple',
-  'green',
-  'red',
-  'yellow',
-  'purple',
-  'blue',
-  'purple',
-  'green',
-  'red',
-  'yellow',
-  'purple',
-  'blue'
-];
 const CommunityList: React.FC<CommuListProps> = ({ posts }) => {
   const navigate = useNavigate();
 
@@ -38,26 +17,17 @@ const CommunityList: React.FC<CommuListProps> = ({ posts }) => {
     return textOnly;
   };
 
-  //색 랜덤 지정
-  // const generateRandomColorName = (): string =>
-  //   RANDOM_COLORS[Math.floor(Math.random() * RANDOM_COLORS.length)];
-  const getColorIndexByPostId = (postId: number): number => {
-    return postId % RANDOM_COLORS.length;
-  };
   return (
     <div>
       <St.Container>
         {posts?.map((post: Post) => {
-          // const postColor = generateRandomColorName();
-          const colorIndex = getColorIndexByPostId(post.post_id);
-          const postColor = RANDOM_COLORS[colorIndex];
           return (
             <St.Posts
               key={post.post_id}
               onClick={() => {
                 navigate(`/community/detail/${post.post_id}`);
               }}
-              $postcolor={postColor}
+              $postcolor={post.post_color}
             >
               <div>
                 {' '}
@@ -75,9 +45,9 @@ const CommunityList: React.FC<CommuListProps> = ({ posts }) => {
               <St.RightSide>
                 {' '}
                 <St.CommentArea>
-                  <St.LikesIcon $postcolor={postColor} />
+                  <St.LikesIcon $postcolor={post.post_color} />
                   <p>{post.likes}</p>
-                  <St.CommentIcon $postcolor={postColor} />
+                  <St.CommentIcon $postcolor={post.post_color} />
                   <p>{post.comments_count}</p>
                 </St.CommentArea>
                 <div>
