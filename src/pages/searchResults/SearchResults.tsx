@@ -47,10 +47,14 @@ const SearchResults: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [clickMenu, setClickMenu] = useState('최신순');
   const [selectedTab, setSelectedTab] = useState('중고물품');
-  const [showAllData, setShowAllData] = useState(false);
+  const [showAllProducts, setShowAllProducts] = useState(false);
+  const [showAllCommunity, setShowAllCommunity] = useState(false);
 
-  const handleToggleShowAllData = () => {
-    setShowAllData(!showAllData);
+  const handleToggleShowAllProducts = () => {
+    setShowAllProducts(!showAllProducts);
+  };
+  const handleToggleShowAllCommunity = () => {
+    setShowAllCommunity(!showAllCommunity);
   };
 
   const naviagate = useNavigate();
@@ -99,7 +103,7 @@ const SearchResults: React.FC = () => {
   useEffect(() => {
     // 데이터의 개수가 5개 이하이면 showAllData를 false로 설정
     if (usedItemResults.length <= 5) {
-      setShowAllData(false);
+      setShowAllProducts(false);
     }
   }, [usedItemResults]);
   useEffect(() => {
@@ -154,7 +158,10 @@ const SearchResults: React.FC = () => {
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
     return textOnly;
   }, []);
-
+  const slicedCommunityResults = communityResults.slice(
+    0,
+    showAllCommunity ? sortedCommunityResults.length : 6
+  );
   return (
     <>
       <SearchResultsContainer>
@@ -201,17 +208,17 @@ const SearchResults: React.FC = () => {
                   {usedItemCount}개의 상품이 거래되고 있어요
                 </CountList>
                 <LinktoUsedProducts
-                  onClick={handleToggleShowAllData}
+                  onClick={handleToggleShowAllProducts}
                   style={{
                     display:
-                      usedItemResults.length <= 5 && !showAllData
+                      usedItemResults.length <= 5 && !showAllProducts
                         ? 'none'
                         : 'flex'
                   }}
                 >
-                  {showAllData ? <p>숨기기</p> : <p>전체보기</p>}
+                  {showAllProducts ? <p>숨기기</p> : <p>전체보기</p>}
 
-                  {showAllData ? <FiArrowUp /> : <FaArrowDown />}
+                  {showAllProducts ? <FiArrowUp /> : <FaArrowDown />}
                 </LinktoUsedProducts>
               </CountBar>
             )}
@@ -262,7 +269,10 @@ const SearchResults: React.FC = () => {
               <ProductsProtecter>
                 <St.ProductsListContainer>
                   {sortedUsedItemResults
-                    ?.slice(0, showAllData ? sortedUsedItemResults.length : 5)
+                    ?.slice(
+                      0,
+                      showAllProducts ? sortedUsedItemResults.length : 5
+                    )
                     .map((item) => (
                       <St.ProductsCardContainer
                         key={item.id}
@@ -311,14 +321,14 @@ const SearchResults: React.FC = () => {
             <CommunityTitle showClickedList={showClickedList}>
               <CountList>{communityCount}개의 이야기가 있어요</CountList>
               <LinktoCommunityPosts
-                onClick={handleToggleShowAllData}
+                onClick={handleToggleShowAllCommunity}
                 style={{
                   display: communityResults.length <= 6 ? 'none' : 'flex'
                 }}
               >
-                {showAllData ? <p>숨기기</p> : <p>전체보기</p>}
+                {showAllCommunity ? <p>숨기기</p> : <p>전체보기</p>}
 
-                {showAllData ? <FiArrowUp /> : <FaArrowDown />}
+                {showAllCommunity ? <FiArrowUp /> : <FaArrowDown />}
               </LinktoCommunityPosts>
             </CommunityTitle>
             {/* 커뮤니티 모바일 */}
@@ -327,7 +337,7 @@ const SearchResults: React.FC = () => {
             )}
             {!isMobile && (
               // 커뮤니티 데스크탑
-              <CommunityList posts={communityResults} />
+              <CommunityList posts={slicedCommunityResults} />
             )}
           </CommunityResultsContainer>
         </ResultListContainer>
@@ -735,18 +745,21 @@ const CommunityTitle = styled.div<{
   align-items: center;
   margin: 0 auto;
   margin-bottom: 2.2rem;
-  /* padding: 0 1.5rem; */
+  padding: 0 1.5rem;
   @media screen and (max-width: 768px) {
     display: none;
     margin-bottom: 1rem;
+    padding: '';
   }
   @media screen and (max-width: 530px) {
     display: none;
     margin-bottom: 1rem;
+    padding: '';
   }
   @media screen and (max-width: 349px) {
     display: none;
     margin-bottom: 1rem;
+    padding: '';
   }
 `;
 const LinktoCommunityPosts = styled.div`
