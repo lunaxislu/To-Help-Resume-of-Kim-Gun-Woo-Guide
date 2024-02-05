@@ -17,6 +17,13 @@ const QnAFrom = () => {
     dispatch(setIsCloseForm());
   };
 
+  const submitFormHandler = () => {
+    let confirm = window.confirm('성공적으로 제출되었습니다.');
+    if (confirm) {
+      dispatch(setIsCloseForm());
+    }
+  };
+
   const getCurrentUrl = () => {
     setCurrentUrl(window.location.href);
   };
@@ -62,7 +69,9 @@ const QnAFrom = () => {
             id="content"
             placeholder="내용을 입력해주세요."
           ></textarea>
-          <button type="submit">제출</button>
+          <button type="submit" onClick={submitFormHandler}>
+            제출
+          </button>
           <input type="hidden" name="_captcha" value="false"></input>
           <input type="hidden" name="_next" value={`${currentUrl}`}></input>
         </StForm>
