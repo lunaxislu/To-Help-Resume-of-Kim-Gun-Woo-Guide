@@ -23,7 +23,7 @@ export default function ChatMyMsg({
   return (
     <>
       <StMessageBox key={msg.id}>
-        {msg.isFirst ? (
+        {msg.isFirst && (
           <div
             id={msg.chat_room_id}
             onClick={(e) => findChatRoom(e)}
@@ -35,7 +35,8 @@ export default function ChatMyMsg({
               </StChatFirstMsg>
             </StMyChatballoon>
           </div>
-        ) : (
+        )}
+        {!msg.isFirst && (
           <div key={msg.id}>
             {msg.image_url &&
               msg.image_url?.map((img: string) => {

@@ -1,6 +1,5 @@
 import React, { MouseEvent } from 'react';
 import * as St from '../../../pages/productsDetail/style';
-import styled from 'styled-components';
 import { ChatListProps } from './ChatListTypes';
 import { Participants, RoomType } from '../../chat/types';
 

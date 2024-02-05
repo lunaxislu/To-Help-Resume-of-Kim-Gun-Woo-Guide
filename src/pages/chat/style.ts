@@ -1,6 +1,7 @@
 import styled, { css, keyframes } from 'styled-components';
 import { RoomStyledProps } from '../../components/chat/types';
 import { IoIosArrowBack } from 'react-icons/io';
+import { FaPlus } from 'react-icons/fa';
 
 export const StFadeAni = keyframes`
   from{
@@ -430,6 +431,62 @@ const StHeaderArrow = styled(IoIosArrowBack)`
   }
 `;
 
+const StButtonBox = styled.div`
+  position: relative;
+  width: 70px;
+  padding: 1rem;
+  :hover {
+    background: var(--opc-100);
+    color: var(--3-gray);
+  }
+`;
+
+const StImageButton = styled(FaPlus)`
+  font-size: 3rem;
+  border-radius: 50%;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  padding: 0.6rem;
+  transform: translate(-50%, -50%);
+  color: var(--opc-100);
+  cursor: pointer;
+  @media screen and (max-width: 768px) {
+    right: 2rem;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+`;
+
+const StChatRoomBar = styled.div`
+  width: 100%;
+  max-width: 768px;
+  padding: 1rem 0.4rem;
+  gap: 1rem;
+  display: none;
+  align-items: center;
+  border-bottom: 0.1rem solid var(--3-gray);
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+const StHeaderArrowBack = styled(IoIosArrowBack)`
+  font-size: 2rem;
+  height: max-content;
+  color: var(--opc-100);
+  cursor: pointer;
+  display: none;
+
+  @media screen and (max-width: 768px) {
+    display: block;
+  }
+`;
+
 export {
   StChatWrapper,
   StChatContainer,
@@ -455,5 +512,10 @@ export {
   StMenuBox,
   StMenu,
   StUserProfile,
-  StHeaderArrow
+  StHeaderArrow,
+  StButtonBox,
+  StImageButton,
+  ButtonWrapper,
+  StChatRoomBar,
+  StHeaderArrowBack
 };
