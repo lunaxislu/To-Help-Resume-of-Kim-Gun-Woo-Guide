@@ -1,16 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/store';
 import styled, { css } from 'styled-components';
 import parseDate from '../../util/getDate';
 import { setSearchResults } from '../../redux/modules/searchSlice';
 import { FaArrowRight } from 'react-icons/fa';
+import { FaArrowDown } from 'react-icons/fa6';
+import { FiArrowUp } from 'react-icons/fi';
 import { researchItems, ResearchResults } from './researchItem';
 import Dropdown from '../../styles/searchresults/Dropdown';
-import { sortBy } from 'lodash';
+import { divide, sortBy } from 'lodash';
 import { Communityy, UsedItem } from '../home/usedtypes';
 import { Post } from '../community/model';
+import * as St from '../../styles/products/ProductsListStyle';
+import CommunityList from '../../components/community/CommunityList';
 
 interface ListCount {
   usedItemCount: number;
@@ -38,7 +42,6 @@ const SearchResults: React.FC = () => {
       setShowClickedList(true);
     }
   };
-
   const dispatch = useDispatch();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +49,13 @@ const SearchResults: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [clickMenu, setClickMenu] = useState('최신순');
   const [selectedTab, setSelectedTab] = useState('중고물품');
+  const [showAllData, setShowAllData] = useState(false);
+
+  const handleToggleShowAllData = () => {
+    setShowAllData(!showAllData);
+  };
+
+  const naviagate = useNavigate();
 
   const handleProductsSort = (sort: '최신순' | '인기순') => {
     setClickMenu(sort);
@@ -88,7 +98,12 @@ const SearchResults: React.FC = () => {
     clickMenu === '인기순'
       ? CommunitySortByLikes(communityResults)
       : communityResults;
-
+  useEffect(() => {
+    // 데이터의 개수가 5개 이하이면 showAllData를 false로 설정
+    if (usedItemResults.length <= 5) {
+      setShowAllData(false);
+    }
+  }, [usedItemResults]);
   useEffect(() => {
     checkWindowSize();
     window.removeEventListener('DOMContentLoaded', checkWindowSize);
@@ -146,7 +161,7 @@ const SearchResults: React.FC = () => {
     <>
       <SearchResultsContainer>
         <SearchResultsCountContainer>
-          <CheckImage src="/assets/checkresults.png" alt="검색결과" />
+          <CheckImage src="/assets/checkcheck.svg" alt="검색결과" />
           <FullCounts>
             {isLoading
               ? '검색 중...'
@@ -187,104 +202,108 @@ const SearchResults: React.FC = () => {
                 <CountList>
                   {usedItemCount}개의 상품이 거래되고 있어요
                 </CountList>
-                <LinktoUsedProducts to="/products">
-                  <p>전체보기</p>
+                <LinktoUsedProducts
+                  onClick={handleToggleShowAllData}
+                  style={{
+                    display:
+                      usedItemResults.length <= 5 && !showAllData
+                        ? 'none'
+                        : 'flex'
+                  }}
+                >
+                  {showAllData ? <p>숨기기</p> : <p>전체보기</p>}
 
-                  <FaArrowRight />
+                  {showAllData ? <FiArrowUp /> : <FaArrowDown />}
                 </LinktoUsedProducts>
               </CountBar>
             )}
             {/* 검색 결과 */}
             {isMobile && !showClickedList && (
-              <UsedItemsList
-                usedItemCount={usedItemCount}
-                showClickedList={showClickedList}
-              >
-                {sortedUsedItemResults.map((item) => (
-                  <ToProductsPage
+              <St.ProductsListContainer>
+                {sortedUsedItemResults?.map((item) => (
+                  <St.ProductsCardContainer
                     key={item.id}
-                    to={`/products/detail/${item.id}`}
+                    onClick={() => naviagate(`/products/detail/${item.id}`)}
                   >
-                    <ProductList>
-                      <div>
-                        {item.image_url ? (
-                          <img src={item.image_url[0]} alt="Item" />
-                        ) : (
-                          <svg
-                            width="208"
-                            height="208"
-                            viewBox="0 0 208 208"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <rect
-                              width="208"
-                              height="208"
-                              rx="15"
-                              fill="#F8F8F8"
-                            />
-                          </svg>
-                        )}
-                      </div>
-
-                      <ProductsCardQuality
-                        $quality={item.quality}
-                        key={item.quality}
-                      >
-                        {item.quality}
-                      </ProductsCardQuality>
-                      <h3>{item.title}</h3>
-                      <p>{item.price.toLocaleString('kr-KO')}원</p>
-                    </ProductList>
-                  </ToProductsPage>
+                    <St.CardImageWrapper>
+                      {item.isSell === true ? (
+                        <St.IsSellProducts>
+                          <St.SoldOut>판매완료</St.SoldOut>
+                        </St.IsSellProducts>
+                      ) : (
+                        <div></div>
+                      )}
+                      {item.image_url !== null &&
+                      item.image_url !== undefined ? (
+                        <St.CardImage
+                          src={item.image_url[0]}
+                          alt="상품 이미지"
+                        />
+                      ) : (
+                        <div></div>
+                      )}
+                    </St.CardImageWrapper>
+                    {[item.quality].map((condition) => (
+                      <St.CardQuality $quality={condition} key={condition}>
+                        {condition}
+                      </St.CardQuality>
+                    ))}
+                    <St.CardTitle>{item.title}</St.CardTitle>
+                    <St.LikesWrapper>
+                      <St.CardPrice>
+                        {item.price.toLocaleString('kr-KO')}원
+                      </St.CardPrice>
+                      <St.Likes>♥ {item.likes}</St.Likes>
+                    </St.LikesWrapper>
+                  </St.ProductsCardContainer>
                 ))}
-              </UsedItemsList>
+              </St.ProductsListContainer>
             )}{' '}
             {!isMobile && (
               // 중고 데스크탑
-              <UsedItemsList
-                usedItemCount={usedItemCount}
-                showClickedList={showClickedList}
-              >
-                {sortedUsedItemResults.slice(0, 5).map((item) => (
-                  <ToProductsPage
-                    key={item.id}
-                    to={`/products/detail/${item.id}`}
-                  >
-                    <ProductList>
-                      <div>
-                        {item.image_url ? (
-                          <img src={item.image_url[0]} alt="Item" />
-                        ) : (
-                          <svg
-                            width="208"
-                            height="208"
-                            viewBox="0 0 208 208"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <rect
-                              width="208"
-                              height="208"
-                              rx="15"
-                              fill="#F8F8F8"
-                            />
-                          </svg>
-                        )}
-                      </div>
-
-                      <ProductsCardQuality
-                        $quality={item.quality}
-                        key={item.quality}
+              <ProductsProtecter>
+                <St.ProductsListContainer>
+                  {sortedUsedItemResults
+                    ?.slice(0, showAllData ? sortedUsedItemResults.length : 5)
+                    .map((item) => (
+                      <St.ProductsCardContainer
+                        key={item.id}
+                        onClick={() => naviagate(`/products/detail/${item.id}`)}
                       >
-                        {item.quality}
-                      </ProductsCardQuality>
-                      <h3>{item.title}</h3>
-                      <p>{item.price.toLocaleString('kr-KO')}원</p>
-                    </ProductList>
-                  </ToProductsPage>
-                ))}
-              </UsedItemsList>
+                        <St.CardImageWrapper>
+                          {item.isSell === true ? (
+                            <St.IsSellProducts>
+                              <St.SoldOut>판매완료</St.SoldOut>
+                            </St.IsSellProducts>
+                          ) : (
+                            <div></div>
+                          )}
+                          {item.image_url !== null &&
+                          item.image_url !== undefined ? (
+                            <St.CardImage
+                              src={item.image_url[0]}
+                              alt="상품 이미지"
+                            />
+                          ) : (
+                            <div></div>
+                          )}
+                        </St.CardImageWrapper>
+                        {[item.quality].map((condition) => (
+                          <St.CardQuality $quality={condition} key={condition}>
+                            {condition}
+                          </St.CardQuality>
+                        ))}
+                        <St.CardTitle>{item.title}</St.CardTitle>
+                        <St.LikesWrapper>
+                          <St.CardPrice>
+                            {item.price.toLocaleString('kr-KO')}원
+                          </St.CardPrice>
+                          <St.Likes>♥ {item.likes}</St.Likes>
+                        </St.LikesWrapper>
+                      </St.ProductsCardContainer>
+                    ))}
+                </St.ProductsListContainer>
+              </ProductsProtecter>
             )}
           </UsedItemResultsContainer>
 
@@ -293,140 +312,27 @@ const SearchResults: React.FC = () => {
           <CommunityResultsContainer showClickedList={showClickedList}>
             <CommunityTitle showClickedList={showClickedList}>
               <CountList>{communityCount}개의 이야기가 있어요</CountList>
-              <LinktoCommunityPosts to="/community">
-                <p>전체보기</p>
-                <FaArrowRight />
+              <LinktoCommunityPosts
+                onClick={handleToggleShowAllData}
+                style={{
+                  display:
+                    communityResults.length <= 6 && !showAllData
+                      ? 'none'
+                      : 'flex'
+                }}
+              >
+                {showAllData ? <p>숨기기</p> : <p>전체보기</p>}
+
+                {showAllData ? <FiArrowUp /> : <FaArrowDown />}
               </LinktoCommunityPosts>
             </CommunityTitle>
             {/* 커뮤니티 모바일 */}
             {isMobile && showClickedList && (
-              <CommunityPostsList>
-                {sortedCommunityResults.map((item) => (
-                  <ToCommunityPage
-                    key={item.post_id}
-                    to={`/community/detail/${item.post_id}`}
-                  >
-                    <PostList>
-                      <div className="commucontent">
-                        <div className="ttitle">
-                          <h3>{item.title}</h3>
-                        </div>
-                        <div className="commupic">
-                          {item.main_image ? (
-                            <img
-                              className="community-pic"
-                              src={item.main_image}
-                              alt="Community Post"
-                            />
-                          ) : (
-                            ''
-                          )}
-                          <p>{handleText(item.content)}</p>{' '}
-                        </div>
-                      </div>
-                      <div>
-                        <svg
-                          className="thumbs"
-                          width="13"
-                          height="13"
-                          viewBox="0 0 13 13"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M0.00242571 5.92305C-0.00533256 5.83585 0.00556749 5.74802 0.0344343 5.66515C0.0633011 5.58227 0.109504 5.50616 0.170112 5.44164C0.23072 5.37711 0.304409 5.32559 0.386503 5.29034C0.468598 5.25508 0.557305 5.23686 0.646996 5.23684H1.88275C2.05438 5.23684 2.21899 5.30338 2.34036 5.42183C2.46172 5.54027 2.5299 5.70092 2.5299 5.86842V11.8684C2.5299 12.0359 2.46172 12.1966 2.34036 12.315C2.21899 12.4335 2.05438 12.5 1.88275 12.5H1.18187C1.0199 12.5 0.863797 12.4408 0.7444 12.334C0.625002 12.2272 0.55099 12.0805 0.536979 11.9231L0.00242571 5.92305ZM4.47138 5.67105C4.47138 5.40705 4.63964 5.17084 4.88394 5.05842C5.41753 4.81274 6.32646 4.31916 6.73643 3.65189C7.26484 2.79168 7.3645 1.23768 7.38068 0.881788C7.38295 0.831893 7.38165 0.781998 7.38845 0.732735C7.47614 0.115998 8.69571 0.836314 9.16328 1.598C9.41729 2.01105 9.44965 2.55389 9.42311 2.978C9.39432 3.43147 9.25809 3.86947 9.12445 4.30463L8.8397 5.23211H12.3528C12.4528 5.2321 12.5514 5.2547 12.641 5.29815C12.7305 5.34159 12.8085 5.40469 12.8688 5.48249C12.9292 5.56029 12.9702 5.65069 12.9888 5.74658C13.0073 5.84246 13.0028 5.94124 12.9757 6.03516L11.2381 12.0402C11.1997 12.1727 11.1181 12.2892 11.0056 12.3722C10.8931 12.4552 10.7559 12.5001 10.6149 12.5H5.11854C4.9469 12.5 4.78229 12.4335 4.66093 12.315C4.53956 12.1966 4.47138 12.0359 4.47138 11.8684V5.67105Z"
-                            fill="#DBFF00"
-                            fillOpacity="0.7"
-                          />
-                        </svg>
-                        <span className="likescount">{item.likes}</span>
-
-                        <svg
-                          className="commentss"
-                          width="12"
-                          height="13"
-                          viewBox="0 0 12 13"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M4.8 0.5H7.2C8.47304 0.5 9.69394 1.01868 10.5941 1.94194C11.4943 2.86519 12 4.1174 12 5.42308C12 6.72876 11.4943 7.98096 10.5941 8.90422C9.81235 9.70602 8.7887 10.2027 7.69908 10.3195C7.42451 10.3489 7.2 10.57 7.2 10.8462V11.7544C7.2 12.11 6.8397 12.3527 6.51214 12.2142C3.59783 10.9824 0 9.12524 0 5.42308C0 4.1174 0.505713 2.86519 1.40589 1.94194C2.30606 1.01868 3.52696 0.5 4.8 0.5Z"
-                            fill="#DBFF00"
-                            fillOpacity="0.7"
-                          />
-                        </svg>
-                        <span>{item.comment?.length}</span>
-                        <h4>{parseDate(item.created_at)}</h4>
-                      </div>
-                    </PostList>
-                  </ToCommunityPage>
-                ))}
-              </CommunityPostsList>
+              <CommunityList posts={communityResults} />
             )}
             {!isMobile && (
               // 커뮤니티 데스크탑
-              <CommunityPostsList>
-                {sortedCommunityResults.slice(0, 6).map((item) => (
-                  <ToCommunityPage
-                    key={item.post_id}
-                    to={`/community/detail/${item.post_id}`}
-                  >
-                    <PostList>
-                      <div className="commucontent">
-                        <div className="ttitle">
-                          <h3>{item.title}</h3>
-                        </div>
-                        <div className="commupic">
-                          {item.main_image ? (
-                            <img
-                              className="community-pic"
-                              src={item.main_image}
-                              alt="Community Post"
-                            />
-                          ) : (
-                            ''
-                          )}
-                          <p>{handleText(item.content)}</p>{' '}
-                        </div>
-                      </div>
-                      <div>
-                        <svg
-                          className="thumbs"
-                          width="13"
-                          height="13"
-                          viewBox="0 0 13 13"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M0.00242571 5.92305C-0.00533256 5.83585 0.00556749 5.74802 0.0344343 5.66515C0.0633011 5.58227 0.109504 5.50616 0.170112 5.44164C0.23072 5.37711 0.304409 5.32559 0.386503 5.29034C0.468598 5.25508 0.557305 5.23686 0.646996 5.23684H1.88275C2.05438 5.23684 2.21899 5.30338 2.34036 5.42183C2.46172 5.54027 2.5299 5.70092 2.5299 5.86842V11.8684C2.5299 12.0359 2.46172 12.1966 2.34036 12.315C2.21899 12.4335 2.05438 12.5 1.88275 12.5H1.18187C1.0199 12.5 0.863797 12.4408 0.7444 12.334C0.625002 12.2272 0.55099 12.0805 0.536979 11.9231L0.00242571 5.92305ZM4.47138 5.67105C4.47138 5.40705 4.63964 5.17084 4.88394 5.05842C5.41753 4.81274 6.32646 4.31916 6.73643 3.65189C7.26484 2.79168 7.3645 1.23768 7.38068 0.881788C7.38295 0.831893 7.38165 0.781998 7.38845 0.732735C7.47614 0.115998 8.69571 0.836314 9.16328 1.598C9.41729 2.01105 9.44965 2.55389 9.42311 2.978C9.39432 3.43147 9.25809 3.86947 9.12445 4.30463L8.8397 5.23211H12.3528C12.4528 5.2321 12.5514 5.2547 12.641 5.29815C12.7305 5.34159 12.8085 5.40469 12.8688 5.48249C12.9292 5.56029 12.9702 5.65069 12.9888 5.74658C13.0073 5.84246 13.0028 5.94124 12.9757 6.03516L11.2381 12.0402C11.1997 12.1727 11.1181 12.2892 11.0056 12.3722C10.8931 12.4552 10.7559 12.5001 10.6149 12.5H5.11854C4.9469 12.5 4.78229 12.4335 4.66093 12.315C4.53956 12.1966 4.47138 12.0359 4.47138 11.8684V5.67105Z"
-                            fill="#DBFF00"
-                            fillOpacity="0.7"
-                          />
-                        </svg>
-                        <span className="likescount">{item.likes}</span>
-
-                        <svg
-                          className="commentss"
-                          width="12"
-                          height="13"
-                          viewBox="0 0 12 13"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M4.8 0.5H7.2C8.47304 0.5 9.69394 1.01868 10.5941 1.94194C11.4943 2.86519 12 4.1174 12 5.42308C12 6.72876 11.4943 7.98096 10.5941 8.90422C9.81235 9.70602 8.7887 10.2027 7.69908 10.3195C7.42451 10.3489 7.2 10.57 7.2 10.8462V11.7544C7.2 12.11 6.8397 12.3527 6.51214 12.2142C3.59783 10.9824 0 9.12524 0 5.42308C0 4.1174 0.505713 2.86519 1.40589 1.94194C2.30606 1.01868 3.52696 0.5 4.8 0.5Z"
-                            fill="#DBFF00"
-                            fillOpacity="0.7"
-                          />
-                        </svg>
-                        <span>{item.comment?.length}</span>
-                        <h4>{parseDate(item.created_at)}</h4>
-                      </div>
-                    </PostList>
-                  </ToCommunityPage>
-                ))}
-              </CommunityPostsList>
+              <CommunityList posts={communityResults} />
             )}
           </CommunityResultsContainer>
         </ResultListContainer>
@@ -444,7 +350,6 @@ const SearchResultsContainer = styled.div`
   min-height: 100vh;
   margin: 0 auto;
   margin-bottom: 15rem;
-  color: var(--12, #f8f8f8);
   @media screen and (max-width: 1300px) {
     width: 100%;
     max-width: 130rem;
@@ -503,7 +408,7 @@ const FullCounts = styled.div`
   }
 `;
 const ResultListContainer = styled.div`
-  width: 111.6rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
   border-top: 1px solid #717171;
@@ -515,12 +420,20 @@ const ResultListContainer = styled.div`
     border-top: none;
   }
 `;
+
+const ProductsProtecter = styled.div`
+  margin-top: 2rem;
+`;
+
 const UsedItemResultsContainer = styled.div`
   margin-top: 2rem;
-  width: 100%;
+  width: 111.6rem;
+  margin: 0 auto;
   margin-bottom: 4rem;
   @media screen and (max-width: 768px) {
     width: 100%;
+    min-width: 32rem;
+    margin-top: 2rem;
   }
 `;
 const CountBar = styled.div`
@@ -528,8 +441,12 @@ const CountBar = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin: 0 auto;
+  margin-top: 2rem;
+  padding: 0 1.5rem;
   @media screen and (max-width: 768px) {
     padding: 0 1.5rem;
+    margin-top: '';
   }
 `;
 const CountPost = styled.div`
@@ -577,7 +494,7 @@ const CountList = styled.h1`
     font-size: var(--fontSize-H5);
   }
 `;
-const LinktoUsedProducts = styled(Link)`
+const LinktoUsedProducts = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -600,8 +517,8 @@ const LinktoUsedProducts = styled(Link)`
     gap: 0.3rem;
   }
   &:hover {
-    background-color: #83ad2e;
-    color: #101d1c;
+    background-color: var(--opc-100);
+    color: var(--bgColor);
   }
   svg {
     width: 1rem;
@@ -665,7 +582,7 @@ const UsedItemsList = styled.ul<{
     margin-top: ${({ usedItemCount }) => (usedItemCount !== 0 ? '2rem' : '')};
   }
 `;
-const ToProductsPage = styled(Link)`
+const ToProductsPage = styled.div`
   text-decoration: none;
   cursor: pointer;
   color: var(--11-gray);
@@ -837,7 +754,7 @@ const CommunityTitle = styled.div<{
     margin-bottom: 1rem;
   }
 `;
-const LinktoCommunityPosts = styled(Link)`
+const LinktoCommunityPosts = styled.div`
   text-decoration: none;
   cursor: pointer;
   font-weight: bold;
@@ -863,8 +780,8 @@ const LinktoCommunityPosts = styled(Link)`
     gap: 0.3rem;
   }
   &:hover {
-    background-color: #83ad2e;
-    color: #101d1c;
+    background-color: var(--opc-100);
+    color: var(--bgColor);
   }
   svg {
     width: 1rem;
