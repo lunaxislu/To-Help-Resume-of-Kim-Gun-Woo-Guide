@@ -200,7 +200,7 @@ export class UtilForChat {
 
       const { error: timeUpdateError } = await supabase
         .from('chat_room')
-        .update({ last_upadted: new Date() })
+        .update({ last_updated: new Date() })
         .eq('id', clicked);
 
       if (timeUpdateError) console.log('시간 업데이트 오류');
