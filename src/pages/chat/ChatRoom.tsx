@@ -2,45 +2,19 @@ import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 import { User } from '@supabase/supabase-js';
 import ChatRoomList from '../../components/chat/chatRoom/ChatRoomList';
 import ChatMessages from '../../components/chat/chatMessages/ChatMessages';
+import ChatHeader from './chatHeader/ChatHeader';
+import ChatForm from './chatForm/ChatForm';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router';
+import { supabase } from '../../api/supabase/supabaseClient';
+import { checkDevice } from '../../components/chat/chatRoom/CheckDvice';
+import { UtilForChat } from './chat_utils/functions';
 import type {
   MessageType,
   Participants,
   RoomType
 } from '../../components/chat/types';
 import * as St from './style';
-import ChatHeader from './chatHeader/ChatHeader';
-import ChatForm from './chatForm/ChatForm';
-import { UtilForChat } from './chat_utils/functions';
-import styled from 'styled-components';
-import { IoIosArrowBack } from 'react-icons/io';
-import { useNavigate } from 'react-router';
-import { supabase } from '../../api/supabase/supabaseClient';
-
-const StChatRoomBar = styled.div`
-  width: 100%;
-  max-width: 768px;
-  padding: 1rem 0.4rem;
-  gap: 1rem;
-  display: none;
-  align-items: center;
-  border-bottom: 0.1rem solid var(--3-gray);
-
-  @media screen and (max-width: 768px) {
-    display: flex;
-  }
-`;
-
-const StHeaderArrow = styled(IoIosArrowBack)`
-  font-size: 2rem;
-  height: max-content;
-  color: var(--opc-100);
-  cursor: pointer;
-  display: none;
-
-  @media screen and (max-width: 768px) {
-    display: block;
-  }
-`;
 
 export default function ChatRoom() {
   const [showImage, setShowImage] = useState<boolean>(false);
@@ -78,12 +52,6 @@ export default function ChatRoom() {
       setRooms(myRoom);
     }
   };
-
-  useEffect(() => {
-    if (curUser) {
-      getChatRooms();
-    }
-  }, [curUser]);
 
   // 우측에서 채팅방 등장(모바일 대응)
   const handleBoardPosition = () => {
@@ -158,6 +126,12 @@ export default function ChatRoom() {
     };
   }, []);
 
+  useEffect(() => {
+    if (curUser) {
+      getChatRooms();
+    }
+  }, [curUser]);
+
   // 채팅방 로드 시 스크롤 최하단으로
   useEffect(() => {
     if (scrollRef.current) {
@@ -165,17 +139,6 @@ export default function ChatRoom() {
       scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
   }, [messages]);
-  const checkDevice = (agent: string) => {
-    const mobileRegex = [
-      /Android/i,
-      /iPhone/i,
-      /iPad/i,
-      /iPod/i,
-      /BlackBerry/i,
-      /Windows Phone/i
-    ];
-    return mobileRegex.some((mobile) => agent.match(mobile));
-  };
 
   useEffect(() => {
     if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
@@ -211,10 +174,10 @@ export default function ChatRoom() {
       )}
 
       <St.StChatContainer>
-        <StChatRoomBar>
-          <StHeaderArrow onClick={() => navi(-1)} />
+        <St.StChatRoomBar>
+          <St.StHeaderArrowBack onClick={() => navi(-1)} />
           채팅목록
-        </StChatRoomBar>
+        </St.StChatRoomBar>
         <St.StChatList onClick={() => setShowFileInput(false)}>
           <ChatRoomList
             handleBoardPosition={handleBoardPosition}

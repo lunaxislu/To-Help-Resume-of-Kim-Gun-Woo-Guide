@@ -2,17 +2,14 @@ import React, {
   ChangeEvent,
   MouseEvent,
   SetStateAction,
-  useEffect,
   useRef,
   useState
 } from 'react';
-import * as St from '../style';
-import { InputHandler } from '../chat_utils/inputClass';
 import { User } from '@supabase/supabase-js';
-import styled from 'styled-components';
-import { FaPlus } from 'react-icons/fa';
 import { handleFileUpload } from '../../../components/imagePreviewer/ImagePreviewFn';
+import { InputHandler } from '../chat_utils/inputClass';
 import ImagePreviewer from '../../../components/imagePreviewer/ImagePreviewer';
+import * as St from '../style';
 
 interface ChatFormProps {
   showFileInput: boolean;
@@ -20,22 +17,6 @@ interface ChatFormProps {
   clicked: string | undefined;
   setShowFileInput: React.Dispatch<SetStateAction<boolean>>;
 }
-
-const StImageButton = styled(FaPlus)`
-  font-size: 3rem;
-  border-radius: 50%;
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  padding: 0.6rem;
-  transform: translate(-50%, -50%);
-  color: var(--opc-100);
-  cursor: pointer;
-  @media screen and (max-width: 768px) {
-    right: 2rem;
-  }
-`;
 
 const ChatForm = ({
   showFileInput,
@@ -65,10 +46,6 @@ const ChatForm = ({
     setImages(filtered);
   };
 
-  useEffect(() => {
-    console.log(chatInput);
-  }, [chatInput]);
-
   return (
     <St.StChatForm ref={formRef}>
       {images && (
@@ -78,23 +55,21 @@ const ChatForm = ({
         />
       )}
       {showFileInput && (
-        <>
-          <label htmlFor="file">
-            <St.ImageInput
-              onChange={handleSetFileList}
-              placeholder="이미지 보내기"
-              id="file"
-              name="file"
-            />
-          </label>
-        </>
+        <label htmlFor="file">
+          <St.ImageInput
+            onChange={handleSetFileList}
+            placeholder="이미지 보내기"
+            id="file"
+            name="file"
+          />
+        </label>
       )}
-      <div style={{ display: 'flex' }}>
-        <StButtonBox>
-          <StImageButton
+      <St.ButtonWrapper>
+        <St.StButtonBox>
+          <St.StImageButton
             onClick={() => setShowFileInput((prev: boolean) => !prev)}
           />
-        </StButtonBox>
+        </St.StButtonBox>
 
         <St.StChatInput
           onChange={(e) => inputHandler.handleUserInput(e, setChatInput)}
@@ -114,19 +89,9 @@ const ChatForm = ({
           name="chat"
           value={chatInput}
         />
-      </div>
+      </St.ButtonWrapper>
     </St.StChatForm>
   );
 };
 
 export default ChatForm;
-
-const StButtonBox = styled.div`
-  position: relative;
-  width: 70px;
-  padding: 1rem;
-  :hover {
-    background: var(--opc-100);
-    color: var(--3-gray);
-  }
-`;

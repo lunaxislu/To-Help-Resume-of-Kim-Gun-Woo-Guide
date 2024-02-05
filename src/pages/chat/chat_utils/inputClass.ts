@@ -9,7 +9,6 @@ export class InputHandler {
     setChatInput: React.Dispatch<SetStateAction<string>>
   ) => {
     const { name, value } = e.target;
-    console.log(value, 'in InputHandler');
 
     name === 'chat' && setChatInput(value);
   };
@@ -31,7 +30,6 @@ export class InputHandler {
       if (e.shiftKey) {
         return;
       } else {
-        console.log(chatInput, 'in pressEnter');
         // 폼 제출
         const formElement = formRef.current;
         if (formElement) {

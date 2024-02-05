@@ -50,3 +50,12 @@ export type MessageCompProps = {
   setShowImage: React.Dispatch<SetStateAction<boolean>>;
   setClickedImages: React.Dispatch<SetStateAction<string>>;
 };
+
+export type RoomProps = {
+  rooms: RoomType[] | null | undefined;
+  handleCurClicked: React.MouseEventHandler<HTMLDivElement>;
+  clicked: string | undefined;
+  unread: number[] | null;
+  handleBoardPosition: any;
+  curUser: User | null | undefined;
+};

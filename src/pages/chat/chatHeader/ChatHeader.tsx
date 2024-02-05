@@ -1,27 +1,11 @@
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as St from '../style';
 import { SupabaseAPI } from '../supabaseChat/supabase_chat';
-import { User } from '@supabase/supabase-js';
-import {
-  MessageType,
-  Participants,
-  RoomType
-} from '../../../components/chat/types';
+import { Participants } from '../../../components/chat/types';
 import { BsThreeDots } from 'react-icons/bs';
 import { supabase } from '../../../api/supabase/supabaseClient';
-
-interface ChatHeaderPropsType {
-  showMene: boolean;
-  clicked: string;
-  curUser: User | null | undefined;
-  targetUser: any[] | undefined;
-  setRooms: React.Dispatch<SetStateAction<RoomType[] | null | undefined>>;
-  setMessages: React.Dispatch<SetStateAction<MessageType[]>>;
-  setClicked: React.Dispatch<SetStateAction<string | undefined>>;
-  rooms: RoomType[] | null | undefined;
-  setShowMenu: React.Dispatch<SetStateAction<boolean>>;
-  handleHideBoardPosition: any;
-}
+import { ChatHeaderPropsType } from './ChatHeaderType';
+import { checkDevice } from '../../../components/chat/chatRoom/CheckDvice';
 
 const ChatHeader = ({
   showMene,
@@ -40,19 +24,6 @@ const ChatHeader = ({
 
   const handleShowMenuToggle = () => {
     setShowMenu((prev) => !prev);
-  };
-
-  const checkDevice = (agent: string) => {
-    const mobileRegex = [
-      /Android/i,
-      /iPhone/i,
-      /iPad/i,
-      /iPod/i,
-      /BlackBerry/i,
-      /Windows Phone/i
-    ];
-
-    return mobileRegex.some((mobile) => agent.match(mobile));
   };
 
   const getRoomInfo = async (room_id: string) => {
@@ -76,8 +47,6 @@ const ChatHeader = ({
     if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
     if (checkDevice(window.navigator.userAgent)) setIsMobile(false);
     getRoomInfo(clicked);
-  }, [clicked]);
-  useEffect(() => {
     setShowMenu(false);
   }, [clicked]);
 
