@@ -4,6 +4,7 @@ import {
 } from '../../../redux/reduxHooks/reduxBase';
 import { setSelectedTab } from '../../../redux/modules/tabSlice';
 import { StTab, StTabsContainer } from '../../../styles/mypageStyle/TabsStyle';
+import { useEffect } from 'react';
 
 const Tabs2 = () => {
   const tabMenu = [
@@ -19,6 +20,10 @@ const Tabs2 = () => {
   const clickSelectTab = (tab: string) => {
     dispatch(setSelectedTab(tab));
   };
+
+  useEffect(() => {
+    clickSelectTab('내 물품');
+  }, []);
 
   return (
     <StTabsContainer>

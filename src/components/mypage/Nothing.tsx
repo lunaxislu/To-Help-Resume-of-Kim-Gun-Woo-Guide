@@ -9,12 +9,10 @@ import {
 interface NothingProps {
   type: string;
   content: string;
-  icon: string;
   to: string;
-  show: boolean;
 }
 
-const Nothing: React.FC<NothingProps> = ({ type, content, icon, to, show }) => {
+const Nothing: React.FC<NothingProps> = ({ type, content, to }) => {
   const navigate = useNavigate();
   return (
     <StContainer>
@@ -22,14 +20,9 @@ const Nothing: React.FC<NothingProps> = ({ type, content, icon, to, show }) => {
         <ExclamationMark />
       </NothingIcon>
       <p>{content}</p>
-      {show ? (
-        <button onClick={() => navigate(to)}>
-          <img src={`${icon}`} alt="" />
-          <span>{`${type}`}</span>
-        </button>
-      ) : (
-        ''
-      )}
+      <button onClick={() => navigate(to)}>
+        <span>{`${type}`}</span>
+      </button>
     </StContainer>
   );
 };

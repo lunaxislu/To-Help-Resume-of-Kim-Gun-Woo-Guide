@@ -11,7 +11,6 @@ const MyPageCommuCard = ({ posts }: any) => {
     window.scrollTo(0, 0);
   }, []);
   const handleText = (content: string): string => {
-    // 정규 표현식을 사용하여 태그를 제외한 텍스트만 추출
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
 
     return textOnly;
