@@ -30,8 +30,13 @@ export const HeaderTopContainer = styled.div`
     width: 79%;
   }
   @media screen and (max-width: 768px) {
-    width: 95%;
+    width: 100%;
     height: 7rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: var(--bgColor);
     //margin-bottom: 1rem;
   }
 `;
@@ -280,7 +285,7 @@ export const LogoutWord = styled.div`
   color: var(--opc-100);
 `;
 export const LogoutButton = styled.button`
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.66rem;
@@ -409,9 +414,11 @@ export const StNotiContainer = styled.div`
   animation: ${NotiAni} 0.3s ease;
 
   @media screen and (max-width: 768px) {
+    position: fixed;
     top: 6%;
-    right: 15%;
+    right: 18%;
     width: 250px;
+    z-index: 15;
   }
 `;
 

@@ -49,6 +49,7 @@ const PostersProducts = () => {
   // 초기 셋팅
   useEffect(() => {
     fetchPage(page, id, cachedData, setIsEnd, setProducts);
+    window.scrollTo({ top: 0 });
   }, []);
 
   return (

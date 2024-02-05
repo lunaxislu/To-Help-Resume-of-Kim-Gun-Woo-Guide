@@ -261,15 +261,25 @@ const Header = ({
                 )} */}
 
                 <>
-                  <St.LogoutButton onClick={handleLogOutButtonClick}>
-                    <St.LogoutImage />
-                    <St.LogoutWord>로그아웃</St.LogoutWord>
-                  </St.LogoutButton>
+                  {isLogin && (
+                    <>
+                      <St.LogoutButton onClick={handleLogOutButtonClick}>
+                        <St.LogoutImage />
+                        <St.LogoutWord>로그아웃</St.LogoutWord>
+                      </St.LogoutButton>
+
+                      <St.Notice>
+                        {newNotiExists && <St.StNotiDot></St.StNotiDot>}
+                        <St.NoticeIcon onClick={showNotiToggle} />
+                      </St.Notice>
+                    </>
+                  )}
+                  {!isLogin && (
+                    <St.Button onClick={handleNavigateToLogin}>
+                      로그인/회원가입
+                    </St.Button>
+                  )}
                   <St.MobileSearchIcon onClick={handleShowSearchComp} />
-                  <St.Notice>
-                    {newNotiExists && <St.StNotiDot></St.StNotiDot>}
-                    <St.NoticeIcon onClick={showNotiToggle} />
-                  </St.Notice>
                   <St.HamburgerMenu onClick={handlShowSearchBurger} />
                   <Hamburger
                     isOpen={showHamburger}
@@ -278,11 +288,9 @@ const Header = ({
                     user={user}
                     setUser={() => setUser(false)}
                     avatarUrl={avatarUrl}
+                    handleNavigateToLogin={handleNavigateToLogin}
                   />
                 </>
-                <St.Button onClick={handleNavigateToLogin}>
-                  로그인/회원가입
-                </St.Button>
               </St.ButtonContainer>
             </St.HeaderSection>
             <St.VisibleSearchBar>

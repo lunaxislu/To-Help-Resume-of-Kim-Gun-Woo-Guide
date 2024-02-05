@@ -168,17 +168,16 @@ const Header = () => {
                 {isLogin ? (
                   <>
                     <St.LogoutButton onClick={handleLogOutButtonClick}>
-                      <St.LogoutImage  />
+                      <St.LogoutImage />
                       <St.LogoutWord>로그아웃</St.LogoutWord>
                     </St.LogoutButton>
-                    <St.MobileSearchIcon
-                      onClick={handleShowSearchComp}
-                    />
+                    <St.MobileSearchIcon onClick={handleShowSearchComp} />
                     <St.HamburgerMenu
                       //src="/assets/hamburger.svg"
                       onClick={handlShowSearchBurger}
                     />
                     <Hamburger
+                      handleNavigateToLogin={handleNavigateToLogin}
                       isOpen={showHamburger}
                       onClose={() => setShowHamburger(false)}
                       onLogout={handleLogOutButtonClick}
