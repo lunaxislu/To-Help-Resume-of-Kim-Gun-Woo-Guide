@@ -1,9 +1,7 @@
-import React from 'react';
 import * as St from '../../pages/productsDetail/style';
 import { CustomUser, Product } from '../../pages/productsDetail/types';
 import parseDate from '../../util/getDate';
 import { FaPencil, FaTrash } from 'react-icons/fa6';
-import ProductsPostsEdit from '../../pages/products/ProductsPostsEdit';
 import { useNavigate } from 'react-router';
 import { ProductsEditType } from '../prducts/ProductsType';
 

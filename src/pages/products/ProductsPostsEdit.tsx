@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router';
 import ProductsWriteForm from '../../components/prducts/ProductsPosts/ProductsWriteForm';
-import * as St from '../../styles/products/ProductsPostsStyle';
+import * as St from '../../styles/products/productsPosts/StProductsPosts';
 
 const ProductsPostsEdit = () => {
   const navigate = useNavigate();
@@ -13,6 +13,7 @@ const ProductsPostsEdit = () => {
       navigate(-1);
     }
   };
+  
   const location = useLocation();
   const { productData } = location.state || {};
 

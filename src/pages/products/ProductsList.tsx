@@ -2,21 +2,15 @@ import { useInfiniteQuery } from 'react-query';
 import { MouseEvent, useEffect, useState } from 'react';
 import ProductListCard from '../../components/prducts/ProductsList/ProductsListCard';
 import ProductsSortBtn from '../../components/prducts/ProductsList/ProductsSortBtn';
-import * as St from '../../styles/products/ProductsListStyle';
+import * as St from '../../styles/products/productsList/StProductsList';
 import { useNavigate } from 'react-router';
 import { fetchProductsPosts } from '../../components/prducts/productsQuery';
 import { useInView } from 'react-intersection-observer';
 import { ProductsPostsType } from '../../components/prducts/ProductsType';
 import SkeletonProductCard from '../../components/skeleton/SkeletonProductCard';
 import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
+import ProductCategory from '../../components/prducts/ProductsList/ProductCategory';
 
-const major = [
-  '전체',
-  '회화',
-  '조소',
-  '공예',
-  '기타'
-];
 
 const ProductsList = () => {
   const navigate = useNavigate();
@@ -55,19 +49,6 @@ const ProductsList = () => {
 
   // 데이터 안에 있는 찐 data를 하나의 배열로 만들어주기
   const posts: ProductsPostsType[] = data?.pages.flatMap(page => page.data) || [];
-
-  if (isError) {
-    return (
-      <St.LoadingStyle>
-        정보를 가져올 수 없습니다. 다시 시도해주세요.
-      </St.LoadingStyle>
-    );
-  }
-
-  const handleOnClickCategory = (e: MouseEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLElement;
-    setSelectCategory([target.innerText || '']);
-  };
   
   // 로그아웃된 유저 판매글 쓰기 막아주기
   const handleOnClickSellWriteBtn = () => {
@@ -79,6 +60,14 @@ const ProductsList = () => {
       return;
     }
     navigate('/productsposts');
+  }
+  
+  if (isError) {
+    return (
+      <St.LoadingStyle>
+        물품 정보를 가져올 수 없습니다. 개발팀에게 문의주세요.
+      </St.LoadingStyle>
+    );
   }
 
   return (
@@ -94,36 +83,23 @@ const ProductsList = () => {
           </St.PostsWriteBtn>
         </St.TitleContainer>
         <St.BarContainer>
-          <St.CategoryContainer>
-            <St.CategoryWrapper>
-              {major.map((major) => (
-                <li key={major}>
-                  <St.Category
-                    onClick={handleOnClickCategory}
-                    $selectCategory={selectCategory}
-                  >
-                    {major}
-                  </St.Category>
-                </li>
-              ))}
-            </St.CategoryWrapper>
-          </St.CategoryContainer>
-          {/* <St.SearchBarContainer>
+          <ProductCategory selectCategory={selectCategory} setSelectCategory={setSelectCategory} />
+          {/* <St.SortBtnContainer>
           <ProductsSortBtn />
-        </St.SearchBarContainer> */}
+        </St.SortBtnContainer> */}
         </St.BarContainer>
         {isLoading ? (
           <ProductsSkeleton count={15}/>
         ) : (
           <ProductListCard posts={posts} selectCategory={selectCategory} />
         )}
-        {hasNextPage && !isFetchingNextPage && <div ref={ref}></div>}
-        {isFetchingNextPage && <ProductsSkeleton count={10}/>}
+        {hasNextPage && !isFetchingNextPage && <div ref={ref} />}
+        {isFetchingNextPage && <ProductsSkeleton count={10} />}
         {!isFetchingNextPage && !isLoading && 
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '3rem auto', gap: '2rem', width: '100%'}}>
-          <p>마지막 물품입니다.</p>
+        <St.LastData>
+          <p>{selectCategory} 카테고리의 마지막 물품입니다.</p>
           <p>'판매하기'를 눌러 판매를 시작해보세요!</p>
-        </div>
+        </St.LastData>
         }
       </St.ContentsContainer>
     </St.EntireContainer>

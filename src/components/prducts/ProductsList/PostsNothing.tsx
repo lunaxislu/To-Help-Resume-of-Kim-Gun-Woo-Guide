@@ -1,4 +1,4 @@
-import * as St from '../../../styles/products/ProductsNothingStyle';
+import * as St from '../../../styles/products/productsList/StProductsNothing';
 
 interface Props {
   selectCategory: string[];
