@@ -1,31 +1,39 @@
 import { Link } from 'react-router-dom';
+import { GiHamburgerMenu } from "react-icons/gi";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import { TbLogout } from "react-icons/tb";
+import { FaBell } from 'react-icons/fa';
 import styled, { keyframes } from 'styled-components';
 
 export const Hr = styled.hr`
   width: 100%;
   height: 0.1rem;
   border: none;
-  margin-bottom: 2rem;
+  
+  color: var(--gray);
   @media screen and (max-width: 768px) {
-    margin-bottom: 1rem;
+    
   }
 `;
 
 export const HeaderTopContainer = styled.div`
-  max-width: 144rem;
-  width: 111.6rem;
+  width: 62%;
   height: 12rem;
-  display: flex;
   margin: auto;
-  @media screen and (max-width: 768px) {
-    width: 100%;
+  //margin-bottom: 2rem;
+  @media screen and (max-width: 1650px) {
+    width: 73%;
+  }
+  @media screen and (max-width: 1450px) {
+    width: 76%;
+  }
+  @media screen and (max-width: 1150px) {
+    width: 79%;
   }
   @media screen and (max-width: 768px) {
-    width: 100%;
-  }
-
-  @media screen and (max-width: 768px) {
-    max-width: 76.8rem;
+    width: 95%;
+    height: 7rem;
+    //margin-bottom: 1rem;
   }
 `;
 export const HeaderContainer = styled.div`
@@ -58,7 +66,7 @@ export const HeaderWrapper = styled.header`
     align-items: center;
     max-width: 76.8rem;
     width: 100%;
-    padding: 3rem 2rem;
+    padding: 1rem 0.5rem;
   }
   @media screen and (max-width: 530px) {
     width: 100%;
@@ -99,12 +107,16 @@ export const Logo = styled.img`
   margin: auto 0;
 
   @media screen and (max-width: 768px) {
-    width: 8rem;
-    height: 2rem;
+    width: 16rem;
+    height: 5rem;
   }
   @media screen and (max-width: 530px) {
-    width: 7rem;
-    height: 2rem;
+    width: 14rem;
+    height: 5rem;
+  }
+  @media screen and (max-width: 330px) {
+    width: 12rem;
+    height: 5rem;
   }
 `;
 
@@ -209,7 +221,30 @@ export const Alert = styled.button`
     line-height: 2.6768rem;
   }
 `;
+export const Notice = styled.div`
+  display: none;
+  @media screen and (max-width: 768px) {
+    cursor: pointer;
+    display: flex;
+    gap: 0.5rem;
 
+    svg {
+      color: var(--opc-100);
+    }
+    &:hover {
+      font-weight: var(--fontWeight-bold);
+    }
+  }
+`;
+export const NoticeIcon = styled(FaBell)`
+  width: 2rem;
+  height: 2rem;
+  color: var(--opc-100);
+  @media screen and (max-width: 330px) {
+  width: 1.5rem;
+  height: 1.5rem;
+  }
+`
 export const Button = styled.button`
   align-items: center;
   justify-content: center;
@@ -231,6 +266,16 @@ export const Button = styled.button`
   }
 `;
 
+export const LogoutImage = styled(TbLogout)`
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--opc-100);
+`;
+export const LogoutWord = styled.div`
+  font-size: var(--fontSize-body);
+  color: var(--opc-100);
+
+`;
 export const LogoutButton = styled.button`
   display: flex;
   justify-content: center;
@@ -238,22 +283,22 @@ export const LogoutButton = styled.button`
   gap: 0.66rem;
   border: none;
   background-color: transparent;
-  width: 8.5rem;
-  height: 3rem;
+  width: 11.7rem;
+  height: 3.4rem;
+  border-radius: 3rem;
   cursor: pointer;
-
+  &:hover {
+    ${LogoutImage},
+    ${LogoutWord} {
+      color: var(--white);
+    }
+    background-color: var(--opc-80);
+  }
   @media screen and (max-width: 768px) {
     display: none;
   }
 `;
 
-export const LogoutImage = styled.img`
-  width: 1.84rem;
-  height: 1.57rem;
-`;
-export const LogoutWord = styled.div`
-  font-size: var(--fontSize-body);
-`;
 export const NavSection = styled.section`
   width: 100%;
   display: flex;
@@ -299,22 +344,35 @@ export const LogOut = styled.button`
   cursor: pointer;
 `;
 
-export const HamburgerMenu = styled.img`
+export const HamburgerMenu = styled(GiHamburgerMenu)`
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--opc-100);
   cursor: pointer;
   display: none;
 
   @media screen and (max-width: 768px) {
     display: block;
   }
+  @media screen and (max-width: 330px) {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
 `;
 
-export const MobileSearchIcon = styled.img`
+export const MobileSearchIcon = styled(FaMagnifyingGlass)`
+  width: 2rem;
+  height: 2rem;
+  color: var(--opc-100);
   cursor: pointer;
   display: none;
 
   @media screen and (max-width: 768px) {
     display: block;
-    margin-right: 1.5rem;
+  }
+  @media screen and (max-width: 330px) {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 `;
 
