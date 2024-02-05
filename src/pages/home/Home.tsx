@@ -79,7 +79,7 @@ const Home = () => {
   };
 
   // 중고목록 map 돌리기 위한 변수 선언(하빈 추가)
-  const productsPosts = usedItems.slice(0, isMobile ? 6 : 10)
+  const productsPosts = usedItems.slice(0, isMobile ? 6 : 10);
 
   return (
     <HomeContainer>
@@ -93,7 +93,7 @@ const Home = () => {
               src="/assets/중고거래.svg"
               alt="중고거래"
             />
-            <ScrollButton onClick={() => scrollToSection(800)}>
+            <ScrollButton href="#product">
               <img
                 style={{ width: '36.8rem', height: '9.2rem' }}
                 src="/assets/중고거래버튼.svg"
@@ -107,7 +107,7 @@ const Home = () => {
               src="/assets/커뮤니티.svg"
               alt="커뮤니티"
             />
-            <ScrollButton onClick={() => scrollToSection(1570)}>
+            <ScrollButton href="#community">
               <img
                 style={{ width: '36.8rem', height: '9.2rem' }}
                 src="/assets/커뮤버튼.svg"
@@ -119,19 +119,27 @@ const Home = () => {
       </BannerContainer>
 
       <AllCardContainer>
-        <ContentsContainer>
+        <ContentsContainer id="product">
           <TitleWrapper>
-            <Title>{usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!</Title>
-            <ShowLink to="/products">전체보기<FaArrowRight /></ShowLink>
+            <Title>
+              {usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!
+            </Title>
+            <ShowLink to="/products">
+              전체보기
+              <FaArrowRight />
+            </ShowLink>
           </TitleWrapper>
           {/* 하빈 수정 */}
           <ProductsCard posts={productsPosts} />
         </ContentsContainer>
 
-        <ContentsContainer>
+        <ContentsContainer id="community">
           <TitleWrapper>
             <Title>작업자들의 커뮤니티에 함께해볼까요?</Title>
-            <ShowLink to="/community">전체보기<FaArrowRight /></ShowLink>
+            <ShowLink to="/community">
+              전체보기
+              <FaArrowRight />
+            </ShowLink>
           </TitleWrapper>
           {/* <ComunityWrapper></ComunityWrapper> */}
           <CommunityList posts={communityItems} />
@@ -193,10 +201,12 @@ const CommunityBannerContainer = styled.div`
   justify-content: space-between;
   gap: 10rem;
 `;
-const ScrollButton = styled.button`
+const ScrollButton = styled.a`
   background: none;
   border: none;
   cursor: pointer;
+  text-decoration: none;
+  color: white;
 `;
 // 본문
 const AllCardContainer = styled.div`
@@ -228,10 +238,10 @@ const TitleWrapper = styled.div`
 const Title = styled.h2`
   font-size: var(--fontSize-H3);
   vertical-align: baseline;
-    @media screen and (max-width: 768px) {
-      font-size: var(--fontSize-H5);
-    }
-`
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H5);
+  }
+`;
 const ShowLink = styled(Link)`
   display: flex;
   justify-content: center;
