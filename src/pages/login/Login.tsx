@@ -22,7 +22,6 @@ const Login = () => {
         providers={['google', 'facebook', 'kakao']}
         redirectTo={'/'}
         onlyThirdPartyProviders={true}
-        theme="dark"
       />
     </StLoginContainer>
   );
