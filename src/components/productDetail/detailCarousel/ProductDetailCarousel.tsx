@@ -61,28 +61,30 @@ const ProductDetailCarousel: React.FC<InfiniteCarouselProps> = ({
           />
         ))}
       </StSlider>
-      <CarouselButtons>
-        <ArrowButton
-          onClick={(e) => {
-            e.stopPropagation();
-            previous();
-          }}
-        >
-          <ColoredIcon>
-            <FaChevronLeft />
-          </ColoredIcon>
-        </ArrowButton>
-        <ArrowButton
-          onClick={(e) => {
-            e.stopPropagation();
-            next();
-          }}
-        >
-          <ColoredIcon>
-            <FaChevronRight className="rightarrow" />
-          </ColoredIcon>
-        </ArrowButton>
-      </CarouselButtons>
+      {carouselImages.length > 1 && (
+        <CarouselButtons>
+          <ArrowButton
+            onClick={(e) => {
+              e.stopPropagation();
+              previous();
+            }}
+          >
+            <ColoredIcon>
+              <FaChevronLeft />
+            </ColoredIcon>
+          </ArrowButton>
+          <ArrowButton
+            onClick={(e) => {
+              e.stopPropagation();
+              next();
+            }}
+          >
+            <ColoredIcon>
+              <FaChevronRight className="rightarrow" />
+            </ColoredIcon>
+          </ArrowButton>
+        </CarouselButtons>
+      )}
     </CarouselContainer>
   );
 };
