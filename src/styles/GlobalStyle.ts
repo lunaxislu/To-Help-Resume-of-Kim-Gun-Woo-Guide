@@ -120,7 +120,7 @@ body {
 
 
     //
-    font-family: 'BM-JUA';
+    font-family: 'DalseoHealing-Bold';
     color: var(--black);
     overflow-x: hidden;
     @media screen and (max-width: 768px){
@@ -130,10 +130,10 @@ body {
 button,
 input,
 textarea {
-    font-family: 'BM-JUA';
+    font-family: 'DalseoHealing-Bold';
 }
 input {
-    font-family: 'BM-JUA';
+    font-family: 'DalseoHealing-Bold';
 }
 input {
     background-color: var(--opc-30);
