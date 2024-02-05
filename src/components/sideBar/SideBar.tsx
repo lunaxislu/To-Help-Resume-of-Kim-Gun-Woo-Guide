@@ -131,7 +131,7 @@ const SideBar = ({
           </St.StNotiContainer>
         )}
         {isShow && isSearchBarVisible && (
-          <StSearchBarContainer>
+          <StSearchBarContainer $status={isLogined}>
             <SearchBar
               showSearchComp={isSearchBarVisible}
               setShowSearchComp={setIsSearchBarVisible}

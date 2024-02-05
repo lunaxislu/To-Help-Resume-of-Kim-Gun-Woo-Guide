@@ -19,7 +19,7 @@ const StModalContainer = styled.div`
 const StButtonBox = styled.div`
   width: 100%;
   padding: 1rem;
-  background-color: var(--2-gray);
+  background-color: var(--bgColor);
   display: flex;
   justify-content: flex-end;
   align-items: center;
