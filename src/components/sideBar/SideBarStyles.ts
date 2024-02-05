@@ -1,4 +1,5 @@
-import styled, { keyframes } from 'styled-components';
+import { SearchBar } from './../../styles/community/CommunityMainStyle';
+import styled, { css, keyframes } from 'styled-components';
 
 const StSideBtnContainer = styled.div`
   width: fit-content;
@@ -96,9 +97,23 @@ const StMenuButtons = styled.button<ButtonProps>`
   }
 `;
 
-const StSearchBarContainer = styled.div`
+type SearchBarProps = {
+  $status: string | null;
+};
+
+const StSearchBarContainer = styled.div<SearchBarProps>`
   position: absolute;
-  top: -720%;
+  ${(props) => {
+    if (props.$status === null) {
+      return css`
+        bottom: 135%;
+      `;
+    } else {
+      return css`
+        top: -720%;
+      `;
+    }
+  }}
   right: 10rem;
 `;
 

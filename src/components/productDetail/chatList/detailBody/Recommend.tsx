@@ -3,7 +3,7 @@ import { FaArrowRight } from 'react-icons/fa';
 import styled from 'styled-components';
 import ProductsCard from '../../../prducts/ProductsCard';
 import { Product } from '../../../../pages/productsDetail/types';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 type RecommendProps = {
   product: Product[];
@@ -13,6 +13,7 @@ type RecommendProps = {
 
 const Recommend = ({ product, similar, otherPosts }: RecommendProps) => {
   const navi = useNavigate();
+  const { id } = useParams();
   // 상품추천란 네비게이션 함수
   const navigateTo = (e: MouseEvent<HTMLButtonElement>) => {
     const { id } = e.currentTarget;
@@ -31,7 +32,7 @@ const Recommend = ({ product, similar, otherPosts }: RecommendProps) => {
         </StSimilarProductTitleWrapper>
         <ProductsCard
           posts={similar
-            .filter((product) => product.isSell !== true)
+            .filter((product) => product.isSell !== true && product.id !== id)
             .slice(0, 5)}
         />
       </div>
