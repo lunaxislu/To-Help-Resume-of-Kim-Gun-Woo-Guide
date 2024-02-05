@@ -36,6 +36,7 @@ export type RoomType = {
   about: string;
   isSeller: boolean;
   unread: number;
+  last_updated: string;
 };
 
 export type RoomStyledProps = {

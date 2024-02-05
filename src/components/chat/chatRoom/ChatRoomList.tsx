@@ -185,6 +185,12 @@ const ChatRoomList: React.FC<Props> = ({
             new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
           );
         })
+        .sort((a, b) => {
+          return (
+            new Date(b.last_updated).getTime() -
+            new Date(a.last_updated).getTime()
+          );
+        })
         .map((room, i) => {
           // 판매 완료 상태인지 아닌지 췤
           if (checkProductsStatus(room.about) === true)
