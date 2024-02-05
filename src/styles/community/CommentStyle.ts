@@ -2,7 +2,7 @@ import { BsArrowReturnLeft, BsThreeDots } from 'react-icons/bs';
 import { FaComment, FaThumbsUp } from 'react-icons/fa';
 import { FaRegThumbsUp } from 'react-icons/fa6';
 import styled from 'styled-components';
-import { FormProps } from '../../pages/community/model';
+import { FormProps } from '../../pages/community/api/model';
 
 export const Name = styled.p`
   font-size: var(--fontSize-body);

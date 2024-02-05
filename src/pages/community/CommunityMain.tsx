@@ -7,8 +7,8 @@ import CommunityList from '../../components/community/CommunityList';
 import CommunityMainCount from '../../components/community/CommunityMainCount';
 import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
 import * as St from '../../styles/community/CommunityMainStyle';
-import { fetchPosts } from './commuQuery';
-import { Post } from './model';
+import { fetchPosts } from './api/commuQuery';
+import { Post } from './api/model';
 
 const CommunityMain: React.FC = () => {
   const [selectCategory, setSelectCategory] = useState<string>('전체');
@@ -25,22 +25,16 @@ const CommunityMain: React.FC = () => {
     hasNextPage,
     isFetchingNextPage
   } = useInfiniteQuery(
-    ['posts_infinite', selectCategory],
+    ['posts', selectCategory],
     ({ pageParam = 1 }) => fetchPosts(selectCategory, pageParam, 6),
     {
       getNextPageParam: (lastPage, pages) => {
         if (lastPage.length < 6) return undefined;
         return pages.length + 1;
-      }
+      },
+      staleTime: 300000
     }
   );
-
-  useEffect(() => {
-    const storedUserId = localStorage.getItem('userId');
-    if (storedUserId) {
-      setUserId(storedUserId);
-    }
-  }, []);
 
   useEffect(() => {
     if (inView && hasNextPage) {
@@ -48,6 +42,12 @@ const CommunityMain: React.FC = () => {
     }
   }, [inView, hasNextPage]);
 
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
   const handleWriteButtonClick = () => {
     if (!userId) {
       const confirmLogin = window.confirm(
@@ -62,6 +62,7 @@ const CommunityMain: React.FC = () => {
   };
 
   const posts: Post[] = data?.pages?.flat() || [];
+
   if (isError) {
     alert(
       '데이터 불러오기 중 오류가 발생했습니다. 새로고침후 현상이 유지된다면 개발자에게 문의주세요'

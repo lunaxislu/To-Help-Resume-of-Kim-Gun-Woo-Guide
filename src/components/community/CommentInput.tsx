@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditCommentInputProps } from '../../pages/community/model';
+import { EditCommentInputProps } from '../../pages/community/api/model';
 
 const EditCommentInput: React.FC<EditCommentInputProps> = ({
   value,

@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store/store';
 import styled, { css } from 'styled-components';
-import parseDate from '../../util/getDate';
 import { setSearchResults } from '../../redux/modules/searchSlice';
 import { FaArrowRight } from 'react-icons/fa';
 import { FaArrowDown } from 'react-icons/fa6';
@@ -12,9 +10,9 @@ import { researchItems, ResearchResults } from './researchItem';
 import Dropdown from '../../styles/searchresults/Dropdown';
 import { divide, sortBy } from 'lodash';
 import { Communityy, UsedItem } from '../home/usedtypes';
-import { Post } from '../community/model';
 import * as St from '../../styles/products/ProductsListStyle';
 import CommunityList from '../../components/community/CommunityList';
+import { RootState } from '../../redux/store/store';
 
 interface ListCount {
   usedItemCount: number;

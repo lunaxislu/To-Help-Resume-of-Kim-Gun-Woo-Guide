@@ -97,7 +97,8 @@ export const Category = styled.p<CategoryProps>`
   }
   // 배경색 조건부 렌더링
   ${(props) => {
-    if (props.$selectCategory.length === 1 && props.$selectCategory.includes(props.children as string)) {
+    if (props.$selectCategory.length === 1 && 
+      props.$selectCategory.includes(props.children as string)) {
       return css`
         background-color: var(--opc-100);
         color: var(--white);
@@ -190,6 +191,7 @@ export const SearchBarInput = styled.input`
 
 // ProductsList(components)
 export const ProductsListContainer = styled.div`
+  max-width: 111.6rem;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   margin: auto;
@@ -230,10 +232,13 @@ export const ProductsCardContainer = styled.div`
   padding: 1.5rem;
   &:hover {
     cursor: pointer;
-    transform: scale(1.02);
+    transform: translateY(-0.8rem);
   }
   @media screen and (max-width: 768px) {
     padding: 1rem;
+    &:hover {
+    transform: translateY(-0.6rem);
+  }
   }
 `;
 
@@ -373,7 +378,6 @@ export const SoldOut = styled.div`
   background-color: var(--black);
   width: 100%;
   max-height: 5rem;
-  //border-radius: 0.5rem;
   margin: auto;
   text-align: center;
   line-height: 2;
@@ -394,4 +398,7 @@ export const LikesWrapper = styled.div`
 export const Likes = styled.div`
   color: #ceb1b1;
   font-size: var(--fontSize-H6);
+  @media screen and (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 `

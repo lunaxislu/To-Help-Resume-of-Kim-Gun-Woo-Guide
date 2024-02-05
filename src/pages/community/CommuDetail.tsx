@@ -10,10 +10,8 @@ import CommuFileList from '../../components/community/CommuFileList';
 import Reply from '../../components/community/Reply';
 import WriteLayout from '../../components/community/WriteLayout';
 import parseDate from '../../util/getDate';
-import { deletePostMutation, fetchDetailPost } from './commuQuery';
-import { ProfileObject } from './model';
-// Quill.register('modules/imageActions', ImageActions);
-// Quill.register('modules/imageFormats', ImageFormats);
+import { deletePostMutation, fetchDetailPost } from './api/commuQuery';
+import { ProfileObject } from './api/model';
 
 const CommuDetail: React.FC = () => {
   const param = useParams();

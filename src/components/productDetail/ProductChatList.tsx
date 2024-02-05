@@ -1,26 +1,8 @@
-import React, { MouseEvent, SetStateAction } from 'react';
+import React, { MouseEvent } from 'react';
 import * as St from '../../pages/productsDetail/style';
 import styled from 'styled-components';
+import { ChatListProps } from './ChatListTypes';
 import { Participants, RoomType } from '../chat/types';
-import { CustomUser } from '../../pages/productsDetail/types';
-
-const StSellTitle = styled.h1`
-  text-align: center;
-  font-weight: 500;
-  margin-block: 1rem;
-  color: black;
-  letter-spacing: 0.1rem;
-`;
-
-type ChatListProps = {
-  createdChatList: RoomType[];
-  setShowChatList: React.Dispatch<SetStateAction<boolean>>;
-  curUser: CustomUser | null;
-  setBuyerChatId: React.Dispatch<SetStateAction<string>>;
-  selectedUser: string;
-  setSelectedUser: React.Dispatch<SetStateAction<string>>;
-  handleSellComplete: any;
-};
 
 const ProductChatList = ({
   createdChatList,
@@ -43,6 +25,24 @@ const ProductChatList = ({
     setSelectedUser(selected);
   };
 
+  const getTargetId = (room: RoomType) => {
+    const targetId = room.participants.filter((part: Partial<Participants>) => {
+      return part.user_id !== curUser?.id;
+    })[0].user_id;
+
+    return targetId;
+  };
+
+  const getTargetName = (room: RoomType) => {
+    const targetName = room.participants.filter(
+      (part: Partial<Participants>) => {
+        return part.user_id !== curUser?.id;
+      }
+    )[0].user_name;
+
+    return targetName;
+  };
+
   return (
     <>
       <St.StSelectChatBg onClick={() => setShowChatList(false)}>
@@ -50,17 +50,7 @@ const ProductChatList = ({
           <StSellTitle>구매한 사용자를 선택해주세요</StSellTitle>
           {!createdChatList ||
             (createdChatList.length === 0 && (
-              <h1
-                style={{
-                  textAlign: 'center',
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%,-50%)'
-                }}
-              >
-                채팅 내역이 없습니다
-              </h1>
+              <StNoListText>채팅 내역이 없습니다</StNoListText>
             ))}
           {createdChatList &&
             createdChatList?.map((room: RoomType) => {
@@ -68,27 +58,13 @@ const ProductChatList = ({
                 <>
                   <St.StChatListItem
                     key={room.id}
-                    id={
-                      room.participants.filter(
-                        (part: Partial<Participants>) => {
-                          return part.user_id !== curUser?.id;
-                        }
-                      )[0].user_id
-                    }
+                    id={getTargetId(room)}
                     onClick={(e) => {
                       handleSetBuyer(e);
                       handleSelectedUser(e);
                     }}
                   >
-                    <div>
-                      {
-                        room.participants.filter(
-                          (part: Partial<Participants>) => {
-                            return part.user_id !== curUser?.id;
-                          }
-                        )[0].user_name
-                      }
-                    </div>
+                    <div>{getTargetName(room)}</div>
                   </St.StChatListItem>
                   <St.StConfirmSellBtn onClick={handleSellComplete}>
                     <span>{selectedUser}</span> 님에게 판매 완료하기
@@ -103,3 +79,19 @@ const ProductChatList = ({
 };
 
 export default ProductChatList;
+
+const StNoListText = styled.h1`
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+const StSellTitle = styled.h1`
+  text-align: center;
+  font-weight: 500;
+  margin-block: 1rem;
+  color: black;
+  letter-spacing: 0.1rem;
+`;

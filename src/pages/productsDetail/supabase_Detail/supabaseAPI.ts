@@ -3,7 +3,104 @@ import { supabase } from '../../../api/supabase/supabaseClient';
 import { RoomType } from '../../../components/chat/types';
 import { CustomUser, Product } from '../types';
 import { NavigateFunction } from 'react-router';
-import { SetStateAction } from 'react';
+import { MouseEvent, SetStateAction } from 'react';
+
+type MakeChatRoomType = {
+  e: MouseEvent<HTMLDivElement>;
+  navi: NavigateFunction;
+  setTarget: React.Dispatch<SetStateAction<CustomUser | null>>;
+  setCurUser: React.Dispatch<SetStateAction<CustomUser | null>>;
+  insertUserIntoChatRoom: (
+    currentUser: CustomUser | null,
+    targetUser: CustomUser | null
+  ) => Promise<void>;
+};
+
+export const makeChatRoom = async ({
+  e,
+  navi,
+  setTarget,
+  setCurUser,
+  insertUserIntoChatRoom
+}: MakeChatRoomType) => {
+  // curUser, targetUser 준비
+  const currentUserId = localStorage.getItem('userId');
+  const targetUserID = e.currentTarget.id;
+
+  // user 테이블에서 채팅 상대 정보 가져오기
+  const [targetUserRes, currentUserRes] = await Promise.all([
+    supabase.from('user').select('*').eq('uid', targetUserID),
+    supabase.from('user').select('*').eq('uid', currentUserId)
+  ]);
+
+  // 에러 처리
+  if (targetUserRes.error || currentUserRes.error) {
+    alert('로그인 정보 또는 작성자 정보를 찾을 수 없습니다');
+    targetUserRes && console.log(targetUserRes);
+    currentUserRes && console.log(currentUserRes);
+    return;
+  }
+
+  const targetUser = targetUserRes.data;
+  const currentUser = currentUserRes.data;
+
+  // 둘 중 하나라도 데이터가 없다면 중단
+  if (
+    !targetUser ||
+    targetUser.length === 0 ||
+    !currentUser ||
+    currentUser.length === 0
+  ) {
+    console.log('TargetUser or currentUser is null');
+    if (window.confirm('로그인 후 이용 부탁드립니다') === true) {
+      navi('/login');
+    }
+    return;
+  }
+
+  // 에러가 없다면 실행
+  setTarget(targetUser[0]);
+  setCurUser(currentUser[0]);
+  if (targetUser && currentUser) {
+    await insertUserIntoChatRoom(currentUser[0], targetUser[0]);
+  } else {
+    console.log('TargetUser or currentUser is null');
+  }
+};
+
+export const getOthers = async (
+  targetId: string,
+  setOtherPosts: React.Dispatch<SetStateAction<Product[]>>
+) => {
+  const { data: otherPosts, error: failFetchPosts } = await supabase
+    .from('products')
+    .select('*')
+    .eq('post_user_uid', targetId);
+
+  if (failFetchPosts)
+    console.log('작성자 게시물 가져오기 오류', failFetchPosts);
+
+  if (otherPosts) {
+    setOtherPosts(otherPosts);
+  }
+};
+
+export const getSimilar = async (
+  productTags: string[],
+  setSimilar: React.Dispatch<SetStateAction<Product[]>>
+) => {
+  const { data: similarProducts, error: failFetchSimilar } = await supabase
+    .from('products')
+    .select('*')
+    .contains('tags', productTags);
+
+  if (failFetchSimilar)
+    console.log('추천 상품 가져오기 오류', failFetchSimilar);
+
+  if (similarProducts) {
+    setSimilar(similarProducts);
+  }
+};
 
 // product를 가져오자 url 주소에 있는 것이 제품 ID니까 그것과 같은 것으로
 export const getProductInfo = async (productId: string | undefined) => {

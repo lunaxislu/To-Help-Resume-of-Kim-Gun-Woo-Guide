@@ -6,60 +6,20 @@ import { setSuccessLogin, setSuccessLogout } from '../redux/modules/authSlice';
 import { setSearchQuery, setSearchResults } from '../redux/modules/searchSlice';
 import { useAppDispatch, useAppSelector } from '../redux/reduxHooks/reduxBase';
 import * as St from '../styles/headerStyle/HeaderStyle';
-import { BiWon } from 'react-icons/bi';
-import { BiSolidBell } from 'react-icons/bi';
 import Hamburger from '../components/layout/header/Hamburger';
-import { BsChatDotsFill } from 'react-icons/bs';
 
 interface User {
   username: string;
 }
 
-type HeaderProps = {
-  notification: any[];
-  newNotiExists: boolean;
-  setNewNotiExists: React.Dispatch<SetStateAction<boolean>>;
-  setNotification: React.Dispatch<SetStateAction<any[]>>;
-};
-
-const Header = ({
-  notification,
-  newNotiExists,
-  setNewNotiExists,
-  setNotification
-}: HeaderProps) => {
+const Header = () => {
   const [user, setUser] = useState<User | boolean>(false);
   const [avatarUrl, setAvatarUrl] = useState<string>();
   const { isLogin } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   // 알림 관련
-  const [showNoti, setShowNoti] = useState<boolean>(false);
   const navi = useNavigate();
-
-  const showNotiToggle = () => {
-    setShowNoti((prev) => !prev);
-    setNewNotiExists(false);
-  };
-
-  const deleteAllNotification = () => {
-    setNotification([]);
-    localStorage.removeItem('notifications');
-  };
-
-  const filterPrevNoti = (noti_id: string) => {
-    const filtered = notification.filter((noti) => {
-      return noti.id !== noti_id;
-    });
-    setNotification(filtered);
-  };
-
-  const clickNoti = (e: MouseEvent<HTMLDivElement>) => {
-    const clickedItem = e.currentTarget.id;
-    filterPrevNoti(clickedItem);
-    setShowNoti(false);
-    navi('/chat');
-  };
 
   // 반응형 대응 서치 컴포넌트 관련
   const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
@@ -160,36 +120,6 @@ const Header = ({
 
   return (
     <>
-      {/* {notification.length > 0 && showNoti && (
-        <>
-          <St.StNotiContainer>
-            {notification.map((noti) => {
-              return (
-                <St.StNotiItem id={noti.id} onClick={clickNoti} key={noti.id}>
-                  새로운 메세지가 있습니다.
-                </St.StNotiItem>
-              );
-            })}
-            <St.StNoticeButtonContainer>
-              <St.StNoticeDeleteBtn onClick={deleteAllNotification}>
-                알림 지우기
-              </St.StNoticeDeleteBtn>
-            </St.StNoticeButtonContainer>
-          </St.StNotiContainer>
-        </>
-      )} */}
-      {/* {notification.length === 0 && showNoti && (
-        <St.StNotiContainer>
-          <St.StNotiItem onClick={() => setShowNoti(false)}>
-            알림이 없습니다
-          </St.StNotiItem>
-          <St.StNoticeButtonContainer>
-            <St.StNoticeDeleteBtn onClick={deleteAllNotification}>
-              알림 지우기
-            </St.StNoticeDeleteBtn>
-          </St.StNoticeButtonContainer>
-        </St.StNotiContainer>
-      )} */}
       <St.HeaderTopContainer>
         <St.HeaderContainer>
           <St.HeaderWrapper>

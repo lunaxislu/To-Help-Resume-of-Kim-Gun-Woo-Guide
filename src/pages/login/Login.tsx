@@ -9,10 +9,7 @@ import {
 } from '../../styles/loginStyle/LoginStyle';
 
 const Login = () => {
-  useEffect(() => {
-    const currentUrl = window.location.href;
-    localStorage.setItem('prevUrl', currentUrl);
-  }, []);
+  const redirectTo = localStorage.getItem('prevUrl') || '/';
 
   return (
     <StLoginContainer>

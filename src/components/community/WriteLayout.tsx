@@ -10,10 +10,10 @@ import {
   addPostMutation,
   fetchDetailPost,
   updatePostMutation
-} from '../../pages/community/commuQuery';
-import { WriteLayoutProps } from '../../pages/community/model';
+} from '../../pages/community/api/commuQuery';
+import { WriteLayoutProps } from '../../pages/community/api/model';
 import * as St from '../../styles/community/CommunityWriteStyle';
-
+const COLORS = ['red', 'yellow', 'green', 'blue', 'purple'];
 const WriteLayout: React.FC<WriteLayoutProps> = ({
   profile,
   isEdit,
@@ -40,7 +40,8 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       : '',
     uploadedFileUrl: isEdit ? posts![0].files[0].url : [],
     anon: isEdit ? posts![0].anon : false,
-    mainImage: isEdit ? posts![0].mainImage : ''
+    mainImage: isEdit ? posts![0].mainImage : '',
+    post_color: isEdit ? posts![0].post_color : ''
   });
   const [errors, setErrors] = useState({
     title: '',
@@ -153,7 +154,8 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         : profile![0].username,
       files: fileArr,
       main_image: formValues.mainImage,
-      anon: formValues.anon
+      anon: formValues.anon,
+      post_color: formValues.post_color
     };
     addMutation.mutate(insertData);
   };
@@ -176,7 +178,8 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         anon: formValues.anon,
         files: fileArr,
         main_image: formValues.mainImage,
-        category: formValues.category
+        category: formValues.category,
+        post_color: formValues.post_color
       },
       paramId
     };
@@ -345,7 +348,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
         </St.LayoutFileArea>
         <St.LayoutFileListArea>
           <St.LayoutValueText></St.LayoutValueText>
-          {/* <St.FileListContainer> */}
+
           <St.FileList>
             {formValues.files.map((file: File, index: number) => (
               <div>
@@ -354,8 +357,24 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
               </div>
             ))}
           </St.FileList>
-          {/* </St.FileListContainer> */}
         </St.LayoutFileListArea>
+        <St.PickerColorArea>
+          <St.LayoutValueText>
+            포스트 색 정하기 <span>*</span>
+          </St.LayoutValueText>
+          <St.ColorPicker>
+            {COLORS.map((color) => (
+              <St.ColorButton
+                key={color}
+                $color={color}
+                $isSelected={formValues.post_color === color}
+                onClick={() => {
+                  setFormValues({ ...formValues, post_color: color });
+                }}
+              />
+            ))}
+          </St.ColorPicker>
+        </St.PickerColorArea>
         <St.LayoutAnonArea>
           <St.LayoutValueText></St.LayoutValueText>
           <St.LayoutBottom>

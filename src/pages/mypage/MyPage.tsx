@@ -1,4 +1,4 @@
-import Profile from '../../components/mypage/Profile';
+import Profile from '../../components/mypage/Profile/Profile';
 import { MyPageContainer } from '../../styles/mypageStyle/MyPageStyle';
 import Tabs from '../../components/mypage/Tabs/Tabs';
 

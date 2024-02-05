@@ -16,6 +16,7 @@ export type Post = {
   main_image: string;
   anon: boolean;
   comments_count: number;
+  post_color: string | null;
 };
 export type FilesObject = {
   url: string;
@@ -45,6 +46,7 @@ export type UpdateObject = {
     }[];
     main_image: string;
     category: string;
+    post_color: string;
   };
   paramId: string | undefined;
 };
@@ -61,14 +63,21 @@ export type InsertObject = {
   }[];
   main_image: string;
   anon: boolean;
+  post_color: string;
 };
 export type CommuListProps = {
   posts: Post[] | undefined;
 };
-export type QuillLayoutProps = {
+export type FormValues = {
+  title: string;
+  category: string;
+  files: { name: string; url: string | null[] }[];
   content: string;
-  setContent: (content: string) => void;
+  uploadedFileUrl: string[];
+  anon: boolean;
+  mainImage: string;
 };
+
 export type WriteLayoutProps = {
   profile: ProfileObject[] | undefined;
   isEdit: boolean;
@@ -143,8 +152,12 @@ export type UpdateComment = {
   commentId: number | undefined;
 };
 export type Postcolor = {
-  $postcolor: string;
+  $postcolor: string | null;
 };
 export type CommunityMainCountProps = {
   selectCategory: string;
+};
+export type ColorProps = {
+  $isSelected: boolean;
+  $color: string | null;
 };
