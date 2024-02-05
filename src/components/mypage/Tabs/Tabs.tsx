@@ -26,7 +26,7 @@ const Tabs2 = () => {
         <StTab
           key={tab}
           onClick={() => clickSelectTab(tab)}
-          activeTab={selectedTab === tab ? true : false}
+          $activetab={selectedTab === tab ? true : false}
         >
           {tab}
         </StTab>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { IoIosArrowDropupCircle } from "react-icons/io";
 import styled from 'styled-components';
 
 const ScrollTopButton = () => {
@@ -21,23 +22,30 @@ const ScrollTopButton = () => {
     });
   };
   return (
-    <TopButton onClick={scrollToTop}>
-      {smallscreen ? (
-        <img
-          src={process.env.PUBLIC_URL + '/assets/clickToUpButton.svg'}
-          alt="상단으로 이동"
-        />
-      ) : (
-        <img
-          src={process.env.PUBLIC_URL + '/assets/topbutton.svg'}
-          alt="상단으로 이동"
-        />
-      )}
-    </TopButton>
+    <TopButton onClick={scrollToTop}/>
   );
 };
 
-const TopButton = styled.button`
+const TopButton = styled(IoIosArrowDropupCircle)`
+  position: fixed;
+  bottom: 6%;
+  right: 2.6%;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  transition: opacity 0.5s;
+  color: var(--opc-80);
+  width: 8rem;
+  height: 8rem;
+  @media screen and (max-width: 768px) {
+    width: 3.5rem;
+    height: 3.5rem;
+    padding: 0;
+    right: 3%;
+  }
+`
+const TopButton2 = styled.button`
   position: fixed;
   bottom: 6%;
   right: 3%;

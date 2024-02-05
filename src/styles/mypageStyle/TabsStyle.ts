@@ -23,11 +23,11 @@ export const StTabsContainer = styled.ul`
 `;
 
 interface TabProps {
-  activeTab: boolean;
+  $activetab: boolean;
 }
 export const StTab = styled.li<TabProps>`
   cursor: pointer;
   font-weight: 'bold';
 
-  color: ${(props) => (props.activeTab ? 'var(--opc-100)' : 'var(--black)')};
+  color: ${(props) => (props.$activetab ? 'var(--opc-100)' : 'var(--black)')};
 `;

@@ -10,7 +10,7 @@ export const EntireContainer = styled.div`
   animation: ${StFadeAni} 0.3s ease;
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;
-    min-width: 30rem;
+    //min-width: 30rem;
     padding: 0;
   }
 `;
@@ -72,10 +72,10 @@ export const PostsWriteBtn = styled.div`
     }
   }
   @media screen and (max-width: 768px) {
-    width: 9rem;
-    height: 3rem;
+    width: 8rem;
+    height: 2.5rem;
     gap: 0.5rem;
-    font-size: var(--fontSize-H5);
+    font-size: var(--fontSize-H6);
   }
 `;
 

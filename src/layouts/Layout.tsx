@@ -8,6 +8,11 @@ import styled from 'styled-components';
 import { CustomUser } from '../pages/productsDetail/types';
 import { Participants } from '../components/chat/types';
 import SideBar from '../components/sideBar/SideBar';
+import {
+  getNotificationsFromLocal,
+  getUserData,
+  saveNotiToLocal
+} from './NotificationFn';
 
 const Layout = () => {
   const location = useLocation();
@@ -19,45 +24,10 @@ const Layout = () => {
   const [newNotiExists, setNewNotiExists] = useState<boolean>(false);
   const userID = localStorage.getItem('userId');
 
-  // 알림 울리기
-  const playAlert = () => {
-    const ring = new Audio('/assets/Twitter Notification_sound_effect.mp3');
-    setTimeout(() => {
-      ring.currentTime = 0.5;
-      ring.play();
-    }, 1000);
-  };
-
-  // 로컬스토리지에 알림 저장
-  const saveNotiToLocal = (notification: any[]) => {
-    localStorage.setItem('notification', JSON.stringify(notification));
-  };
-
-  // 로컬 스토리지에서 알림 데이터를 불러오는 함수
-  const getNotificationsFromLocal = () => {
-    const notifications = localStorage.getItem('notification');
-    setNotification(notifications ? JSON.parse(notifications) : []);
-  };
-
   useEffect(() => {
-    const getUserData = async () => {
-      const currentUserId = localStorage.getItem('userId');
-      const { data: currentUser, error } = await supabase
-        .from('user')
-        .select('*')
-        .eq('uid', currentUserId);
-
-      // 현재 로그인 유저의 데이터가 있다면
-      if (currentUser && currentUser.length > 0) {
-        setCurUser(currentUser[0]);
-      }
-      // 로그이 유저 없음 에러
-      if (error) console.log('logined user not exists');
-    };
-
-    getUserData();
+    getUserData(setCurUser);
     // 캐싱된 알림 가져오기
-    getNotificationsFromLocal();
+    getNotificationsFromLocal(setNotification);
 
     // 메세지 테이블 실시간 알림 구독
     const chatMessages = supabase
@@ -142,7 +112,12 @@ const Layout = () => {
         setNewNotiExists={setNewNotiExists}
         setNotification={setNotification}
       />
-      <Header />
+      <Header
+        notification={notification}
+        newNotiExists={newNotiExists}
+        setNewNotiExists={setNewNotiExists}
+        setNotification={setNotification}
+      />
       <ContentWrapper>
         <Outlet />
       </ContentWrapper>

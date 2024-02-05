@@ -1,6 +1,6 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Map } from 'react-kakao-maps-sdk';
-import { AddressValue, CoderResult, Coord } from './MapTypes';
+import { AddressValue, Coord } from './MapTypes';
 import {
   Buttons,
   StButtonBox,
@@ -8,40 +8,15 @@ import {
   StModalContainer,
   StOverayBox
 } from './MapStyles';
+import { copyAddress, readUserLocation } from './MapFn';
 
 const Maps = ({ searchAddress, setShowMap }: AddressValue) => {
   const [coord, setCoord] = useState<Coord>({ lat: 0, lng: 0 });
   const geocoder = new kakao.maps.services.Geocoder();
 
-  // 사용자의 주소를 기반으로 위도, 경도 출력
-  const readUserLocation = () => {
-    geocoder.addressSearch(
-      searchAddress,
-      (result: CoderResult[], status: kakao.maps.services.Status) => {
-        if (result.length > 0 && status === 'OK') {
-          const { x, y } = result[0];
-          setCoord({
-            lat: Number(y),
-            lng: Number(x)
-          });
-        }
-      }
-    );
-  };
-
-  // 주소 복사하는 함수
-  const copyAddress = async (e: MouseEvent<HTMLButtonElement>) => {
-    const address = e.currentTarget.id;
-    try {
-      await window.navigator.clipboard.writeText(address);
-      alert('주소 복사 완료!');
-    } catch (error) {
-      console.error('주소 복사 실패:', error);
-    }
-  };
-
+  // 사용자의 주소 값을 받아 위도 경도를 coord에 set
   useEffect(() => {
-    readUserLocation();
+    readUserLocation(geocoder, searchAddress, setCoord);
   }, []);
 
   return (

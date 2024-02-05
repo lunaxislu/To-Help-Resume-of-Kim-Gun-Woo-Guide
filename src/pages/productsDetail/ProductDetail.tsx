@@ -142,6 +142,11 @@ const ProductDetail = () => {
   };
 
   useEffect(() => {
+    getProduct({ id, setProduct });
+    window.scrollTo({ top: 0 });
+  }, [id]);
+
+  useEffect(() => {
     getUserData({ setCurUser });
     getTargetData({ id, setTarget });
     getProduct({ id, setProduct });

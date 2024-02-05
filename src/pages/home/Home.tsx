@@ -79,7 +79,7 @@ const Home = () => {
   };
 
   // 중고목록 map 돌리기 위한 변수 선언(하빈 추가)
-  const productsPosts = usedItems.slice(0, isMobile ? 6 : 10)
+  const productsPosts = usedItems.slice(0, isMobile ? 6 : 10);
 
   return (
     <HomeContainer>
@@ -87,51 +87,43 @@ const Home = () => {
         <MainBannerpic src="/assets/MainBannerPic.jpg" alt="메인배너사진" />
 
         <ButtonContainer>
-          <ProductsBannerContainer>
-            <img
-              style={{ width: '61rem', height: '20rem' }}
-              src="/assets/중고거래.svg"
-              alt="중고거래"
-            />
-            <ScrollButton onClick={() => scrollToSection(800)}>
-              <img
-                style={{ width: '36.8rem', height: '9.2rem' }}
-                src="/assets/중고거래버튼.svg"
-                alt="중고거래버튼"
-              />
+          <BannerWrapper>
+            <ProductsBannerImage src="/assets/중고거래.svg" alt="중고거래" />
+            <ScrollButton href="#product">
+              <ButtonImage src="/assets/중고거래버튼.svg" alt="중고거래버튼" />
             </ScrollButton>
-          </ProductsBannerContainer>
-          <CommunityBannerContainer>
-            <img
-              style={{ width: '50em', height: '20rem' }}
-              src="/assets/커뮤니티.svg"
-              alt="커뮤니티"
-            />
-            <ScrollButton onClick={() => scrollToSection(1570)}>
-              <img
-                style={{ width: '36.8rem', height: '9.2rem' }}
-                src="/assets/커뮤버튼.svg"
-                alt="커뮤니티버튼"
-              />
+          </BannerWrapper>
+          <BannerWrapper>
+            <CommunityBannerImage src="/assets/커뮤니티.svg" alt="커뮤니티" />
+            <ScrollButton href="#community">
+              <ButtonImage src="/assets/커뮤버튼.svg" alt="커뮤니티버튼" />
             </ScrollButton>
-          </CommunityBannerContainer>
+          </BannerWrapper>
         </ButtonContainer>
       </BannerContainer>
 
       <AllCardContainer>
-        <ContentsContainer>
+        <ContentsContainer id="product">
           <TitleWrapper>
-            <Title>{usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!</Title>
-            <ShowLink to="/products">전체보기<FaArrowRight /></ShowLink>
+            <Title>
+              {usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!
+            </Title>
+            <ShowLink to="/products">
+              전체보기
+              <FaArrowRight />
+            </ShowLink>
           </TitleWrapper>
           {/* 하빈 수정 */}
           <ProductsCard posts={productsPosts} />
         </ContentsContainer>
 
-        <ContentsContainer>
+        <ContentsContainer id="community">
           <TitleWrapper>
             <Title>작업자들의 커뮤니티에 함께해볼까요?</Title>
-            <ShowLink to="/community">전체보기<FaArrowRight /></ShowLink>
+            <ShowLink to="/community">
+              전체보기
+              <FaArrowRight />
+            </ShowLink>
           </TitleWrapper>
           {/* <ComunityWrapper></ComunityWrapper> */}
           <CommunityList posts={communityItems} />
@@ -149,24 +141,26 @@ const HomeContainer = styled.section`
   flex-direction: column;
   margin: auto;
   animation: ${StFadeAni} 0.3s ease;
-
   @media screen and (max-width: 768px) {
     width: 100%;
-    max-width: 76.8rem;
-    min-width: 32rem;
+    //min-width: 32rem;
   }
 `;
-
-const MainBannerpic = styled.img`
-  width: 100%;
-  height: 63rem;
-`;
-
+// 배너
 const BannerContainer = styled.div`
   position: relative;
   width: 100%;
+  @media screen and (max-width: 768px) {
+    height: 40rem;
+  }
 `;
-
+const MainBannerpic = styled.img`
+  width: 100%;
+  max-height: 63rem;
+  @media screen and (max-width: 768px) {
+    height: 40rem;
+  }
+`;
 const ButtonContainer = styled.div`
   position: absolute;
   top: 50%;
@@ -177,26 +171,101 @@ const ButtonContainer = styled.div`
   align-items: center;
   width: 100%;
   gap: 10rem;
+  @media screen and (max-width: 1116px) {
+    gap: 3rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-35%, -50%);
+  }
+  @media screen and (max-width: 768px) {
+    gap: 1rem;
+  }
 `;
-
-const ProductsBannerContainer = styled.div`
-  width: 120rem;
-  height: 20rem;
+const BannerWrapper = styled.div`
+  width: 82%;
+  height: 50%;
   display: flex;
   justify-content: space-between;
   gap: 10rem;
+  @media screen and (max-width: 1116px) {
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    width: 93%;
+    height: 55%;
+  }
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 60%;
+  }
+  @media screen and (max-width: 768px) {
+    width: 85%;
+  }
+  @media screen and (max-width: 650px) {
+    width: 90%;
+  }
+  @media screen and (max-width: 550px) {
+    width: 100%;
+  }
+  @media screen and (max-width: 430px) {
+    width: 120%;
+  }
 `;
-const CommunityBannerContainer = styled.div`
-  width: 120rem;
-  height: 20rem;
-  display: flex;
-  justify-content: space-between;
-  gap: 10rem;
+const ProductsBannerImage = styled.img`
+  width: 45%;
+  height: 100%;
+  @media screen and (max-width: 768px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 650px) {
+    width: 55%;
+  }
+  @media screen and (max-width: 550px) {
+    width: 70%;
+  }
+  @media screen and (max-width: 430px) {
+    width: 60%;
+  }
 `;
-const ScrollButton = styled.button`
+const CommunityBannerImage = styled.img`
+  width: 53%;
+  height: 100%;
+  @media screen and (max-width: 768px) {
+    width: 60%;
+  }
+  @media screen and (max-width: 650px) {
+    width: 65%;
+  }
+  @media screen and (max-width: 550px) {
+    width: 70%;
+  }
+  @media screen and (max-width: 430px) {
+    width: 70%;
+  }
+`;
+const ButtonImage = styled.img`
+  width: 90%;
+  height: 50%;
+  
+  @media screen and (max-width: 1116px) {
+    width: 80%;
+  }
+  @media screen and (max-width: 800px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 650px) {
+    //width: 40%;
+  }
+`;
+const ScrollButton = styled.a`
   background: none;
   border: none;
   cursor: pointer;
+  text-decoration: none;
+  color: white;
+  margin: auto;
 `;
 // 본문
 const AllCardContainer = styled.div`
@@ -223,15 +292,16 @@ const TitleWrapper = styled.div`
   font-size: var(--fontSize-H3);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
+    margin: 0 auto 2rem 0;
   }
 `;
 const Title = styled.h2`
   font-size: var(--fontSize-H3);
   vertical-align: baseline;
-    @media screen and (max-width: 768px) {
-      font-size: var(--fontSize-H5);
-    }
-`
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H5);
+  }
+`;
 const ShowLink = styled(Link)`
   display: flex;
   justify-content: center;
