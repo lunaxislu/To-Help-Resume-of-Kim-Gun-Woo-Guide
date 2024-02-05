@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { IoClose } from 'react-icons/io5';
 
 export const StFormContainer = styled.div`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -10,6 +10,7 @@ export const StFormContainer = styled.div`
   background: var(--drop);
   padding: 1.5rem 3rem;
   text-align: right;
+  z-index: 2;
 `;
 
 export const Close = styled(IoClose)`
