@@ -26,6 +26,7 @@ import { setSuccessLogout } from '../../../redux/modules/authSlice';
 import { useNavigate } from 'react-router';
 import ProfileMobileNav from './ProfileMobileNav';
 import QnAFrom from './QnAFrom';
+import { setIsOpenForm } from '../../../redux/modules/openForm';
 
 interface User {
   username: string;
@@ -39,7 +40,6 @@ const Profile = () => {
   const [imagePath, setImagePath] = useState<string>();
   const fileInput = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpenForm, setIsOpenForm] = useState(false);
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const Profile = () => {
   };
 
   const openFormHandler = () => {
-    setIsOpenForm(true);
+    dispatch(setIsOpenForm());
   };
 
   // profile 수정 버튼
@@ -208,7 +208,7 @@ const Profile = () => {
                   {isOpen && (
                     <StSettingMenu>
                       <li onClick={clickEditHandler}>프로필 수정하기</li>
-                      <li>문의하기</li>
+                      <li onClick={openFormHandler}>문의하기</li>
                       <li onClick={clickDeleteUserHandler}>회원탈퇴</li>
                     </StSettingMenu>
                   )}
