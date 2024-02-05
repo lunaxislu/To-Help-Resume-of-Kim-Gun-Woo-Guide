@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router';
  * @param posts: 게시물 데이터가 들어있는 배열
  * @return: 게시물 카드 리스트 반환
  */
-const ProductsCard = ({posts}: any) => {
-
+const ProductsCard = ({ posts }: any) => {
   const navigate = useNavigate();
   return (
     <St.ProductsListContainer>
@@ -20,7 +19,9 @@ const ProductsCard = ({posts}: any) => {
               <St.IsSellProducts>
                 <St.SoldOut>판매완료</St.SoldOut>
               </St.IsSellProducts>
-            ) : (<div></div>)}
+            ) : (
+              <div></div>
+            )}
             {posts.image_url !== null && posts.image_url !== undefined ? (
               <St.CardImage src={posts.image_url[0]} alt="물품 이미지" />
             ) : (
@@ -28,7 +29,9 @@ const ProductsCard = ({posts}: any) => {
             )}
           </St.CardImageWrapper>
           {[posts.quality].map((condition) => (
-            <St.CardQuality $quality={condition} key={condition}>{condition}</St.CardQuality>
+            <St.CardQuality $quality={condition} key={condition}>
+              {condition}
+            </St.CardQuality>
           ))}
           <St.CardTitle>{posts.title}</St.CardTitle>
           <St.LikesWrapper>
@@ -38,7 +41,7 @@ const ProductsCard = ({posts}: any) => {
         </St.ProductsCardContainer>
       ))}
     </St.ProductsListContainer>
-  )
-}
+  );
+};
 
-export default ProductsCard
+export default ProductsCard;

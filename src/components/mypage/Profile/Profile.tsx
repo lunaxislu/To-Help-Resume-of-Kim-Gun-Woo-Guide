@@ -25,6 +25,7 @@ import { useAppDispatch } from '../../../redux/reduxHooks/reduxBase';
 import { setSuccessLogout } from '../../../redux/modules/authSlice';
 import { useNavigate } from 'react-router';
 import ProfileMobileNav from './ProfileMobileNav';
+import QnAFrom from './QnAFrom';
 
 interface User {
   username: string;
@@ -38,6 +39,7 @@ const Profile = () => {
   const [imagePath, setImagePath] = useState<string>();
   const fileInput = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenForm, setIsOpenForm] = useState(false);
   const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -60,6 +62,10 @@ const Profile = () => {
     } else {
       alert('취소합니다.');
     }
+  };
+
+  const openFormHandler = () => {
+    setIsOpenForm(true);
   };
 
   // profile 수정 버튼

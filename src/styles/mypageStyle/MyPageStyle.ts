@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { StFadeAni } from '../../pages/productsDetail/style';
 
 export const MyPageContainer = styled.div`
+  position: relative;
   width: 111.6rem;
   margin: 0 auto;
   padding: 5rem 0;
