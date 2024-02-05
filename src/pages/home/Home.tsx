@@ -79,7 +79,7 @@ const Home = () => {
   };
 
   // 중고목록 map 돌리기 위한 변수 선언(하빈 추가)
-  const productsPosts = usedItems.slice(0, isMobile ? 6 : 10)
+  const productsPosts = usedItems.slice(0, isMobile ? 6 : 10);
 
   return (
     <HomeContainer>
@@ -88,46 +88,42 @@ const Home = () => {
 
         <ButtonContainer>
           <BannerWrapper>
-            <ProductsBannerImage
-              src="/assets/중고거래.svg"
-              alt="중고거래"
-            />
-            <ScrollButton onClick={() => scrollToSection(800)}>
-              <ButtonImage
-                src="/assets/중고거래버튼.svg"
-                alt="중고거래버튼"
-              />
+            <ProductsBannerImage src="/assets/중고거래.svg" alt="중고거래" />
+            <ScrollButton href="#product">
+              <ButtonImage src="/assets/중고거래버튼.svg" alt="중고거래버튼" />
             </ScrollButton>
           </BannerWrapper>
           <BannerWrapper>
-            <CommunityBannerImage
-              src="/assets/커뮤니티.svg"
-              alt="커뮤니티"
-            />
-            <ScrollButton onClick={() => scrollToSection(1570)}>
-              <ButtonImage
-                src="/assets/커뮤버튼.svg"
-                alt="커뮤니티버튼"
-              />
+            <CommunityBannerImage src="/assets/커뮤니티.svg" alt="커뮤니티" />
+            <ScrollButton href="#community">
+              <ButtonImage src="/assets/커뮤버튼.svg" alt="커뮤니티버튼" />
             </ScrollButton>
           </BannerWrapper>
         </ButtonContainer>
       </BannerContainer>
 
       <AllCardContainer>
-        <ContentsContainer>
+        <ContentsContainer id="product">
           <TitleWrapper>
-            <Title>{usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!</Title>
-            <ShowLink to="/products">전체보기<FaArrowRight /></ShowLink>
+            <Title>
+              {usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!
+            </Title>
+            <ShowLink to="/products">
+              전체보기
+              <FaArrowRight />
+            </ShowLink>
           </TitleWrapper>
           {/* 하빈 수정 */}
           <ProductsCard posts={productsPosts} />
         </ContentsContainer>
 
-        <ContentsContainer>
+        <ContentsContainer id="community">
           <TitleWrapper>
             <Title>작업자들의 커뮤니티에 함께해볼까요?</Title>
-            <ShowLink to="/community">전체보기<FaArrowRight /></ShowLink>
+            <ShowLink to="/community">
+              전체보기
+              <FaArrowRight />
+            </ShowLink>
           </TitleWrapper>
           {/* <ComunityWrapper></ComunityWrapper> */}
           <CommunityList posts={communityItems} />
@@ -256,12 +252,13 @@ const ButtonImage = styled.img`
     width: 30%;
   }
 `;
-const ScrollButton = styled.button`
+const ScrollButton = styled.a`
   background: none;
   border: none;
   cursor: pointer;
-`;;
-
+  text-decoration: none;
+  color: white;
+`;
 // 본문
 const AllCardContainer = styled.div`
   width: 77.5%;
@@ -293,10 +290,10 @@ const TitleWrapper = styled.div`
 const Title = styled.h2`
   font-size: var(--fontSize-H3);
   vertical-align: baseline;
-    @media screen and (max-width: 768px) {
-      font-size: var(--fontSize-H5);
-    }
-`
+  @media screen and (max-width: 768px) {
+    font-size: var(--fontSize-H5);
+  }
+`;
 const ShowLink = styled(Link)`
   display: flex;
   justify-content: center;

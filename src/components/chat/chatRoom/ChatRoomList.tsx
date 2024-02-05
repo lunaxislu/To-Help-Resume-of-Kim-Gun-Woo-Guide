@@ -106,6 +106,7 @@ const ChatRoomList: React.FC<RoomProps> = ({
             onClick={(e) => {
               updateToRead(room.id);
               handleCurClicked(e);
+              handleBoardPosition();
             }}
           >
             {/* onClick={handleBoardPosition} 완료 상품 관련 채팅을 띄워줘야할지,,, 고민즁... */}

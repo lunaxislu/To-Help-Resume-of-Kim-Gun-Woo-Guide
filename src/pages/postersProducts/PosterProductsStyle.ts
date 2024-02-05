@@ -2,13 +2,15 @@ import styled from 'styled-components';
 import { StFadeAni } from '../chat/style';
 
 const ListWrapper = styled.div`
-  max-width: 116rem;
+  max-width: 144rem;
+  width: 77.5;
   margin: auto;
   position: relative;
 `;
 
 const StProductsListContainer = styled.div`
-  max-width: 116rem;
+  max-width: 144rem;
+  width: 77.5%;
   display: flex;
   margin: auto;
   animation: ${StFadeAni} 0.3s ease;
@@ -20,9 +22,11 @@ const StProductsListContainer = styled.div`
 `;
 
 const StListTitle = styled.h2`
-  width: 100%;
+  max-width: 144rem;
+  width: 77.5%;
   margin-block: 2rem;
   font-size: 3rem;
+  margin-left: 12%;
 
   span {
     margin-left: 0.6rem;
@@ -30,6 +34,7 @@ const StListTitle = styled.h2`
   }
 
   @media screen and (max-width: 768px) {
+    margin-left: 8%;
     padding: 0 1.2rem;
   }
 `;
