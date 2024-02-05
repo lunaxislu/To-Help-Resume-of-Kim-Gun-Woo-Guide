@@ -248,8 +248,15 @@ const CommunityBannerImage = styled.img`
 const ButtonImage = styled.img`
   width: 90%;
   height: 50%;
+  
   @media screen and (max-width: 1116px) {
-    width: 30%;
+    width: 80%;
+  }
+  @media screen and (max-width: 800px) {
+    width: 50%;
+  }
+  @media screen and (max-width: 650px) {
+    //width: 40%;
   }
 `;
 const ScrollButton = styled.a`
@@ -258,6 +265,7 @@ const ScrollButton = styled.a`
   cursor: pointer;
   text-decoration: none;
   color: white;
+  margin: auto;
 `;
 // 본문
 const AllCardContainer = styled.div`
