@@ -10,7 +10,7 @@ const StSideBtnContainer = styled.div`
   gap: 1rem;
   font-family: 'BM-JUA';
   position: fixed;
-  top: 30%;
+  bottom: 10%;
   right: 3%;
   transform: translate(0%, -50%);
   z-index: 100;
@@ -77,7 +77,7 @@ const StMenuButtons = styled.button<ButtonProps>`
   font-weight: 600;
   position: absolute;
   margin-top: 3.6rem;
-  top: ${(props) => props.$index * 90}%;
+  bottom: ${(props) => props.$index * 90}%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: -1;
@@ -98,7 +98,7 @@ const StMenuButtons = styled.button<ButtonProps>`
 
 const StSearchBarContainer = styled.div`
   position: absolute;
-  top: 120%;
+  top: -720%;
   right: 10rem;
 `;
 
