@@ -1,6 +1,6 @@
 import React from 'react';
-import * as St from '../../pages/productsDetail/style';
-import { CustomUser, Product } from '../../pages/productsDetail/types';
+import * as St from '../../../../pages/productsDetail/style';
+import { CustomUser, Product } from '../../../../pages/productsDetail/types';
 import { useNavigate } from 'react-router';
 import { FaHeart } from 'react-icons/fa';
 

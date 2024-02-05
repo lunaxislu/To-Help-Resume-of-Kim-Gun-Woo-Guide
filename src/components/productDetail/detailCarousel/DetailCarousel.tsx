@@ -2,8 +2,15 @@ import React, { useCallback, useRef } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import styled from 'styled-components';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import {
+  ArrowButton,
+  CarouselButtons,
+  CarouselContainer,
+  CarouselImage,
+  ColoredIcon,
+  StSlider
+} from '../ProductDetailStyles';
 interface InfiniteCarouselProps {
   carouselImages: string[];
 }
@@ -78,102 +85,3 @@ const DetailViewerCarousel: React.FC<InfiniteCarouselProps> = ({
 };
 
 export default DetailViewerCarousel;
-
-const CarouselContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 70rem;
-  max-height: 100%;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  overflow: hidden;
-  .dots_custom {
-    display: inline-block;
-    vertical-align: middle;
-    margin: auto 0;
-    padding: 0;
-  }
-
-  .dots_custom li {
-    list-style: none;
-    cursor: pointer;
-    display: inline-block;
-    margin: 0 0.6rem;
-    padding: 0;
-  }
-
-  .dots_custom li button {
-    border: none;
-    background: #d1d1d1;
-    color: transparent;
-    cursor: pointer;
-    display: block;
-    height: 0.8rem;
-    width: 0.8rem;
-    border-radius: 100%;
-    padding: 0;
-  }
-
-  .dots_custom li.slick-active button {
-    background-color: #08c1ce;
-  }
-
-  @media screen and (max-width: 768px) {
-    height: 100%;
-    width: 100%;
-  }
-`;
-
-const StSlider = styled(Slider)`
-  width: 100%;
-  height: 100%;
-`;
-
-const CarouselImage = styled.img`
-  object-fit: contain;
-  width: 100%;
-  height: 75vh;
-
-  @media screen and (max-width: 768px) {
-    height: 50vh;
-    max-height: 70rem;
-  }
-`;
-const CarouselButtons = styled.div`
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0 1rem;
-`;
-
-const ArrowButton = styled.button`
-  background: none;
-  border: none;
-  width: 5rem;
-  height: 5rem;
-`;
-
-const ColoredIcon = styled.div`
-  display: inline-block;
-  position: relative;
-  width: 5rem;
-  height: 5rem;
-  background-color: rgba(255, 255, 255, 0.6);
-
-  border-radius: 50%;
-
-  svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    fill: var(--opc-100);
-    width: 2rem; /* 아이콘의 전체 크기를 설정합니다. */
-    height: 2rem;
-    cursor: pointer;
-  }
-`;

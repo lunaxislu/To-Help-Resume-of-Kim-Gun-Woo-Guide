@@ -1,9 +1,11 @@
-import * as St from '../../pages/productsDetail/style';
-import { CustomUser, Product } from '../../pages/productsDetail/types';
-import parseDate from '../../util/getDate';
+import React from 'react';
+import * as St from '../../../pages/productsDetail/style';
+import { CustomUser, Product } from '../../../pages/productsDetail/types';
+import parseDate from '../../../util/getDate';
 import { FaPencil, FaTrash } from 'react-icons/fa6';
 import { useNavigate } from 'react-router';
-import { ProductsEditType } from '../prducts/ProductsType';
+import { ProductsEditType } from '../../prducts/ProductsType';
+import styled from 'styled-components';
 
 type DetailHeaderProps = {
   product: Product[];
@@ -24,23 +26,20 @@ const ProductDetailInfoHeader = ({
   data,
   selectedProductData
 }: DetailHeaderProps) => {
-
   // 수정하기(하빈 추가)
   const navigate = useNavigate();
 
   const handleOnClickEditButton = () => {
-
     navigate(`/productsposts/edit/${product[0].id}`, {
-      state: {productData: selectedProductData},
+      state: { productData: selectedProductData }
     });
   };
-
 
   return (
     <>
       <St.StProductInfoHeader>
         <St.StUserTitlebox>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <StUserInfoWrapper>
             <St.StUserImage>
               {product[0].post_user_uid === curUser?.id ? (
                 <St.StProfileImages
@@ -67,36 +66,24 @@ const ProductDetailInfoHeader = ({
                 </p>
               )}
             </St.StUserNickname>
-          </div>
+          </StUserInfoWrapper>
         </St.StUserTitlebox>
 
         <St.StAlertButton>
           {product[0].post_user_uid === curUser?.uid && (
             <>
-              <div
-                onClick={() => {handleOnClickEditButton()}}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '.36rem',
-                  cursor: 'pointer'
+              <StEditBtnBox
+                onClick={() => {
+                  handleOnClickEditButton();
                 }}
               >
-                <FaPencil style={{ color: 'var(--opc-100)' }} />
+                <StPencilIcon />
                 수정하기
-              </div>
-              <div
-                onClick={handleDeletePost}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '.36rem',
-                  cursor: 'pointer'
-                }}
-              >
-                <FaTrash style={{ color: 'var(--opc-100)' }} />
+              </StEditBtnBox>
+              <StDeleteBtnBox onClick={handleDeletePost}>
+                <StTrashCanIcon />
                 삭제하기
-              </div>
+              </StDeleteBtnBox>
             </>
           )}
           {product[0].post_user_uid !== curUser?.uid && (
@@ -122,3 +109,31 @@ const ProductDetailInfoHeader = ({
 };
 
 export default ProductDetailInfoHeader;
+
+const StUserInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const StEditBtnBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.36rem;
+  cursor: pointer;
+`;
+
+const StPencilIcon = styled(FaPencil)`
+  color: var(--opc-100);
+`;
+
+const StDeleteBtnBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.36rem;
+  cursor: pointer;
+`;
+
+const StTrashCanIcon = styled(FaTrash)`
+  color: var(--opc-100);
+`;

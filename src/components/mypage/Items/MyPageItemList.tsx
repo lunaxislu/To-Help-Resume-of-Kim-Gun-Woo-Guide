@@ -19,6 +19,7 @@ import {
   setPurchasedItem
 } from '../../../redux/modules/countPostsAndItemsSlice';
 import useInfiniteQueryHook from '../../../hooks/useInfiniteQuery';
+import ProductsSkeleton from '../../skeleton/ProductsSkeleton';
 
 const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
   const dispatch = useAppDispatch();
@@ -82,7 +83,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
       {activeTab === 0 && (
         <StCardContainer ref={ref}>
           {statusMyItems === 'loading' ? (
-            <SkeletonProductCard cards={5} />
+            <ProductsSkeleton count={5} />
           ) : (
             <ProductsCard posts={myItems?.pages} />
           )}
@@ -102,7 +103,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
       {activeTab === 1 && (
         <StCardContainer ref={ref}>
           {statusPurchasedItems === 'loading' ? (
-            <SkeletonProductCard cards={5} />
+            <ProductsSkeleton count={5} />
           ) : (
             <ProductsCard posts={purchasedItems?.pages} />
           )}
@@ -124,7 +125,7 @@ const MyPageItemList: React.FC<ProductCardProps> = ({ activeTab }) => {
       {activeTab === 2 && (
         <StCardContainer ref={ref}>
           {statusFavItems === 'loading' ? (
-            <SkeletonProductCard cards={5} />
+            <ProductsSkeleton count={5} />
           ) : (
             <ProductsCard posts={favItems?.pages} />
           )}

@@ -1,6 +1,6 @@
 import { supabase } from './supabaseClient';
 const userId = localStorage.getItem('userId');
-const CARDS_PER_SCROLL = 10;
+const CARDS_PER_SCROLL = 5;
 
 export const getMyItems = async ({ pageParam = 1 }) => {
   let myItemResults;

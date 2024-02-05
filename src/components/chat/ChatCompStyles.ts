@@ -84,6 +84,7 @@ const StChatballoon = styled.div`
   line-height: 1.2;
   font-size: 1.4rem;
   border: 0.1rem solid #13b3bc30;
+  cursor: pointer;
 
   @media screen and (max-width: 768px) {
     font-size: 1rem;
@@ -107,6 +108,7 @@ const StMyChatballoon = styled.div`
   font-weight: 600;
   line-height: 1.2;
   white-space: break-spaces;
+  cursor: pointer;
 
   @media screen and (max-width: 768px) {
     font-size: 1rem;
@@ -116,4 +118,58 @@ const StMyChatballoon = styled.div`
   }
 `;
 
-export { StMyImageballoon, StImageballoon, StChatballoon, StMyChatballoon };
+const StMessageBox = styled.div`
+  cursor: pointer;
+`;
+
+const StChatFirstMsg = styled.div`
+  text-decoration: underline;
+  color: blue;
+`;
+
+const StStatusOveray = styled.div`
+  width: 100%;
+  height: 100%;
+  background: #31313199;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+`;
+
+const StOverayText = styled.h1`
+  width: 100%;
+  position: absolute;
+  font-size: 2.2rem;
+  font-weight: var(--fontWeight-semiBold);
+  text-align: center;
+  color: var(--opc-100);
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.4rem;
+  }
+`;
+
+const StRoomName = styled.p`
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-top: 0.5rem;
+  color: var(--opc-100);
+`;
+
+export {
+  StMyImageballoon,
+  StImageballoon,
+  StChatballoon,
+  StMyChatballoon,
+  StMessageBox,
+  StChatFirstMsg,
+  StStatusOveray,
+  StOverayText,
+  StRoomName
+};

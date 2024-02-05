@@ -1,6 +1,12 @@
 import { User } from '@supabase/supabase-js';
 import { ReactNode, SetStateAction } from 'react';
 
+export type MessageProps = {
+  msg: MessageType;
+  findChatRoom: any;
+  handleShowImage: any;
+};
+
 export type MessageType = {
   id: string;
   sender_id: string;

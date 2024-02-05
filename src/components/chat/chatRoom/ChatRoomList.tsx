@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../../api/supabase/supabaseClient';
-import * as St from '../../pages/chat/style';
-import { MessageType, RoomType } from './types';
-import parseDate from '../../util/getDate';
-import styled from 'styled-components';
-import { Product } from '../../api/supabase/products';
+import { supabase } from '../../../api/supabase/supabaseClient';
+import * as St from '../../../pages/chat/style';
+import { MessageType, RoomType } from '../types';
+import parseDate from '../../../util/getDate';
+import { Product } from '../../../api/supabase/products';
 import { User } from '@supabase/supabase-js';
+import { StOverayText, StRoomName, StStatusOveray } from '../ChatCompStyles';
 
 type Props = {
   rooms: RoomType[] | null | undefined;
@@ -213,18 +213,11 @@ const ChatRoomList: React.FC<Props> = ({
                     ></St.StListUserProfile>
                     <div>
                       <p>{`${chatTarget(room).user_name}`}</p>
-                      <p
-                        style={{
-                          fontSize: '1.2rem',
-                          fontWeight: '400',
-                          marginTop: '.5rem',
-                          color: 'var(--opc-100)'
-                        }}
-                      >
+                      <StRoomName>
                         {room.room_name.length >= 20
                           ? `${room.room_name.substring(0, 20)}...`
                           : room.room_name}
-                      </p>
+                      </StRoomName>
                     </div>
                   </St.StUserInfoBox>
                   <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
@@ -267,18 +260,11 @@ const ChatRoomList: React.FC<Props> = ({
                     ></St.StListUserProfile>
                     <div>
                       <p>{`${chatTarget(room).user_name}`}</p>
-                      <p
-                        style={{
-                          fontSize: '1.2rem',
-                          fontWeight: '400',
-                          marginTop: '.5rem',
-                          color: 'var(--opc-100)'
-                        }}
-                      >
+                      <StRoomName>
                         {room.room_name.length >= 20
                           ? `${room.room_name.substring(0, 20)}...`
                           : room.room_name}
-                      </p>
+                      </StRoomName>
                     </div>
                   </St.StUserInfoBox>
                   <St.StUnreadCount>{unread && unread[i]}</St.StUnreadCount>
@@ -304,31 +290,4 @@ const ChatRoomList: React.FC<Props> = ({
   );
 };
 
-const StStatusOveray = styled.div`
-  width: 100%;
-  height: 100%;
-  background: #31313199;
-  opacity: 1;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 3;
-`;
-
-const StOverayText = styled.h1`
-  width: 100%;
-  position: absolute;
-  font-size: 2.2rem;
-  font-weight: var(--fontWeight-semiBold);
-  text-align: center;
-  color: var(--opc-100);
-  z-index: 3;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  @media screen and (max-width: 768px) {
-    font-size: 1.4rem;
-  }
-`;
 export default ChatRoomList;

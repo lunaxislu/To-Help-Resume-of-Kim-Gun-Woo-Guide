@@ -1,7 +1,7 @@
 import React, { MouseEvent, useEffect, useRef, useState } from 'react';
 import { User } from '@supabase/supabase-js';
-import ChatRoomList from '../../components/chat/ChatRoomList';
-import ChatMessages from '../../components/chat/ChatMessages';
+import ChatRoomList from '../../components/chat/chatRoom/ChatRoomList';
+import ChatMessages from '../../components/chat/chatMessages/ChatMessages';
 import type {
   MessageType,
   Participants,
