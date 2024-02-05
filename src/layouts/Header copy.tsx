@@ -168,16 +168,14 @@ const Header = () => {
                 {isLogin ? (
                   <>
                     <St.LogoutButton onClick={handleLogOutButtonClick}>
-                      <St.LogoutImage />
+                      <St.LogoutImage  />
                       <St.LogoutWord>로그아웃</St.LogoutWord>
                     </St.LogoutButton>
                     <St.MobileSearchIcon
                       onClick={handleShowSearchComp}
                     />
-                    <St.Notice>
-                      <St.NoticeIcon />
-                    </St.Notice>
                     <St.HamburgerMenu
+                      //src="/assets/hamburger.svg"
                       onClick={handlShowSearchBurger}
                     />
                     <Hamburger
@@ -218,8 +216,8 @@ const Header = () => {
             {/* <div style={{ position: 'relative' }}></div> */}
           </St.HeaderWrapper>
         </St.HeaderContainer>
-      <St.Hr />
       </St.HeaderTopContainer>
+      <St.Hr />
     </>
   );
 };
