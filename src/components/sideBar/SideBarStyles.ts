@@ -1,4 +1,5 @@
-import styled, { keyframes } from 'styled-components';
+import { SearchBar } from './../../styles/community/CommunityMainStyle';
+import styled, { css, keyframes } from 'styled-components';
 
 const StSideBtnContainer = styled.div`
   width: fit-content;
@@ -10,7 +11,7 @@ const StSideBtnContainer = styled.div`
   gap: 1rem;
   font-family: 'BM-JUA';
   position: fixed;
-  top: 30%;
+  bottom: 10%;
   right: 3%;
   transform: translate(0%, -50%);
   z-index: 100;
@@ -77,7 +78,7 @@ const StMenuButtons = styled.button<ButtonProps>`
   font-weight: 600;
   position: absolute;
   margin-top: 3.6rem;
-  top: ${(props) => props.$index * 90}%;
+  bottom: ${(props) => props.$index * 90}%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: -1;
@@ -96,9 +97,23 @@ const StMenuButtons = styled.button<ButtonProps>`
   }
 `;
 
-const StSearchBarContainer = styled.div`
+type SearchBarProps = {
+  $status: string | null;
+};
+
+const StSearchBarContainer = styled.div<SearchBarProps>`
   position: absolute;
-  top: 120%;
+  ${(props) => {
+    if (props.$status === null) {
+      return css`
+        bottom: 135%;
+      `;
+    } else {
+      return css`
+        top: -720%;
+      `;
+    }
+  }}
   right: 10rem;
 `;
 

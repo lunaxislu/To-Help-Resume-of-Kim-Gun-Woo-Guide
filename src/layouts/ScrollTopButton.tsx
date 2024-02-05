@@ -39,7 +39,7 @@ const ScrollTopButton = () => {
 
 const TopButton = styled.button`
   position: fixed;
-  bottom: 6rem;
+  bottom: 6%;
   right: 3%;
   padding: 10px;
   border: none;

@@ -180,6 +180,7 @@ const StQualityInfoBox = styled.div`
   height: fit-content;
   background-color: var(--bgColor);
   position: absolute;
+  border: 0.1rem solid var(--opc-100);
   left: -500px;
   bottom: -100px;
   color: white;

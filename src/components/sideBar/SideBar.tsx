@@ -9,6 +9,7 @@ import {
 } from './SideBarStyles';
 import SearchBar from '../layout/header/SearchBar';
 import { SideBarProps } from './SideBarTypes';
+import { supabase } from '../../api/supabase/supabaseClient';
 
 const SideBar = ({
   notification,
@@ -19,6 +20,7 @@ const SideBar = ({
   const isLogined = localStorage.getItem('userId');
 
   const [showNoti, setShowNoti] = useState<boolean>(false);
+  const [sender, setSender] = useState<any[]>([]);
 
   const showNotiToggle = () => {
     setShowNoti((prev) => !prev);
@@ -34,12 +36,14 @@ const SideBar = ({
       return noti.id !== noti_id;
     });
     setNotification(filtered);
+    setNewNotiExists(false);
   };
 
   const clickNoti = (e: MouseEvent<HTMLDivElement>) => {
     const clickedItem = e.currentTarget.id;
     filterPrevNoti(clickedItem);
     setShowNoti(false);
+    setNewNotiExists(false);
     navi('/chat');
   };
 
@@ -97,16 +101,42 @@ const SideBar = ({
     };
   }, []);
 
+  const getUserName = async (senderId: string) => {
+    const { data: senderInfo, error: fetchFailUser } = await supabase
+      .from('user')
+      .select('*')
+      .eq('uid', senderId);
+
+    if (fetchFailUser) console.log('발신자 정보를 찾을 수 없음');
+    if (senderInfo) return senderInfo;
+  };
+
+  useEffect(() => {
+    // 각 채팅방 목록이 업데이트될 때마다 안 읽은 메세지 수를 가져오고 상태에 저장
+    if (notification) {
+      Promise.all(notification.map((noti) => getUserName(noti.sender_id))).then(
+        (userInfo) => {
+          setSender(userInfo);
+        }
+      );
+    }
+  }, [notification]);
+
   return (
     <>
       <StSideBtnContainer>
         {notification.length > 0 && showNoti && (
           <>
             <St.StNotiContainer>
-              {notification.map((noti) => {
+              {notification?.reverse().map((noti, i) => {
                 return (
                   <St.StNotiItem id={noti.id} onClick={clickNoti} key={noti.id}>
-                    새로운 메세지가 있습니다.
+                    {sender[i] &&
+                      `${
+                        sender[i][0]?.nickname
+                          ? sender[i][0]?.nickname
+                          : sender[i][0]?.username
+                      }님의 메세지가 왔습니다`}
                   </St.StNotiItem>
                 );
               })}
@@ -131,7 +161,7 @@ const SideBar = ({
           </St.StNotiContainer>
         )}
         {isShow && isSearchBarVisible && (
-          <StSearchBarContainer>
+          <StSearchBarContainer $status={isLogined}>
             <SearchBar
               showSearchComp={isSearchBarVisible}
               setShowSearchComp={setIsSearchBarVisible}
@@ -147,11 +177,11 @@ const SideBar = ({
             }
           }}
         >
-          {notification && newNotiExists && <St.StNotiDot></St.StNotiDot>}
+          {newNotiExists && <St.StNotiDot></St.StNotiDot>}
           Menu
         </StMainButton>
         {isLogined &&
-          arr.map((menu, i) => {
+          arr.reverse().map((menu, i) => {
             if (isShow && menu === '알림') {
               return (
                 <>
@@ -164,9 +194,7 @@ const SideBar = ({
                     $index={i + 1}
                     key={i}
                   >
-                    {notification && newNotiExists && (
-                      <St.StNotiDot></St.StNotiDot>
-                    )}
+                    {newNotiExists && <St.StNotiDot></St.StNotiDot>}
                     {menu}
                   </StMenuButtons>
                 </>
