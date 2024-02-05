@@ -42,4 +42,5 @@ export interface Communityy {
   created_at: string;
   comment: Array<Record<string, any>>;
   likes_user: Array<Record<string, any>>;
+  post_color: string;
 }

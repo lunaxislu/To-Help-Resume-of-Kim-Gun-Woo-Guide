@@ -333,7 +333,7 @@ const SearchResults: React.FC = () => {
             </CommunityTitle>
             {/* 커뮤니티 모바일 */}
             {isMobile && showClickedList && (
-              <CommunityList posts={communityResults} />
+              <CommunityList posts={sortedCommunityResults} />
             )}
             {!isMobile && (
               // 커뮤니티 데스크탑
