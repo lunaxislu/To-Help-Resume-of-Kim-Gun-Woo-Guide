@@ -1,4 +1,4 @@
-import * as St from '../../styles/products/ProductsListStyle';
+import * as St from '../../styles/products/productsList/StProductsCard';
 import { ProductsPostsType } from './ProductsType';
 import { useNavigate } from 'react-router';
 /**
@@ -23,7 +23,7 @@ const ProductsCard = ({ posts }: any) => {
               <div></div>
             )}
             {posts.image_url !== null && posts.image_url !== undefined ? (
-              <St.CardImage src={posts.image_url[0]} alt="상품 이미지" />
+              <St.CardImage src={posts.image_url[0]} alt="물품 이미지" />
             ) : (
               <div></div>
             )}

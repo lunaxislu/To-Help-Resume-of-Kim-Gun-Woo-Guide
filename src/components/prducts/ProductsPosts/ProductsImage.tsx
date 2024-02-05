@@ -1,8 +1,8 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
 import { supabase } from '../../../api/supabase/supabaseClient';
 import { v4 as uuid } from 'uuid';
-import * as St from '../../../styles/products/ProductsPostsStyle';
-import { ProductsEditType } from '../ProductsType';
+import * as St from '../../../styles/products/productsPosts/StProductsImageUpload';
+import * as Stc from '../../../styles/products/productsPosts/StProductsWriteForm';
 
 interface Props {
   uploadedFileUrl: string[];
@@ -82,11 +82,11 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
   return (
     <>
       <St.UpLoadImageContainer>
-        <St.SemiTitle>
+        <Stc.SemiTitle>
           사진
-          <St.Required>*</St.Required>
+          <Stc.Required>*</Stc.Required>
           <St.ImgCount>{uploadedFileUrl.length}/12</St.ImgCount>
-        </St.SemiTitle>
+        </Stc.SemiTitle>
         <St.ImageWrapper>
           <St.ImageOrderWrapper></St.ImageOrderWrapper>
           {uploadedFileUrl.map((img: string, idx: number) => (

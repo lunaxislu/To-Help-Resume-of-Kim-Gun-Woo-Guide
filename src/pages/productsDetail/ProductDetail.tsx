@@ -3,12 +3,12 @@ import { useNavigate, useParams } from 'react-router';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ProductDetailInfo from '../../components/productDetail/ProductDetailInfo';
+import ProductDetailInfo from '../../components/productDetail/DetailInfo/ProductDetailInfo';
 import * as St from './style';
 import type { CustomUser, Product } from './types';
 import { RoomType } from '../../components/chat/types';
 import { v4 as uuid } from 'uuid';
-import ProductDetailCarousel from '../../components/productDetail/ProductDetailCarousel';
+import ProductDetailCarousel from '../../components/productDetail/detailCarousel/ProductDetailCarousel';
 import {
   createRoom,
   getOthers,
@@ -20,10 +20,10 @@ import {
   makeChatRoom,
   sendInitMessage
 } from './supabase_Detail/supabaseAPI';
-import ProductChatList from '../../components/productDetail/ProductChatList';
-import ProductDetailInfoHeader from '../../components/productDetail/ProductDetailInfoHeader';
-import ProductPriceWrapper from '../../components/productDetail/ProductPriceWrapper';
-import ProductButton from '../../components/productDetail/ProductButton';
+import ProductChatList from '../../components/productDetail/chatList/ProductChatList';
+import ProductDetailInfoHeader from '../../components/productDetail/DetailInfo/ProductDetailInfoHeader';
+import ProductPriceWrapper from '../../components/productDetail/chatList/detailBody/ProductPriceWrapper';
+import ProductButton from '../../components/productDetail/chatList/detailBody/ProductButton';
 import {
   getProduct,
   getTargetData,
@@ -40,7 +40,7 @@ import { HiSparkles } from 'react-icons/hi2';
 import { FaLocationDot, FaTruckFast } from 'react-icons/fa6';
 import { RiExchangeFill } from 'react-icons/ri';
 import ImageViewer from '../../components/productDetail/ImageViewer';
-import Recommend from '../../components/productDetail/Recommend';
+import Recommend from '../../components/productDetail/chatList/detailBody/Recommend';
 // DB의 채팅방 테이블 조회 후 같은 게시물에 대한 정보를 가진 채팅방이 존재하면
 // 채팅 보내고 구매하기 버튼 대신 이어서 채팅하기로 전환
 

@@ -83,6 +83,7 @@ const Header = () => {
       setAvatarUrl(undefined);
       // 이락균이 추가함 //
       navigate('/');
+
       localStorage.removeItem('userId');
     }
   };

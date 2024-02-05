@@ -8,9 +8,10 @@ import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
 import parseDate from '../../util/getDate';
 import { FaArrowRight } from 'react-icons/fa6';
 import { StFadeAni } from '../../pages/productsDetail/style';
-import * as St from '../../styles/products/ProductsListStyle';
+import * as St from '../../styles/products/productsList/StProductsList';
 import CommunityList from '../../components/community/CommunityList';
 import { Posts } from '../../styles/community/CommunityListStyle';
+import ProductsCard from '../../components/prducts/ProductsCard';
 
 type UsedItemsCountData = {
   count: number | null;
@@ -77,6 +78,9 @@ const Home = () => {
     window.scrollTo({ top: height, behavior: 'smooth' });
   };
 
+  // 중고목록 map 돌리기 위한 변수 선언(하빈 추가)
+  const productsPosts = usedItems.slice(0, isMobile ? 6 : 10)
+
   return (
     <HomeContainer>
       <BannerContainer>
@@ -115,65 +119,23 @@ const Home = () => {
       </BannerContainer>
 
       <AllCardContainer>
-        <ProductsContainer>
-          <ProductsTitle>
-            <div>
-              {usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!
-            </div>
-            <ProductsLink to="/products">
-              전체보기
-              <FaArrowRight />
-            </ProductsLink>
-          </ProductsTitle>
+        <ContentsContainer>
+          <TitleWrapper>
+            <Title>{usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!</Title>
+            <ShowLink to="/products">전체보기<FaArrowRight /></ShowLink>
+          </TitleWrapper>
+          {/* 하빈 수정 */}
+          <ProductsCard posts={productsPosts} />
+        </ContentsContainer>
 
-          <St.ProductsListContainer>
-            {usedItems.slice(0, isMobile ? 6 : 10)?.map((item) => (
-              <St.ProductsCardContainer
-                key={item.id}
-                onClick={() => navigate(`/products/detail/${item.id}`)}
-              >
-                <St.CardImageWrapper>
-                  {item.isSell === true ? (
-                    <St.IsSellProducts>
-                      <St.SoldOut>판매완료</St.SoldOut>
-                    </St.IsSellProducts>
-                  ) : (
-                    <div></div>
-                  )}
-                  {item.image_url !== null && item.image_url !== undefined ? (
-                    <St.CardImage src={item.image_url[0]} alt="상품 이미지" />
-                  ) : (
-                    <div></div>
-                  )}
-                </St.CardImageWrapper>
-                {[item.quality].map((condition) => (
-                  <St.CardQuality $quality={condition} key={condition}>
-                    {condition}
-                  </St.CardQuality>
-                ))}
-                <St.CardTitle>{item.title}</St.CardTitle>
-                <St.LikesWrapper>
-                  <St.CardPrice>
-                    {item.price.toLocaleString('kr-KO')}원
-                  </St.CardPrice>
-                  <St.Likes>♥ {item.likes}</St.Likes>
-                </St.LikesWrapper>
-              </St.ProductsCardContainer>
-            ))}
-          </St.ProductsListContainer>
-        </ProductsContainer>
-
-        <ComunityContainer>
-          <Communitytitle>
-            <h2>작업자들의 커뮤니티에 함께해볼까요?</h2>
-            <CommunityLink to="/community">
-              전체보기
-              <FaArrowRight />
-            </CommunityLink>
-          </Communitytitle>
-          <ComunityWrapper></ComunityWrapper>
+        <ContentsContainer>
+          <TitleWrapper>
+            <Title>작업자들의 커뮤니티에 함께해볼까요?</Title>
+            <ShowLink to="/community">전체보기<FaArrowRight /></ShowLink>
+          </TitleWrapper>
+          {/* <ComunityWrapper></ComunityWrapper> */}
           <CommunityList posts={communityItems} />
-        </ComunityContainer>
+        </ContentsContainer>
       </AllCardContainer>
     </HomeContainer>
   );
@@ -182,11 +144,10 @@ export default Home;
 
 const HomeContainer = styled.section`
   display: flex;
-  width: 144rem;
-  /* height: 170rem; */
+  max-width: 144rem;
   min-height: 100vh;
   flex-direction: column;
-  margin: 0px auto;
+  margin: auto;
   animation: ${StFadeAni} 0.3s ease;
 
   @media screen and (max-width: 768px) {
@@ -198,14 +159,12 @@ const HomeContainer = styled.section`
 
 const MainBannerpic = styled.img`
   width: 100%;
-  max-width: 144rem;
   height: 63rem;
 `;
 
 const BannerContainer = styled.div`
   position: relative;
   width: 100%;
-  max-width: 144rem;
 `;
 
 const ButtonContainer = styled.div`
@@ -239,136 +198,55 @@ const ScrollButton = styled.button`
   border: none;
   cursor: pointer;
 `;
-
+// 본문
 const AllCardContainer = styled.div`
-  width: 100%;
-  @media screen and (max-width: 1300px) {
-    width: 130rem;
-  }
-  @media screen and (max-width: 1024px) {
-    width: 10;
-  }
+  width: 77.5%;
+  margin: auto;
   @media screen and (max-width: 768px) {
-    width: 100%;
+    width: 93%;
   }
 `;
-const ProductsContainer = styled.div`
-  width: 111.6rem;
-  margin: 0 auto;
-  margin-top: 4rem;
+const ContentsContainer = styled.div`
+  width: 100%;
+  margin: auto;
+  margin-top: 5rem;
   @media screen and (max-width: 768px) {
-    width: 100%;
-    min-width: 32rem;
     margin-top: 2rem;
   }
 `;
-const ProductsTitle = styled.div`
+const TitleWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  margin: 0 auto 4rem 0;
   width: 100%;
-  margin-bottom: 5rem;
   font-size: var(--fontSize-H3);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
   }
 `;
-
-const ProductsLink = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.8rem;
-  text-decoration: none;
-  @media screen and (max-width: 768px) {
-    width: 100%;
-  }
-  cursor: pointer;
-  width: 8.3rem;
-  height: 3.2rem;
-  background: var(--opc-20);
-  border-radius: 4.5rem;
-  font-size: var(--fontSize-H6);
-  font-weight: var(--fontWeight-medium);
-  color: var(--11-gray);
-  @media screen and (max-width: 768px) {
-    background: none;
-    width: 6rem;
-    /* line-height: 191.2%; */
-    font-size: 1.1rem;
-    gap: 0.3rem;
-  }
-  &:hover {
-    background-color: var(--opc-100);
-    color: var(--bgColor);
-  }
-  svg {
-    width: 1rem;
-    height: 0.9rem;
+const Title = styled.h2`
+  font-size: var(--fontSize-H3);
+  vertical-align: baseline;
     @media screen and (max-width: 768px) {
-      width: 1rem;
-      height: 0.9rem;
-      color: var(--opc-100);
-    }
-  }
-`;
-
-const ComunityContainer = styled.div`
-  max-width: 111.6rem;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  margin: 0 auto;
-  margin-top: 8rem;
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    margin-top: 3rem;
-  }
-`;
-
-const Communitytitle = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-  @media screen and (max-width: 768px) {
-    margin-bottom: 1rem;
-  }
-
-  h2 {
-    font-size: var(--fontSize-H3);
-    @media screen and (max-width: 768px) {
-      width: 20.8rem;
-      height: 2.7rem;
       font-size: var(--fontSize-H5);
-      font-weight: var(--fontWeight-medium);
-      vertical-align: baseline;
-      padding-top: 0.63rem;
     }
-  }
-`;
-const CommunityLink = styled(Link)`
+`
+const ShowLink = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 0.8rem;
+  text-decoration: none;
   width: 8.3rem;
   height: 3.2rem;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: var(--fontWeight-bold);
-  gap: 0.8rem;
   background: var(--opc-20);
   border-radius: 4.5rem;
+  color: var(--black);
   font-size: var(--fontSize-H6);
-  font-weight: var(--fontWeight-medium);
-  color: var(--11-gray);
+  font-weight: var(--fontWeight-bold);
+  cursor: pointer;
   @media screen and (max-width: 768px) {
-    display: flex;
     background: none;
     width: 6rem;
     font-size: 1.1rem;
@@ -377,208 +255,5 @@ const CommunityLink = styled(Link)`
   &:hover {
     background-color: var(--opc-100);
     color: var(--bgColor);
-  }
-  /* p {
-    @media screen and (max-width: 768px) {
-      line-height: 50%;
-    }
-  } */
-  svg {
-    width: 1rem;
-    height: 0.9rem;
-    @media screen and (max-width: 768px) {
-      width: 9px;
-      height: 8px;
-      color: var(--opc-100);
-    }
-  }
-`;
-
-const ComunityWrapper = styled.ul`
-  width: 100%;
-  /* margin: 2.2rem auto; */
-  background-color: transparent;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  /* row-gap: 2rem;
-  column-gap: 2rem; */
-  padding: 1.5rem;
-  @media screen and (max-width: 600px) {
-    grid-template-columns: 100%;
-  }
-`;
-
-const ToCommunityDetailPage = styled(Link)`
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: var(--fontWeight-bold);
-  @media screen and (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const ComunityList = styled.li`
-  width: 100%;
-  height: 19.5rem;
-  display: inline-block;
-  position: relative;
-  align-items: center;
-  border-radius: 1rem;
-  background-color: var(--3-gray);
-  padding: 2rem;
-
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    height: 14rem;
-    padding: 1rem;
-  }
-
-  .commupic {
-    width: 100%;
-    display: flex;
-    gap: 1.2rem;
-    margin-block: 2.5rem;
-    @media screen and (max-width: 768px) {
-    }
-  }
-
-  .community-pic {
-    width: 6.6rem;
-    height: 6.6rem;
-    object-fit: cover;
-    @media screen and (max-width: 768px) {
-      width: 4rem;
-      height: 4rem;
-    }
-  }
-  h3 {
-    color: var(--11-gray);
-    font-size: var(--fontSize-H3);
-    margin-bottom: 1.6rem;
-    font-weight: var(--fontWeight-bold);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 48rem;
-    @media screen and (max-width: 768px) {
-      margin-top: 1rem;
-      font-size: var(--fontSize-H5);
-      font-weight: var(--fontWeight-bold);
-      width: 20rem;
-    }
-  }
-  .withcommu-image {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    white-space: normal;
-    overflow: hidden;
-    height: 6.6rem;
-    line-height: 1.2;
-    font-size: var(--fontSize-H4);
-    font-weight: var(--fontWeight-medium);
-    color: var(--8-gray);
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 39rem;
-    @media screen and (max-width: 768px) {
-      font-size: var(--fontSize-H6);
-      line-height: 1.9;
-      height: 4rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      white-space: normal;
-      overflow: hidden;
-    }
-  }
-  .withoutcommu-image {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    white-space: normal;
-    overflow: hidden;
-    height: 6.6rem;
-    line-height: 1.2;
-    font-size: var(--fontSize-H4);
-    font-weight: var(--fontWeight-medium);
-    color: var(--8-gray);
-    white-space: normal;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 48rem;
-    @media screen and (max-width: 768px) {
-      font-size: var(--fontSize-H6);
-      line-height: 1.9;
-      height: 4rem;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      white-space: normal;
-      overflow: hidden;
-    }
-  }
-
-  .thumbs {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 3.5rem;
-    width: 2rem;
-    height: 2rem;
-    @media screen and (max-width: 768px) {
-      width: 1.3rem;
-      height: 1.2rem;
-      left: 3rem;
-      bottom: 1.5rem;
-    }
-  }
-  .likescount {
-    position: absolute;
-    text-decoration: none;
-    bottom: 1.5rem;
-    left: 7rem;
-    color: var(--6, #717171);
-    @media screen and (max-width: 768px) {
-      font-size: 1.1rem;
-      left: 5.5rem;
-    }
-  }
-  .commentss {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 12rem;
-    width: 2rem;
-    height: 2rem;
-    @media screen and (max-width: 768px) {
-      width: 1.3rem;
-      height: 1.2rem;
-      left: 8.5rem;
-      bottom: 1.5rem;
-    }
-  }
-
-  span {
-    position: absolute;
-    text-decoration: none;
-    bottom: 1.5rem;
-    left: 15rem;
-    color: var(--6, #717171);
-    @media screen and (max-width: 768px) {
-      font-size: 1.1rem;
-      left: 11rem;
-    }
-  }
-  h4 {
-    position: absolute;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    color: var(--6, #717171);
-    font-size: var(--fontSize-H6);
-    @media screen and (max-width: 768px) {
-      font-size: 1rem;
-      right: 1.5rem;
-    }
   }
 `;

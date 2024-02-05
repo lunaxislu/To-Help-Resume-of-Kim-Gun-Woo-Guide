@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import ProductsWriteForm from '../../components/prducts/ProductsPosts/ProductsWriteForm';
-import * as St from '../../styles/products/ProductsPostsStyle';
+import * as St from '../../styles/products/productsPosts/StProductsPosts';
 
 const ProductsPosts = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const ProductsPosts = () => {
           <St.BackBtnBox onClick={handleOnClickBack}>
             <St.BackIcon />
           </St.BackBtnBox>
-          <St.Title>판매하기</St.Title>
+          <St.Title>판매글 작성</St.Title>
           <St.TetleRequired>*필수항목</St.TetleRequired>
         </St.TitleContainer>
         <St.Hr />
