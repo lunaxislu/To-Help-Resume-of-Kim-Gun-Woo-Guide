@@ -1,5 +1,5 @@
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-import * as St from '../../../styles/products/ProductsPostsStyle';
+import * as St from '../../../styles/products/productsPosts/StProductsWriteForm';
 import { ProductsInputType } from '../ProductsType';
 import { UseFormSetValue, UseFormWatch } from 'react-hook-form';
 

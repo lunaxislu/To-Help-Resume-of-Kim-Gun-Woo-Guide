@@ -1,5 +1,5 @@
-import * as St from '../../styles/products/ProductsSkeletonStyle';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import * as St from '../../styles/products/productsList/StProductsSkeleton';
+import { SkeletonTheme } from 'react-loading-skeleton';
 
 interface ProductsSkeletonProps {
   count: number;

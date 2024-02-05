@@ -39,8 +39,8 @@ const ScrollTopButton = () => {
 
 const TopButton = styled.button`
   position: fixed;
-  bottom: 130px;
-  right: -0.5%;
+  bottom: 6rem;
+  right: 3%;
   padding: 10px;
   border: none;
   cursor: pointer;
@@ -49,7 +49,7 @@ const TopButton = styled.button`
   background-color: transparent;
   @media screen and (max-width: 768px) {
     padding: 0;
-    right: 6%;
+    right: 3%;
   }
 
   img {
