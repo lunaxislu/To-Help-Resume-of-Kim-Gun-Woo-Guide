@@ -19,7 +19,7 @@ export const HeaderTopContainer = styled.div`
   width: 62%;
   height: 12rem;
   margin: auto;
-  //margin-bottom: 2rem;
+  margin-bottom: 2rem;
   @media screen and (max-width: 1650px) {
     width: 73%;
   }

@@ -14,8 +14,8 @@ export const GlobalStyles = createGlobalStyle`
     --fontSize-H6 : 1.4rem; // 14px
 
     /* Font Weight */
-    --fontWeight-bold: 700;
-    --fontWeight-500: 500; /* 기본 굵기 */
+    --fontWeight-bold: 700; /* 기본 굵기 */
+    --fontWeight-500: 500;
 
     /* 밝은 배경색 */
     --bgColor : #FFFEFA;
