@@ -20,18 +20,25 @@ export const fetchItems = async (
       break;
   }
 
-  const { data, error } = await myItems.range(
-    firstIndex,
-    firstIndex + postLimit - 1
-  );
+  try {
+    const { data, error } = await myItems.range(
+      firstIndex,
+      firstIndex + postLimit - 1
+    );
 
-  const filteredFavItems = data?.filter((product) =>
-    product.like_user?.some(
-      (like: { user_uid: string }) => like.user_uid === userId
-    )
-  );
+    if (error) {
+      throw error;
+    }
 
-  return { data, filteredFavItems };
+    const filteredFavItems = data?.filter((product) =>
+      product.like_user?.some(
+        (like: { user_uid: string }) => like.user_uid === userId
+      )
+    );
+    return { data, filteredFavItems };
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const fetchPosts = async (
@@ -55,6 +62,5 @@ export const fetchPosts = async (
     ?.filter((user) => user.likes_user?.includes(userId))
     .map((item) => item);
 
-  console.log(filteredFavPosts);
   return { data, filteredFavPosts };
 };

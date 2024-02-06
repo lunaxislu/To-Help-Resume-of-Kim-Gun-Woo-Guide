@@ -11,6 +11,7 @@ import Nothing from '../Nothing';
 const MyPageItemList = () => {
   const { selectedTab } = useAppSelector((state) => state.tab);
   const { ref, inView } = useInView();
+
   const {
     data,
     isError,
