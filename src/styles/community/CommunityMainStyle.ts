@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components';
 import { StFadeAni } from '../../pages/productsDetail/style';
 
 export const Container = styled.div`
-  /* margin-top: 30px; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,8 +13,11 @@ export const Container = styled.div`
 `;
 export const Post_container = styled.div`
   max-width: 111.6rem;
-  width: 90%;
+  width: 77.5%;
   margin-bottom: 5rem;
+  @media screen and (max-width: 768px) {
+    width: 93%;
+  }
 `;
 
 export const FeatureBar = styled.div`
@@ -86,11 +88,8 @@ export const WriteIcon = styled(BiEdit)`
 export const Title = styled.h2`
   color: var(--12-gray);
   font-size: var(--fontSize-H3);
-  /* font-weight: var(--fontWeight-semiBold); */
-  margin-top: 4rem;
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-body);
-    margin-top: 2rem;
   }
 `;
 export const CategoryBtn = styled.button<{ $selectCategory: string }>`
