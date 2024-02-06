@@ -19,9 +19,9 @@ const handleFileUpload = async (files: FileList) => {
     if (data) {
       return supabase.storage.from('images').getPublicUrl(data.path, {
         transform: {
-          width: 300,
-          height: 300,
           quality: 50,
+          width: 1920,
+          height: 1080,
           resize: 'contain'
         }
       }).data.publicUrl;
