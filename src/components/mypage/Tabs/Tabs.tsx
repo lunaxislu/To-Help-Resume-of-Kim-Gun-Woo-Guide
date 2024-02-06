@@ -1,53 +1,43 @@
-import { useState } from 'react';
+import {
+  useAppDispatch,
+  useAppSelector
+} from '../../../redux/reduxHooks/reduxBase';
+import { setSelectedTab } from '../../../redux/modules/tabSlice';
 import { StTab, StTabsContainer } from '../../../styles/mypageStyle/TabsStyle';
-import MyPageItemList from '../Items/MyPageItemList';
-import MyPageCommunityPostList from '../Commnity/MyPageCommunityPostList';
-import { useAppSelector } from '../../../redux/reduxHooks/reduxBase';
+import { useEffect } from 'react';
 
-const Tabs = () => {
-  const count = useAppSelector((state) => state.itemAndPost);
-
-  const tabMenuArray = [
-    // { label: '내 물품', value: count.myItems },
-    // { label: '구매한 물품', value: count.purchasedItems },
-    // { label: '찜한 물품', value: count.favItems },
-    // { label: '내가 쓴 글', value: count.myPosts },
-    // { label: '추천한 글', value: count.favPosts }
-    { label: '내 물품' },
-    { label: '구매한 물품' },
-    { label: '찜한 물품' },
-    { label: '내가 쓴 글' },
-    { label: '추천한 글' }
+const Tabs2 = () => {
+  const tabMenu = [
+    '내 물품',
+    '구매한 물품',
+    '찜한 물품',
+    '내가 쓴 글',
+    '추천한 글'
   ];
 
-  const [tab, setTab] = useState<number>(0);
-  const clickTabHandler = (index: number) => {
-    setTab(index);
+  const dispatch = useAppDispatch();
+  const { selectedTab } = useAppSelector((state) => state.tab);
+  const clickSelectTab = (tab: string) => {
+    dispatch(setSelectedTab(tab));
   };
 
-  return (
-    <>
-      <StTabsContainer>
-        {tabMenuArray.map((menu, index) => {
-          return (
-            <StTab
-              key={index}
-              onClick={() => clickTabHandler(index)}
-              active={tab === index}
-            >
-              {`${menu.label} `}
-            </StTab>
-          );
-        })}
-      </StTabsContainer>
+  useEffect(() => {
+    clickSelectTab('내 물품');
+  }, []);
 
-      {tab >= 3 ? (
-        <MyPageCommunityPostList activeTab={tab} />
-      ) : (
-        <MyPageItemList activeTab={tab} />
-      )}
-    </>
+  return (
+    <StTabsContainer>
+      {tabMenu.map((tab, index) => (
+        <StTab
+          key={tab}
+          onClick={() => clickSelectTab(tab)}
+          $activetab={selectedTab === tab ? true : false}
+        >
+          {tab}
+        </StTab>
+      ))}
+    </StTabsContainer>
   );
 };
 
-export default Tabs;
+export default Tabs2;
