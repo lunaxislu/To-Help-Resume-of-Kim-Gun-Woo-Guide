@@ -11,8 +11,8 @@ const StSideBtnContainer = styled.div`
   gap: 1rem;
   font-family: 'BM-JUA';
   position: fixed;
-  bottom: 10%;
-  right: 3%;
+  top: 18.5%;
+  left: 4.8%;
   transform: translate(0%, -50%);
   z-index: 100;
   @media screen and (max-width: 768px) {
@@ -51,17 +51,6 @@ const SlideDown = keyframes`
   }
 `;
 
-const SlideUp = keyframes`
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-
-  }
-`;
-
 type ButtonProps = {
   $index: number;
   $isShow: boolean;
@@ -80,11 +69,11 @@ const StMenuButtons = styled.button<ButtonProps>`
   font-weight: 600;
   position: absolute;
   margin-top: 3.6rem;
-  bottom: ${(props) => props.$index * 90}%;
+  top: ${(props) => props.$index * 90}%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: -1;
-  animation-name: ${(props) => (props.$isShow ? SlideDown : SlideUp)};
+  animation-name: ${SlideDown};
   animation-duration: 0.15s;
   animation-fill-mode: backwards;
   animation-delay: ${(props) => 0.06 * props.$index}s;
@@ -108,15 +97,15 @@ const StSearchBarContainer = styled.div<SearchBarProps>`
   ${(props) => {
     if (props.$status === null) {
       return css`
-        bottom: 135%;
+        bottom: -66%;
       `;
     } else {
       return css`
-        top: -720%;
+        top: 110%;
       `;
     }
   }}
-  right: 10rem;
+  left: 9rem;
 `;
 
 export {

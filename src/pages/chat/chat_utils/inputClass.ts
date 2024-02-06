@@ -2,6 +2,8 @@ import { User } from '@supabase/supabase-js';
 import { ChangeEvent, RefObject, SetStateAction } from 'react';
 import { UtilForChat } from './functions';
 
+const util = new UtilForChat();
+
 export class InputHandler {
   // 채팅 인풋을 받아 state에 업뎃
   handleUserInput = async (
@@ -25,19 +27,22 @@ export class InputHandler {
     images: (string | undefined)[],
     setShowFileInput: React.Dispatch<SetStateAction<boolean>>
   ) => {
-    const util = new UtilForChat();
     if (e.key === 'Enter') {
       if (e.shiftKey) {
         return;
       } else {
-        // 폼 제출
-        const formElement = formRef.current;
-        if (formElement) {
-          util.sendMessage(e, curUser, clicked, chatInput, images).then(() => {
-            setImages([]);
-            setShowFileInput(false);
-            setChatInput('');
-          });
+        if (e.nativeEvent.isComposing === false) {
+          // 폼 제출
+          const formElement = formRef.current;
+          if (formElement) {
+            util
+              .sendMessage(e, curUser, clicked, chatInput, images)
+              .then(() => {
+                setImages([]);
+                setShowFileInput(false);
+                setChatInput('');
+              });
+          }
         }
       }
     }
