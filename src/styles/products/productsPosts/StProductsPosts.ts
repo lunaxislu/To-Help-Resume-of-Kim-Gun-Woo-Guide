@@ -22,7 +22,6 @@ export const ContentsContainer = styled.div`
 export const TitleContainer = styled.div`
   display: flex;
   flex-direction: row;
-  margin-top: 4.2rem;
   margin-bottom: 2rem;
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;

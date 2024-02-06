@@ -10,6 +10,16 @@ import {
 import SearchBar from '../layout/header/SearchBar';
 import { SideBarProps } from './SideBarTypes';
 import { supabase } from '../../api/supabase/supabaseClient';
+// 아이콘
+import { FaBell } from 'react-icons/fa';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { IoPeopleSharp } from 'react-icons/io5';
+import { IoPersonSharp } from 'react-icons/io5';
+import { BiWon } from 'react-icons/bi';
+import { LuPalette } from 'react-icons/lu';
+import { TbLogin, TbLogout } from 'react-icons/tb';
+import { BsChatDotsFill } from 'react-icons/bs';
+import { BiEdit } from 'react-icons/bi';
 
 const SideBar = ({
   notification,

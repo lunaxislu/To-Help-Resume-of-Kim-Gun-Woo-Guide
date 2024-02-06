@@ -27,7 +27,7 @@ export const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 3.5rem 0 1rem 0;
+  margin: 0rem 0 1rem 0;
   @media screen and (max-width: 768px) {  
     margin: 1.5rem 0 1rem 0;
   }
