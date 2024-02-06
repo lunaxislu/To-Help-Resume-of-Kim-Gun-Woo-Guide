@@ -43,7 +43,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [isInputEmpty, setIsInputEmpty] = useState<boolean>(true);
 
   // 인풋창 최대 입력 글자 제한
-  const maxInputLength = 20;
+  const maxInputLength = 15;
 
   const handleHideSearchComp = () => {
     setShowSearchComp(false);
@@ -55,7 +55,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     dispatch(setSearchQuery(e.target.value));
     setIsInputEmpty(!inputValue.trim());
     if (inputValue.length > maxInputLength) {
-      alert(`최대 ${maxInputLength}까지 입력이 가능합니다.`);
+      alert(`최대 ${maxInputLength}자까지 입력이 가능합니다.`);
     }
   };
 
