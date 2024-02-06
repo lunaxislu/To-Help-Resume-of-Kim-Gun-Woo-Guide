@@ -134,6 +134,7 @@ textarea {
 }
 input {
     font-family: 'DalseoHealing-Medium';
+
 }
 input {
     background-color: var(--opc-30);

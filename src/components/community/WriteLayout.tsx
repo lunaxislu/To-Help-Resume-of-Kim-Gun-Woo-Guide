@@ -1,19 +1,32 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate } from 'react-router';
-import { v4 as uuid } from 'uuid';
-import { supabase } from '../../api/supabase/supabaseClient';
 import { CATEGORY_ARRAY } from '../../pages/community/WritePost';
-import {
-  addPostMutation,
-  fetchDetailPost,
-  updatePostMutation
-} from '../../pages/community/api/commuQuery';
+import { fetchDetailPost } from '../../pages/community/api/commuQuery';
+import { handleFilesUpload } from '../../pages/community/api/fileUploader';
+import { quillImageHandler } from '../../pages/community/api/imgaeUploader';
 import { WriteLayoutProps } from '../../pages/community/api/model';
+import {
+  useAddPostMutation,
+  useUpdatePostMutation
+} from '../../pages/community/hook/useQuery';
 import * as St from '../../styles/community/CommunityWriteStyle';
 const COLORS = ['red', 'yellow', 'green', 'blue', 'purple'];
+const formats = [
+  'header',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'video',
+  'image',
+  'color',
+  'background',
+  'height',
+  'width'
+];
 const WriteLayout: React.FC<WriteLayoutProps> = ({
   profile,
   isEdit,
@@ -38,7 +51,11 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     content: isEdit
       ? posts![0].content.replace(/<p>(.*?)<\/p>/g, ' <div>$1</div>')
       : '',
-    uploadedFileUrl: isEdit ? posts![0].files[0].url : [],
+    uploadedFileUrl: isEdit
+      ? posts![0].files.length > 0
+        ? posts![0].files[0].url
+        : []
+      : [],
     anon: isEdit ? posts![0].anon : false,
     mainImage: isEdit ? posts![0].mainImage : '',
     post_color: isEdit ? posts![0].post_color : ''
@@ -46,7 +63,8 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
   const [errors, setErrors] = useState({
     title: '',
     category: '',
-    content: ''
+    content: '',
+    post_color: ''
   });
 
   const validateForm = () => {
@@ -54,7 +72,8 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     const newErrors = {
       title: '',
       category: '',
-      content: ''
+      content: '',
+      post_color: ''
     };
 
     if (!formValues.title) {
@@ -69,6 +88,10 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       newErrors.content = '내용은 필수입니다';
       isValid = false;
     }
+    if (!formValues.post_color) {
+      newErrors.post_color = '포스트컬러는 필수입니다';
+      isValid = false;
+    }
 
     setErrors(newErrors);
     return isValid;
@@ -79,46 +102,12 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     if (fileList) {
       const filesArray = Array.from(fileList);
       filesArray.forEach((file) => {
-        handleFilesUpload(file);
+        handleFilesUpload(file, setFormValues);
       });
     }
   };
 
-  const handleFilesUpload = async (file: File) => {
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      files: [...prevValues.files],
-      uploadedFileUrl: [...prevValues.uploadedFileUrl]
-    }));
-    try {
-      const newFileName = uuid();
-      //쿼리로 바꾸기
-      const { data, error } = await supabase.storage
-        .from('files')
-        .upload(`files/${newFileName}`, file);
-      if (error) {
-        console.log('파일 업로드 중 오류가 발생했습니다', error);
-        return;
-      }
-      const res = supabase.storage.from('files').getPublicUrl(data.path);
-      setFormValues((prevValues: any) => ({
-        ...prevValues,
-        files: [...prevValues.files, file],
-        uploadedFileUrl: [...prevValues.uploadedFileUrl, res.data.publicUrl]
-      }));
-      console.log(res.data.publicUrl);
-    } catch (error) {
-      console.error('파일을 업로드하지 못했습니다:', error);
-    }
-  };
-
-  const addMutation = useMutation(addPostMutation, {
-    onSuccess: (data) => {
-      console.log(data);
-      queryClient.invalidateQueries('posts');
-      navigate('/community');
-    }
-  });
+  const addMutation = useAddPostMutation();
 
   const removeFile = (index: number) => {
     if (formValues.files && formValues.files.length > 0) {
@@ -136,11 +125,13 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       }));
     }
   };
+
   const fileArr = formValues.files.map((file: File, index: number) => ({
     name: file.name,
     url: formValues.uploadedFileUrl
   }));
-  const addPost = async () => {
+
+  const addPostHandle = async () => {
     if (!validateForm()) {
       return;
     }
@@ -157,17 +148,18 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       anon: formValues.anon,
       post_color: formValues.post_color
     };
-    addMutation.mutate(insertData);
+    addMutation.mutate(insertData, {
+      onSuccess: (data) => {
+        console.log(data);
+        queryClient.invalidateQueries('posts');
+        navigate('/community');
+      }
+    });
   };
 
-  const updateMutation = useMutation(updatePostMutation, {
-    onSuccess: () => {
-      setIsEditState(false);
-      queryClient.invalidateQueries(['posts', paramId]);
-    }
-  });
+  const updateMutation = useUpdatePostMutation();
 
-  const updatePost = () => {
+  const updatePostHandle = () => {
     if (!validateForm()) {
       return;
     }
@@ -183,61 +175,20 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
       },
       paramId
     };
-    updateMutation.mutate(postData);
+    updateMutation.mutate(postData, {
+      onSuccess: () => {
+        setIsEditState(false);
+        queryClient.invalidateQueries('posts');
+      }
+    });
   };
 
   const quillRef = useRef<ReactQuill | null>(null);
-
-  const imageHandler = () => {
-    try {
-      const input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.setAttribute('accept', 'image/*');
-      input.click();
-      input.addEventListener('change', async () => {
-        const file = input.files![0];
-        const fileNewName = uuid();
-
-        const { data, error } = await supabase.storage
-          .from('images')
-          .upload(`quill_imgs/${fileNewName}.png`, file);
-        if (error) {
-          console.error('이미지 업로드 중 오류 발생:', error);
-        } else {
-          console.log('이미지가 성공적으로 업로드되었습니다:', data);
-        }
-
-        const response = supabase.storage
-          .from('images')
-          .getPublicUrl(`quill_imgs/${fileNewName}.png`);
-        console.log(response);
-        if (response.data) {
-          const postImageUrl = response.data.publicUrl;
-          const editor = quillRef.current?.getEditor();
-          const range = editor?.getSelection();
-          editor?.insertEmbed(range?.index || 0, 'image', postImageUrl);
-          setFormValues((prevValues) => ({
-            ...prevValues,
-            mainImage: postImageUrl
-          }));
-          // editor?.setSelection((range?.index || 0) + 1, 0);
-          console.log('가져왔다');
-        } else {
-          console.error('No public URL found in response data.');
-        }
-      });
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
+  const imageHandler = () => quillImageHandler(quillRef, setFormValues);
   const modules = useMemo(
     () => ({
-      // imageActions: {},
-      // imageFormats: {},
       toolbar: {
         container: [
-          // [{ header: [1, 2, 3, 4, 5, 6, false] }],
           ['bold', 'italic', 'underline', 'strike'],
           ['image', 'video'],
           [{ color: [] }, { background: [] }]
@@ -252,19 +203,6 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     }),
     []
   );
-  const formats = [
-    'header',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'video',
-    'image',
-    'color',
-    'background',
-    'height',
-    'width'
-  ];
 
   if (isError) {
     return <div>Error loading posts</div>;
@@ -374,6 +312,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
               />
             ))}
           </St.ColorPicker>
+          {errors.post_color && <St.Validate>{errors.post_color}</St.Validate>}
         </St.PickerColorArea>
         <St.LayoutAnonArea>
           <St.LayoutValueText></St.LayoutValueText>
@@ -389,9 +328,9 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
               익명으로 작성하기
             </label>
             {isEdit ? (
-              <button onClick={updatePost}>수정완료</button>
+              <button onClick={updatePostHandle}>수정완료</button>
             ) : (
-              <button onClick={addPost}>등록하기</button>
+              <button onClick={addPostHandle}>등록하기</button>
             )}
           </St.LayoutBottom>
         </St.LayoutAnonArea>

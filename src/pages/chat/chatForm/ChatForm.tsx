@@ -2,6 +2,7 @@ import React, {
   ChangeEvent,
   MouseEvent,
   SetStateAction,
+  useEffect,
   useRef,
   useState
 } from 'react';
@@ -16,13 +17,15 @@ interface ChatFormProps {
   curUser: User | null | undefined;
   clicked: string | undefined;
   setShowFileInput: React.Dispatch<SetStateAction<boolean>>;
+  getChatRooms: () => Promise<void>;
 }
 
 const ChatForm = ({
   showFileInput,
   curUser,
   clicked,
-  setShowFileInput
+  setShowFileInput,
+  getChatRooms
 }: ChatFormProps) => {
   const [chatInput, setChatInput] = useState<string>('');
   const [images, setImages] = useState<(string | undefined)[]>([]);
@@ -45,6 +48,10 @@ const ChatForm = ({
     const filtered = images.filter((url) => url !== targetURL);
     setImages(filtered);
   };
+
+  useEffect(() => {
+    getChatRooms();
+  }, []);
 
   return (
     <St.StChatForm ref={formRef}>

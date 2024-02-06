@@ -1,17 +1,17 @@
 import parse from 'html-react-parser';
 import React, { useEffect, useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import 'react-quill/dist/quill.snow.css';
 import { useNavigate, useParams } from 'react-router';
-import * as St from '../../styles/community/CommunityDetailStyle';
-
 import { supabase } from '../../api/supabase/supabaseClient';
 import CommuFileList from '../../components/community/CommuFileList';
 import Reply from '../../components/community/Reply';
 import WriteLayout from '../../components/community/WriteLayout';
+import * as St from '../../styles/community/CommunityDetailStyle';
 import parseDate from '../../util/getDate';
-import { deletePostMutation, fetchDetailPost } from './api/commuQuery';
+import { fetchDetailPost } from './api/commuQuery';
 import { ProfileObject } from './api/model';
+import { useDeletePostMutation } from './hook/useQuery';
 
 const CommuDetail: React.FC = () => {
   const param = useParams();
@@ -65,14 +65,15 @@ const CommuDetail: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const deleteMutation = useMutation(deletePostMutation, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('posts');
-    }
-  });
-  const deletePost = async () => {
+
+  const deleteMutation = useDeletePostMutation();
+  const deletePostHandle = async () => {
     if (window.confirm(`정말로"${posts![0].title}" 글을 삭제하시겠습니까?`)) {
-      deleteMutation.mutate(param.id);
+      deleteMutation.mutate(param.id, {
+        onSuccess: () => {
+          queryClient.invalidateQueries('posts');
+        }
+      });
       setEditToolOpen(!editToolOpen);
       navigate('/community');
     }
@@ -174,7 +175,7 @@ const CommuDetail: React.FC = () => {
                               >
                                 수정하기
                               </St.DropdownItem>
-                              <St.DropdownItem onClick={deletePost}>
+                              <St.DropdownItem onClick={deletePostHandle}>
                                 삭제하기
                               </St.DropdownItem>
                             </>
@@ -200,7 +201,7 @@ const CommuDetail: React.FC = () => {
                               <St.PenIcon />
                               <St.BtnStyle>수정</St.BtnStyle>
                             </St.IconWrapper>
-                            <St.IconWrapper onClick={deletePost}>
+                            <St.IconWrapper onClick={deletePostHandle}>
                               <St.TrachIcon />
                               <St.BtnStyle>삭제</St.BtnStyle>
                             </St.IconWrapper>

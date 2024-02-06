@@ -8,6 +8,11 @@ import { useAppDispatch, useAppSelector } from '../redux/reduxHooks/reduxBase';
 import * as St from '../styles/headerStyle/HeaderStyle';
 import Hamburger from '../components/layout/header/Hamburger';
 import { SideBarProps } from '../components/sideBar/SideBarTypes';
+import {
+  deleteAllNotification,
+  filterPrevNoti
+} from '../components/sideBar/SideBarFn';
+import NotiRender from '../components/sideBar/noti/NotiRender';
 
 interface User {
   username: string;
@@ -25,36 +30,10 @@ const Header = ({
   const dispatch = useAppDispatch();
 
   // 알림 관련
-  const [isShow, setIsShow] = useState<boolean>(false);
   const [showNoti, setShowNoti] = useState<boolean>(false);
   const [sender, setSender] = useState<any[]>([]);
   const navi = useNavigate();
-
-  //알림 함수
-  const showNotiToggle = () => {
-    setShowNoti((prev) => !prev);
-    setNewNotiExists(false);
-  };
-
-  const deleteAllNotification = () => {
-    setNotification([]);
-    localStorage.removeItem('notifications');
-  };
-  const filterPrevNoti = (noti_id: string) => {
-    const filtered = notification.filter((noti) => {
-      return noti.id !== noti_id;
-    });
-    setNotification(filtered);
-    setNewNotiExists(false);
-  };
-
-  const clickNoti = (e: MouseEvent<HTMLDivElement>) => {
-    const clickedItem = e.currentTarget.id;
-    filterPrevNoti(clickedItem);
-    setShowNoti(false);
-    setNewNotiExists(false);
-    navi('/chat');
-  };
+  const [isShow, setIsShow] = useState<boolean>(false);
 
   // 반응형 대응 서치 컴포넌트 관련
   const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
@@ -82,28 +61,8 @@ const Header = ({
     handlePageChange();
   };
 
-  const handleSellbuttonClick = () => {
-    if (isLogin) {
-      navigate('/productsposts');
-    } else {
-      navigate('/login');
-    }
-    if (isLogin) {
-      navigate('/productsposts');
-    } else {
-      navigate('/login');
-    }
-  };
-
-  const handleMyPageButtonClick = () => {
-    navigate('/mypage');
-    handlePageChange();
-  };
   const handleNavigateToLogin = () => {
     navigate('/login');
-  };
-  const handleNavigateToChat = () => {
-    navigate('/chat');
   };
 
   // 로그아웃 버튼
@@ -142,10 +101,11 @@ const Header = ({
     }
   };
 
-  useEffect(() => {
-    getSession();
-    getAuth();
-  }, []);
+  //알림 함수
+  const showNotiToggle = () => {
+    setShowNoti((prev) => !prev);
+    setNewNotiExists(false);
+  };
 
   // 알림을 보낸 사람 찾기
   const getUserName = async (senderId: string) => {
@@ -157,6 +117,24 @@ const Header = ({
     if (fetchFailUser) console.log('발신자 정보를 찾을 수 없음');
     if (senderInfo) return senderInfo;
   };
+
+  const clickNoti = (e: MouseEvent<HTMLDivElement>) => {
+    const clickedItem = e.currentTarget.id;
+    filterPrevNoti({
+      noti_id: clickedItem,
+      notification,
+      setNewNotiExists,
+      setNotification
+    });
+    setShowNoti(false);
+    setNewNotiExists(false);
+    navi('/chat');
+  };
+
+  useEffect(() => {
+    getSession();
+    getAuth();
+  }, []);
 
   useEffect(() => {
     // 각 채팅방 목록이 업데이트될 때마다 안 읽은 메세지 수를 가져오고 상태에 저장
@@ -171,41 +149,16 @@ const Header = ({
 
   return (
     <>
-      {notification.length > 0 && showNoti && (
-        <>
-          <St.StNotiContainer>
-            {notification?.reverse().map((noti, i) => {
-              return (
-                <St.StNotiItem id={noti.id} onClick={clickNoti} key={noti.id}>
-                  {sender[i] &&
-                    `${
-                      sender[i][0]?.nickname
-                        ? sender[i][0]?.nickname
-                        : sender[i][0]?.username
-                    }님의 메세지가 왔습니다`}
-                </St.StNotiItem>
-              );
-            })}
-            <St.StNoticeButtonContainer>
-              <St.StNoticeDeleteBtn onClick={deleteAllNotification}>
-                알림 지우기
-              </St.StNoticeDeleteBtn>
-            </St.StNoticeButtonContainer>
-          </St.StNotiContainer>
-        </>
-      )}
-      {notification.length === 0 && showNoti && (
-        <St.StNotiContainer>
-          <St.StNotiItem onClick={() => setShowNoti(false)}>
-            알림이 없습니다
-          </St.StNotiItem>
-          <St.StNoticeButtonContainer>
-            <St.StNoticeDeleteBtn onClick={deleteAllNotification}>
-              알림 지우기
-            </St.StNoticeDeleteBtn>
-          </St.StNoticeButtonContainer>
-        </St.StNotiContainer>
-      )}
+      <NotiRender
+        clickNoti={clickNoti}
+        deleteAllNotification={deleteAllNotification}
+        notification={notification}
+        sender={sender}
+        setIsShow={setIsShow}
+        setNotification={setNotification}
+        setShowNoti={setShowNoti}
+        showNoti={showNoti}
+      />
 
       <St.HeaderTopContainer>
         <St.HeaderContainer>
@@ -217,49 +170,6 @@ const Header = ({
                 onClick={handleLogoClick}
               />
               <St.ButtonContainer>
-                {/* <St.Sell onClick={handleSellbuttonClick}>
-                  <BiWon
-                    style={{
-                      width: '1.6rem',
-                      height: '1.6rem',
-                      color: 'var(--opc-100)'
-                    }}
-                  />
-                  <p>판매하기</p>
-                </St.Sell> */}
-                {/* {isLogin ? (
-                  <St.Chat onClick={handleNavigateToChat}>
-                    <BsChatDotsFill
-                      style={{
-                        width: '1.4rem',
-                        height: '1.4rem',
-                        color: 'var(--opc-100)',
-                        transform: 'scaleX(-1)'
-                      }}
-                    />
-                    <p>채팅</p>
-                  </St.Chat>
-                ) : (
-                  ''
-                )} */}
-                {/* {isLogin ? (
-                  <St.Alert onClick={showNotiToggle}>
-                    <BiSolidBell
-                      style={{
-                        width: '1.6rem',
-                        height: '1.6rem',
-                        color: 'var(--opc-100)'
-                      }}
-                    />
-                    {notification && newNotiExists && (
-                      <St.StNotiDot></St.StNotiDot>
-                    )}
-                    <p>알림</p>
-                  </St.Alert>
-                ) : (
-                  ''
-                )} */}
-
                 <>
                   {isLogin && (
                     <>
@@ -299,18 +209,6 @@ const Header = ({
                 setShowSearchComp={setShowSearchComp}
               />
             </St.VisibleSearchBar>
-
-            {/* <St.NavSection>
-              <St.NavBar>
-                <St.NavButton to="/products" onClick={handlePageChange}>
-                  중고거래
-                </St.NavButton>
-                <St.NavButton to="/community" onClick={handlePageChange}>
-                  커뮤니티
-                </St.NavButton>
-              </St.NavBar>
-            </St.NavSection> */}
-            {/* <div style={{ position: 'relative' }}></div> */}
           </St.HeaderWrapper>
         </St.HeaderContainer>
         <St.Hr />

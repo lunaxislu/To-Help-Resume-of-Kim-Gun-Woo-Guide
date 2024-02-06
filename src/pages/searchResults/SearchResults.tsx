@@ -6,6 +6,7 @@ import { setSearchResults } from '../../redux/modules/searchSlice';
 import { FaArrowRight } from 'react-icons/fa';
 import { FaArrowDown } from 'react-icons/fa6';
 import { FiArrowUp } from 'react-icons/fi';
+import { FaCheckSquare } from 'react-icons/fa';
 import { researchItems, ResearchResults } from './researchItem';
 import Dropdown from '../../styles/searchresults/Dropdown';
 import { divide, sortBy } from 'lodash';
@@ -156,9 +157,9 @@ const SearchResults: React.FC = () => {
     // 768px 이하에서 최초 렌더링 시에는 ProductsCount가 디폴트
     if (window.innerWidth <= 768) {
       if (usedItemCount === 0 && communityCount !== 0) {
-        setSelectedTab('중고물품');
-      } else {
         setSelectedTab('커뮤니티');
+      } else {
+        setSelectedTab('중고물품');
       }
     }
   }, [usedItemCount, communityCount]);
@@ -182,7 +183,7 @@ const SearchResults: React.FC = () => {
     <>
       <SearchResultsContainer>
         <SearchResultsCountContainer>
-          <CheckImage src="/assets/checkcheck.svg" alt="검색결과" />
+          <Icon />
           <FullCounts>
             {isLoading
               ? '검색 중...'
@@ -300,34 +301,6 @@ const SearchResultsContainer = styled.div`
   flex-direction: column;
   min-height: 100vh;
   margin: 0 auto;
-  margin-bottom: 15rem;
-  /* @media screen and (max-width: 1300px) {
-    width: 100%;
-    max-width: 130rem;
-  }
-  @media screen and (max-width: 1100px) {
-    width: 100%;
-    max-width: 110rem;
-  }
-  @media screen and (max-width: 900px) {
-    width: 100%;
-    max-width: 90rem;
-  }
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    max-width: 76.8rem;
-    min-width: 32rem;
-  }
-  @media screen and (max-width: 530px) {
-    width: 100%;
-    max-width: 53rem;
-    min-width: 32rem;
-  }
-  @media screen and (max-width: 349px) {
-    width: 100%;
-    max-width: 34.9rem;
-    min-width: 32rem;
-  } */
 `;
 
 const SearchResultsCountContainer = styled.div`
@@ -341,10 +314,11 @@ const SearchResultsCountContainer = styled.div`
     margin-top: 2rem;
   }
 `;
-const CheckImage = styled.img`
+const Icon = styled(FaCheckSquare)`
   margin: 0 auto;
   width: 6.6rem;
   height: 6.6rem;
+  color: var(--opc-100);
   @media screen and (max-width: 768px) {
     width: 4.4rem;
     height: 4.4rem;
@@ -362,18 +336,19 @@ const ResultListContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  border-top: 1px solid #717171;
   margin: 0 auto;
-  margin-top: 3rem;
+  margin-top: 8rem;
   @media screen and (max-width: 768px) {
     width: 100%;
-    margin-top: 2rem;
-    border-top: none;
+    margin-top: 1rem;
   }
 `;
 
 const ProductsProtecter = styled.div`
   margin-top: 2rem;
+  @media screen and (max-width: 768px) {
+    margin-top: 1rem;
+  }
 `;
 
 const UsedItemResultsContainer = styled.div`
@@ -394,10 +369,8 @@ const CountBar = styled.div`
   width: 100%;
   margin: 0 auto;
   margin-top: 2rem;
-  padding: 0 1.5rem;
   @media screen and (max-width: 768px) {
-    padding: 0 1.5rem;
-    margin-top: '';
+    margin-top: 1rem;
   }
 `;
 const CountPost = styled.div`
@@ -405,7 +378,7 @@ const CountPost = styled.div`
   width: 100%;
   font-size: var(--fontSize-H3);
   align-items: center;
-  gap: 3rem;
+  gap: 1rem;
 
   @media screen and (max-width: 768px) {
     width: 100%;
@@ -417,24 +390,22 @@ const CountPost = styled.div`
 const ProductsCount = styled.h1<{
   showClickedList: boolean;
 }>`
-  width: 10rem;
+  width: 40%;
   cursor: pointer;
   font-weight: ${({ showClickedList }) =>
     !showClickedList ? 'var(--fontWeight-bold)' : 'var(--fontWeight-medium)'};
-  @media screen and (max-width: 768px) {
-    width: 100%;
-  }
+  color: ${({ showClickedList }) =>
+    !showClickedList ? 'var(--opc-100)' : 'var(--black)'};
 `;
 const CommunityCount = styled.h1<{
   showClickedList: boolean;
 }>`
-  width: 10rem;
+  width: 40%;
   cursor: pointer;
   font-weight: ${({ showClickedList }) =>
     showClickedList ? 'var(--fontWeight-bold)' : 'var(--fontWeight-medium)'};
-  @media screen and (max-width: 768px) {
-    width: 100%;
-  }
+  color: ${({ showClickedList }) =>
+    showClickedList ? 'var(--opc-100)' : 'var(--black)'};
 `;
 
 const CountList = styled.h1`
@@ -459,8 +430,6 @@ const LinktoUsedProducts = styled.div`
   background: var(--opc-20);
   border-radius: 4.5rem;
   font-size: var(--fontSize-H6);
-  font-weight: var(--fontWeight-medium);
-  color: var(--11-gray);
   @media screen and (max-width: 768px) {
     background: none;
     width: 6rem;
@@ -536,7 +505,6 @@ const UsedItemsList = styled.ul<{
 const ToProductsPage = styled.div`
   text-decoration: none;
   cursor: pointer;
-  color: var(--11-gray);
 `;
 const ProductList = styled.li`
   width: 20.8rem;
@@ -664,21 +632,20 @@ const CommunityResultsContainer = styled.div<{
   flex-direction: column;
   flex-wrap: wrap;
   margin: 0 auto;
-  margin-top: 8rem;
+  margin-top: 5rem;
   @media screen and (max-width: 768px) {
     width: 93%;
-    margin-bottom: ${({ showClickedList }) => (showClickedList ? 0 : '2rem')};
+    margin-top: ${({ showClickedList }) => (showClickedList ? 0 : '2rem')};
     padding: 0 1rem;
   }
   @media screen and (max-width: 530px) {
     width: 100%;
-    margin-top: 0;
     padding: 0 1rem;
+    margin-top: ${({ showClickedList }) => (showClickedList ? 0 : '2rem')};
   }
   @media screen and (max-width: 349px) {
     width: 100%;
-
-    margin-top: 0;
+    margin-top: ${({ showClickedList }) => (showClickedList ? 0 : '2rem')};
     padding: 0 1rem;
   }
 `;
@@ -691,21 +658,17 @@ const CommunityTitle = styled.div<{
   align-items: center;
   margin: 0 auto;
   margin-bottom: 2.2rem;
-  padding: 0 1.5rem;
   @media screen and (max-width: 768px) {
     display: none;
     margin-bottom: 1rem;
-    padding: '';
   }
   @media screen and (max-width: 530px) {
     display: none;
     margin-bottom: 1rem;
-    padding: '';
   }
   @media screen and (max-width: 349px) {
     display: none;
     margin-bottom: 1rem;
-    padding: '';
   }
 `;
 const LinktoCommunityPosts = styled.div`

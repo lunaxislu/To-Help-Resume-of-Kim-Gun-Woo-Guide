@@ -1,7 +1,6 @@
 import { FaHeart } from 'react-icons/fa';
 import { AiFillAlert } from 'react-icons/ai';
 import styled, { css, keyframes } from 'styled-components';
-import { CustomUser } from './types';
 
 export const StFadeAni = keyframes`
   from{
@@ -142,13 +141,13 @@ const StAlertButton = styled.button`
     gap: 1.2rem;
 
     p {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
     }
   }
 `;
 
 const StAlertIcon = styled(AiFillAlert)`
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   color: #13b3bc;
 `;
 
@@ -158,7 +157,7 @@ const StHeaderTitle = styled.div`
   font-size: var(--fontSize-H2);
 
   @media screen and (max-width: 768px) {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     padding: 0rem 1.5rem;
     margin-block: 0.3rem;
   }
@@ -185,6 +184,7 @@ const StTimeLeft = styled.div`
 
   @media screen and (max-width: 768px) {
     max-width: 30%;
+    font-size: 1.2rem;
   }
 `;
 
@@ -298,7 +298,7 @@ const Button = styled.div<ButtonProps>`
 
   @media screen and (max-width: 768px) {
     h3 {
-      font-size: 1.15rem;
+      font-size: 1.4rem;
     }
 
     max-width: ${(props) => (props.$role === 'like' ? '7.1rem' : '100%')};

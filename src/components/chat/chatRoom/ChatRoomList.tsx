@@ -6,7 +6,6 @@ import { checkDevice } from './CheckDvice';
 import {
   checkProductsStatus,
   findMatchMessage,
-  getSortedRooms,
   handleRealtime,
   unreadCount
 } from './ChatRoomFn';
@@ -40,7 +39,7 @@ const ChatRoomList: React.FC<RoomProps> = ({
   // 메세지를 다 가져오고, 현재 로그인 된 유저가 속한 채팅방의 메세지라면
   // allMessage에 set 하고 밑에서 map을 돌면서
   // 이 div의 id와 같은 채팅방 메세지만 출력
-  const getAllMessage = async () => {
+  const getAllMessage = useCallback(async () => {
     const { data: messages, error } = await supabase
       .from('chat_messages')
       .select('*');
@@ -48,7 +47,7 @@ const ChatRoomList: React.FC<RoomProps> = ({
     if (error) console.log('fetch All Messages Failed');
 
     setAllMessage(messages);
-  };
+  }, []);
 
   const getProductsforRoom = async () => {
     const { data: product, error } = await supabase
@@ -94,10 +93,9 @@ const ChatRoomList: React.FC<RoomProps> = ({
     }
   }, [rooms, clicked]);
 
-  const sortedRooms = getSortedRooms(rooms);
   return (
     <St.StChatListItem>
-      {sortedRooms?.map((room, i) => {
+      {rooms?.map((room, i) => {
         return (
           <St.StListRoom
             id={room.id}

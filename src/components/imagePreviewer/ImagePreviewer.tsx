@@ -1,6 +1,4 @@
 import React from 'react';
-import styled, { css, keyframes } from 'styled-components';
-import { IoClose } from 'react-icons/io5';
 import { ImagePreviewerType } from './ImagePreviewerTypes';
 import {
   StCloseBtn,
@@ -32,13 +30,15 @@ const ImagePreviewer = ({
         <StPreviewContainer>
           {imageState.map((url, i) => {
             return (
-              <StPreviewItems $url={url} key={`${url}-${i}`}>
-                <StdeleteImage>
-                  <div id={url} onClick={handleRemoveImage}>
-                    <StCloseBtn />
-                  </div>
-                </StdeleteImage>
-              </StPreviewItems>
+              <>
+                <StPreviewItems $url={url} key={`${url}-${i}`}>
+                  <StdeleteImage>
+                    <div id={url} onClick={handleRemoveImage}>
+                      <StCloseBtn />
+                    </div>
+                  </StdeleteImage>
+                </StPreviewItems>
+              </>
             );
           })}
         </StPreviewContainer>

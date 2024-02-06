@@ -96,8 +96,6 @@ export const Container = styled.div`
   align-items: center;
   color: var(--12-gray);
   animation: ${StFadeAni} 0.3s ease;
-  /* margin-bottom: 5rem; */
-  margin-top: 2rem;
   & strong {
     font-weight: bold;
   }
@@ -117,15 +115,18 @@ export const FeatureArea = styled.div`
   }
 `;
 export const ContentsContainer = styled.div`
-  width: 90%;
+  width: 77.5%;
   max-width: 111.6rem;
   min-height: 60rem;
   display: flex;
   flex-direction: column;
 `;
 export const WriteWrap = styled.div`
-  width: 90%;
-  max-width: 100.6rem;
+  width: 77.5%;
+  max-width: 111.6rem;
+  @media screen and (max-width: 768px) {
+    width: 93%;
+  }
 `;
 export const BtnStyle = styled.button`
   border: none;
@@ -274,13 +275,14 @@ export const NoticeLike = styled.p`
   font-weight: var(--fontWeight-medium);
   color: var(--10-gray);
   background-color: var(--opc-10);
-  width: 24.6rem;
+  width: 28rem;
   height: 3.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8rem;
   margin-bottom: 1rem;
+  white-space: nowrap;
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H6);
   }
@@ -330,7 +332,7 @@ export const EditDropdown = styled.div`
   @media screen and (max-width: 768px) {
     display: block;
     position: absolute;
-    background-color: var(--5-gray);
+    background-color: var(--drop);
     border: 1px solid var(--opc-100);
     z-index: 1000;
     border-radius: 1rem;
@@ -345,7 +347,12 @@ export const DropdownItem = styled.div`
     display: block;
     padding: 12px 12px;
     font-size: var(--fontSize-H6);
+    border-radius: 1rem;
+
     cursor: pointer;
+    &:hover {
+      background-color: var(--opc-100);
+    }
   }
 `;
 // export const BackIcon = styled(GoChevronLeft)`

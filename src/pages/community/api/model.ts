@@ -147,8 +147,8 @@ export type ReplyObject = {
 export type UpdateComment = {
   updateData: {
     content: string;
-    anon: boolean;
-    secret: boolean;
+    // anon: boolean;
+    // secret: boolean;
   };
   commentId: number | undefined;
 };
