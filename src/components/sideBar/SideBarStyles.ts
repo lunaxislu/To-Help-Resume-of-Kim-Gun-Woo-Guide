@@ -42,23 +42,12 @@ const StMainButton = styled.button`
 const SlideDown = keyframes`
   from {
     opacity: 0;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -200%);
   }
 
   to {
     opacity: 1;
-    transform: translate(-50%,-200%);
-  }
-`;
-
-const SlideUp = keyframes`
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
-
+    transform: translate(-50%,-50%);
   }
 `;
 
@@ -84,7 +73,7 @@ const StMenuButtons = styled.button<ButtonProps>`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: -1;
-  animation-name: ${(props) => (props.$isShow ? SlideDown : SlideUp)};
+  animation-name: ${SlideDown};
   animation-duration: 0.15s;
   animation-fill-mode: backwards;
   animation-delay: ${(props) => 0.06 * props.$index}s;

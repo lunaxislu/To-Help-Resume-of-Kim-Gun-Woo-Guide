@@ -1,108 +1,43 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import * as St from '../../styles/headerStyle/HeaderStyle';
-import {
-  StMainButton,
-  StMenuButtons,
-  StSearchBarContainer,
-  StSideBtnContainer
-} from './SideBarStyles';
-import SearchBar from '../layout/header/SearchBar';
+import {} from './SideBarStyles';
 import { SideBarProps } from './SideBarTypes';
-import { supabase } from '../../api/supabase/supabaseClient';
+import {
+  deleteAllNotification,
+  filterPrevNoti,
+  getUserName,
+  setMenuToggle
+} from './SideBarFn';
+import NotiRender from './noti/NotiRender';
+import SideBarRender from './sideBarRender/SideBarRender';
 
 const SideBar = ({
   notification,
-  newNotiExists,
   setNewNotiExists,
-  setNotification
+  setNotification,
+  newNotiExists
 }: SideBarProps) => {
-  const isLogined = localStorage.getItem('userId');
-
   const [showNoti, setShowNoti] = useState<boolean>(false);
   const [sender, setSender] = useState<any[]>([]);
 
   const [isShow, setIsShow] = useState<boolean>(false);
   const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
-  const [isSearchBarVisible, setIsSearchBarVisible] = useState<boolean>(false);
-
-  const arr = [
-    '검색',
-    '중고거래',
-    '커뮤니티',
-    '판매하기',
-    '소통하기',
-    '채팅',
-    '알림',
-    '프로필'
-  ];
-  const NoLogined = ['검색', '중고거래', '커뮤니티', '로그인'];
 
   const navi = useNavigate();
 
-  const showNotiToggle = () => {
-    setShowNoti((prev) => !prev);
-    setNewNotiExists(false);
-  };
-
-  const deleteAllNotification = () => {
-    setNotification([]);
-    localStorage.removeItem('notifications');
-  };
-  const filterPrevNoti = (noti_id: string) => {
-    const filtered = notification.filter((noti) => {
-      return noti.id !== noti_id;
-    });
-    setNotification(filtered);
-    setNewNotiExists(false);
-  };
-
   const clickNoti = (e: MouseEvent<HTMLDivElement>) => {
     const clickedItem = e.currentTarget.id;
-    filterPrevNoti(clickedItem);
+    filterPrevNoti({
+      noti_id: clickedItem,
+      notification,
+      setNewNotiExists,
+      setNotification
+    });
     setShowNoti(false);
     setNewNotiExists(false);
-    setMenuToggle();
+    setMenuToggle({ setIsShow, setShowNoti });
     navi('/chat');
-  };
-
-  const getUserName = async (senderId: string) => {
-    const { data: senderInfo, error: fetchFailUser } = await supabase
-      .from('user')
-      .select('*')
-      .eq('uid', senderId);
-
-    if (fetchFailUser) console.log('발신자 정보를 찾을 수 없음');
-    if (senderInfo) return senderInfo;
-  };
-
-  const toggleSearchBar = () => {
-    setIsSearchBarVisible((prev) => !prev);
-  };
-
-  const setMenuToggle = () => {
-    setIsShow((prev) => !prev);
-    setShowNoti(false);
-  };
-
-  const handleNavigate = (e: MouseEvent<HTMLButtonElement>) => {
-    const { id } = e.currentTarget;
-    id === '판매하기' && navi('/productsposts');
-    id === '중고거래' && navi('/products');
-    id === '커뮤니티' && navi('/community');
-    id === '채팅' && navi('/chat');
-    id === '프로필' && navi('/mypage');
-    id === '로그인' && navi('/login');
-    id === '소통하기' && navi('/community_write');
-    if (id === '알림') {
-      showNotiToggle();
-      return;
-    }
-    if (id === '검색') {
-      toggleSearchBar();
-      return;
-    }
-    setIsShow(false);
   };
 
   useEffect(() => {
@@ -124,133 +59,24 @@ const SideBar = ({
 
   return (
     <>
-      <StSideBtnContainer>
-        {notification.length > 0 && showNoti && (
-          <>
-            <St.StNotiContainer>
-              {notification?.map((noti, i) => {
-                return (
-                  <St.StNotiItem
-                    id={noti.id}
-                    onClick={(e) => {
-                      clickNoti(e);
-                      e.stopPropagation();
-                    }}
-                    key={noti.id}
-                  >
-                    {sender[i] &&
-                      `${
-                        sender[i][0]?.nickname
-                          ? sender[i][0]?.nickname
-                          : sender[i][0]?.username
-                      }님의 메세지가 왔습니다`}
-                  </St.StNotiItem>
-                );
-              })}
-              <St.StNoticeButtonContainer>
-                <St.StNoticeDeleteBtn onClick={deleteAllNotification}>
-                  알림 지우기
-                </St.StNoticeDeleteBtn>
-              </St.StNoticeButtonContainer>
-            </St.StNotiContainer>
-          </>
-        )}
-        {notification.length === 0 && showNoti && (
-          <St.StNotiContainer>
-            <St.StNotiItem
-              onClick={(e) => {
-                setShowNoti(false);
-                setIsShow(false);
-                e.stopPropagation();
-              }}
-            >
-              알림이 없습니다
-            </St.StNotiItem>
-            <St.StNoticeButtonContainer>
-              <St.StNoticeDeleteBtn onClick={deleteAllNotification}>
-                알림 지우기
-              </St.StNoticeDeleteBtn>
-            </St.StNoticeButtonContainer>
-          </St.StNotiContainer>
-        )}
-        {isShow && isSearchBarVisible && (
-          <StSearchBarContainer $status={isLogined}>
-            <SearchBar
-              showSearchComp={isSearchBarVisible}
-              setShowSearchComp={setIsSearchBarVisible}
-            />
-          </StSearchBarContainer>
-        )}
-        <StMainButton
-          onClick={() => {
-            setMenuToggle();
-            setShowSearchComp(false);
-            if (isShow && isSearchBarVisible) {
-              toggleSearchBar();
-            }
-          }}
-        >
-          {newNotiExists && <St.StNotiDot></St.StNotiDot>}
-          Menu
-        </StMainButton>
-        {isLogined &&
-          arr.map((menu, i) => {
-            if (isShow && menu === '알림') {
-              return (
-                <div key={i}>
-                  <StMenuButtons
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleNavigate(e);
-                    }}
-                    id={menu}
-                    $isShow
-                    $index={i + 1}
-                    key={i}
-                  >
-                    {newNotiExists && <St.StNotiDot></St.StNotiDot>}
-                    {menu}
-                  </StMenuButtons>
-                </div>
-              );
-            }
-            return (
-              isShow && (
-                <StMenuButtons
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleNavigate(e);
-                  }}
-                  id={menu}
-                  $isShow
-                  $index={i + 1}
-                  key={i}
-                >
-                  {menu}
-                </StMenuButtons>
-              )
-            );
-          })}
-        {!isLogined &&
-          NoLogined.map((menu, i) => {
-            return (
-              isShow && (
-                <StMenuButtons
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleNavigate(e);
-                  }}
-                  id={menu}
-                  $isShow
-                  $index={i + 1}
-                  key={i}
-                >
-                  {menu}
-                </StMenuButtons>
-              )
-            );
-          })}
-      </StSideBtnContainer>
+      <SideBarRender
+        isShow={isShow}
+        newNotiExists={newNotiExists}
+        setIsShow={setIsShow}
+        setNewNotiExists={setNewNotiExists}
+        setShowNoti={setShowNoti}
+        setShowSearchComp={setShowSearchComp}
+      />
+      <NotiRender
+        clickNoti={clickNoti}
+        deleteAllNotification={deleteAllNotification}
+        notification={notification}
+        sender={sender}
+        setIsShow={setIsShow}
+        setNotification={setNotification}
+        setShowNoti={setShowNoti}
+        showNoti={showNoti}
+      />
     </>
   );
 };
