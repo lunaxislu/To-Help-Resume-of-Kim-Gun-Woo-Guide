@@ -5,7 +5,7 @@ const StProductRow = styled.div`
   display: flex;
   align-items: center;
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 `;
 
@@ -24,7 +24,8 @@ const StRowLabel = styled.div`
 
   @media screen and (max-width: 768px) {
     font-size: 1rem;
-    width: 120px;
+    white-space: nowrap;
+    width: 140px;
   }
 `;
 

@@ -142,14 +142,14 @@ const StCloseViewerBtn = styled.button`
 
 const StRowValue = styled.div`
   width: 100%;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   text-align: left;
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   @media screen and (max-width: 768px) {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 `;
 
@@ -192,7 +192,7 @@ const StQualityInfoBox = styled.div`
   padding: 2rem;
   animation: ${StFadeAni} 0.2s forwards;
   text-align: left;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 500;
 
   p {
@@ -209,7 +209,7 @@ const StQualityInfoBox = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    font-size: 0.9rem;
+    font-size: 1.4rem;
     left: -300px;
 
     p {
@@ -236,7 +236,7 @@ const StMapButton = styled.button.attrs({
   cursor: pointer;
 
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 1.2rem;
   }
 `;
 
@@ -251,7 +251,7 @@ const StShippingCostInfoBox = styled.div`
   background-color: var(--opc-100);
   color: white;
   border-radius: 2px;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 500;
 `;
 
