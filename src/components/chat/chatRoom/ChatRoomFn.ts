@@ -71,20 +71,6 @@ export const handleRealtime = (
     .subscribe();
 };
 
-export const getSortedRooms = (rooms: RoomType[] | null | undefined) => {
-  return rooms
-    ?.sort((a, b) => {
-      return (
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
-    })
-    .sort((a, b) => {
-      return (
-        new Date(b.last_updated).getTime() - new Date(a.last_updated).getTime()
-      );
-    });
-};
-
 // product(게시물)의 id가 chatRoom의 about의 값이 되기 때문에
 // 채팅과 연결 된 게시물의 가져오려면 각 room의 about값과 같은 product를 찾아서 => isSell이나, 존재 여부에 따라 조건부 렌더
 export const checkProductsStatus = (room_id: string, products: Product[]) => {

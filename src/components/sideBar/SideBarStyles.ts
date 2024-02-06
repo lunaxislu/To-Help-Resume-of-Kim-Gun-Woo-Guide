@@ -11,8 +11,8 @@ const StSideBtnContainer = styled.div`
   gap: 1rem;
   font-family: 'BM-JUA';
   position: fixed;
-  bottom: 10%;
-  right: 3%;
+  top: 18.5%;
+  left: 4.8%;
   transform: translate(0%, -50%);
   z-index: 100;
   @media screen and (max-width: 768px) {
@@ -42,12 +42,12 @@ const StMainButton = styled.button`
 const SlideDown = keyframes`
   from {
     opacity: 0;
-    transform: translate(-50%, -200%);
+    transform: translate(-50%, -50%);
   }
 
   to {
     opacity: 1;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%,-200%);
   }
 `;
 
@@ -80,7 +80,7 @@ const StMenuButtons = styled.button<ButtonProps>`
   font-weight: 600;
   position: absolute;
   margin-top: 3.6rem;
-  bottom: ${(props) => props.$index * 90}%;
+  top: ${(props) => props.$index * 90}%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: -1;
@@ -108,15 +108,15 @@ const StSearchBarContainer = styled.div<SearchBarProps>`
   ${(props) => {
     if (props.$status === null) {
       return css`
-        bottom: 135%;
+        bottom: -66%;
       `;
     } else {
       return css`
-        top: -720%;
+        top: 110%;
       `;
     }
   }}
-  right: 10rem;
+  left: 9rem;
 `;
 
 export {

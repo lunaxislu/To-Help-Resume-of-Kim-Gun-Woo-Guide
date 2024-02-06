@@ -10,12 +10,6 @@ import {
 import SearchBar from '../layout/header/SearchBar';
 import { SideBarProps } from './SideBarTypes';
 import { supabase } from '../../api/supabase/supabaseClient';
-import { IoPeopleSharp, IoPersonSharp } from 'react-icons/io5';
-import { BiEdit, BiWon } from 'react-icons/bi';
-import { BsChatDotsFill } from 'react-icons/bs';
-import { FaBell } from 'react-icons/fa';
-import { LuPalette } from 'react-icons/lu';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
 
 const SideBar = ({
   notification,
@@ -27,6 +21,24 @@ const SideBar = ({
 
   const [showNoti, setShowNoti] = useState<boolean>(false);
   const [sender, setSender] = useState<any[]>([]);
+
+  const [isShow, setIsShow] = useState<boolean>(false);
+  const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
+  const [isSearchBarVisible, setIsSearchBarVisible] = useState<boolean>(false);
+
+  const arr = [
+    '검색',
+    '중고거래',
+    '커뮤니티',
+    '판매하기',
+    '소통하기',
+    '채팅',
+    '알림',
+    '프로필'
+  ];
+  const NoLogined = ['검색', '중고거래', '커뮤니티', '로그인'];
+
+  const navi = useNavigate();
 
   const showNotiToggle = () => {
     setShowNoti((prev) => !prev);
@@ -50,27 +62,19 @@ const SideBar = ({
     filterPrevNoti(clickedItem);
     setShowNoti(false);
     setNewNotiExists(false);
+    setMenuToggle();
     navi('/chat');
   };
 
-  const [isShow, setIsShow] = useState<boolean>(false);
-  const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
+  const getUserName = async (senderId: string) => {
+    const { data: senderInfo, error: fetchFailUser } = await supabase
+      .from('user')
+      .select('*')
+      .eq('uid', senderId);
 
-  const arr = [
-    { default: <FaMagnifyingGlass />, hover: '검색' },
-    { default: <LuPalette />, hover: '중고거래' },
-    { default: <IoPeopleSharp />, hover: '커뮤니티' },
-    { default: <BiWon />, hover: '판매하기' },
-    { default: <BiEdit />, hover: '소통하기' },
-    { default: <BsChatDotsFill />, hover: '채팅' },
-    { default: <FaBell />, hover: '알림' },
-    { default: <IoPersonSharp />, hover: '프로필' }
-  ];
-  const NoLogined = ['검색', '중고거래', '커뮤니티', '로그인'];
-
-  const [isSearchBarVisible, setIsSearchBarVisible] = useState<boolean>(false);
-
-  const navi = useNavigate();
+    if (fetchFailUser) console.log('발신자 정보를 찾을 수 없음');
+    if (senderInfo) return senderInfo;
+  };
 
   const toggleSearchBar = () => {
     setIsSearchBarVisible((prev) => !prev);
@@ -107,16 +111,6 @@ const SideBar = ({
     };
   }, []);
 
-  const getUserName = async (senderId: string) => {
-    const { data: senderInfo, error: fetchFailUser } = await supabase
-      .from('user')
-      .select('*')
-      .eq('uid', senderId);
-
-    if (fetchFailUser) console.log('발신자 정보를 찾을 수 없음');
-    if (senderInfo) return senderInfo;
-  };
-
   useEffect(() => {
     // 각 채팅방 목록이 업데이트될 때마다 안 읽은 메세지 수를 가져오고 상태에 저장
     if (notification) {
@@ -134,9 +128,16 @@ const SideBar = ({
         {notification.length > 0 && showNoti && (
           <>
             <St.StNotiContainer>
-              {notification?.reverse().map((noti, i) => {
+              {notification?.map((noti, i) => {
                 return (
-                  <St.StNotiItem id={noti.id} onClick={clickNoti} key={noti.id}>
+                  <St.StNotiItem
+                    id={noti.id}
+                    onClick={(e) => {
+                      clickNoti(e);
+                      e.stopPropagation();
+                    }}
+                    key={noti.id}
+                  >
                     {sender[i] &&
                       `${
                         sender[i][0]?.nickname
@@ -156,7 +157,13 @@ const SideBar = ({
         )}
         {notification.length === 0 && showNoti && (
           <St.StNotiContainer>
-            <St.StNotiItem onClick={() => setShowNoti(false)}>
+            <St.StNotiItem
+              onClick={(e) => {
+                setShowNoti(false);
+                setIsShow(false);
+                e.stopPropagation();
+              }}
+            >
               알림이 없습니다
             </St.StNotiItem>
             <St.StNoticeButtonContainer>
@@ -187,27 +194,24 @@ const SideBar = ({
           Menu
         </StMainButton>
         {isLogined &&
-          arr.reverse().map((menu, i) => {
-            if (isShow && menu.hover === '알림') {
+          arr.map((menu, i) => {
+            if (isShow && menu === '알림') {
               return (
-                <>
+                <div key={i}>
                   <StMenuButtons
                     onClick={(e) => {
                       e.stopPropagation();
                       handleNavigate(e);
                     }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.innerHTML = menu.hover;
-                    }}
-                    id={menu.hover}
+                    id={menu}
                     $isShow
                     $index={i + 1}
                     key={i}
                   >
                     {newNotiExists && <St.StNotiDot></St.StNotiDot>}
-                    {menu.default}
+                    {menu}
                   </StMenuButtons>
-                </>
+                </div>
               );
             }
             return (
@@ -217,15 +221,12 @@ const SideBar = ({
                     e.stopPropagation();
                     handleNavigate(e);
                   }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.innerHTML = menu.hover;
-                  }}
-                  id={menu.hover}
+                  id={menu}
                   $isShow
                   $index={i + 1}
                   key={i}
                 >
-                  {menu.default}
+                  {menu}
                 </StMenuButtons>
               )
             );
@@ -239,6 +240,7 @@ const SideBar = ({
                     e.stopPropagation();
                     handleNavigate(e);
                   }}
+                  id={menu}
                   $isShow
                   $index={i + 1}
                   key={i}

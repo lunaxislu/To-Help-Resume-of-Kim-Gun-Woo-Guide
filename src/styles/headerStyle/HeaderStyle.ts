@@ -407,16 +407,16 @@ export const StNotiContainer = styled.div`
   flex-direction: column;
   position: absolute;
   padding-top: 2rem;
-  top: -200%;
-  right: 150%;
+  top: 635%;
+  left: 135%;
   z-index: 3;
   transition: all 0.3s ease;
   animation: ${NotiAni} 0.3s ease;
 
   @media screen and (max-width: 768px) {
     position: fixed;
-    top: 6%;
-    right: 18%;
+    top: 7.7%;
+    left: 20%;
     width: 250px;
     z-index: 15;
   }

@@ -174,7 +174,7 @@ const Header = ({
       {notification.length > 0 && showNoti && (
         <>
           <St.StNotiContainer>
-            {notification?.reverse().map((noti, i) => {
+            {notification?.map((noti, i) => {
               return (
                 <St.StNotiItem id={noti.id} onClick={clickNoti} key={noti.id}>
                   {sender[i] &&

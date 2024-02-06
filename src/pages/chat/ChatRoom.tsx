@@ -41,7 +41,8 @@ export default function ChatRoom() {
   const getChatRooms = async () => {
     const { data: allRooms, error: AllRoomFetchError } = await supabase
       .from('chat_room')
-      .select('*');
+      .select('*')
+      .order('last_updated', { ascending: false });
 
     if (allRooms) {
       const myRoom = allRooms.filter((room: RoomType) => {
@@ -138,6 +139,7 @@ export default function ChatRoom() {
       const scrollContainer = scrollRef.current;
       scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
+    getChatRooms();
   }, [messages]);
 
   useEffect(() => {
@@ -220,6 +222,7 @@ export default function ChatRoom() {
           </St.StChatGround>
           {clicked && (
             <ChatForm
+              getChatRooms={getChatRooms}
               clicked={clicked}
               curUser={curUser}
               setShowFileInput={setShowFileInput}
