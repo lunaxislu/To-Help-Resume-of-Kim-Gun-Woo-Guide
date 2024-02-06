@@ -35,7 +35,7 @@ export class UtilForChat {
   ) => {
     let { data: chat_messages, error } = await supabase
       .from('chat_messages')
-      .select()
+      .select(`*`)
       .eq('chat_room_id', clicked);
 
     if (chat_messages) {

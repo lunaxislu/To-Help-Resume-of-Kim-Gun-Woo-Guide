@@ -15,6 +15,7 @@ import ProductsCard from '../../components/prducts/ProductsCard';
 import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
 import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
 import { Post } from '../community/api/model';
+import { divide } from 'lodash';
 type UsedItemsCountData = {
   count: number | null;
   data: {
@@ -24,13 +25,6 @@ type UsedItemsCountData = {
 const Home = () => {
   const navigate = useNavigate();
 
-  const carouselImages: string[] = [
-    process.env.PUBLIC_URL + '/assets/bannerMain.jpg',
-    process.env.PUBLIC_URL + '/assets/carousel0.png',
-    process.env.PUBLIC_URL + '/assets/carousel1.png',
-    process.env.PUBLIC_URL + '/assets/carousel2.png',
-    process.env.PUBLIC_URL + '/assets/carousel3.png'
-  ];
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 (중감자동무)//
   const getUserId = async () => {
@@ -62,9 +56,6 @@ const Home = () => {
     isLoading,
     isError
   } = useQuery('data', fetchData);
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   if (isError) {
     return <div>데이터 불러오기를 실패했습니다.</div>;
@@ -100,25 +91,74 @@ const Home = () => {
   };
   const sortedCommunityResults: Post[] = CommunitySortByLikes(communityItems);
 
+  const bannerImgs = [
+    {
+      webp1: '/assets/banner1.webp',
+      jpg1: '/assets/banner1.jpeg'
+    },
+    {
+      webp2: '/assets/banner2.webp',
+      jpg2: '/assets/banner2.jpeg'
+    },
+    {
+      webp3: '/assets/banner3.webp',
+      jpg3: '/assets/banner3.jpeg'
+    },
+    {
+      webp4: '/assets/banner4.webp',
+      jpg4: '/assets/banner4.jpeg'
+    },
+    {
+      webp5: '/assets/banner5.webp',
+      jpg5: '/assets/banner5.jpeg'
+    }
+  ];
+
   return (
     <HomeContainer>
       <BannerContainer>
-        <MainBannerpic src="/assets/mainbannerpicture.png" alt="메인배너사진" />
-
-        <ButtonContainer>
-          <BannerWrapper>
-            <ProductsBannerImage src="/assets/중고거래.svg" alt="중고거래" />
-            <ScrollButton href="#product">
-              <ButtonImage src="/assets/중고거래버튼.svg" alt="중고거래버튼" />
-            </ScrollButton>
-          </BannerWrapper>
-          <BannerWrapper>
-            <CommunityBannerImage src="/assets/커뮤니티.svg" alt="커뮤니티" />
-            <ScrollButton href="#community">
-              <ButtonImage src="/assets/커뮤버튼.svg" alt="커뮤니티버튼" />
-            </ScrollButton>
-          </BannerWrapper>
-        </ButtonContainer>
+        {isLoading ? (
+          <IsLoadingStyle>Loading...</IsLoadingStyle>
+        ) : (
+          <>
+            <MainBannerpic>
+              <source srcSet={bannerImgs[0].webp1} type="image/webp" />
+              <img src="/assets/banner1.jpg" alt="메인배너사진" />
+            </MainBannerpic>
+            <ButtonContainer>
+              <BannerWrapper>
+                <ProductsBannerImage>
+                  <source srcSet={bannerImgs[1].webp2} type="image/webp" />
+                  <img src="/assets/banner2.webp" alt="중고거래" />
+                </ProductsBannerImage>
+                <ScrollButton href="#product">
+                  <picture>
+                    <source srcSet={bannerImgs[2].webp3} type="image/webp" />
+                    <ButtonImage
+                      src="/assets/banner3.webp"
+                      alt="중고거래버튼"
+                    />
+                  </picture>
+                </ScrollButton>
+              </BannerWrapper>
+              <BannerWrapper>
+                <CommunityBannerImage>
+                  <source srcSet={bannerImgs[3].webp4} type="image/webp" />
+                  <img src="/assets/banner4.webp" alt="커뮤니티" />
+                </CommunityBannerImage>
+                <ScrollButton href="#community">
+                  <picture>
+                    <source srcSet={bannerImgs[4].webp5} type="image/webp" />
+                    <ButtonImage
+                      src="/assets/banner5.webp"
+                      alt="커뮤니티버튼"
+                    />
+                  </picture>
+                </ScrollButton>
+              </BannerWrapper>
+            </ButtonContainer>
+          </>
+        )}
       </BannerContainer>
 
       <AllCardContainer>
@@ -173,19 +213,44 @@ const HomeContainer = styled.section`
     //min-width: 32rem;
   }
 `;
+
+const IsLoadingStyle = styled.div`
+  height: 60rem;
+  text-align: center;
+  line-height: 20;
+  font-size: var(--fontSize-H1);
+  font-weight: var(--fontWeight-bold);
+  @media screen and (max-width: 1116px) {
+    height: 55rem;
+  }
+  @media screen and (max-width: 768px) {
+    height: 47rem;
+    font-size: var(--fontSize-H3);
+    line-height: 20;
+  }
+`;
+
 // 배너
 const BannerContainer = styled.div`
   position: relative;
   width: 100%;
+  @media screen and (max-width: 1116px) {
+    height: 55rem;
+  }
+
   @media screen and (max-width: 768px) {
-    height: 40rem;
+    height: 47rem;
   }
 `;
-const MainBannerpic = styled.img`
+const MainBannerpic = styled.picture`
   width: 100%;
   max-height: 63rem;
   @media screen and (max-width: 768px) {
     height: 40rem;
+  }
+  img {
+    width: 100%;
+    height: 100%;
   }
 `;
 const ButtonContainer = styled.div`
@@ -218,8 +283,8 @@ const BannerWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
-    width: 93%;
-    height: 55%;
+    width: 82%;
+    height: 50%;
   }
   @media screen and (max-width: 1000px) {
     flex-direction: column;
@@ -240,9 +305,10 @@ const BannerWrapper = styled.div`
     width: 120%;
   }
 `;
-const ProductsBannerImage = styled.img`
+const ProductsBannerImage = styled.picture`
   width: 45%;
   height: 100%;
+
   @media screen and (max-width: 768px) {
     width: 50%;
   }
@@ -255,8 +321,12 @@ const ProductsBannerImage = styled.img`
   @media screen and (max-width: 430px) {
     width: 60%;
   }
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `;
-const CommunityBannerImage = styled.img`
+const CommunityBannerImage = styled.picture`
   width: 53%;
   height: 100%;
   @media screen and (max-width: 768px) {
@@ -271,6 +341,10 @@ const CommunityBannerImage = styled.img`
   @media screen and (max-width: 430px) {
     width: 70%;
   }
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `;
 const ButtonImage = styled.img`
   width: 90%;
@@ -280,7 +354,7 @@ const ButtonImage = styled.img`
     width: 80%;
   }
   @media screen and (max-width: 800px) {
-    width: 50%;
+    width: 60%;
   }
   @media screen and (max-width: 650px) {
     //width: 40%;
