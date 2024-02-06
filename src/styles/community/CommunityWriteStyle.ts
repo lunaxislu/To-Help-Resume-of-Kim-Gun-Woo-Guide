@@ -352,7 +352,6 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 5rem;
-  /* color: #f3f3f3; */
   animation: ${StFadeAni} 0.3s ease;
 `;
 export const ContentContainer = styled.div`
@@ -360,12 +359,14 @@ export const ContentContainer = styled.div`
   flex-direction: column;
   gap: 20px;
   max-width: 1066px;
-  width: 90%;
+  width: 77.5%;
+  @media screen and (max-width: 768px) {
+    width: 93%;
+  }
 `;
 
 export const Topper = styled.div`
   display: flex;
-  margin-top: 50px;
   align-items: center;
   padding-bottom: 0.8rem;
   border-bottom: 1px solid var(--4-gray);
@@ -379,8 +380,6 @@ export const Topper = styled.div`
     font-size: var(--fontSize-H1);
   }
   @media screen and (max-width: 768px) {
-    margin-top: 0;
-
     & h1 {
       font-size: var(--fontSize-H5);
       margin-right: 1rem;

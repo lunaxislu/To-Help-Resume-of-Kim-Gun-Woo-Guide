@@ -11,7 +11,7 @@ type ReplyContentProps = {
   updateCommentDetail: (commentId: number) => void;
   deleteComment: (commentId: number) => void;
   editComment: string;
-  setEditComment: React.Dispatch<React.SetStateAction<string>>;
+  setEditComment: (comment: string) => void;
 };
 const ReplyContent: React.FC<ReplyContentProps> = ({
   setEditComment,

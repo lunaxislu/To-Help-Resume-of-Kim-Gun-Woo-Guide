@@ -46,7 +46,7 @@ export const fetchComments = async (paramId: string | undefined) => {
   return commentUserInfo; // try 블록 외부에서 선언된 변수 반환
 };
 
-export const addCommentMutation = async (insertData: ReplyInsertObject) => {
+export const addReply = async (insertData: ReplyInsertObject) => {
   try {
     const { data, error } = await supabase
       .from('comments')
@@ -57,7 +57,7 @@ export const addCommentMutation = async (insertData: ReplyInsertObject) => {
   }
 };
 
-export const updateCommentMutation = async (updateComment: UpdateComment) => {
+export const updateReply = async (updateComment: UpdateComment) => {
   try {
     const { data, error } = await supabase
       .from('comments')
@@ -73,7 +73,7 @@ export const updateCommentMutation = async (updateComment: UpdateComment) => {
   }
 };
 
-export const deleteCommentMutation = async (commentId: number | undefined) => {
+export const deleteReply = async (commentId: number | undefined) => {
   const { data, error } = await supabase
     .from('comments')
     .delete()
