@@ -23,10 +23,10 @@ type UsedItemsCountData = {
   } | null;
 };
 
-const ProductsCard = lazy(
+const ProductsCard = React.lazy(
   () => import('../../components/prducts/ProductsCard')
 );
-const CommunityList = lazy(
+const CommunityList = React.lazy(
   () => import('../../components/community/CommunityList')
 );
 

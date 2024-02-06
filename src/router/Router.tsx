@@ -15,25 +15,29 @@ import { GlobalStyles } from '../styles/GlobalStyle';
 import Layout from '../layouts/Layout';
 // import ProductsPostsEdit from '../pages/products/ProductsPostsEdit';
 // import PostersProducts from '../pages/postersProducts/PostersProducts';
-import { Suspense, lazy } from 'react';
+import React, { Suspense, lazy } from 'react';
 
-const ProductDetail = lazy(
+const ProductDetail = React.lazy(
   () => import('../pages/productsDetail/ProductDetail')
 );
-const ProductsList = lazy(() => import('../pages/products/ProductsList'));
-const WritePost = lazy(() => import('../pages/community/WritePost'));
-const ProductsPosts = lazy(() => import('../pages/products/ProductsPosts'));
-const ProductsPostsEdit = lazy(
+const ProductsList = React.lazy(() => import('../pages/products/ProductsList'));
+const WritePost = React.lazy(() => import('../pages/community/WritePost'));
+const ProductsPosts = React.lazy(
+  () => import('../pages/products/ProductsPosts')
+);
+const ProductsPostsEdit = React.lazy(
   () => import('../pages/products/ProductsPostsEdit')
 );
-const CommunityMain = lazy(() => import('../pages/community/CommunityMain'));
-const CommuDetail = lazy(() => import('../pages/community/CommuDetail'));
-const ChatRoom = lazy(() => import('../pages/chat/ChatRoom'));
-const PostersProducts = lazy(
+const CommunityMain = React.lazy(
+  () => import('../pages/community/CommunityMain')
+);
+const CommuDetail = React.lazy(() => import('../pages/community/CommuDetail'));
+const ChatRoom = React.lazy(() => import('../pages/chat/ChatRoom'));
+const PostersProducts = React.lazy(
   () => import('../pages/postersProducts/PostersProducts')
 );
-const MyPage = lazy(() => import('../pages/mypage/MyPage'));
-const PrivateLayout = lazy(
+const MyPage = React.lazy(() => import('../pages/mypage/MyPage'));
+const PrivateLayout = React.lazy(
   () => import('../layouts/PrivateLayout/PrivateLayout')
 );
 
