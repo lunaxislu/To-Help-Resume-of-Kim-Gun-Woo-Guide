@@ -65,7 +65,7 @@ const SearchInputBar = styled.input`
   }
 
   @media screen and (max-width: 900px) {
-    width: 30rem;
+    width: 40rem;
   }
   @media screen and (max-width: 768px) {
     position: relative;
@@ -77,12 +77,12 @@ const SearchInputBar = styled.input`
     border-radius: 0;
     padding-left: 0.5rem;
   }
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 460px) {
     position: relative;
     margin-left: 1rem;
     left: 40%;
     transform: translateX(-50%);
-    width: 85%;
+    width: 90%;
     /* background-color: var(--2-gray); */
     border: none;
     border-radius: 0;
@@ -138,9 +138,9 @@ const SearchBtn = styled.button`
   }
 `;
 
-const SearchBtnImg = styled.img`
-  width: 3.7rem;
-  height: 3.7rem;
+const SearchIcon = styled(FaMagnifyingGlass)`
+  width: 2.3rem;
+  height: 2.3rem;
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -152,5 +152,5 @@ export {
   ClearInputButton,
   StMagnifyGlass,
   SearchBtn,
-  SearchBtnImg
+  SearchIcon
 };
