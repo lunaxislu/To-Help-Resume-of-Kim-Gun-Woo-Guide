@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
+import * as St from '../../styles/mainStyle/MainStyle';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
 import { fetchData } from '../../components/main/DataFetch';
-import { Link, useNavigate } from 'react-router-dom';
-import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
-import parseDate from '../../util/getDate';
+import { useNavigate } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa6';
-import { StFadeAni } from '../../pages/productsDetail/style';
-import * as St from '../../styles/products/productsList/StProductsList';
 import CommunityList from '../../components/community/CommunityList';
-import { Posts } from '../../styles/community/CommunityListStyle';
 import ProductsCard from '../../components/prducts/ProductsCard';
 import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
 import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
 import { Post } from '../community/api/model';
-import { divide } from 'lodash';
 type UsedItemsCountData = {
   count: number | null;
   data: {
@@ -115,316 +109,92 @@ const Home = () => {
   ];
 
   return (
-    <HomeContainer>
-      <BannerContainer>
+    <St.HomeContainer>
+      <St.BannerContainer>
         {isLoading ? (
-          <IsLoadingStyle>Loading...</IsLoadingStyle>
+          <St.IsLoadingStyle>Loading...</St.IsLoadingStyle>
         ) : (
           <>
-            <MainBannerpic>
+            <St.MainBannerpic>
               <source srcSet={bannerImgs[0].webp1} type="image/webp" />
-              <img src="/assets/banner1.jpg" alt="메인배너사진" />
-            </MainBannerpic>
-            <ButtonContainer>
-              <BannerWrapper>
-                <ProductsBannerImage>
+              <img
+                style={{ objectFit: 'cover' }}
+                src="/assets/banner1.jpg"
+                alt="메인배너사진"
+              />
+            </St.MainBannerpic>
+            <St.ButtonContainer>
+              <St.BannerWrapper>
+                <St.ProductsBannerImage>
                   <source srcSet={bannerImgs[1].webp2} type="image/webp" />
                   <img src="/assets/banner2.webp" alt="중고거래" />
-                </ProductsBannerImage>
-                <ScrollButton href="#product">
+                </St.ProductsBannerImage>
+                <St.ScrollButton href="#product">
                   <picture>
                     <source srcSet={bannerImgs[2].webp3} type="image/webp" />
-                    <ButtonImage
+                    <St.ButtonImage
                       src="/assets/banner3.webp"
                       alt="중고거래버튼"
                     />
                   </picture>
-                </ScrollButton>
-              </BannerWrapper>
-              <BannerWrapper>
-                <CommunityBannerImage>
+                </St.ScrollButton>
+              </St.BannerWrapper>
+              <St.BannerWrapper>
+                <St.CommunityBannerImage>
                   <source srcSet={bannerImgs[3].webp4} type="image/webp" />
                   <img src="/assets/banner4.webp" alt="커뮤니티" />
-                </CommunityBannerImage>
-                <ScrollButton href="#community">
+                </St.CommunityBannerImage>
+                <St.ScrollButton href="#community">
                   <picture>
                     <source srcSet={bannerImgs[4].webp5} type="image/webp" />
-                    <ButtonImage
+                    <St.ButtonImage
                       src="/assets/banner5.webp"
                       alt="커뮤니티버튼"
                     />
                   </picture>
-                </ScrollButton>
-              </BannerWrapper>
-            </ButtonContainer>
+                </St.ScrollButton>
+              </St.BannerWrapper>
+            </St.ButtonContainer>
           </>
         )}
-      </BannerContainer>
+      </St.BannerContainer>
 
-      <AllCardContainer>
-        <ContentsContainer id="product">
-          <TitleWrapper>
-            <Title>
+      <St.AllCardContainer>
+        <St.ContentsContainer id="product">
+          <St.TitleWrapper>
+            <St.Title>
               {usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!
-            </Title>
-            <ShowLink to="/products">
+            </St.Title>
+            <St.ShowLink to="/products">
               전체보기
               <FaArrowRight />
-            </ShowLink>
-          </TitleWrapper>
+            </St.ShowLink>
+          </St.TitleWrapper>
           {/* 하빈 수정 */}
           {isLoading ? (
             <ProductsSkeleton count={10} />
           ) : (
             <ProductsCard posts={productsPosts} />
           )}
-        </ContentsContainer>
+        </St.ContentsContainer>
 
-        <ContentsContainer id="community">
-          <TitleWrapper>
-            <Title>작업자들의 커뮤니티에 함께해볼까요?</Title>
-            <ShowLink to="/community">
+        <St.ContentsContainer id="community">
+          <St.TitleWrapper>
+            <St.Title>팔레터들의 커뮤니티에 함께해볼까요?</St.Title>
+            <St.ShowLink to="/community">
               전체보기
               <FaArrowRight />
-            </ShowLink>
-          </TitleWrapper>
+            </St.ShowLink>
+          </St.TitleWrapper>
           {/* <ComunityWrapper></ComunityWrapper> */}
           {isLoading ? (
             <SkeletonCommunityCard cards={6} />
           ) : (
             <CommunityList posts={sortedCommunityResults} />
           )}
-        </ContentsContainer>
-      </AllCardContainer>
-    </HomeContainer>
+        </St.ContentsContainer>
+      </St.AllCardContainer>
+    </St.HomeContainer>
   );
 };
 export default Home;
-
-const HomeContainer = styled.section`
-  display: flex;
-  max-width: 144rem;
-  min-height: 100vh;
-  flex-direction: column;
-  margin: auto;
-  animation: ${StFadeAni} 0.3s ease;
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    //min-width: 32rem;
-  }
-`;
-
-const IsLoadingStyle = styled.div`
-  height: 60rem;
-  text-align: center;
-  line-height: 20;
-  font-size: var(--fontSize-H1);
-  font-weight: var(--fontWeight-bold);
-  @media screen and (max-width: 1116px) {
-    height: 55rem;
-  }
-  @media screen and (max-width: 768px) {
-    height: 47rem;
-    font-size: var(--fontSize-H3);
-    line-height: 20;
-  }
-`;
-
-// 배너
-const BannerContainer = styled.div`
-  position: relative;
-  width: 100%;
-  @media screen and (max-width: 1116px) {
-    height: 55rem;
-  }
-
-  @media screen and (max-width: 768px) {
-    height: 47rem;
-  }
-`;
-const MainBannerpic = styled.picture`
-  width: 100%;
-  max-height: 63rem;
-  @media screen and (max-width: 768px) {
-    height: 40rem;
-  }
-  img {
-    width: 100%;
-    height: 100%;
-  }
-`;
-const ButtonContainer = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  gap: 10rem;
-  @media screen and (max-width: 1116px) {
-    gap: 3rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-35%, -50%);
-  }
-  @media screen and (max-width: 768px) {
-    gap: 1rem;
-  }
-`;
-const BannerWrapper = styled.div`
-  width: 82%;
-  height: 50%;
-  display: flex;
-  justify-content: space-between;
-  gap: 10rem;
-  @media screen and (max-width: 1116px) {
-    flex-direction: column;
-    justify-content: center;
-    gap: 1rem;
-    width: 82%;
-    height: 50%;
-  }
-  @media screen and (max-width: 1000px) {
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    height: 60%;
-  }
-  @media screen and (max-width: 768px) {
-    width: 85%;
-  }
-  @media screen and (max-width: 650px) {
-    width: 90%;
-  }
-  @media screen and (max-width: 550px) {
-    width: 100%;
-  }
-  @media screen and (max-width: 430px) {
-    width: 120%;
-  }
-`;
-const ProductsBannerImage = styled.picture`
-  width: 45%;
-  height: 100%;
-
-  @media screen and (max-width: 768px) {
-    width: 50%;
-  }
-  @media screen and (max-width: 650px) {
-    width: 55%;
-  }
-  @media screen and (max-width: 550px) {
-    width: 70%;
-  }
-  @media screen and (max-width: 430px) {
-    width: 60%;
-  }
-  img {
-    width: 100%;
-    height: 100%;
-  }
-`;
-const CommunityBannerImage = styled.picture`
-  width: 53%;
-  height: 100%;
-  @media screen and (max-width: 768px) {
-    width: 60%;
-  }
-  @media screen and (max-width: 650px) {
-    width: 65%;
-  }
-  @media screen and (max-width: 550px) {
-    width: 70%;
-  }
-  @media screen and (max-width: 430px) {
-    width: 70%;
-  }
-  img {
-    width: 100%;
-    height: 100%;
-  }
-`;
-const ButtonImage = styled.img`
-  width: 90%;
-  height: 50%;
-
-  @media screen and (max-width: 1116px) {
-    width: 80%;
-  }
-  @media screen and (max-width: 800px) {
-    width: 60%;
-  }
-  @media screen and (max-width: 650px) {
-    //width: 40%;
-  }
-`;
-const ScrollButton = styled.a`
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: white;
-  margin: auto;
-`;
-// 본문
-const AllCardContainer = styled.div`
-  width: 77.5%;
-  margin: auto;
-  @media screen and (max-width: 768px) {
-    width: 93%;
-  }
-`;
-const ContentsContainer = styled.div`
-  width: 100%;
-  margin: auto;
-  margin-top: 5rem;
-  @media screen and (max-width: 768px) {
-    margin-top: 2rem;
-  }
-`;
-const TitleWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 auto 4rem 0;
-  width: 100%;
-  font-size: var(--fontSize-H3);
-  @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H5);
-    margin: 0 auto 2rem 0;
-  }
-`;
-const Title = styled.h2`
-  font-size: var(--fontSize-H3);
-  vertical-align: baseline;
-  @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H5);
-  }
-`;
-const ShowLink = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.8rem;
-  text-decoration: none;
-  width: 8.3rem;
-  height: 3.2rem;
-  background: var(--opc-20);
-  border-radius: 4.5rem;
-  color: var(--black);
-  font-size: var(--fontSize-H6);
-  font-weight: var(--fontWeight-bold);
-  cursor: pointer;
-  @media screen and (max-width: 768px) {
-    background: none;
-    width: 6rem;
-    font-size: 1.1rem;
-    gap: 0.3rem;
-  }
-  &:hover {
-    background-color: var(--opc-100);
-    color: var(--bgColor);
-  }
-`;
