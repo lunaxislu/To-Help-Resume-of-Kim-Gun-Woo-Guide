@@ -22,12 +22,12 @@ export default function ChatMyMsg({
 }: MessageProps) {
   return (
     <>
-      <StMessageBox key={msg.id}>
+      <StMessageBox key={msg.created_at}>
         {msg.isFirst && (
           <div
             id={msg.chat_room_id}
             onClick={(e) => findChatRoom(e)}
-            key={msg.id}
+            key={msg.created_at}
           >
             <StMyChatballoon key={msg.id}>
               <StChatFirstMsg>

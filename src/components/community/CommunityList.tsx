@@ -57,7 +57,6 @@ const CommunityList: React.FC<CommuListProps> = ({ posts }) => {
             </St.Posts>
           );
         })}
-        {/* {isLoading && <SkeletonCommunityCard cards={4} />} */}
       </St.Container>
     </div>
   );
