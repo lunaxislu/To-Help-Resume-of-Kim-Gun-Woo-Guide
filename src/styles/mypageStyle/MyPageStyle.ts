@@ -3,7 +3,7 @@ import { StFadeAni } from '../../pages/productsDetail/style';
 
 export const MyPageContainer = styled.div`
   position: relative;
-  width: 77.5%;
+  max-width: 77.5%;
   margin: 0 auto;
   animation: ${StFadeAni} 0.6s forwards;
 

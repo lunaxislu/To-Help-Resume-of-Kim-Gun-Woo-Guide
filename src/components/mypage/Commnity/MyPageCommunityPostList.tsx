@@ -1,5 +1,8 @@
 import { useInView } from 'react-intersection-observer';
-import { useAppSelector } from '../../../redux/reduxHooks/reduxBase';
+import {
+  useAppDispatch,
+  useAppSelector
+} from '../../../redux/reduxHooks/reduxBase';
 import { useInfiniteQuery } from 'react-query';
 import { fetchPosts } from '../../../api/supabase/mypageQuery';
 import { useEffect } from 'react';

@@ -1,10 +1,9 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface TabState {
   selectedTab: string;
 }
 
-// slice 초기값 정의
 const initialState: TabState = {
   selectedTab: ''
 };
