@@ -93,6 +93,7 @@ export default function ChatRoom() {
         setRooms,
         messages
       );
+      getChatRooms();
     }
 
     // 해당 채팅방에 해당하는 메세지를 가져오고
