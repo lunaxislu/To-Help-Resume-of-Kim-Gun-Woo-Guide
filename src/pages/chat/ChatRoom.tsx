@@ -129,7 +129,6 @@ export default function ChatRoom() {
 
   useEffect(() => {
     if (curUser) {
-      getChatRooms();
     }
   }, [curUser]);
 
@@ -145,6 +144,7 @@ export default function ChatRoom() {
   useEffect(() => {
     if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
     if (!checkDevice(window.navigator.userAgent)) setIsMobile(false);
+    getChatRooms();
   }, []);
 
   useEffect(() => {

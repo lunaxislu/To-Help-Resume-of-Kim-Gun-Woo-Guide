@@ -1,27 +1,14 @@
+import React, { Suspense } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-// import ChatRoom from '../pages/chat/ChatRoom';
-// import CommuDetail from '../pages/community/CommuDetail';
-// import CommunityMain from '../pages/community/CommunityMain';
-// import WritePost from '../pages/community/WritePost';
 import Home from '../pages/home/Home';
 import Login from '../pages/login/Login';
-// import MyPage from '../pages/mypage/MyPage';
-// import ProductsList from '../pages/products/ProductsList';
-// import ProductsPosts from '../pages/products/ProductsPosts';
-// import ProductDetail from '../pages/productsDetail/ProductDetail';
 import SearchResults from '../pages/searchResults/SearchResults';
 import { GlobalStyles } from '../styles/GlobalStyle';
-// import PrivateLayout from '../layouts/PrivateLayout/PrivateLayout';
 import Layout from '../layouts/Layout';
-// import ProductsPostsEdit from '../pages/products/ProductsPostsEdit';
-// import PostersProducts from '../pages/postersProducts/PostersProducts';
-import React, { Suspense, lazy } from 'react';
 
 const ProductDetail = React.lazy(
   () => import('../pages/productsDetail/ProductDetail')
 );
-const ProductsList = React.lazy(() => import('../pages/products/ProductsList'));
-const WritePost = React.lazy(() => import('../pages/community/WritePost'));
 const ProductsPosts = React.lazy(
   () => import('../pages/products/ProductsPosts')
 );
@@ -31,15 +18,17 @@ const ProductsPostsEdit = React.lazy(
 const CommunityMain = React.lazy(
   () => import('../pages/community/CommunityMain')
 );
-const CommuDetail = React.lazy(() => import('../pages/community/CommuDetail'));
-const ChatRoom = React.lazy(() => import('../pages/chat/ChatRoom'));
 const PostersProducts = React.lazy(
   () => import('../pages/postersProducts/PostersProducts')
 );
-const MyPage = React.lazy(() => import('../pages/mypage/MyPage'));
 const PrivateLayout = React.lazy(
   () => import('../layouts/PrivateLayout/PrivateLayout')
 );
+const ProductsList = React.lazy(() => import('../pages/products/ProductsList'));
+const ChatRoom = React.lazy(() => import('../pages/chat/ChatRoom'));
+const MyPage = React.lazy(() => import('../pages/mypage/MyPage'));
+const WritePost = React.lazy(() => import('../pages/community/WritePost'));
+const CommuDetail = React.lazy(() => import('../pages/community/CommuDetail'));
 
 const Router = () => {
   return (

@@ -1,21 +1,14 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
+import React, { Suspense, useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
 import { fetchData } from '../../components/main/DataFetch';
 import { Link, useNavigate } from 'react-router-dom';
-import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
-import parseDate from '../../util/getDate';
 import { FaArrowRight } from 'react-icons/fa6';
 import { StFadeAni } from '../../pages/productsDetail/style';
-import * as St from '../../styles/products/productsList/StProductsList';
-// import CommunityList from '../../components/community/CommunityList';
-import { Posts } from '../../styles/community/CommunityListStyle';
-// import ProductsCard from '../../components/prducts/ProductsCard';
 import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
 import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
 import { Post } from '../community/api/model';
-import { divide } from 'lodash';
 type UsedItemsCountData = {
   count: number | null;
   data: {
