@@ -37,7 +37,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   const [isInputEmpty, setIsInputEmpty] = useState<boolean>(true);
 
   // 인풋창 최대 입력 글자 제한
-  const maxInputLength = 20;
+  const maxInputLength = 15;
 
   const handleHideSearchComp = () => {
     setShowSearchComp(false);
@@ -49,7 +49,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     dispatch(setSearchQuery(e.target.value));
     setIsInputEmpty(!inputValue.trim());
     if (inputValue.length > maxInputLength) {
-      alert(`최대 ${maxInputLength}까지 입력이 가능합니다.`);
+      alert(`최대 ${maxInputLength}자까지 입력이 가능합니다.`);
     }
   };
 
@@ -212,7 +212,7 @@ const SearchInputBar = styled.input`
   background: var(--opc-50);
   border: none;
   color: var(--black);
-  font-size: var(--fontSize-H5);
+  font-size: var(--fontSize-H6);
   font-weight: var(--fontWeight-medium);
   line-height: 2.5rem;
   outline: none;
@@ -256,7 +256,7 @@ const ClearInputButton = styled.div`
   @media screen and (max-width: 768px) {
     position: absolute;
     top: 50%;
-    right: 70px;
+    right: 60px;
     transform: translate(-50%, -50%);
     color: #878787;
     font-size: 3rem;
