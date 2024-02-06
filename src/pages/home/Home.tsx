@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
@@ -9,9 +9,9 @@ import parseDate from '../../util/getDate';
 import { FaArrowRight } from 'react-icons/fa6';
 import { StFadeAni } from '../../pages/productsDetail/style';
 import * as St from '../../styles/products/productsList/StProductsList';
-import CommunityList from '../../components/community/CommunityList';
+// import CommunityList from '../../components/community/CommunityList';
 import { Posts } from '../../styles/community/CommunityListStyle';
-import ProductsCard from '../../components/prducts/ProductsCard';
+// import ProductsCard from '../../components/prducts/ProductsCard';
 import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
 import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
 import { Post } from '../community/api/model';
@@ -22,6 +22,14 @@ type UsedItemsCountData = {
     length: number;
   } | null;
 };
+
+const ProductsCard = lazy(
+  () => import('../../components/prducts/ProductsCard')
+);
+const CommunityList = lazy(
+  () => import('../../components/community/CommunityList')
+);
+
 const Home = () => {
   const navigate = useNavigate();
 
@@ -173,10 +181,10 @@ const Home = () => {
             </ShowLink>
           </TitleWrapper>
           {/* 하빈 수정 */}
-          {isLoading ? (
-            <ProductsSkeleton count={10} />
-          ) : (
-            <ProductsCard posts={productsPosts} />
+          {isLoading ? null : (
+            <Suspense fallback={<ProductsSkeleton count={10} />}>
+              <ProductsCard posts={productsPosts} />
+            </Suspense>
           )}
         </ContentsContainer>
 
@@ -189,10 +197,10 @@ const Home = () => {
             </ShowLink>
           </TitleWrapper>
           {/* <ComunityWrapper></ComunityWrapper> */}
-          {isLoading ? (
-            <SkeletonCommunityCard cards={6} />
-          ) : (
-            <CommunityList posts={sortedCommunityResults} />
+          {isLoading ? null : (
+            <Suspense fallback={<SkeletonCommunityCard cards={6} />}>
+              <CommunityList posts={sortedCommunityResults} />
+            </Suspense>
           )}
         </ContentsContainer>
       </AllCardContainer>
