@@ -40,7 +40,8 @@ export const quillImageHandler = (
             transform: {
               width: 500,
               height: 600,
-              resize: 'cover'
+              resize: 'cover',
+              format: 'origin'
             }
           });
         console.log(response);
