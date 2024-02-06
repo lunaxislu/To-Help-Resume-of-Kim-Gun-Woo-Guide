@@ -29,8 +29,7 @@ const ProductCategory = ({selectCategory, setSelectCategory}: Props) => {
             <St.Category
               onClick={handleOnClickCategory}
               $selectCategory={selectCategory}
-            >
-              {major}
+            >{major}
             </St.Category>
           </li>
         ))}
