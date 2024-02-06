@@ -24,51 +24,58 @@ const Layout = () => {
   const [newNotiExists, setNewNotiExists] = useState<boolean>(false);
   const userID = localStorage.getItem('userId');
 
+  // 유저 데이터를 가져오고 실시간 구독이 실행되도록
   useEffect(() => {
     getUserData(setCurUser);
-    // 캐싱된 알림 가져오기
-    getNotificationsFromLocal(setNotification);
-
-    // 메세지 테이블 실시간 알림 구독
-    const chatMessages = supabase
-      .channel('custom-insert-channel')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'chat_messages' },
-        async (payload: any) => {
-          const { data: chatRooms, error } = await supabase
-            .from('chat_room')
-            .select('participants')
-            .eq('id', payload.new.chat_room_id);
-
-          // 소속 된 채팅방의 업데이트인지 확인
-          if (chatRooms && chatRooms.length > 0) {
-            const exists = chatRooms.map((room) => {
-              return room.participants.some(
-                (part: Participants) => part.user_id === curUser?.uid
-              );
-            });
-
-            // 내가 보낸 메세지가 아닐 때 알림 작동
-            if (
-              exists &&
-              exists.length > 0 &&
-              payload.new.sender_id !== userID
-            ) {
-              setNotification((prev) => [payload.new, ...prev]);
-              setNewNotiExists(true);
-              // playAlert();
-            }
-          }
-          // 유저가 속한 채팅방의 알림만 filter해서 state에 set
-        }
-      )
-      .subscribe();
-
-    return () => {
-      chatMessages.unsubscribe();
-    };
   }, []);
+
+  useEffect(() => {
+    // 유저 데이터가 있을 때 실시간 구독이 실행되도록 - 안 그러면 첫 알림이 전역으로 알림이 간다
+    if (curUser) {
+      // 캐싱된 알림 가져오기
+      getNotificationsFromLocal(setNotification);
+
+      // 메세지 테이블 실시간 알림 구독
+      const chatMessages = supabase
+        .channel('custom-insert-channel')
+        .on(
+          'postgres_changes',
+          { event: 'INSERT', schema: 'public', table: 'chat_messages' },
+          async (payload: any) => {
+            const { data: chatRooms, error } = await supabase
+              .from('chat_room')
+              .select('participants')
+              .eq('id', payload.new.chat_room_id);
+
+            // 소속 된 채팅방의 업데이트인지 확인
+            if (chatRooms && chatRooms.length > 0) {
+              const exists = chatRooms.map((room) => {
+                return room.participants.some(
+                  (part: Participants) => part.user_id === curUser?.uid
+                );
+              });
+
+              // 내가 보낸 메세지가 아닐 때 알림 작동
+              if (
+                exists &&
+                exists.length > 0 &&
+                payload.new.sender_id !== userID
+              ) {
+                setNotification((prev) => [payload.new, ...prev]);
+                setNewNotiExists(true);
+                // playAlert();
+              }
+            }
+            // 유저가 속한 채팅방의 알림만 filter해서 state에 set
+          }
+        )
+        .subscribe();
+
+      return () => {
+        chatMessages.unsubscribe();
+      };
+    }
+  }, [curUser]);
 
   useEffect(() => {
     saveNotiToLocal(notification);
