@@ -36,6 +36,7 @@ export const TitleContainer = styled.div`
 
 export const Title = styled.h1`
   font-size: var(--fontSize-H3);
+  font-weight: var(--fontWeight-bold);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-body);
   }
@@ -116,6 +117,7 @@ export const LastData = styled.div`
   align-items: center;
   margin: 7rem auto 0 auto;
   gap: 2rem;
+  font-weight: var(--fontWeight-bold);
   @media screen and (max-width: 768px) {
     margin: 3rem auto 0 auto;
     gap: 1rem;
