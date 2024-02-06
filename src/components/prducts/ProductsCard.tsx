@@ -9,7 +9,7 @@ const ProductsCard = ({ posts }: any) => {
   const navigate = useNavigate();
   return (
     <St.ProductsListContainer>
-      {posts.map((posts: ProductsPostsType) => (
+      {posts?.map((posts: ProductsPostsType) => (
         <St.ProductsCardContainer
           key={posts.id}
           onClick={() => navigate(`/products/detail/${posts.id}`)}

@@ -10,16 +10,12 @@ import {
 import SearchBar from '../layout/header/SearchBar';
 import { SideBarProps } from './SideBarTypes';
 import { supabase } from '../../api/supabase/supabaseClient';
-// 아이콘
-import { FaBell } from 'react-icons/fa';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
-import { IoPeopleSharp } from 'react-icons/io5';
-import { IoPersonSharp } from 'react-icons/io5';
-import { BiWon } from 'react-icons/bi';
-import { LuPalette } from 'react-icons/lu';
-import { TbLogin, TbLogout } from 'react-icons/tb';
+import { IoPeopleSharp, IoPersonSharp } from 'react-icons/io5';
+import { BiEdit, BiWon } from 'react-icons/bi';
 import { BsChatDotsFill } from 'react-icons/bs';
-import { BiEdit } from 'react-icons/bi';
+import { FaBell } from 'react-icons/fa';
+import { LuPalette } from 'react-icons/lu';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
 
 const SideBar = ({
   notification,
@@ -61,14 +57,14 @@ const SideBar = ({
   const [showSearchComp, setShowSearchComp] = useState<boolean>(false);
 
   const arr = [
-    '검색',
-    '중고거래',
-    '커뮤니티',
-    '판매하기',
-    '소통하기',
-    '채팅',
-    '알림',
-    '프로필'
+    { default: <FaMagnifyingGlass />, hover: '검색' },
+    { default: <LuPalette />, hover: '중고거래' },
+    { default: <IoPeopleSharp />, hover: '커뮤니티' },
+    { default: <BiWon />, hover: '판매하기' },
+    { default: <BiEdit />, hover: '소통하기' },
+    { default: <BsChatDotsFill />, hover: '채팅' },
+    { default: <FaBell />, hover: '알림' },
+    { default: <IoPersonSharp />, hover: '프로필' }
   ];
   const NoLogined = ['검색', '중고거래', '커뮤니티', '로그인'];
 
@@ -86,19 +82,19 @@ const SideBar = ({
   };
 
   const handleNavigate = (e: MouseEvent<HTMLButtonElement>) => {
-    const { innerText } = e.currentTarget;
-    innerText === '판매하기' && navi('/productsposts');
-    innerText === '중고거래' && navi('/products');
-    innerText === '커뮤니티' && navi('/community');
-    innerText === '채팅' && navi('/chat');
-    innerText === '프로필' && navi('/mypage');
-    innerText === '로그인' && navi('/login');
-    innerText === '소통하기' && navi('/community_write');
-    if (innerText === '알림') {
+    const { id } = e.currentTarget;
+    id === '판매하기' && navi('/productsposts');
+    id === '중고거래' && navi('/products');
+    id === '커뮤니티' && navi('/community');
+    id === '채팅' && navi('/chat');
+    id === '프로필' && navi('/mypage');
+    id === '로그인' && navi('/login');
+    id === '소통하기' && navi('/community_write');
+    if (id === '알림') {
       showNotiToggle();
       return;
     }
-    if (innerText === '검색') {
+    if (id === '검색') {
       toggleSearchBar();
       return;
     }
@@ -192,7 +188,7 @@ const SideBar = ({
         </StMainButton>
         {isLogined &&
           arr.reverse().map((menu, i) => {
-            if (isShow && menu === '알림') {
+            if (isShow && menu.hover === '알림') {
               return (
                 <>
                   <StMenuButtons
@@ -200,12 +196,16 @@ const SideBar = ({
                       e.stopPropagation();
                       handleNavigate(e);
                     }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.innerHTML = menu.hover;
+                    }}
+                    id={menu.hover}
                     $isShow
                     $index={i + 1}
                     key={i}
                   >
                     {newNotiExists && <St.StNotiDot></St.StNotiDot>}
-                    {menu}
+                    {menu.default}
                   </StMenuButtons>
                 </>
               );
@@ -217,11 +217,15 @@ const SideBar = ({
                     e.stopPropagation();
                     handleNavigate(e);
                   }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.innerHTML = menu.hover;
+                  }}
+                  id={menu.hover}
                   $isShow
                   $index={i + 1}
                   key={i}
                 >
-                  {menu}
+                  {menu.default}
                 </StMenuButtons>
               )
             );

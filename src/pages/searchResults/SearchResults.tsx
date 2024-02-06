@@ -14,6 +14,8 @@ import * as St from '../../styles/products/productsList/StProductsCard';
 import CommunityList from '../../components/community/CommunityList';
 import { RootState } from '../../redux/store/store';
 import ProductsCard from '../../components/prducts/ProductsCard';
+import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
+import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
 
 interface ListCount {
   usedItemCount: number;
@@ -47,7 +49,9 @@ const SearchResults: React.FC = () => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [clickMenu, setClickMenu] = useState('최신순');
-  const [selectedTab, setSelectedTab] = useState('중고물품');
+  const [selectedTab, setSelectedTab] = useState<'중고물품' | '커뮤니티'>(
+    '중고물품'
+  );
   const [showAllProducts, setShowAllProducts] = useState(false);
   const [showAllCommunity, setShowAllCommunity] = useState(false);
 
@@ -75,21 +79,20 @@ const SearchResults: React.FC = () => {
     return [...list].sort((a, b) => b.likes - a.likes);
   };
 
-  const CommunitySortByLikes = <T extends { likes: number | null }>(
-    list: T[]
-  ): T[] => {
-    return [...list].sort((a, b) => {
-      // null 값이 있는 경우를 고려하여 정렬
-      if (a.likes === null && b.likes !== null) {
-        return 1; // a.likes가 null이면 b.likes가 있다면 a는 b보다 작다고 처리
-      } else if (a.likes !== null && b.likes === null) {
-        return -1; // b.likes가 null이면 a.likes가 있다면 b는 a보다 작다고 처리
-      } else {
-        // 둘 다 null이거나 둘 다 숫자인 경우 정상적으로 비교
-        return (b.likes || 0) - (a.likes || 0);
-      }
-    });
-  };
+  const CommunitySortByLikes = useCallback(
+    <T extends { likes: number | null }>(list: T[]): T[] => {
+      return [...list].sort((a, b) => {
+        if (a.likes === null && b.likes !== null) {
+          return 1;
+        } else if (a.likes !== null && b.likes === null) {
+          return -1;
+        } else {
+          return (b.likes || 0) - (a.likes || 0);
+        }
+      });
+    },
+    []
+  );
 
   // 정렬된 결과
   const sortedUsedItemResults =
@@ -116,12 +119,6 @@ const SearchResults: React.FC = () => {
       window.removeEventListener('DOMContentLoaded', checkWindowSize);
       window.removeEventListener('resize', checkWindowSize);
     };
-  }, []);
-  useEffect(() => {
-    // 768px 이하에서 최초 렌더링 시에는 ProductsCount가 디폴트
-    if (window.innerWidth <= 768) {
-      setSelectedTab('ProductsCount');
-    }
   }, []);
 
   useEffect(() => {
@@ -155,6 +152,17 @@ const SearchResults: React.FC = () => {
   const usedItemCount = usedItemResults.length;
   const communityCount = communityResults.length;
 
+  useEffect(() => {
+    // 768px 이하에서 최초 렌더링 시에는 ProductsCount가 디폴트
+    if (window.innerWidth <= 768) {
+      if (usedItemCount === 0 && communityCount !== 0) {
+        setSelectedTab('중고물품');
+      } else {
+        setSelectedTab('커뮤니티');
+      }
+    }
+  }, [usedItemCount, communityCount]);
+
   const handleText = useCallback((content: string): string => {
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
     return textOnly;
@@ -165,7 +173,10 @@ const SearchResults: React.FC = () => {
   );
 
   // productsCard map 돌리기 위한 변수 선언(하빈 추가)
-    const productsData = sortedUsedItemResults?.slice(0,showAllProducts ? sortedUsedItemResults.length : 5)
+  const productsData = sortedUsedItemResults?.slice(
+    0,
+    showAllProducts ? sortedUsedItemResults.length : 5
+  );
 
   return (
     <>
@@ -194,7 +205,9 @@ const SearchResults: React.FC = () => {
                   </ProductsCount>
                   <CommunityCount
                     showClickedList={showClickedList}
-                    onClick={() => handleTabClick('커뮤니티')}
+                    onClick={() => {
+                      handleTabClick('커뮤니티');
+                    }}
                   >
                     커뮤니티({communityCount})
                   </CommunityCount>
@@ -229,13 +242,18 @@ const SearchResults: React.FC = () => {
             )}
             {/* 검색 결과 */}
             {isMobile && !showClickedList && (
-              <ProductsCard posts={sortedUsedItemResults}/>
+              <ProductsCard posts={sortedUsedItemResults} />
             )}{' '}
             {!isMobile && (
               // 중고 데스크탑
               <ProductsProtecter>
                 {/* productsCard 컴포넌트 props넘기기 */}
-                <ProductsCard posts={productsData}/>
+
+                {isLoading ? (
+                  <ProductsSkeleton count={5} />
+                ) : (
+                  <ProductsCard posts={productsData} />
+                )}
               </ProductsProtecter>
             )}
           </UsedItemResultsContainer>
@@ -258,12 +276,15 @@ const SearchResults: React.FC = () => {
             </CommunityTitle>
             {/* 커뮤니티 모바일 */}
             {isMobile && showClickedList && (
-              <CommunityList posts={communityResults} />
+              <CommunityList posts={sortedCommunityResults} />
             )}
-            {!isMobile && (
-              // 커뮤니티 데스크탑
-              <CommunityList posts={slicedCommunityResults} />
-            )}
+            {!isMobile &&
+              (isLoading ? (
+                // 커뮤니티 데스크탑
+                <SkeletonCommunityCard cards={6} />
+              ) : (
+                <CommunityList posts={slicedCommunityResults} />
+              ))}
           </CommunityResultsContainer>
         </ResultListContainer>
       </SearchResultsContainer>
