@@ -12,7 +12,9 @@ import * as St from '../../styles/products/productsList/StProductsList';
 import CommunityList from '../../components/community/CommunityList';
 import { Posts } from '../../styles/community/CommunityListStyle';
 import ProductsCard from '../../components/prducts/ProductsCard';
-
+import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
+import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
+import { Post } from '../community/api/model';
 type UsedItemsCountData = {
   count: number | null;
   data: {
@@ -81,10 +83,27 @@ const Home = () => {
   // 중고목록 map 돌리기 위한 변수 선언(하빈 추가)
   const productsPosts = usedItems.slice(0, isMobile ? 6 : 10);
 
+  // 커뮤니티 목록 좋아요 순 정렬
+
+  const CommunitySortByLikes = <T extends { likes: number | null }>(
+    list: T[]
+  ): T[] => {
+    return [...list].sort((a, b) => {
+      if (a.likes === null && b.likes !== null) {
+        return 1;
+      } else if (a.likes !== null && b.likes === null) {
+        return -1;
+      } else {
+        return (b.likes || 0) - (a.likes || 0);
+      }
+    });
+  };
+  const sortedCommunityResults: Post[] = CommunitySortByLikes(communityItems);
+
   return (
     <HomeContainer>
       <BannerContainer>
-        <MainBannerpic src="/assets/MainBannerPic.jpg" alt="메인배너사진" />
+        <MainBannerpic src="/assets/mainbannerpicture.png" alt="메인배너사진" />
 
         <ButtonContainer>
           <BannerWrapper>
@@ -114,7 +133,11 @@ const Home = () => {
             </ShowLink>
           </TitleWrapper>
           {/* 하빈 수정 */}
-          <ProductsCard posts={productsPosts} />
+          {isLoading ? (
+            <ProductsSkeleton count={10} />
+          ) : (
+            <ProductsCard posts={productsPosts} />
+          )}
         </ContentsContainer>
 
         <ContentsContainer id="community">
@@ -126,7 +149,11 @@ const Home = () => {
             </ShowLink>
           </TitleWrapper>
           {/* <ComunityWrapper></ComunityWrapper> */}
-          <CommunityList posts={communityItems} />
+          {isLoading ? (
+            <SkeletonCommunityCard cards={6} />
+          ) : (
+            <CommunityList posts={sortedCommunityResults} />
+          )}
         </ContentsContainer>
       </AllCardContainer>
     </HomeContainer>
@@ -248,7 +275,7 @@ const CommunityBannerImage = styled.img`
 const ButtonImage = styled.img`
   width: 90%;
   height: 50%;
-  
+
   @media screen and (max-width: 1116px) {
     width: 80%;
   }

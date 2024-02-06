@@ -65,13 +65,13 @@ const DropdownButton = styled.button`
   cursor: pointer;
   font-weight: var(--fontWeight-bold);
   gap: 0.8rem;
-  background: transparent;
   font-size: var(--fontSize-H5);
+  background-color: transparent;
   font-weight: var(--fontWeight-medium);
   color: var(--7-gray);
   border: none;
   &:hover {
-    color: #e3e8e8;
+    color: var(--opc-100);
   }
 `;
 const DropdownContent = styled.div`
@@ -88,14 +88,15 @@ const DropdownContent = styled.div`
 const DropdownItem = styled.div`
   padding: 1rem;
   text-decoration: none;
-  color: var(--11-gray);
   font-size: var(--fontSize-H6);
   font-weight: var(--fontWeight-bold);
   cursor: pointer;
   width: 100%;
   text-align: center;
+  background-color: var(--drop);
+
   &:hover {
-    background-color: #83ad2e;
-    color: #101d1c;
+    background-color: var(--opc-100);
+    color: var(--white);
   }
 `;
