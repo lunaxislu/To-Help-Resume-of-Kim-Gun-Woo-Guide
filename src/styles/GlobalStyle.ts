@@ -14,8 +14,8 @@ export const GlobalStyles = createGlobalStyle`
     --fontSize-H6 : 1.4rem; // 14px
 
     /* Font Weight */
-    --fontWeight-bold: 700;
-    --fontWeight-500: 500; /* 기본 굵기 */
+    --fontWeight-bold: 700; /* 기본 굵기 */
+    --fontWeight-500: 500;
 
     /* 밝은 배경색 */
     --bgColor : #FFFEFA;
@@ -120,7 +120,7 @@ body {
 
 
     //
-    font-family: 'BM-JUA';
+    font-family: 'DalseoHealing-bold';
     color: var(--black);
     overflow-x: hidden;
     @media screen and (max-width: 768px){
@@ -130,10 +130,10 @@ body {
 button,
 input,
 textarea {
-    font-family: 'BM-JUA';
+    font-family: 'DalseoHealing-bold';
 }
 input {
-    font-family: 'BM-JUA';
+    font-family: 'DalseoHealing-bold';
 }
 input {
     background-color: var(--opc-30);
