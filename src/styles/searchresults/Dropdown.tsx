@@ -71,7 +71,7 @@ const DropdownButton = styled.button`
   color: var(--7-gray);
   border: none;
   &:hover {
-    color: #e3e8e8;
+    color: var(--opc-100);
   }
 `;
 const DropdownContent = styled.div`
@@ -95,7 +95,7 @@ const DropdownItem = styled.div`
   width: 100%;
   text-align: center;
   &:hover {
-    background-color: #83ad2e;
-    color: #101d1c;
+    background-color: var(--opc-100);
+    color: var(--white);
   }
 `;

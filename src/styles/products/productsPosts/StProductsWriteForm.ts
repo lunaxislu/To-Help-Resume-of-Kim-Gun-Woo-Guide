@@ -16,7 +16,7 @@ export const SemiTitle = styled.h2`
   font-weight: var(--fontWeight-bold);
   line-height: 2;
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-H5);
     line-height: 1.5;
     margin-bottom: 0.9rem;
   }
@@ -157,7 +157,7 @@ export const InputCheckBoxLabel = styled.label`
   gap: 1rem;
   cursor: pointer;
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-H5);
   }
 `;
 export const InputCheckBoxStyle = styled.input`

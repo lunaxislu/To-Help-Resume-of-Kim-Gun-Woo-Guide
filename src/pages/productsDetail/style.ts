@@ -23,7 +23,7 @@ const StDetailContainer = styled.div`
   animation: ${StFadeAni} 0.3s ease;
 
   @media screen and (max-width: 768px) {
-    width: 77.5%;
+    width: 97%;
     max-width: 768px;
     padding: 0;
   }

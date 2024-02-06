@@ -1,22 +1,8 @@
 import React from 'react';
 import * as St from '../../../../pages/productsDetail/style';
-import { CustomUser, Product } from '../../../../pages/productsDetail/types';
 import { useNavigate } from 'react-router';
 import { FaHeart } from 'react-icons/fa';
-
-type ButtonProps = {
-  curUser: CustomUser | null;
-  handleLoadChatRooms: any;
-  handleShowChatList: any;
-  isLiked: boolean;
-  handleLike: any;
-  likesCount: number | null;
-  isSoldOut: boolean;
-  isExist: boolean;
-  product: Product[];
-  makeChatRoom: any;
-  handleCancleLike: any;
-};
+import { ButtonProps } from '../ChatListTypes';
 
 const ProductButton = ({
   curUser,

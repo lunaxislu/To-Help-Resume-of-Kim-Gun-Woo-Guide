@@ -9,7 +9,7 @@ export const EntireContainer = styled.div`
   animation: ${StFadeAni} 0.3s ease;
   @media screen and (max-width: 768px) {
     max-width: 76.8rem;
-    min-width: 3.5rem;
+    margin-top: 1.5rem;
   }
 `;
 export const ContentsContainer = styled.div`
@@ -34,8 +34,8 @@ export const BackBtnBox = styled.div`
   display: none;
   @media screen and (max-width: 768px) {
     display: block;
-    width: 2rem;
-    height: 1.5rem;
+    width: 3rem;
+    height: 2rem;
     :hover {
       cursor: pointer;
     }
@@ -55,7 +55,7 @@ export const Title = styled.h1`
   margin-right: 1.7rem;
   font-weight: var(--fontWeight-bold);
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H5);
+    font-size: var(--fontSize-H4);
     margin-right: 1rem;
   }
 `;
@@ -64,7 +64,7 @@ export const TetleRequired = styled.p`
   font-size: var(--fontSize-H6);
   line-height: 1.5;
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    //font-size: 1rem;
     line-height: 1.5;
   }
 `;

@@ -13,6 +13,9 @@ import { Communityy, UsedItem } from '../home/usedtypes';
 import * as St from '../../styles/products/productsList/StProductsCard';
 import CommunityList from '../../components/community/CommunityList';
 import { RootState } from '../../redux/store/store';
+import ProductsCard from '../../components/prducts/ProductsCard';
+import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
+import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
 
 interface ListCount {
   usedItemCount: number;
@@ -74,21 +77,20 @@ const SearchResults: React.FC = () => {
     return [...list].sort((a, b) => b.likes - a.likes);
   };
 
-  const CommunitySortByLikes = <T extends { likes: number | null }>(
-    list: T[]
-  ): T[] => {
-    return [...list].sort((a, b) => {
-      // null 값이 있는 경우를 고려하여 정렬
-      if (a.likes === null && b.likes !== null) {
-        return 1; // a.likes가 null이면 b.likes가 있다면 a는 b보다 작다고 처리
-      } else if (a.likes !== null && b.likes === null) {
-        return -1; // b.likes가 null이면 a.likes가 있다면 b는 a보다 작다고 처리
-      } else {
-        // 둘 다 null이거나 둘 다 숫자인 경우 정상적으로 비교
-        return (b.likes || 0) - (a.likes || 0);
-      }
-    });
-  };
+  const CommunitySortByLikes = useCallback(
+    <T extends { likes: number | null }>(list: T[]): T[] => {
+      return [...list].sort((a, b) => {
+        if (a.likes === null && b.likes !== null) {
+          return 1;
+        } else if (a.likes !== null && b.likes === null) {
+          return -1;
+        } else {
+          return (b.likes || 0) - (a.likes || 0);
+        }
+      });
+    },
+    []
+  );
 
   // 정렬된 결과
   const sortedUsedItemResults =
@@ -162,6 +164,13 @@ const SearchResults: React.FC = () => {
     0,
     showAllCommunity ? sortedCommunityResults.length : 6
   );
+
+  // productsCard map 돌리기 위한 변수 선언(하빈 추가)
+  const productsData = sortedUsedItemResults?.slice(
+    0,
+    showAllProducts ? sortedUsedItemResults.length : 5
+  );
+
   return (
     <>
       <SearchResultsContainer>
@@ -224,93 +233,18 @@ const SearchResults: React.FC = () => {
             )}
             {/* 검색 결과 */}
             {isMobile && !showClickedList && (
-              <St.ProductsListContainer>
-                {sortedUsedItemResults?.map((item) => (
-                  <St.ProductsCardContainer
-                    key={item.id}
-                    onClick={() => naviagate(`/products/detail/${item.id}`)}
-                  >
-                    <St.CardImageWrapper>
-                      {item.isSell === true ? (
-                        <St.IsSellProducts>
-                          <St.SoldOut>판매완료</St.SoldOut>
-                        </St.IsSellProducts>
-                      ) : (
-                        <div></div>
-                      )}
-                      {item.image_url !== null &&
-                      item.image_url !== undefined ? (
-                        <St.CardImage
-                          src={item.image_url[0]}
-                          alt="상품 이미지"
-                        />
-                      ) : (
-                        <div></div>
-                      )}
-                    </St.CardImageWrapper>
-                    {[item.quality].map((condition) => (
-                      <St.CardQuality $quality={condition} key={condition}>
-                        {condition}
-                      </St.CardQuality>
-                    ))}
-                    <St.CardTitle>{item.title}</St.CardTitle>
-                    <St.LikesWrapper>
-                      <St.CardPrice>
-                        {item.price.toLocaleString('kr-KO')}원
-                      </St.CardPrice>
-                      <St.Likes>♥ {item.likes}</St.Likes>
-                    </St.LikesWrapper>
-                  </St.ProductsCardContainer>
-                ))}
-              </St.ProductsListContainer>
+              <ProductsCard posts={sortedUsedItemResults} />
             )}{' '}
             {!isMobile && (
               // 중고 데스크탑
               <ProductsProtecter>
-                <St.ProductsListContainer>
-                  {sortedUsedItemResults
-                    ?.slice(
-                      0,
-                      showAllProducts ? sortedUsedItemResults.length : 5
-                    )
-                    .map((item) => (
-                      <St.ProductsCardContainer
-                        key={item.id}
-                        onClick={() => naviagate(`/products/detail/${item.id}`)}
-                      >
-                        <St.CardImageWrapper>
-                          {item.isSell === true ? (
-                            <St.IsSellProducts>
-                              <St.SoldOut>판매완료</St.SoldOut>
-                            </St.IsSellProducts>
-                          ) : (
-                            <div></div>
-                          )}
-                          {item.image_url !== null &&
-                          item.image_url !== undefined ? (
-                            <St.CardImage
-                              src={item.image_url[0]}
-                              alt="상품 이미지"
-                            />
-                          ) : (
-                            <div></div>
-                          )}
-                        </St.CardImageWrapper>
-                        {[item.quality].map((condition) => (
-                          <St.CardQuality $quality={condition} key={condition}>
-                            {condition}
-                          </St.CardQuality>
-                        ))}
-                        <St.CardTitle>{item.title}</St.CardTitle>
-                        <St.LikesWrapper>
-                          <St.CardPrice>
-                            {item.price.toLocaleString('kr-KO')}원
-                          </St.CardPrice>
-                          <St.Likes>♥ {item.likes}</St.Likes>
-                        </St.LikesWrapper>
-                      </St.ProductsCardContainer>
-                    ))}
-                </St.ProductsListContainer>
+                {/* productsCard 컴포넌트 props넘기기 */}
+
+                {isLoading ? (
+                  <ProductsSkeleton count={5} />
+                ) : (
+                  <ProductsCard posts={productsData} />
+                )}
               </ProductsProtecter>
             )}
           </UsedItemResultsContainer>
@@ -335,10 +269,13 @@ const SearchResults: React.FC = () => {
             {isMobile && showClickedList && (
               <CommunityList posts={sortedCommunityResults} />
             )}
-            {!isMobile && (
-              // 커뮤니티 데스크탑
-              <CommunityList posts={slicedCommunityResults} />
-            )}
+            {!isMobile &&
+              (isLoading ? (
+                // 커뮤니티 데스크탑
+                <SkeletonCommunityCard cards={6} />
+              ) : (
+                <CommunityList posts={slicedCommunityResults} />
+              ))}
           </CommunityResultsContainer>
         </ResultListContainer>
       </SearchResultsContainer>
@@ -350,12 +287,12 @@ export default SearchResults;
 
 const SearchResultsContainer = styled.div`
   display: flex;
-  width: 144rem;
+  max-width: 144rem;
   flex-direction: column;
   min-height: 100vh;
   margin: 0 auto;
   margin-bottom: 15rem;
-  @media screen and (max-width: 1300px) {
+  /* @media screen and (max-width: 1300px) {
     width: 100%;
     max-width: 130rem;
   }
@@ -381,7 +318,7 @@ const SearchResultsContainer = styled.div`
     width: 100%;
     max-width: 34.9rem;
     min-width: 32rem;
-  }
+  } */
 `;
 
 const SearchResultsCountContainer = styled.div`
@@ -432,11 +369,11 @@ const ProductsProtecter = styled.div`
 
 const UsedItemResultsContainer = styled.div`
   margin-top: 2rem;
-  width: 111.6rem;
+  width: 77.5%;
   margin: 0 auto;
   margin-bottom: 4rem;
   @media screen and (max-width: 768px) {
-    width: 100%;
+    width: 93%;
     min-width: 32rem;
     margin-top: 2rem;
   }
@@ -713,14 +650,14 @@ const ProductsCardQuality = styled.h1<QualityProps>`
 const CommunityResultsContainer = styled.div<{
   showClickedList: boolean;
 }>`
-  width: 111.6rem;
+  width: 77.5%;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   margin: 0 auto;
   margin-top: 8rem;
   @media screen and (max-width: 768px) {
-    width: 100%;
+    width: 93%;
     margin-bottom: ${({ showClickedList }) => (showClickedList ? 0 : '2rem')};
     padding: 0 1rem;
   }

@@ -11,7 +11,7 @@ const StModalContainer = styled.div`
 
   @media screen and (max-width: 768px) {
     width: 90%;
-    top: 55%;
+    top: 40%;
     left: 50%;
   }
 `;

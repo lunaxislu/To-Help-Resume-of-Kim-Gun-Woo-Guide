@@ -2,18 +2,16 @@ import styled from 'styled-components';
 
 export const FooterContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   height: 23.8rem;
   margin-top: 15rem;
   align-items: center;
-  font-size: var(--fontSize-body);
-  font-weight: var(--fontWeight-regular);
-  color: var(--9-gray);
+  padding: 3rem auto;
   background-color: rgba(160, 224, 214, 0.3);
-
   @media screen and (max-width: 768px) {
     height: 15rem;
-    margin-top: 8rem;
+    margin-top: 5rem;
+    padding: 1rem auto;
   }
 `;
 
@@ -32,15 +30,16 @@ export const FooterArea = styled.div`
 
 export const Logo = styled.div`
   img {
-    max-width: 100%;
-    width: 33.3rem;
+    width: fit-content;
     height: 5.4rem;
     cursor: pointer;
     user-select: none;
 
     @media screen and (max-width: 768px) {
-      width: 4.7rem;
-      height: 1.1rem;
+      width: 25rem;
+    }
+    @media screen and (max-width: 440px) {
+      width: 23rem;
     }
   }
 `;
@@ -48,17 +47,22 @@ export const Logo = styled.div`
 export const TextArea = styled.div`
   margin-top: 2.3rem;
   line-height: 1.5;
+  padding-left: 3rem;
+  font-size: var(--fontSize-H4);
   @media screen and (max-width: 768px) {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    font-weight: var(--fontWeight-regular);
-  }
-
-  span {
-    cursor: pointer;
-    user-select: none;
-    &:hover {
-      color: #047d86;
+    margin: 0.5rem;
+    padding-left: 3rem;
+    font-size: 1.4rem;
+    & span {
+      cursor: pointer;
+      user-select: none;
+      &:hover {
+        color: #047d86;
+      }
     }
+  }
+  @media screen and (max-width: 440px) {
+    font-size: 1.2rem;
+    padding-left: 1rem;
   }
 `;

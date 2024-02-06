@@ -27,6 +27,9 @@ export const ProductsListContainer = styled.div`
     grid-template-columns: repeat(2, 1fr);
     margin-top: 4rem;
   }
+  @media screen and (max-width: 380px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export const ProductsCardContainer = styled.div`
