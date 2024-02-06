@@ -44,6 +44,8 @@ export default function ChatRoom() {
       .select('*')
       .order('last_updated', { ascending: false });
 
+    if (AllRoomFetchError) console.log('fetch rooms Failed');
+
     if (allRooms) {
       const myRoom = allRooms.filter((room: RoomType) => {
         return room.participants.some(
@@ -129,7 +131,6 @@ export default function ChatRoom() {
 
   useEffect(() => {
     if (curUser) {
-      getChatRooms();
     }
   }, [curUser]);
 
@@ -145,6 +146,7 @@ export default function ChatRoom() {
   useEffect(() => {
     if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
     if (!checkDevice(window.navigator.userAgent)) setIsMobile(false);
+    getChatRooms();
   }, []);
 
   useEffect(() => {
