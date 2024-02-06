@@ -21,8 +21,8 @@ const handleFileUpload = async (files: FileList) => {
         transform: {
           width: 300,
           height: 300,
-          format: 'origin',
-          quality: 50
+          quality: 50,
+          resize: 'contain'
         }
       }).data.publicUrl;
     }
