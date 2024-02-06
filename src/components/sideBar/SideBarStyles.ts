@@ -75,6 +75,8 @@ const StMenuButtons = styled.button<ButtonProps>`
   outline: none;
   background-color: white;
   color: #18b3bc;
+  font-size: var(--fontSize-H3);
+  line-height: 2.5;
   font-weight: 600;
   position: absolute;
   margin-top: 3.6rem;

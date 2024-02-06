@@ -244,7 +244,7 @@ const SearchInputBar = styled.input`
     margin-left: 1rem;
     left: 40%;
     transform: translateX(-50%);
-    width: 80%;
+    width: 85%;
     /* background-color: var(--2-gray); */
     border: none;
     border-radius: 0;

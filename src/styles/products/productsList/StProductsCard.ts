@@ -25,8 +25,9 @@ export const ProductsListContainer = styled.div`
   }
   @media screen and (max-width: 520px) {
     grid-template-columns: repeat(2, 1fr);
+    margin-top: 4rem;
   }
-  @media screen and (max-width: 380px) {
+  @media screen and (max-width: 280px) {
     grid-template-columns: repeat(1, 1fr);
   }
 `;
@@ -50,8 +51,8 @@ export const ProductsCardContainer = styled.div`
   @media screen and (max-width: 768px) {
     padding: 1rem;
     &:hover {
-    transform: translateY(-0.6rem);
-  }
+      transform: translateY(-0.6rem);
+    }
   }
 `;
 
@@ -65,7 +66,6 @@ export const CardImageWrapper = styled.div`
     margin-bottom: 0.6rem;
   }
 `;
-
 
 export const CardImage = styled.img`
   object-fit: cover;
@@ -100,7 +100,7 @@ export const CardQuality = styled.li<QualityProps>`
       `;
     }
   }}
-  
+
   @media screen and (max-width: 768px) {
     padding: 0 0.5rem;
     font-size: 1rem;

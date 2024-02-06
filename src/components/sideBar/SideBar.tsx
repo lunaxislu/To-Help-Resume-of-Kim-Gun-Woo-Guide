@@ -1,11 +1,4 @@
-import React, {
-  Component,
-  JSXElementConstructor,
-  MouseEvent,
-  useEffect,
-  useRef,
-  useState
-} from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import * as St from '../../styles/headerStyle/HeaderStyle';
 import {
@@ -17,12 +10,12 @@ import {
 import SearchBar from '../layout/header/SearchBar';
 import { SideBarProps } from './SideBarTypes';
 import { supabase } from '../../api/supabase/supabaseClient';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
 import { IoPeopleSharp, IoPersonSharp } from 'react-icons/io5';
 import { BiEdit, BiWon } from 'react-icons/bi';
 import { BsChatDotsFill } from 'react-icons/bs';
 import { FaBell } from 'react-icons/fa';
 import { LuPalette } from 'react-icons/lu';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
 
 const SideBar = ({
   notification,
