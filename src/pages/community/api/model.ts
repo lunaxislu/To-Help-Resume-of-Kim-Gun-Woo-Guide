@@ -68,6 +68,7 @@ export type InsertObject = {
 export type CommuListProps = {
   posts: Post[] | undefined;
 };
+
 export type FormValues = {
   title: string;
   category: string;

@@ -10,7 +10,7 @@ export const StProfileContainer = styled.div`
   gap: 5rem;
 
   @media screen and (max-width: 1024px) {
-    padding: 1.5rem;
+    padding: 0 1.5rem;
   }
 `;
 
@@ -93,24 +93,26 @@ export const StNicknameWrapper = styled.div`
     display: flex;
     flex-direction: row;
     gap: 1rem;
-  }
-
-  & input {
-    background: var(--opc-30);
-    outline: none;
-    border: none;
-    border-radius: 8px;
-    padding: 0.8rem 1.6rem;
-    color: var(--11-gray);
-
-    &:focus {
-      border: 1px solid var(--opc-90);
-    }
+    font-size: var(--fontSize-H4);
 
     & h2 {
-      font-size: var(--fontSize-H2);
       font-weight: var(--fontWeight-semiBold);
       text-align: center;
+      font-size: var(--fontSize-H4);
+    }
+
+    & input {
+      background: var(--opc-30);
+      outline: none;
+      border: none;
+      border-radius: 8px;
+      padding: 0.8rem 1.6rem;
+      color: var(--11-gray);
+      font-size: var(--fontSize-H4);
+
+      &:focus {
+        border: 1px solid var(--opc-90);
+      }
     }
   }
 
@@ -135,11 +137,12 @@ export const StSettingMenu = styled.ul`
   text-align: center;
   border-radius: 10px;
   color: var(--black);
+  white-space: nowrap;
 
   & li {
     cursor: pointer;
     padding: 1rem 1.2rem;
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-H5);
 
     &:last-child {
       color: #ea4949;
@@ -156,6 +159,10 @@ export const StCancelAndSaveWrapper = styled.div`
   align-items: center;
   gap: 1rem;
   margin-left: 1rem;
+
+  & button {
+    font-size: var(--fontSize-body);
+  }
 `;
 
 export const StContentButtonWrapper = styled.div`
