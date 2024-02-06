@@ -13,7 +13,7 @@ import { GrPrevious } from 'react-icons/gr';
 import {
   ClearInputButton,
   SearchBtn,
-  SearchBtnImg,
+  SearchIcon,
   SearchInputBar,
   SearchInputContainer,
   StMagnifyGlass
@@ -153,7 +153,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         <SearchBtn onClick={handleSearch}>
           <StMagnifyGlass />
 
-          <SearchBtnImg src={'/assets/searchbtn.png'} alt="searchbutton" />
+          <SearchIcon />
         </SearchBtn>
       </div>
       {isMobile ? (

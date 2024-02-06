@@ -44,6 +44,8 @@ export default function ChatRoom() {
       .select('*')
       .order('last_updated', { ascending: false });
 
+    if (AllRoomFetchError) console.log('fetch rooms Failed');
+
     if (allRooms) {
       const myRoom = allRooms.filter((room: RoomType) => {
         return room.participants.some(

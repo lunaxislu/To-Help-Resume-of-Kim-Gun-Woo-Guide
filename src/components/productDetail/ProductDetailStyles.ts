@@ -51,13 +51,25 @@ const CarouselContainer = styled.div`
 
 const StSlider = styled(Slider)`
   width: 100%;
+  max-width: 100%;
   height: 100%;
 `;
 
 const CarouselImage = styled.img`
-  object-fit: contain;
+  object-fit: cover;
   width: 100%;
-  height: 75vh;
+  height: 47vh;
+
+  @media screen and (max-width: 768px) {
+    height: 47vh;
+    max-height: 70rem;
+  }
+`;
+const PageCarouselImage = styled.img`
+  object-fit: cover;
+  width: 100%;
+  height: 75rem;
+  max-height: 100%;
 
   @media screen and (max-width: 768px) {
     height: 50vh;
@@ -270,5 +282,6 @@ export {
   StQualityInfoBox,
   StMapButton,
   StPriceContainer,
-  StShippingCostInfoBox
+  StShippingCostInfoBox,
+  PageCarouselImage
 };

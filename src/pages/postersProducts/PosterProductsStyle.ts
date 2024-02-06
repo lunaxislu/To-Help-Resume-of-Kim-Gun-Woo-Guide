@@ -53,7 +53,7 @@ const StEndPoint = styled.div`
 
   @media screen and (max-width: 768px) {
     font-size: 2rem;
-    bottom: -1.4%;
+    bottom: -2%;
   }
 `;
 

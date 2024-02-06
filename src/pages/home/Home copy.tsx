@@ -79,7 +79,7 @@ const Home = () => {
   };
 
   // 중고목록 map 돌리기 위한 변수 선언(하빈 추가)
-  const productsPosts = usedItems.slice(0, isMobile ? 6 : 10)
+  const productsPosts = usedItems.slice(0, isMobile ? 6 : 10);
 
   return (
     <HomeContainer>
