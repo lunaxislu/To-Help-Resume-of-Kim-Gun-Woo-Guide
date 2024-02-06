@@ -1,4 +1,4 @@
-import { MouseEvent, SetStateAction, useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { supabase } from '../api/supabase/supabaseClient';
 import SearchBar from '../components/layout/header/SearchBar';
