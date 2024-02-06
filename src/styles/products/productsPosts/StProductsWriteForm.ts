@@ -450,6 +450,7 @@ export const WriteBtn = styled.button`
   width: 10.3rem;
   height: 4.5rem;
   font-size: var(--fontSize-H4);
+  font-weight: var(--fontWeight-bold);
   &:hover {
     cursor: pointer;
   }

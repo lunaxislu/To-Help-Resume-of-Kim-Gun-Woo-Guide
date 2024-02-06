@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import * as St from '../../styles/mainStyle/MainStyle';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { useQuery } from 'react-query';
 import { fetchData } from '../../components/main/DataFetch';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa6';
-import CommunityList from '../../components/community/CommunityList';
-import ProductsCard from '../../components/prducts/ProductsCard';
+import * as St from '../../styles/mainStyle/MainStyle';
 import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
 import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
 import { Post } from '../community/api/model';
@@ -16,6 +14,14 @@ type UsedItemsCountData = {
     length: number;
   } | null;
 };
+
+const ProductsCard = React.lazy(
+  () => import('../../components/prducts/ProductsCard')
+);
+const CommunityList = React.lazy(
+  () => import('../../components/community/CommunityList')
+);
+
 const Home = () => {
   const navigate = useNavigate();
 
@@ -171,10 +177,10 @@ const Home = () => {
             </St.ShowLink>
           </St.TitleWrapper>
           {/* 하빈 수정 */}
-          {isLoading ? (
-            <ProductsSkeleton count={10} />
-          ) : (
-            <ProductsCard posts={productsPosts} />
+          {isLoading ? null : (
+            <Suspense fallback={<ProductsSkeleton count={10} />}>
+              <ProductsCard posts={productsPosts} />
+            </Suspense>
           )}
         </St.ContentsContainer>
 
@@ -187,10 +193,10 @@ const Home = () => {
             </St.ShowLink>
           </St.TitleWrapper>
           {/* <ComunityWrapper></ComunityWrapper> */}
-          {isLoading ? (
-            <SkeletonCommunityCard cards={6} />
-          ) : (
-            <CommunityList posts={sortedCommunityResults} />
+          {isLoading ? null : (
+            <Suspense fallback={<SkeletonCommunityCard cards={6} />}>
+              <CommunityList posts={sortedCommunityResults} />
+            </Suspense>
           )}
         </St.ContentsContainer>
       </St.AllCardContainer>

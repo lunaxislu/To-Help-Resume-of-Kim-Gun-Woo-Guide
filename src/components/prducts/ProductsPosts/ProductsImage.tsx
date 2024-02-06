@@ -44,7 +44,13 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
         console.log('파일이 업로드 되지 않습니다.', error);
         return;
       }
-      const res = supabase.storage.from('images').getPublicUrl(data.path);
+      const res = supabase.storage.from('images').getPublicUrl(data.path, {
+        transform: {
+          width: 500,
+          resize: 'contain',
+          format: 'origin'
+        }
+      });
       setFiles((prevFiles) => [file, ...prevFiles]);
         setUploadedFileUrl((prev: any) => [...prev, res.data.publicUrl]);
     } catch (error) {
