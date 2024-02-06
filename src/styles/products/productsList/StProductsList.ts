@@ -62,6 +62,7 @@ export const PostsWriteBtn = styled.div`
   align-items: center;
   border-radius: 5rem;
   gap: 0.5rem;
+  font-weight: var(--fontWeight-bold);
   background-color: var(--opc-20);
   white-space: nowrap;
   &:hover {
