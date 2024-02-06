@@ -22,7 +22,7 @@ export const StFormContainer = styled.div`
   background: var(--drop);
   padding: 1.5rem 3rem;
   text-align: right;
-  z-index: 2;
+  z-index: 3;
   animation: ${StSlideUp} 0.5s ease;
   @media screen and (max-width: 768px) {
     width: 100%;

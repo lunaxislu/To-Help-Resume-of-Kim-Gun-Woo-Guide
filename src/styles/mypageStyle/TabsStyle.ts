@@ -13,7 +13,7 @@ export const StTabsContainer = styled.ul`
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     overflow-x: scroll;
     padding: 1rem;
     &::-webkit-scrollbar {
@@ -25,9 +25,9 @@ export const StTabsContainer = styled.ul`
 interface TabProps {
   $activetab: boolean;
 }
+
 export const StTab = styled.li<TabProps>`
   cursor: pointer;
   font-weight: 'bold';
-
   color: ${(props) => (props.$activetab ? 'var(--opc-100)' : 'var(--black)')};
 `;
