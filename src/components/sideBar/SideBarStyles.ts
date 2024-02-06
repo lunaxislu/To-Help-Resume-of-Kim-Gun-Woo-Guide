@@ -74,9 +74,9 @@ const StMenuButtons = styled.button<ButtonProps>`
   transform: translate(-50%, -50%);
   z-index: -1;
   animation-name: ${SlideDown};
-  animation-duration: 0.15s;
+  animation-duration: 0.2s;
   animation-fill-mode: backwards;
-  animation-delay: ${(props) => 0.06 * props.$index}s;
+  animation-delay: ${(props) => 0.03 * props.$index}s;
   cursor: pointer;
   transition: all 0.2s ease;
   opacity: 0.6;
@@ -85,6 +85,7 @@ const StMenuButtons = styled.button<ButtonProps>`
     opacity: 1;
     width: 100px;
     border-radius: 5px;
+    font-size: 1.8rem;
   }
 `;
 
