@@ -7,10 +7,11 @@ export const StProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  gap: 5rem;
+  gap: 4rem;
 
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 768px) {
     padding: 0 1.5rem;
+    gap: 2rem;
   }
 `;
 

@@ -9,13 +9,14 @@ export const StTabsContainer = styled.ul`
   gap: 3.5rem;
   white-space: nowrap;
 
-  @media screen and (max-width: 1024px) {
-    width: 100%;
+  @media screen and (max-width: 768px) {
+    width: 93%;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     overflow-x: scroll;
     padding: 1rem;
+    margin: 2rem 0;
     &::-webkit-scrollbar {
       display: none; /* 스크롤 막대 숨기기 */
     }
