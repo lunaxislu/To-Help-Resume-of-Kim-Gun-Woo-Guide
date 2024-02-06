@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Home from '../pages/home/Home';
 import Login from '../pages/login/Login';
 import SearchResults from '../pages/searchResults/SearchResults';
+import ChatRoom from '../pages/chat/ChatRoom';
 import { GlobalStyles } from '../styles/GlobalStyle';
 import Layout from '../layouts/Layout';
 
@@ -25,7 +26,6 @@ const PrivateLayout = React.lazy(
   () => import('../layouts/PrivateLayout/PrivateLayout')
 );
 const ProductsList = React.lazy(() => import('../pages/products/ProductsList'));
-const ChatRoom = React.lazy(() => import('../pages/chat/ChatRoom'));
 const MyPage = React.lazy(() => import('../pages/mypage/MyPage'));
 const WritePost = React.lazy(() => import('../pages/community/WritePost'));
 const CommuDetail = React.lazy(() => import('../pages/community/CommuDetail'));
