@@ -49,7 +49,9 @@ const SearchResults: React.FC = () => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [clickMenu, setClickMenu] = useState('최신순');
-  const [selectedTab, setSelectedTab] = useState('중고물품');
+  const [selectedTab, setSelectedTab] = useState<'중고물품' | '커뮤니티'>(
+    '중고물품'
+  );
   const [showAllProducts, setShowAllProducts] = useState(false);
   const [showAllCommunity, setShowAllCommunity] = useState(false);
 
@@ -118,12 +120,6 @@ const SearchResults: React.FC = () => {
       window.removeEventListener('resize', checkWindowSize);
     };
   }, []);
-  useEffect(() => {
-    // 768px 이하에서 최초 렌더링 시에는 ProductsCount가 디폴트
-    if (window.innerWidth <= 768) {
-      setSelectedTab('ProductsCount');
-    }
-  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -155,6 +151,17 @@ const SearchResults: React.FC = () => {
 
   const usedItemCount = usedItemResults.length;
   const communityCount = communityResults.length;
+
+  useEffect(() => {
+    // 768px 이하에서 최초 렌더링 시에는 ProductsCount가 디폴트
+    if (window.innerWidth <= 768) {
+      if (usedItemCount === 0 && communityCount !== 0) {
+        setSelectedTab('중고물품');
+      } else {
+        setSelectedTab('커뮤니티');
+      }
+    }
+  }, [usedItemCount, communityCount]);
 
   const handleText = useCallback((content: string): string => {
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
@@ -198,7 +205,9 @@ const SearchResults: React.FC = () => {
                   </ProductsCount>
                   <CommunityCount
                     showClickedList={showClickedList}
-                    onClick={() => handleTabClick('커뮤니티')}
+                    onClick={() => {
+                      handleTabClick('커뮤니티');
+                    }}
                   >
                     커뮤니티({communityCount})
                   </CommunityCount>

@@ -103,7 +103,7 @@ const Home = () => {
   return (
     <HomeContainer>
       <BannerContainer>
-        <MainBannerpic src="/assets/MainBannerPic.jpg" alt="메인배너사진" />
+        <MainBannerpic src="/assets/mainbannerpicture.png" alt="메인배너사진" />
 
         <ButtonContainer>
           <BannerWrapper>
