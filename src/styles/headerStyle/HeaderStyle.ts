@@ -405,9 +405,9 @@ export const StNotiContainer = styled.div`
   display: -webkit-flex;
   display: flex;
   flex-direction: column;
-  position: absolute;
   padding-top: 2rem;
-  bottom: 24%;
+  position: fixed;
+  top: 69.7%;
   left: 10%;
   z-index: 3;
   transition: all 0.3s ease;

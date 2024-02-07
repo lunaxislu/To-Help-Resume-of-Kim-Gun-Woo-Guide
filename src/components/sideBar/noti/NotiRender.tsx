@@ -15,6 +15,7 @@ type NotiRenderProps = {
   setNotification: React.Dispatch<SetStateAction<any[]>>;
   setShowNoti: React.Dispatch<SetStateAction<boolean>>;
   setIsShow: React.Dispatch<SetStateAction<boolean>>;
+  setNewNotiExists: React.Dispatch<SetStateAction<boolean>>;
 };
 
 const NotiRender = ({
@@ -25,7 +26,8 @@ const NotiRender = ({
   deleteAllNotification,
   setNotification,
   setShowNoti,
-  setIsShow
+  setIsShow,
+  setNewNotiExists
 }: NotiRenderProps) => {
   return (
     <>
@@ -53,7 +55,9 @@ const NotiRender = ({
             })}
             <StNoticeButtonContainer>
               <StNoticeDeleteBtn
-                onClick={() => deleteAllNotification({ setNotification })}
+                onClick={() =>
+                  deleteAllNotification({ setNotification, setNewNotiExists })
+                }
               >
                 알림 지우기
               </StNoticeDeleteBtn>
@@ -74,7 +78,9 @@ const NotiRender = ({
           </StNotiItem>
           <StNoticeButtonContainer>
             <StNoticeDeleteBtn
-              onClick={() => deleteAllNotification({ setNotification })}
+              onClick={() =>
+                deleteAllNotification({ setNotification, setNewNotiExists })
+              }
             >
               알림 지우기
             </StNoticeDeleteBtn>

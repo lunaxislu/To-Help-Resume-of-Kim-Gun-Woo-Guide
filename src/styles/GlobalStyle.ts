@@ -69,12 +69,16 @@ export const GlobalStyles = createGlobalStyle`
     src: url('/fonts/DalseoHealingMedium.woff') format('woff');
     font-weight: 500;
     font-style: normal;
+    font-display: fallback;
+    fallback: sans-serif;
 }
 @font-face {
     font-family: 'DalseoHealing-Bold';
     src: url('/fonts/DalseoHealingBold.woff') format('woff');
     font-weight: 700;
     font-style: normal;
+    font-display: fallback;
+    fallback: sans-serif;
 }
 
 html, body, div, span, applet, object, iframe,
@@ -120,7 +124,7 @@ body {
 
 
     //
-    font-family: 'DalseoHealing-Medium';
+    font-family: 'DalseoHealing-Medium', sans-serif;
     color: var(--black);
     overflow-x: hidden;
     @media screen and (max-width: 768px){
@@ -130,10 +134,10 @@ body {
 button,
 input,
 textarea {
-    font-family: 'DalseoHealing-Medium';
+    font-family: 'DalseoHealing-Medium', sans-serif;
 }
 input {
-    font-family: 'DalseoHealing-Medium';
+    font-family: 'DalseoHealing-Medium', sans-serif;
 
 }
 input {
