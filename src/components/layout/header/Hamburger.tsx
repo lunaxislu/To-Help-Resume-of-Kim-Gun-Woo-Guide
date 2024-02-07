@@ -90,6 +90,7 @@ const Hamburger: React.FC<HamburgerMenuProps> = ({
   useEffect(() => {
     getSession();
   }, []);
+
   return (
     <HamburgerModalContainer $isOpen={isOpen}>
       <CloseHamburger>

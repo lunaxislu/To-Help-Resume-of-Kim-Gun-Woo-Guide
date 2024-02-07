@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IoIosArrowDropupCircle } from "react-icons/io";
+import { IoIosArrowDropupCircle } from 'react-icons/io';
 import styled from 'styled-components';
 
 const ScrollTopButton = () => {
@@ -21,9 +21,7 @@ const ScrollTopButton = () => {
       behavior: 'smooth'
     });
   };
-  return (
-    <TopButton onClick={scrollToTop}/>
-  );
+  return <TopButton onClick={scrollToTop} />;
 };
 
 const TopButton = styled(IoIosArrowDropupCircle)`
@@ -38,13 +36,16 @@ const TopButton = styled(IoIosArrowDropupCircle)`
   color: var(--opc-80);
   width: 8rem;
   height: 8rem;
+  &:hover {
+    color: var(--opc-100);
+  }
   @media screen and (max-width: 768px) {
     width: 3.5rem;
     height: 3.5rem;
     padding: 0;
     right: 3%;
   }
-`
+`;
 const TopButton2 = styled.button`
   position: fixed;
   bottom: 6%;

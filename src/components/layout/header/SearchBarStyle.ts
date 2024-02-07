@@ -79,7 +79,7 @@ const SearchInputBar = styled.input`
   }
   @media screen and (max-width: 460px) {
     position: relative;
-    margin-left: 1rem;
+    margin-left: 2rem;
     left: 40%;
     transform: translateX(-50%);
     width: 90%;
