@@ -26,7 +26,7 @@ const SkeletonCommunityCard: React.FC<SkeletonCommunityCardProps> = ({
         .fill(0)
         .map((_, index) => (
           <div key={index}>
-            <SkeletonTheme baseColor="#f8f8f8" highlightColor="#f8f8f8">
+            <SkeletonTheme baseColor="#eaedee" highlightColor="#fafeff">
               <StPostSkeletonContainer>
                 <TitleSkeleton />
 

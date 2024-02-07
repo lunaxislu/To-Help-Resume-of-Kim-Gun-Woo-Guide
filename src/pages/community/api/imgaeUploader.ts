@@ -34,13 +34,12 @@ export const quillImageHandler = (
       } else {
         console.log('이미지가 성공적으로 업로드되었습니다:', data);
 
-        const response = await supabase.storage
+        const response = supabase.storage
           .from('images')
           .getPublicUrl(`quill_imgs/${fileNewName}.png`, {
             transform: {
-              width: 500,
-              height: 600,
-              resize: 'cover',
+              width: 400,
+              resize: 'contain',
               format: 'origin'
             }
           });

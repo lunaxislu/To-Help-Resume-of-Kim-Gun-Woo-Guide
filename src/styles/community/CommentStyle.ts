@@ -244,7 +244,7 @@ export const CommentContainer = styled.div`
     margin-top: 2.5rem;
   }
   & input {
-    background-color: var(--7-gray);
+    background-color: var(--opc-30);
     border: none;
     height: 3.8rem;
     border-radius: 1rem;

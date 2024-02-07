@@ -37,7 +37,7 @@ const WriteLayout: React.FC<WriteLayoutProps> = ({
     data: posts,
     isLoading,
     isError
-  } = useQuery(['posts', paramId], () => fetchDetailPost(paramId), {
+  } = useQuery(['posts_detail', paramId], () => fetchDetailPost(paramId), {
     staleTime: 30000
   });
 

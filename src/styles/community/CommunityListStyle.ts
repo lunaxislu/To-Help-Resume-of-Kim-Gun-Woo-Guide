@@ -73,8 +73,7 @@ export const Posts = styled.li<Postcolor>`
     overflow: hidden;
     width: 100%;
     max-width: 40rem;
-
-    height: 1.8rem;
+    height: 2.2rem;
   }
   @media screen and (max-width: 768px) {
     height: 13.3rem;
@@ -82,7 +81,7 @@ export const Posts = styled.li<Postcolor>`
     max-width: none;
     & h2 {
       font-size: var(--fontSize-H5);
-      height: 1.4rem;
+      height: 1.8rem;
     }
   }
 `;

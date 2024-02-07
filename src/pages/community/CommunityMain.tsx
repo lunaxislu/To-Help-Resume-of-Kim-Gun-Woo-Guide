@@ -32,7 +32,7 @@ const CommunityMain: React.FC = () => {
         if (lastPage.length < 6) return undefined;
         return pages.length + 1;
       },
-      staleTime: 300000
+      staleTime: 30000
     }
   );
 

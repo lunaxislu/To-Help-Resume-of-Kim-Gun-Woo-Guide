@@ -1,5 +1,7 @@
 import React from 'react';
 import { ProfileObject, ReplyObject } from '../../pages/community/api/model';
+import { setIsOpenForm } from '../../redux/modules/openForm';
+import { useAppDispatch } from '../../redux/reduxHooks/reduxBase';
 import * as St from '../../styles/community/CommentStyle';
 import parseDate from '../../util/getDate';
 type ReplyContentProps = {
@@ -25,6 +27,10 @@ const ReplyContent: React.FC<ReplyContentProps> = ({
   deleteComment
 }) => {
   const parseTime = parseDate(comment.created_at);
+  const dispatch = useAppDispatch();
+  const handleOpenForm = () => {
+    dispatch(setIsOpenForm());
+  };
   return (
     <St.LeftCommentSide>
       <St.LeftSide>
@@ -54,7 +60,7 @@ const ReplyContent: React.FC<ReplyContentProps> = ({
               </>
             )
           ) : (
-            <p>신고</p>
+            <p onClick={handleOpenForm}>신고</p>
           )}
         </St.UpdateBtnContainer>
       </St.LeftSide>

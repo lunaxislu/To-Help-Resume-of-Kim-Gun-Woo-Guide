@@ -18,6 +18,11 @@ import {
   useUpdatePostMutation,
   useUpdateReplyMutation
 } from '../../pages/community/hook/useQuery';
+import {
+  useAppDispatch,
+  useAppSelector
+} from '../../redux/reduxHooks/reduxBase';
+import QnAFrom from '../mypage/Profile/QnAFrom';
 import ReplyForm from './ReplyForm';
 import ReplyList from './ReplyList';
 const Reply: React.FC<CommentProps> = ({
@@ -43,7 +48,8 @@ const Reply: React.FC<CommentProps> = ({
   const [isFocused, setIsFocused] = useState(false);
   const [replyingToComment, setReplyingToComment] =
     useState<ReplyObject | null>(null);
-
+  const { isOpen } = useAppSelector((state) => state.openForm);
+  const dispatch = useAppDispatch();
   //유저 데이터 가져오기
   const queryClient = useQueryClient();
   useEffect(() => {
@@ -73,7 +79,7 @@ const Reply: React.FC<CommentProps> = ({
     data: posts,
     isLoading,
     isError
-  } = useQuery(['post', paramId], () => fetchDetailPost(paramId));
+  } = useQuery(['posts_detail', paramId], () => fetchDetailPost(paramId));
 
   const navigate = useNavigate();
 
@@ -179,17 +185,18 @@ const Reply: React.FC<CommentProps> = ({
   };
 
   const deleteComment = async (commentId: number) => {
-    if (window.confirm('해당 댓글을 삭제하시겠습니까?')) {
-      deleteMutation.mutate(commentId, {
-        onSuccess: () => {
-          queryClient.invalidateQueries('comments');
-          setEditedCommentIndex(null);
-        }
-      });
-    } else {
-      alert('삭제취소');
-    }
+    // if (window.confirm('해당 댓글을 삭제하시겠습니까?')) {
+    deleteMutation.mutate(commentId, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['comments', paramId]);
+        setEditedCommentIndex(null);
+      }
+    });
+    // } else {
+    //   alert('삭제취소');
+    // }
   };
+
   const handleReplyClick = (comment: ReplyObject) => {
     setReplyingToComment(comment);
     setParentId(comment.id);
@@ -267,8 +274,9 @@ const Reply: React.FC<CommentProps> = ({
         }
         childComment={childComment}
       />
+      {isOpen && <QnAFrom />}
     </St.Container>
   );
 };
 
-export default React.memo(Reply);
+export default Reply;

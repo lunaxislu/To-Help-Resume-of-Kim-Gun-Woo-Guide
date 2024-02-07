@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import * as St from '../../styles/searchresults/SearchResultsStyle';
-import { setSearchResults } from '../../redux/modules/searchSlice';
 import { FaArrowDown } from 'react-icons/fa6';
 import { FiArrowUp } from 'react-icons/fi';
-import { researchItems, ResearchResults } from './researchItem';
-import Dropdown from '../../styles/searchresults/Dropdown';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 import CommunityList from '../../components/community/CommunityList';
-import { RootState } from '../../redux/store/store';
 import ProductsCard from '../../components/prducts/ProductsCard';
-import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
 import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
+import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
+import { setSearchResults } from '../../redux/modules/searchSlice';
+import { RootState } from '../../redux/store/store';
+import Dropdown from '../../styles/searchresults/Dropdown';
+import * as St from '../../styles/searchresults/SearchResultsStyle';
+import { ResearchResults, researchItems } from './researchItem';
 
 interface ListCount {
   usedItemCount: number;

@@ -1,12 +1,11 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { supabase } from '../../api/supabase/supabaseClient';
-import { useQuery } from 'react-query';
-import { fetchData } from '../../components/main/DataFetch';
-import { useNavigate } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa6';
-import * as St from '../../styles/mainStyle/MainStyle';
-import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
+import { useQuery } from 'react-query';
+import { supabase } from '../../api/supabase/supabaseClient';
+import { fetchData } from '../../components/main/DataFetch';
 import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
+import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
+import * as St from '../../styles/mainStyle/MainStyle';
 import { Post } from '../community/api/model';
 type UsedItemsCountData = {
   count: number | null;

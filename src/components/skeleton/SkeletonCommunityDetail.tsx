@@ -16,7 +16,7 @@ const SkeletonCommunityDetail: React.FC = () => {
                 {/* <Skeleton width={70} height={70} /> */}
                 <StPostSkeletonContentWrapper>
                   <Skeleton width={300} />
-                  <Skeleton width={400} height={300} />
+                  <Skeleton width={300} height={200} />
                 </StPostSkeletonContentWrapper>
               </StPostSkeletonWrapper>
 
