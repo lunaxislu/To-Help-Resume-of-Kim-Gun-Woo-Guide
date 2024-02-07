@@ -26,9 +26,11 @@ const Layout = () => {
 
   // 유저 데이터를 가져오고 실시간 구독이 실행되도록
   useEffect(() => {
-    getUserData(setCurUser);
-    console.log(1);
-  }, [userID]);
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      getUserData(userId, setCurUser);
+    }
+  }, []);
 
   useEffect(() => {
     // 유저 데이터가 있을 때 실시간 구독이 실행되도록 - 안 그러면 첫 알림이 전역으로 알림이 간다

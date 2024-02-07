@@ -25,13 +25,13 @@ export const getNotificationsFromLocal = (
 };
 
 export const getUserData = async (
+  userId: string,
   setCurUser: React.Dispatch<SetStateAction<CustomUser | null>>
 ) => {
-  const currentUserId = localStorage.getItem('userId');
   const { data: currentUser, error } = await supabase
     .from('user')
     .select('*')
-    .eq('uid', currentUserId);
+    .eq('uid', userId);
 
   // 현재 로그인 유저의 데이터가 있다면
   if (currentUser && currentUser.length > 0) {

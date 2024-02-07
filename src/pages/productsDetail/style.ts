@@ -391,18 +391,22 @@ const StChatList = styled.div`
 `;
 
 const StChatListItem = styled.div`
-  padding: 2rem 1rem;
-
+  padding: 1rem;
+  border-bottom: 0.1px solid var(--opc-100);
   cursor: pointer;
 
   &:hover {
-    color: var(--3-gray);
+    color: white;
     background-color: var(--opc-100);
   }
 `;
 
 const StConfirmSellBtn = styled.button`
+  position: absolute;
+  bottom: 0;
   padding: 1rem;
+  width: 95%;
+  margin: auto;
   background-color: transparent;
   border: none;
   outline: none;
@@ -413,7 +417,7 @@ const StConfirmSellBtn = styled.button`
 
   &:hover {
     background-color: var(--opc-100);
-    color: var(--3-gray);
+    color: white;
   }
 
   span {

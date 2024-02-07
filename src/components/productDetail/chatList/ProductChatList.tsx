@@ -46,31 +46,34 @@ const ProductChatList = ({
     <>
       <St.StSelectChatBg onClick={() => setShowChatList(false)}>
         <St.StChatList onClick={(e) => e.stopPropagation()}>
-          <St.StSellTitle>구매한 사용자를 선택해주세요</St.StSellTitle>
-          {!createdChatList ||
-            (createdChatList.length === 0 && (
-              <St.StNoListText>채팅 내역이 없습니다</St.StNoListText>
-            ))}
-          {createdChatList &&
-            createdChatList?.map((room: RoomType) => {
-              return (
-                <>
-                  <St.StChatListItem
-                    key={room.id}
-                    id={getTargetId(room)}
-                    onClick={(e) => {
-                      handleSetBuyer(e);
-                      handleSelectedUser(e);
-                    }}
-                  >
-                    <div>{getTargetName(room)}</div>
-                  </St.StChatListItem>
-                  <St.StConfirmSellBtn onClick={handleSellComplete}>
-                    <span>{selectedUser}</span> 님에게 판매 완료하기
-                  </St.StConfirmSellBtn>
-                </>
-              );
-            })}
+          <div style={{ height: '100%', overflow: 'scoll' }}>
+            <St.StSellTitle>구매한 사용자를 선택해주세요</St.StSellTitle>
+            {!createdChatList ||
+              (createdChatList.length === 0 && (
+                <St.StNoListText>채팅 내역이 없습니다</St.StNoListText>
+              ))}
+
+            {createdChatList &&
+              createdChatList?.map((room: RoomType) => {
+                return (
+                  <>
+                    <St.StChatListItem
+                      key={room.id}
+                      id={getTargetId(room)}
+                      onClick={(e) => {
+                        handleSetBuyer(e);
+                        handleSelectedUser(e);
+                      }}
+                    >
+                      <div>{getTargetName(room)}</div>
+                    </St.StChatListItem>
+                  </>
+                );
+              })}
+          </div>
+          <St.StConfirmSellBtn onClick={handleSellComplete}>
+            <span>{selectedUser}</span> 님에게 판매 완료하기
+          </St.StConfirmSellBtn>
         </St.StChatList>
       </St.StSelectChatBg>
     </>

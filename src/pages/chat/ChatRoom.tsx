@@ -93,7 +93,6 @@ export default function ChatRoom() {
         setRooms,
         messages
       );
-      getChatRooms();
     }
 
     // 해당 채팅방에 해당하는 메세지를 가져오고
@@ -123,7 +122,6 @@ export default function ChatRoom() {
 
     utilFunctions.getMessages(clicked, setMessages, messages);
     utilFunctions.getUserData(setCurUser);
-    getChatRooms();
 
     // unmount 시 구독 해제하기
     return () => {
@@ -132,8 +130,7 @@ export default function ChatRoom() {
   }, []);
 
   useEffect(() => {
-    if (curUser) {
-    }
+    getChatRooms();
   }, [curUser]);
 
   // 채팅방 로드 시 스크롤 최하단으로
@@ -142,13 +139,11 @@ export default function ChatRoom() {
       const scrollContainer = scrollRef.current;
       scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
-    getChatRooms();
   }, [messages]);
 
   useEffect(() => {
     if (checkDevice(window.navigator.userAgent)) setIsMobile(true);
     if (!checkDevice(window.navigator.userAgent)) setIsMobile(false);
-    getChatRooms();
   }, []);
 
   useEffect(() => {
