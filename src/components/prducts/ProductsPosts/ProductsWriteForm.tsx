@@ -56,6 +56,10 @@ const ProductsWriteForm = ({productData}: any) => {
     }
   },[])
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // 유저 테이블에서 같은 id 값 찾아서 원하는 유저정보 가져오기
   const [userState, setUserState] = useState(initialState)
 

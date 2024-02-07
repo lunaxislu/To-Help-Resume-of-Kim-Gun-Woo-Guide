@@ -12,16 +12,18 @@ export const StMobileNav = styled.div`
 
     & p {
       font-size: var(--fontSize-body);
+      font-weight: var(--fontWeight-bold);
     }
   }
 
   @media screen and (max-width: 768px) {
     display: flex;
     justify-content: space-between;
-    padding: 1.5rem;
+    //padding: 1.5rem;
   }
 `;
 
 export const StMobileBack = styled(IoIosArrowBack)`
   cursor: pointer;
+  color: var(--opc-100);
 `;

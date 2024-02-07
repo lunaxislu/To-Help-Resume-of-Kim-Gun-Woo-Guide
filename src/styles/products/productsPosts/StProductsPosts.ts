@@ -33,7 +33,7 @@ export const BackBtnBox = styled.div`
   display: none;
   @media screen and (max-width: 768px) {
     display: block;
-    width: 3rem;
+    width: 2rem;
     height: 2rem;
     :hover {
       cursor: pointer;
@@ -44,7 +44,7 @@ export const BackIcon = styled(GoChevronLeft)`
   display: none;
   @media screen and (max-width: 768px) {
     display: block;
-    width: 100%;
+    width: 70%;
     height: 100%;
     color: var(--opc-100);
   }

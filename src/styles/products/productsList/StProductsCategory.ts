@@ -7,7 +7,7 @@ export const CategoryContainer = styled.div`
   justify-content: space-between;
   margin-bottom: 3rem;
   @media screen and (max-width: 768px) {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -34,10 +34,11 @@ interface CategoryProps {
 }
 export const Category = styled.p<CategoryProps>`
   width: fit-content;
-  padding: 0 2.5rem;
+  height: 3rem;
+  padding: 0 1.5rem;
   text-align: center;
   vertical-align: middle;
-  line-height: 1.5;
+  line-height: 1.7;
   border-radius: 5.6rem;
   color: var(--gray);
   background-color: var(--opc-30);
@@ -66,6 +67,7 @@ export const Category = styled.p<CategoryProps>`
     }
   }}
   @media screen and (max-width: 768px) {
+    height: 2.5rem;
     font-size: var(--fontSize-H5);
     line-height: 1.5;
     padding: 0 1.5rem;

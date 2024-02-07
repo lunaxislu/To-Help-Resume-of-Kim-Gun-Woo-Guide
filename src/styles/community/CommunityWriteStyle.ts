@@ -86,7 +86,7 @@ export const FileList = styled.ul`
   & button {
     background-color: transparent;
     border: none;
-    color: var(--10-gray);
+    /* color: var(--10-gray); */
     cursor: pointer;
   }
 `;
@@ -94,13 +94,14 @@ export const LayoutValueText = styled.div`
   width: 20%;
   max-width: 16rem;
   font-size: var(--fontSize-body);
+  font-weight: var(--fontWeight-bold);
   display: flex;
   align-items: center;
   & span {
     color: var(--opc-100);
   }
   @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-H5);
   }
 `;
 export const LayoutTitleContainer = styled.div`
@@ -127,7 +128,7 @@ export const LayoutTitleContainer = styled.div`
     flex-direction: column;
     gap: 1rem;
     & input {
-      height: 3rem;
+      height: 4rem;
       font-size: var(--fontSize-H6);
       &::placeholder {
         font-size: var(--fontSize-H6);
@@ -160,7 +161,7 @@ export const LayoutBottom = styled.div`
     border-radius: 1rem;
     width: 10rem;
     height: 4rem;
-
+    color: var(--white);
     background-color: var(--opc-100);
     font-size: var(--fontSize-H4);
     font-weight: var(--fontWeight-bold);
@@ -214,7 +215,7 @@ export const LayoutCategoryContainer = styled.div`
     align-items: start;
     gap: 1rem;
     margin-bottom: 1rem;
-    font-size: var(--fontSize-H6);
+    font-size: var(--fontSize-H5);
     & label {
       display: flex;
       align-items: center;
@@ -249,7 +250,7 @@ export const LayoutFileUploader = styled.label`
     display: none;
   }
   @media screen and (max-width: 768px) {
-    height: 3rem;
+    height: 4rem;
     margin-bottom: 0.5rem;
 
     font-size: var(--fontSize-H6);
@@ -353,6 +354,9 @@ export const Container = styled.div`
   justify-content: center;
   margin-bottom: 5rem;
   animation: ${StFadeAni} 0.3s ease;
+  @media screen and (max-width: 768px) {
+    margin-top: 1.5rem;
+  }
 `;
 export const ContentContainer = styled.div`
   display: flex;
@@ -378,10 +382,11 @@ export const Topper = styled.div`
   }
   & h1 {
     font-size: var(--fontSize-H1);
+    font-weight: var(--fontWeight-bold);
   }
   @media screen and (max-width: 768px) {
     & h1 {
-      font-size: var(--fontSize-H5);
+      font-size: var(--fontSize-H4);
       margin-right: 1rem;
     }
     & p {
@@ -426,7 +431,7 @@ export const BackBtnBox = styled.div`
   }
 `;
 export const BackIcon = styled(GoChevronLeft)`
-  width: 100%;
+  width: 80%;
   height: 100%;
   color: var(--opc-100);
   display: none;
