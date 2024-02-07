@@ -164,6 +164,7 @@ export default function ChatRoom() {
       const scrollContainer = scrollRef.current;
       scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
+    getChatRooms();
   }, [messages]);
 
   useEffect(() => {
