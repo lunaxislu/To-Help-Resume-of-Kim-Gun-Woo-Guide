@@ -60,7 +60,7 @@ export const InputStyle = styled.input`
   }
   @media screen and (max-width: 768px) {
     width: 100%;
-    height: 3rem;
+    height: 4rem;
     font-size: 1.2rem;
     padding-left: 1rem;
   }
@@ -450,6 +450,7 @@ export const WriteBtn = styled.button`
   width: 10.3rem;
   height: 4.5rem;
   font-size: var(--fontSize-H4);
+  font-weight: var(--fontWeight-bold);
   &:hover {
     cursor: pointer;
   }

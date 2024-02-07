@@ -68,7 +68,7 @@ export const Posts = styled.li<Postcolor>`
   }
   & h2 {
     font-size: var(--fontSize-H4);
-    font-weight: var(--fontWeight-medium);
+    font-weight: var(--fontWeight-bold);
     margin-bottom: 1.6rem;
     overflow: hidden;
     width: 100%;

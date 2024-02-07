@@ -12,7 +12,7 @@ const StSideBtnContainer = styled.div`
   font-family: 'BM-JUA';
   position: fixed;
   top: 18.5%;
-  left: 4.8%;
+  left: 4%;
   transform: translate(0%, -50%);
   z-index: 100;
   @media screen and (max-width: 768px) {

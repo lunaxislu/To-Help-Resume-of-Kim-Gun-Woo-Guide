@@ -27,7 +27,7 @@ export const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0rem 0 1rem 0;
+  margin: 0rem 0 2rem 0;
   @media screen and (max-width: 768px) {  
     margin: 1.5rem 0 1rem 0;
   }
@@ -36,6 +36,7 @@ export const TitleContainer = styled.div`
 
 export const Title = styled.h1`
   font-size: var(--fontSize-H3);
+  font-weight: var(--fontWeight-bold);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-body);
   }
@@ -52,8 +53,8 @@ export const SellWriteIcon = styled(BiWon)`
 `;
 
 export const PostsWriteBtn = styled.div`
-  width: 11rem;
-  height: fit-content;
+  width: 10rem;
+  height: 3.5rem;
   line-height: 1.8;
   display: flex;
   flex-direction: row;
@@ -61,6 +62,8 @@ export const PostsWriteBtn = styled.div`
   align-items: center;
   border-radius: 5rem;
   gap: 0.5rem;
+  font-size: var(--fontSize-H5);
+  font-weight: var(--fontWeight-bold);
   background-color: var(--opc-20);
   white-space: nowrap;
   &:hover {
@@ -116,6 +119,7 @@ export const LastData = styled.div`
   align-items: center;
   margin: 7rem auto 0 auto;
   gap: 2rem;
+  font-weight: var(--fontWeight-bold);
   @media screen and (max-width: 768px) {
     margin: 3rem auto 0 auto;
     gap: 1rem;

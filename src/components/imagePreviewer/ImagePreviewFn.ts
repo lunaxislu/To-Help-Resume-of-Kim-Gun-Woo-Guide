@@ -17,8 +17,14 @@ const handleFileUpload = async (files: FileList) => {
 
     // 데이터가 오면 publicURL 반환하여 배열에 담기
     if (data) {
-      return supabase.storage.from('images').getPublicUrl(data.path).data
-        .publicUrl;
+      return supabase.storage.from('images').getPublicUrl(data.path, {
+        transform: {
+          quality: 50,
+          width: 1920,
+          height: 1080,
+          resize: 'contain'
+        }
+      }).data.publicUrl;
     }
   });
   return urlArray.filter((url) => url !== undefined);

@@ -63,12 +63,10 @@ const DropdownButton = styled.button`
   margin-top: 0.3rem;
   text-decoration: none;
   cursor: pointer;
-  font-weight: var(--fontWeight-bold);
   gap: 0.8rem;
   font-size: var(--fontSize-H5);
   background-color: transparent;
-  font-weight: var(--fontWeight-medium);
-  color: var(--7-gray);
+
   border: none;
   &:hover {
     color: var(--opc-100);
@@ -84,6 +82,7 @@ const DropdownContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 0.5rem;
 `;
 const DropdownItem = styled.div`
   padding: 1rem;
@@ -93,7 +92,8 @@ const DropdownItem = styled.div`
   cursor: pointer;
   width: 100%;
   text-align: center;
-  background-color: var(--drop);
+  background-color: var(--bgColor);
+  border-radius: 0.5rem;
 
   &:hover {
     background-color: var(--opc-100);

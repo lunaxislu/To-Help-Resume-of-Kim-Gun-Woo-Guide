@@ -1,15 +1,11 @@
-import { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa6';
 import { useQuery } from 'react-query';
-import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
-import CommunityList from '../../components/community/CommunityList';
 import { fetchData } from '../../components/main/DataFetch';
-import ProductsCard from '../../components/prducts/ProductsCard';
 import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
 import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
-import { StFadeAni } from '../../pages/productsDetail/style';
+import * as St from '../../styles/mainStyle/MainStyle';
 import { Post } from '../community/api/model';
 type UsedItemsCountData = {
   count: number | null;
@@ -17,16 +13,15 @@ type UsedItemsCountData = {
     length: number;
   } | null;
 };
-const Home = () => {
-  const navigate = useNavigate();
 
-  const carouselImages: string[] = [
-    process.env.PUBLIC_URL + '/assets/bannerMain.jpg',
-    process.env.PUBLIC_URL + '/assets/carousel0.png',
-    process.env.PUBLIC_URL + '/assets/carousel1.png',
-    process.env.PUBLIC_URL + '/assets/carousel2.png',
-    process.env.PUBLIC_URL + '/assets/carousel3.png'
-  ];
+const ProductsCard = React.lazy(
+  () => import('../../components/prducts/ProductsCard')
+);
+const CommunityList = React.lazy(
+  () => import('../../components/community/CommunityList')
+);
+
+const Home = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 (중감자동무)//
   const getUserId = async () => {
@@ -58,9 +53,6 @@ const Home = () => {
     isLoading,
     isError
   } = useQuery('data', fetchData);
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   if (isError) {
     return <div>데이터 불러오기를 실패했습니다.</div>;
@@ -96,257 +88,116 @@ const Home = () => {
   };
   const sortedCommunityResults: Post[] = CommunitySortByLikes(communityItems);
 
+  const bannerImgs = [
+    {
+      webp1: '/assets/banner1.webp',
+      jpg1: '/assets/banner1.jpeg'
+    },
+    {
+      webp2: '/assets/banner2.webp',
+      jpg2: '/assets/banner2.jpeg'
+    },
+    {
+      webp3: '/assets/banner3.webp',
+      jpg3: '/assets/banner3.jpeg'
+    },
+    {
+      webp4: '/assets/banner4.webp',
+      jpg4: '/assets/banner4.jpeg'
+    },
+    {
+      webp5: '/assets/banner5.webp',
+      jpg5: '/assets/banner5.jpeg'
+    }
+  ];
+
   return (
-    <HomeContainer>
-      <BannerContainer>
-        <MainBannerpic src="/assets/mainbannerpicture.png" alt="메인배너사진" />
+    <St.HomeContainer>
+      <St.BannerContainer>
+        {isLoading ? (
+          <St.IsLoadingStyle>Loading...</St.IsLoadingStyle>
+        ) : (
+          <>
+            <St.MainBannerpic>
+              <source srcSet={bannerImgs[0].webp1} type="image/webp" />
+              <img
+                style={{ objectFit: 'cover' }}
+                src="/assets/banner1.jpg"
+                alt="메인배너사진"
+              />
+            </St.MainBannerpic>
+            <St.ButtonContainer>
+              <St.BannerWrapper>
+                <St.ProductsBannerImage>
+                  <source srcSet={bannerImgs[1].webp2} type="image/webp" />
+                  <img src="/assets/banner2.webp" alt="중고거래" />
+                </St.ProductsBannerImage>
+                <St.ScrollButton href="#product">
+                  <picture>
+                    <source srcSet={bannerImgs[2].webp3} type="image/webp" />
+                    <St.ButtonImage
+                      src="/assets/banner3.webp"
+                      alt="중고거래버튼"
+                    />
+                  </picture>
+                </St.ScrollButton>
+              </St.BannerWrapper>
+              <St.BannerWrapper>
+                <St.CommunityBannerImage>
+                  <source srcSet={bannerImgs[3].webp4} type="image/webp" />
+                  <img src="/assets/banner4.webp" alt="커뮤니티" />
+                </St.CommunityBannerImage>
+                <St.ScrollButton href="#community">
+                  <picture>
+                    <source srcSet={bannerImgs[4].webp5} type="image/webp" />
+                    <St.ButtonImage
+                      src="/assets/banner5.webp"
+                      alt="커뮤니티버튼"
+                    />
+                  </picture>
+                </St.ScrollButton>
+              </St.BannerWrapper>
+            </St.ButtonContainer>
+          </>
+        )}
+      </St.BannerContainer>
 
-        <ButtonContainer>
-          <BannerWrapper>
-            <ProductsBannerImage src="/assets/중고거래.svg" alt="중고거래" />
-            <ScrollButton href="#product">
-              <ButtonImage src="/assets/중고거래버튼.svg" alt="중고거래버튼" />
-            </ScrollButton>
-          </BannerWrapper>
-          <BannerWrapper>
-            <CommunityBannerImage src="/assets/커뮤니티.svg" alt="커뮤니티" />
-            <ScrollButton href="#community">
-              <ButtonImage src="/assets/커뮤버튼.svg" alt="커뮤니티버튼" />
-            </ScrollButton>
-          </BannerWrapper>
-        </ButtonContainer>
-      </BannerContainer>
-
-      <AllCardContainer>
-        <ContentsContainer id="product">
-          <TitleWrapper>
-            <Title>
+      <St.AllCardContainer>
+        <St.ContentsContainer id="product">
+          <St.TitleWrapper>
+            <St.Title>
               {usedItemsCountData?.data?.length}개의 물품이 거래되고 있어요!
-            </Title>
-            <ShowLink to="/products">
+            </St.Title>
+            <St.ShowLink to="/products">
               전체보기
               <FaArrowRight />
-            </ShowLink>
-          </TitleWrapper>
+            </St.ShowLink>
+          </St.TitleWrapper>
           {/* 하빈 수정 */}
-          {isLoading ? (
-            <ProductsSkeleton count={10} />
-          ) : (
-            <ProductsCard posts={productsPosts} />
+          {isLoading ? null : (
+            <Suspense fallback={<ProductsSkeleton count={10} />}>
+              <ProductsCard posts={productsPosts} />
+            </Suspense>
           )}
-        </ContentsContainer>
+        </St.ContentsContainer>
 
-        <ContentsContainer id="community">
-          <TitleWrapper>
-            <Title>작업자들의 커뮤니티에 함께해볼까요?</Title>
-            <ShowLink to="/community">
+        <St.ContentsContainer id="community">
+          <St.TitleWrapper>
+            <St.Title>팔레터들의 커뮤니티에 함께해볼까요?</St.Title>
+            <St.ShowLink to="/community">
               전체보기
               <FaArrowRight />
-            </ShowLink>
-          </TitleWrapper>
+            </St.ShowLink>
+          </St.TitleWrapper>
           {/* <ComunityWrapper></ComunityWrapper> */}
-          {isLoading ? (
-            <SkeletonCommunityCard cards={6} />
-          ) : (
-            <CommunityList posts={sortedCommunityResults} />
+          {isLoading ? null : (
+            <Suspense fallback={<SkeletonCommunityCard cards={6} />}>
+              <CommunityList posts={sortedCommunityResults} />
+            </Suspense>
           )}
-        </ContentsContainer>
-      </AllCardContainer>
-    </HomeContainer>
+        </St.ContentsContainer>
+      </St.AllCardContainer>
+    </St.HomeContainer>
   );
 };
 export default Home;
-
-const HomeContainer = styled.section`
-  display: flex;
-  max-width: 144rem;
-  min-height: 100vh;
-  flex-direction: column;
-  margin: auto;
-  animation: ${StFadeAni} 0.3s ease;
-  @media screen and (max-width: 768px) {
-    width: 100%;
-    //min-width: 32rem;
-  }
-`;
-// 배너
-const BannerContainer = styled.div`
-  position: relative;
-  width: 100%;
-  @media screen and (max-width: 768px) {
-    height: 40rem;
-  }
-`;
-const MainBannerpic = styled.img`
-  width: 100%;
-  max-height: 63rem;
-  @media screen and (max-width: 768px) {
-    height: 40rem;
-  }
-`;
-const ButtonContainer = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  gap: 10rem;
-  @media screen and (max-width: 1116px) {
-    gap: 3rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-35%, -50%);
-  }
-  @media screen and (max-width: 768px) {
-    gap: 1rem;
-  }
-`;
-const BannerWrapper = styled.div`
-  width: 82%;
-  height: 50%;
-  display: flex;
-  justify-content: space-between;
-  gap: 10rem;
-  @media screen and (max-width: 1116px) {
-    flex-direction: column;
-    justify-content: center;
-    gap: 1rem;
-    width: 93%;
-    height: 55%;
-  }
-  @media screen and (max-width: 1000px) {
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    height: 60%;
-  }
-  @media screen and (max-width: 768px) {
-    width: 85%;
-  }
-  @media screen and (max-width: 650px) {
-    width: 90%;
-  }
-  @media screen and (max-width: 550px) {
-    width: 100%;
-  }
-  @media screen and (max-width: 430px) {
-    width: 120%;
-  }
-`;
-const ProductsBannerImage = styled.img`
-  width: 45%;
-  height: 100%;
-  @media screen and (max-width: 768px) {
-    width: 50%;
-  }
-  @media screen and (max-width: 650px) {
-    width: 55%;
-  }
-  @media screen and (max-width: 550px) {
-    width: 70%;
-  }
-  @media screen and (max-width: 430px) {
-    width: 60%;
-  }
-`;
-const CommunityBannerImage = styled.img`
-  width: 53%;
-  height: 100%;
-  @media screen and (max-width: 768px) {
-    width: 60%;
-  }
-  @media screen and (max-width: 650px) {
-    width: 65%;
-  }
-  @media screen and (max-width: 550px) {
-    width: 70%;
-  }
-  @media screen and (max-width: 430px) {
-    width: 70%;
-  }
-`;
-const ButtonImage = styled.img`
-  width: 90%;
-  height: 50%;
-
-  @media screen and (max-width: 1116px) {
-    width: 80%;
-  }
-  @media screen and (max-width: 800px) {
-    width: 50%;
-  }
-  @media screen and (max-width: 650px) {
-    //width: 40%;
-  }
-`;
-const ScrollButton = styled.a`
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: white;
-  margin: auto;
-`;
-// 본문
-const AllCardContainer = styled.div`
-  width: 77.5%;
-  margin: auto;
-  @media screen and (max-width: 768px) {
-    width: 93%;
-  }
-`;
-const ContentsContainer = styled.div`
-  width: 100%;
-  margin: auto;
-  margin-top: 5rem;
-  @media screen and (max-width: 768px) {
-    margin-top: 2rem;
-  }
-`;
-const TitleWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0 auto 4rem 0;
-  width: 100%;
-  font-size: var(--fontSize-H3);
-  @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H5);
-    margin: 0 auto 2rem 0;
-  }
-`;
-const Title = styled.h2`
-  font-size: var(--fontSize-H3);
-  vertical-align: baseline;
-  @media screen and (max-width: 768px) {
-    font-size: var(--fontSize-H5);
-  }
-`;
-const ShowLink = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.8rem;
-  text-decoration: none;
-  width: 8.3rem;
-  height: 3.2rem;
-  background: var(--opc-20);
-  border-radius: 4.5rem;
-  color: var(--black);
-  font-size: var(--fontSize-H6);
-  font-weight: var(--fontWeight-bold);
-  cursor: pointer;
-  @media screen and (max-width: 768px) {
-    background: none;
-    width: 6rem;
-    font-size: 1.1rem;
-    gap: 0.3rem;
-  }
-  &:hover {
-    background-color: var(--opc-100);
-    color: var(--bgColor);
-  }
-`;

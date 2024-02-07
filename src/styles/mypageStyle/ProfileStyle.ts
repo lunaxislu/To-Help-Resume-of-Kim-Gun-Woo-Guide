@@ -23,6 +23,7 @@ export const StProfileContentContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: auto;
   }
 `;
 

@@ -9,6 +9,7 @@ import {
   CarouselContainer,
   CarouselImage,
   ColoredIcon,
+  PageCarouselImage,
   StSlider
 } from '../ProductDetailStyles';
 interface InfiniteCarouselProps {
@@ -61,7 +62,7 @@ const DetailViewerCarousel: React.FC<InfiniteCarouselProps> = ({
     <CarouselContainer>
       <StSlider {...settings} ref={slickRef}>
         {carouselImages.map((image, index) => (
-          <CarouselImage
+          <PageCarouselImage
             key={index}
             src={image}
             alt={`Carousel ${index + 1}`}
