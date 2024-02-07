@@ -43,7 +43,6 @@ const Reply: React.FC<CommentProps> = ({
   const [secret, setSecret] = useState(false);
   const [parentId, setParentId] = useState<number | null>(null);
   const [parentUserId, setParentUserId] = useState<string | null>(null);
-
   const [liked, setLiked] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [replyingToComment, setReplyingToComment] =
@@ -115,7 +114,7 @@ const Reply: React.FC<CommentProps> = ({
     };
     updatePostMutation.mutate(likesUpdate, {
       onSuccess: () => {
-        queryClient.invalidateQueries(['posts', paramId]);
+        queryClient.invalidateQueries(['posts_detail', paramId]);
         setAnon(false);
         setComment('');
         setSecret(false);
@@ -208,12 +207,12 @@ const Reply: React.FC<CommentProps> = ({
       setIsFocused(true);
     } else {
       if (
-        window.confirm('댓글은 로그인 후에 가능합니다. 로그인하시겠습니까?')
+        !window.confirm('댓글은 로그인 후에 가능합니다. 로그인하시겠습니까?')
       ) {
-        navigate('/login');
-      } else {
-        alert('로그인 취소');
+        // 사용자가 '아니요'를 선택하면 아무것도 하지 않음
+        return;
       }
+      navigate('/login');
     }
   };
 
