@@ -13,6 +13,7 @@ import {
   filterPrevNoti
 } from '../components/sideBar/SideBarFn';
 import NotiRender from '../components/sideBar/noti/NotiRender';
+import { useQueryClient, useMutation, QueryClient } from 'react-query';
 
 interface User {
   username: string;
@@ -28,6 +29,7 @@ const Header = ({
   const [avatarUrl, setAvatarUrl] = useState<string>();
   const { isLogin } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
 
   // 알림 관련
   const [showNoti, setShowNoti] = useState<boolean>(false);
@@ -93,6 +95,7 @@ const Header = ({
   };
 
   // 현재 사용자 정보 가져오기
+
   const getAuth = async () => {
     const { data, error } = await supabase.auth.getUser();
     if (data.user) {
