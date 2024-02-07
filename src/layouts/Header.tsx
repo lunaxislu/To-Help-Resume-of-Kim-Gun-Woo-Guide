@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent, SetStateAction, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { supabase } from '../api/supabase/supabaseClient';
 import SearchBar from '../components/layout/header/SearchBar';
@@ -98,6 +98,15 @@ const Header = ({
     const { data, error } = await supabase.auth.getUser();
     if (data.user) {
       setAvatarUrl(data.user.user_metadata.avatar_url);
+      const userId = data.user.id;
+      const { data: userData, error: userError } = await supabase
+        .from('user')
+        .select('avatar_url')
+        .eq('id', userId)
+        .single();
+      if (userData && !userError) {
+        setAvatarUrl(userData.avatar_url);
+      }
     }
   };
 
