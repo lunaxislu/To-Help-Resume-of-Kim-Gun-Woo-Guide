@@ -16,7 +16,7 @@ export const StFadeAni = keyframes`
 `;
 
 const StChatWrapper = styled.div`
-  width: 100%;
+  width: 77.5%;
   max-width: 1114px;
   padding: 4.2rem 1.6rem;
   margin: auto;
@@ -52,7 +52,7 @@ const StChatContainer = styled.div`
 `;
 
 const StChatList = styled.div`
-  width: 100%;
+  width: 77.5%;
   height: 597px;
   max-width: 372px;
   max-height: 597px;
@@ -72,7 +72,6 @@ const StChatListItem = styled.div`
   width: 100%;
   max-width: 372px;
   height: 100%;
-  font-family: 'BM-JUA';
   font-weight: 500;
   border-right: 0.1rem solid #00000030;
 
