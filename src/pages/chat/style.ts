@@ -214,7 +214,6 @@ const StChatInput = styled.textarea.attrs({
   background-color: var(--opc-20);
   resize: none;
   &::placeholder {
-    font-family: 'BM-JUA';
     font-weight: 700;
     letter-spacing: 0.15rem;
   }

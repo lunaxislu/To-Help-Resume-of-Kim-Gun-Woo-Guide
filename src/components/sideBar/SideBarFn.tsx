@@ -16,12 +16,15 @@ export const showNotiToggle = ({
 
 export type DeleteAllNotiProps = {
   setNotification: React.Dispatch<React.SetStateAction<any[]>>;
+  setNewNotiExists: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const deleteAllNotification = ({
-  setNotification
+  setNotification,
+  setNewNotiExists
 }: DeleteAllNotiProps) => {
   setNotification([]);
+  setNewNotiExists(false);
   localStorage.removeItem('notifications');
 };
 
