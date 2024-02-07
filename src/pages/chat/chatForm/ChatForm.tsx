@@ -49,10 +49,6 @@ const ChatForm = ({
     setImages(filtered);
   };
 
-  useEffect(() => {
-    getChatRooms();
-  }, []);
-
   return (
     <St.StChatForm ref={formRef}>
       {images && (

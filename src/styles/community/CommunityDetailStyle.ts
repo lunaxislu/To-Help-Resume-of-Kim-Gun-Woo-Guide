@@ -240,6 +240,7 @@ export const ReportArea = styled.div`
     justify-content: center;
     margin: 0.5rem;
   }
+  cursor: pointer;
   @media screen and (max-width: 768px) {
     display: none;
   }
@@ -348,7 +349,6 @@ export const DropdownItem = styled.div`
     padding: 12px 12px;
     font-size: var(--fontSize-H6);
     border-radius: 1rem;
-
     cursor: pointer;
     &:hover {
       background-color: var(--opc-100);

@@ -26,7 +26,10 @@ const Layout = () => {
 
   // 유저 데이터를 가져오고 실시간 구독이 실행되도록
   useEffect(() => {
-    getUserData(setCurUser);
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      getUserData(userId, setCurUser);
+    }
   }, []);
 
   useEffect(() => {

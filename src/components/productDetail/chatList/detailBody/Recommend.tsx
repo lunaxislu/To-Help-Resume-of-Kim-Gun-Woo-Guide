@@ -1,6 +1,5 @@
 import React, { MouseEvent } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
-import styled from 'styled-components';
 import ProductsCard from '../../../prducts/ProductsCard';
 import { Product } from '../../../../pages/productsDetail/types';
 import { useNavigate, useParams } from 'react-router';
@@ -29,12 +28,7 @@ const Recommend = ({ product, similar, otherPosts }: RecommendProps) => {
   return (
     <>
       <div>
-        <StSimilarProductTitleWrapper>
-          비슷한 상품
-          <StToSectionButton onClick={navigateTo}>
-            전체보기 <FaArrowRight />
-          </StToSectionButton>
-        </StSimilarProductTitleWrapper>
+        <StSimilarProductTitleWrapper>비슷한 상품</StSimilarProductTitleWrapper>
         <ProductsCard
           posts={similar
             .filter((product) => product.isSell !== true && product.id !== id)
