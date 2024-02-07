@@ -123,6 +123,7 @@ export default function ChatRoom() {
 
     utilFunctions.getMessages(clicked, setMessages, messages);
     utilFunctions.getUserData(setCurUser);
+    getChatRooms();
 
     // unmount 시 구독 해제하기
     return () => {
