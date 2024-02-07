@@ -17,6 +17,7 @@ export const ProductsListContainer = styled.div`
   @media screen and (max-width: 768px) {
     column-gap: 1.3rem;
     row-gap: 1.5rem;
+    margin-top: 1rem;
     grid-template-columns: repeat(4, 1fr);
   }
   @media screen and (max-width: 670px) {
@@ -25,7 +26,6 @@ export const ProductsListContainer = styled.div`
   }
   @media screen and (max-width: 520px) {
     grid-template-columns: repeat(2, 1fr);
-    margin-top: 4rem;
   }
   @media screen and (max-width: 280px) {
     grid-template-columns: repeat(1, 1fr);

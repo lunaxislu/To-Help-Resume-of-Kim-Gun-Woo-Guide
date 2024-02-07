@@ -183,7 +183,7 @@ export const ContentsContainer = styled.div`
   margin: auto;
   margin-top: 5rem;
   @media screen and (max-width: 768px) {
-    margin-top: 2rem;
+    margin-top: 3rem;
   }
 `;
 export const TitleWrapper = styled.div`
@@ -195,7 +195,7 @@ export const TitleWrapper = styled.div`
   font-size: var(--fontSize-H3);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-H5);
-    margin: 0 auto 2rem 0;
+    margin: 0 auto 1rem 0;
   }
 `;
 export const Title = styled.h2`

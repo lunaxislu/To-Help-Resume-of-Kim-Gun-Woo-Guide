@@ -39,6 +39,10 @@ const ProductsList = () => {
     return pages.length + 1;
    }
   });
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   // inView가 true이고 다음페이지가 존재한다면 다음페이지 데이터 불러오기
   useEffect(() => {
@@ -75,7 +79,7 @@ const ProductsList = () => {
       <St.ContentsContainer>
         <St.TitleContainer>
           <St.Title>
-            {data?.pages[0].count && `${data?.pages[0].count}개의 ${selectCategory} 물품이 거래되고 있어요`}
+            {data?.pages[0].count && `${data?.pages[0].count}개의 물품이 거래되고 있어요`}
             {isLoading && `Loading....`}
           </St.Title>
           <St.PostsWriteBtn onClick={handleOnClickSellWriteBtn}>

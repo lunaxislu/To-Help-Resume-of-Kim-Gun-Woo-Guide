@@ -48,10 +48,11 @@ export const Categorys = styled.div`
 export const WriteBtn = styled.button`
   width: 9rem;
   height: 3.1rem;
-  color: var(--12-gray);
+  /* color: var(--12-gray); */
   background-color: var(--opc-20);
   border: none;
   font-size: var(--fontSize-H5);
+  font-weight: var(--fontWeight-bold);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,8 +87,8 @@ export const WriteIcon = styled(BiEdit)`
 //   }
 // `;
 export const Title = styled.h2`
-  color: var(--12-gray);
   font-size: var(--fontSize-H3);
+  font-weight: var(--fontWeight-bold);
   @media screen and (max-width: 768px) {
     font-size: var(--fontSize-body);
   }
