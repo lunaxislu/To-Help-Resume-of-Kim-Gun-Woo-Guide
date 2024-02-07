@@ -416,7 +416,7 @@ export const StNotiContainer = styled.div`
   @media screen and (max-width: 768px) {
     position: fixed;
     top: 7.5%;
-    left: 35%;
+    left: 50%;
     width: 250px;
     z-index: 15;
   }
