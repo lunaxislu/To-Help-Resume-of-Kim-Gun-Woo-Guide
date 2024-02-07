@@ -43,7 +43,6 @@ const Reply: React.FC<CommentProps> = ({
   const [secret, setSecret] = useState(false);
   const [parentId, setParentId] = useState<number | null>(null);
   const [parentUserId, setParentUserId] = useState<string | null>(null);
-
   const [liked, setLiked] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [replyingToComment, setReplyingToComment] =
@@ -92,37 +91,49 @@ const Reply: React.FC<CommentProps> = ({
   }, [posts, userId]);
   const updatePostMutation = useUpdatePostMutation();
   const toggleLike = async () => {
-    const newLikedStatus = !liked;
-    setLiked(newLikedStatus);
+    if (profile.length > 0) {
+      const newLikedStatus = !liked;
+      setLiked(newLikedStatus);
 
-    // 기본값으로 빈 배열 설정
-    const currentLikeUsers = posts![0]?.likes_user || [];
+      // 기본값으로 빈 배열 설정
+      const currentLikeUsers = posts![0]?.likes_user || [];
 
-    const updatedLikes = newLikedStatus ? likes! + 1 : likes! - 1;
-    let updatedLikeUsers;
-    if (newLikedStatus) {
-      updatedLikeUsers = [...currentLikeUsers, userId];
-    } else {
-      updatedLikeUsers = currentLikeUsers.filter((id: string) => id !== userId);
-    }
-
-    const likesUpdate = {
-      updateData: {
-        likes: updatedLikes,
-        likes_user: updatedLikeUsers
-      },
-      paramId
-    };
-    updatePostMutation.mutate(likesUpdate, {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['posts', paramId]);
-        setAnon(false);
-        setComment('');
-        setSecret(false);
-        setParentId(null);
-        setParentUserId(null);
+      const updatedLikes = newLikedStatus ? likes! + 1 : likes! - 1;
+      let updatedLikeUsers;
+      if (newLikedStatus) {
+        updatedLikeUsers = [...currentLikeUsers, userId];
+      } else {
+        updatedLikeUsers = currentLikeUsers.filter(
+          (id: string) => id !== userId
+        );
       }
-    });
+
+      const likesUpdate = {
+        updateData: {
+          likes: updatedLikes,
+          likes_user: updatedLikeUsers
+        },
+        paramId
+      };
+      updatePostMutation.mutate(likesUpdate, {
+        onSuccess: () => {
+          queryClient.invalidateQueries(['posts_detail', paramId]);
+          setAnon(false);
+          setComment('');
+          setSecret(false);
+          setParentId(null);
+          setParentUserId(null);
+        }
+      });
+    } else {
+      if (
+        !window.confirm('좋아요는 로그인 후에 가능합니다. 로그인하시겠습니까?')
+      ) {
+        // 사용자가 '아니요'를 선택하면 아무것도 하지 않음
+        return;
+      }
+      navigate('/login');
+    }
   };
 
   const { data: commentUserInfo, isLoading: commentLoading } = useQuery(
@@ -193,7 +204,7 @@ const Reply: React.FC<CommentProps> = ({
       }
     });
     // } else {
-    //   alert('삭제취소');
+    //   return;
     // }
   };
 
@@ -201,6 +212,7 @@ const Reply: React.FC<CommentProps> = ({
     setReplyingToComment(comment);
     setParentId(comment.id);
     setParentUserId(comment.user_id);
+    setSecret(comment.secret);
   };
   // console.log(replyingToComment);
   const commentFocusHandler = () => {
@@ -208,12 +220,12 @@ const Reply: React.FC<CommentProps> = ({
       setIsFocused(true);
     } else {
       if (
-        window.confirm('댓글은 로그인 후에 가능합니다. 로그인하시겠습니까?')
+        !window.confirm('댓글은 로그인 후에 가능합니다. 로그인하시겠습니까?')
       ) {
-        navigate('/login');
-      } else {
-        alert('로그인 취소');
+        // 사용자가 '아니요'를 선택하면 아무것도 하지 않음
+        return;
       }
+      navigate('/login');
     }
   };
 

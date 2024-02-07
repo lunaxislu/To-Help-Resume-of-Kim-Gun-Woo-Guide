@@ -60,12 +60,14 @@ const DropdownButton = styled.button`
   align-items: center;
   width: 8.3rem;
   height: 3.2rem;
-  margin-top: 0.3rem;
   text-decoration: none;
   cursor: pointer;
   gap: 0.8rem;
   font-size: var(--fontSize-H5);
   background-color: transparent;
+  @media screen and (max-width: 768px) {
+    margin-top: 0.3rem;
+  }
 
   border: none;
   &:hover {

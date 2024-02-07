@@ -12,12 +12,14 @@ export async function researchItems(searchQuery: string) {
     .select('*')
     .or(
       `title.ilike.%${searchQuery}%, contents.ilike.%${searchQuery}%, tags.cs.{${searchQuery}}`
-    );
+    )
+    .order('created_at', { ascending: false });
 
   const { data: communityData, error: communityError } = await supabase
     .from('community')
     .select('*')
-    .or(`title.ilike.%${searchQuery}%, content.ilike.%${searchQuery}%`);
+    .or(`title.ilike.%${searchQuery}%, content.ilike.%${searchQuery}%`)
+    .order('created_at', { ascending: false });
 
   if (usedItemError || communityError) {
     console.error(

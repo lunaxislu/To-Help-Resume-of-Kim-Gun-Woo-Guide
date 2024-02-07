@@ -115,6 +115,12 @@ export const CommunityCount = styled.h1<{
     showClickedList ? 'var(--opc-100)' : 'var(--black)'};
 `;
 
+export const WebDropdown = styled.div`
+  width: 20rem;
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const CountList = styled.h1`
   display: flex;
   font-size: var(--fontSize-H3);
@@ -125,6 +131,7 @@ export const CountList = styled.h1`
     font-size: var(--fontSize-H5);
   }
 `;
+
 export const LinktoUsedProducts = styled.div`
   display: flex;
   justify-content: center;

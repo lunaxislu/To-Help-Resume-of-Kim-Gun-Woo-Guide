@@ -15,6 +15,11 @@ import type {
   RoomType
 } from '../../components/chat/types';
 import * as St from './style';
+import { useAppDispatch } from '../../redux/reduxHooks/reduxBase';
+import {
+  setSuccessLogin,
+  setSuccessLogout
+} from '../../redux/modules/authSlice';
 
 export default function ChatRoom() {
   const [showImage, setShowImage] = useState<boolean>(false);
@@ -35,6 +40,19 @@ export default function ChatRoom() {
   const navi = useNavigate();
 
   const utilFunctions = new UtilForChat();
+
+  const [userUid, setUserUid] = useState<string>('');
+  const dispatch = useAppDispatch();
+
+  const getSession = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    if (data.session) {
+      dispatch(setSuccessLogin());
+      setUserUid(data.session.user.id);
+    } else {
+      dispatch(setSuccessLogout());
+    }
+  };
 
   // 채팅 페이지에 들어오면
   // 현재 본인이 속한 채팅방을 모두 가져와 리스트에 그린다
@@ -129,9 +147,16 @@ export default function ChatRoom() {
     };
   }, []);
 
+  // 유저 데이터를 가져오고 실시간 구독이 실행되도록
   useEffect(() => {
-    getChatRooms();
-  }, [curUser]);
+    getSession();
+  }, []);
+
+  useEffect(() => {
+    if (userUid) {
+      getChatRooms();
+    }
+  }, [userUid]);
 
   // 채팅방 로드 시 스크롤 최하단으로
   useEffect(() => {
@@ -139,6 +164,7 @@ export default function ChatRoom() {
       const scrollContainer = scrollRef.current;
       scrollContainer.scrollTop = scrollContainer.scrollHeight;
     }
+    getChatRooms();
   }, [messages]);
 
   useEffect(() => {

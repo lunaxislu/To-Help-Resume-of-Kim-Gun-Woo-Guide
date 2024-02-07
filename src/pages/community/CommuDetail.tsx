@@ -103,6 +103,7 @@ const CommuDetail: React.FC = () => {
   };
   const handleOpenForm = () => {
     dispatch(setIsOpenForm());
+    setEditToolOpen(!editToolOpen);
   };
   return (
     <St.Container>

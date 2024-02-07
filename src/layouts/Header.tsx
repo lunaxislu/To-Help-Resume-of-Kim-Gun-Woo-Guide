@@ -82,7 +82,6 @@ const Header = ({
       localStorage.removeItem('userId');
     }
   };
-
   // 로그인 상태여부 확인
   const getSession = async () => {
     const { data, error } = await supabase.auth.getSession();
@@ -167,6 +166,7 @@ const Header = ({
         setNotification={setNotification}
         setShowNoti={setShowNoti}
         showNoti={showNoti}
+        setNewNotiExists={setNewNotiExists}
       />
 
       <St.HeaderTopContainer>

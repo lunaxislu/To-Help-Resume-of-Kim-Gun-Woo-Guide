@@ -37,5 +37,5 @@ export default function parseDate(tdate: string) {
     return '1 주 전';
   }
   const month = created.toLocaleDateString('default', { month: 'long' });
-  return `${month} ${created.getDate()} 달 전`;
+  return `${month} 달 전`;
 }

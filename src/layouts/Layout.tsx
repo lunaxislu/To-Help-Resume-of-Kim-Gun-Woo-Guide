@@ -8,36 +8,40 @@ import styled from 'styled-components';
 import { CustomUser } from '../pages/productsDetail/types';
 import { Participants } from '../components/chat/types';
 import SideBar from '../components/sideBar/SideBar';
-import {
-  getNotificationsFromLocal,
-  getUserData,
-  saveNotiToLocal
-} from './NotificationFn';
+import { getNotificationsFromLocal, saveNotiToLocal } from './NotificationFn';
+import { useAppDispatch } from '../redux/reduxHooks/reduxBase';
+import { setSuccessLogin, setSuccessLogout } from '../redux/modules/authSlice';
 
 const Layout = () => {
   const location = useLocation();
   const [showTopbutton, setShowTopButton] = useState(false);
   const [curUser, setCurUser] = useState<CustomUser | null>(null);
+  const [userUid, setUserUid] = useState<string>('');
 
   // 실시간 알림
   const [notification, setNotification] = useState<any[]>([]);
   const [newNotiExists, setNewNotiExists] = useState<boolean>(false);
-  const userID = localStorage.getItem('userId');
+  let userID = localStorage.getItem('userId');
+  const dispatch = useAppDispatch();
+
+  const getSession = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    if (data.session) {
+      dispatch(setSuccessLogin());
+      setUserUid(data.session.user.id);
+    } else {
+      dispatch(setSuccessLogout());
+    }
+  };
 
   // 유저 데이터를 가져오고 실시간 구독이 실행되도록
   useEffect(() => {
-    const getLocalUser = () => {
-      const userId = localStorage.getItem('userId');
-      if (userId) {
-        getUserData(userId, setCurUser);
-      }
-    };
-    getLocalUser();
+    getSession();
   }, []);
 
   useEffect(() => {
     // 유저 데이터가 있을 때 실시간 구독이 실행되도록 - 안 그러면 첫 알림이 전역으로 알림이 간다
-    if (curUser) {
+    if (userUid) {
       // 캐싱된 알림 가져오기
       getNotificationsFromLocal(setNotification);
 
@@ -57,10 +61,11 @@ const Layout = () => {
             if (chatRooms && chatRooms.length > 0) {
               const exists = chatRooms.map((room) => {
                 return room.participants.some(
-                  (part: Participants) => part.user_id === curUser?.uid
+                  (part: Participants) => part.user_id === userUid
                 );
               });
 
+              console.log(exists);
               // 내가 보낸 메세지가 아닐 때 알림 작동
               if (
                 exists &&
@@ -81,7 +86,7 @@ const Layout = () => {
         chatMessages.unsubscribe();
       };
     }
-  }, [curUser]);
+  }, [userUid]);
 
   useEffect(() => {
     saveNotiToLocal(notification);

@@ -58,7 +58,7 @@ const SideBar = ({
   }, [notification]);
 
   return (
-    <>
+    <div style={{ position: 'relative' }}>
       <SideBarRender
         isShow={isShow}
         newNotiExists={newNotiExists}
@@ -76,8 +76,9 @@ const SideBar = ({
         setNotification={setNotification}
         setShowNoti={setShowNoti}
         showNoti={showNoti}
+        setNewNotiExists={setNewNotiExists}
       />
-    </>
+    </div>
   );
 };
 
