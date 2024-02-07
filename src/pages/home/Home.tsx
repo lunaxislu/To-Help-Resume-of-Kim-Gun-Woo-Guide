@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
-import { supabase } from '../../api/supabase/supabaseClient';
-import { useQuery } from 'react-query';
-import { fetchData } from '../../components/main/DataFetch';
-import { Link, useNavigate } from 'react-router-dom';
-import InfiniteCarousel from '../../components/slider/InfiniteCarousel';
-import parseDate from '../../util/getDate';
+import { useEffect, useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa6';
-import { StFadeAni } from '../../pages/productsDetail/style';
-import * as St from '../../styles/products/productsList/StProductsList';
+import { useQuery } from 'react-query';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { supabase } from '../../api/supabase/supabaseClient';
 import CommunityList from '../../components/community/CommunityList';
-import { Posts } from '../../styles/community/CommunityListStyle';
+import { fetchData } from '../../components/main/DataFetch';
 import ProductsCard from '../../components/prducts/ProductsCard';
-import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
 import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
+import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
+import { StFadeAni } from '../../pages/productsDetail/style';
 import { Post } from '../community/api/model';
 type UsedItemsCountData = {
   count: number | null;

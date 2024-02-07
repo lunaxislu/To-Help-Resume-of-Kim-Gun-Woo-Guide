@@ -7,12 +7,18 @@ import { supabase } from '../../api/supabase/supabaseClient';
 import CommuFileList from '../../components/community/CommuFileList';
 import Reply from '../../components/community/Reply';
 import WriteLayout from '../../components/community/WriteLayout';
+import QnAFrom from '../../components/mypage/Profile/QnAFrom';
+import SkeletonCommunityDetail from '../../components/skeleton/SkeletonCommunityDetail';
+import { setIsOpenForm } from '../../redux/modules/openForm';
+import {
+  useAppDispatch,
+  useAppSelector
+} from '../../redux/reduxHooks/reduxBase';
 import * as St from '../../styles/community/CommunityDetailStyle';
 import parseDate from '../../util/getDate';
 import { fetchDetailPost } from './api/commuQuery';
 import { ProfileObject } from './api/model';
 import { useDeletePostMutation } from './hook/useQuery';
-
 const CommuDetail: React.FC = () => {
   const param = useParams();
   const navigate = useNavigate();
@@ -20,13 +26,15 @@ const CommuDetail: React.FC = () => {
   const [userId, setUserId] = useState('');
   const [editToolOpen, setEditToolOpen] = useState(false);
   const [postUser, setPostUser] = useState<ProfileObject[]>([]);
-
+  const { isOpen } = useAppSelector((state) => state.openForm);
   const queryClient = useQueryClient();
+  const dispatch = useAppDispatch();
+
   const {
     data: posts,
     isLoading,
     isError
-  } = useQuery(['posts', param.id], () => fetchDetailPost(param.id));
+  } = useQuery(['posts_detail', param.id], () => fetchDetailPost(param.id));
   useEffect(() => {
     // 로컬 스토리지에서 userId 가져오기
     const storedUserId = localStorage.getItem('userId');
@@ -67,20 +75,19 @@ const CommuDetail: React.FC = () => {
   }, []);
 
   const deleteMutation = useDeletePostMutation();
-  const deletePostHandle = async () => {
-    if (window.confirm(`정말로"${posts![0].title}" 글을 삭제하시겠습니까?`)) {
-      deleteMutation.mutate(param.id, {
-        onSuccess: () => {
-          queryClient.invalidateQueries('posts');
-        }
-      });
-      setEditToolOpen(!editToolOpen);
-      navigate('/community');
-    }
+
+  const deletePostHandle = () => {
+    deleteMutation.mutate(param.id, {
+      onSuccess: () => {
+        queryClient.invalidateQueries('posts');
+        return navigate(-1);
+      }
+    });
+    setEditToolOpen(!editToolOpen);
   };
+
   if (isLoading) {
-    // return <SkeletonCommunityDetail />;
-    return <></>;
+    return <SkeletonCommunityDetail />;
   }
 
   if (isError) {
@@ -94,7 +101,9 @@ const CommuDetail: React.FC = () => {
       navigate(-1);
     }
   };
-
+  const handleOpenForm = () => {
+    dispatch(setIsOpenForm());
+  };
   return (
     <St.Container>
       {isEditState ? (
@@ -134,11 +143,7 @@ const CommuDetail: React.FC = () => {
                       {posts![0].post_user === userId ? (
                         ''
                       ) : (
-                        <St.ReportArea
-                          onClick={() => {
-                            alert('개발 중인 기능입니다!');
-                          }}
-                        >
+                        <St.ReportArea onClick={handleOpenForm}>
                           <St.AlertIcon />
                           <p>신고하기</p>
                         </St.ReportArea>
@@ -180,11 +185,7 @@ const CommuDetail: React.FC = () => {
                               </St.DropdownItem>
                             </>
                           ) : (
-                            <St.DropdownItem
-                              onClick={() => {
-                                alert('개발 중인 기능입니다!');
-                              }}
-                            >
+                            <St.DropdownItem onClick={handleOpenForm}>
                               신고하기
                             </St.DropdownItem>
                           )}
@@ -230,6 +231,7 @@ const CommuDetail: React.FC = () => {
               postUserId={posts![0].post_user}
             />
           </div>
+          {isOpen && <QnAFrom />}
         </St.ContentsContainer>
       )}
     </St.Container>
