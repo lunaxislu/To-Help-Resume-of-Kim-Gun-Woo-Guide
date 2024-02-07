@@ -8,11 +8,7 @@ import styled from 'styled-components';
 import { CustomUser } from '../pages/productsDetail/types';
 import { Participants } from '../components/chat/types';
 import SideBar from '../components/sideBar/SideBar';
-import {
-  getNotificationsFromLocal,
-  getUserData,
-  saveNotiToLocal
-} from './NotificationFn';
+import { getNotificationsFromLocal, saveNotiToLocal } from './NotificationFn';
 import { useAppDispatch } from '../redux/reduxHooks/reduxBase';
 import { setSuccessLogin, setSuccessLogout } from '../redux/modules/authSlice';
 
@@ -65,10 +61,11 @@ const Layout = () => {
             if (chatRooms && chatRooms.length > 0) {
               const exists = chatRooms.map((room) => {
                 return room.participants.some(
-                  (part: Participants) => part.user_id === curUser?.uid
+                  (part: Participants) => part.user_id === userUid
                 );
               });
 
+              console.log(exists);
               // 내가 보낸 메세지가 아닐 때 알림 작동
               if (
                 exists &&
