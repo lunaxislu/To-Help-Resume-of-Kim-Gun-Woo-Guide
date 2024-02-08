@@ -1,17 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import * as St from '../../styles/searchresults/SearchResultsStyle';
+import { setSearchResults } from '../../redux/modules/searchSlice';
 import { FaArrowDown } from 'react-icons/fa6';
 import { FiArrowUp } from 'react-icons/fi';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import CommunityList from '../../components/community/CommunityList';
-import ProductsCard from '../../components/prducts/ProductsCard';
-import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
-import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
-import { setSearchResults } from '../../redux/modules/searchSlice';
-import { RootState } from '../../redux/store/store';
+import { researchItems, ResearchResults } from './researchItem';
 import Dropdown from '../../styles/searchresults/Dropdown';
-import * as St from '../../styles/searchresults/SearchResultsStyle';
-import { ResearchResults, researchItems } from './researchItem';
+import CommunityList from '../../components/community/CommunityList';
+import { RootState } from '../../redux/store/store';
+import ProductsCard from '../../components/prducts/ProductsCard';
+import SkeletonCommunityCard from '../../components/skeleton/SkeletonCommunityCard';
+import ProductsSkeleton from '../../components/skeleton/ProductsSkeleton';
 
 interface ListCount {
   usedItemCount: number;
@@ -28,6 +28,7 @@ type CommonItemProps = {
 
 const SearchResults: React.FC = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [communityOpen, setCommunityOpen] = useState<boolean>(false);
   const [showClickedList, setShowClickedList] = useState<boolean>(false);
   const { usedItemResults, communityResults } = useSelector(
     (state: RootState) => state.search.searchResults
@@ -48,6 +49,7 @@ const SearchResults: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState<'중고물품' | '커뮤니티'>(
     '중고물품'
   );
+  const [communityMenu, setCommunityMenu] = useState('최신순');
   const [showAllProducts, setShowAllProducts] = useState(false);
   const [showAllCommunity, setShowAllCommunity] = useState(false);
 
@@ -96,8 +98,13 @@ const SearchResults: React.FC = () => {
       ? ProductsSortByLikes(usedItemResults)
       : usedItemResults;
 
-  const sortedCommunityResults =
+  const sortedMobileCommunityResults =
     clickMenu === '인기순'
+      ? CommunitySortByLikes(communityResults)
+      : communityResults;
+
+  const sortedCommunityResults =
+    communityMenu === '인기순'
       ? CommunitySortByLikes(communityResults)
       : communityResults;
   useEffect(() => {
@@ -163,7 +170,7 @@ const SearchResults: React.FC = () => {
     const textOnly = content.replace(/<[^>]*>|&nbsp;/g, ' ');
     return textOnly;
   }, []);
-  const slicedCommunityResults = communityResults.slice(
+  const slicedCommunityResults = sortedCommunityResults.slice(
     0,
     showAllCommunity ? sortedCommunityResults.length : 6
   );
@@ -221,19 +228,28 @@ const SearchResults: React.FC = () => {
                 <St.CountList>
                   {usedItemCount}개의 상품이 거래되고 있어요
                 </St.CountList>
-                <St.LinktoUsedProducts
-                  onClick={handleToggleShowAllProducts}
-                  style={{
-                    display:
-                      usedItemResults.length <= 5 && !showAllProducts
-                        ? 'none'
-                        : 'flex'
-                  }}
-                >
-                  {showAllProducts ? <p>숨기기</p> : <p>전체보기</p>}
+                <St.WebDropdown>
+                  <Dropdown
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                    clickMenu={clickMenu}
+                    setClickMenu={setClickMenu}
+                  />
 
-                  {showAllProducts ? <FiArrowUp /> : <FaArrowDown />}
-                </St.LinktoUsedProducts>
+                  <St.LinktoUsedProducts
+                    onClick={handleToggleShowAllProducts}
+                    style={{
+                      display:
+                        usedItemResults.length <= 5 && !showAllProducts
+                          ? 'none'
+                          : 'flex'
+                    }}
+                  >
+                    {showAllProducts ? <p>숨기기</p> : <p>더보기</p>}
+
+                    {showAllProducts ? <FiArrowUp /> : <FaArrowDown />}
+                  </St.LinktoUsedProducts>
+                </St.WebDropdown>
               </St.CountBar>
             )}
             {/* 검색 결과 */}
@@ -259,20 +275,29 @@ const SearchResults: React.FC = () => {
           <St.CommunityResultsContainer showClickedList={showClickedList}>
             <St.CommunityTitle showClickedList={showClickedList}>
               <St.CountList>{communityCount}개의 이야기가 있어요</St.CountList>
-              <St.LinktoCommunityPosts
-                onClick={handleToggleShowAllCommunity}
-                style={{
-                  display: communityResults.length <= 6 ? 'none' : 'flex'
-                }}
-              >
-                {showAllCommunity ? <p>숨기기</p> : <p>전체보기</p>}
+              <St.WebDropdown>
+                <Dropdown
+                  isOpen={communityOpen}
+                  setIsOpen={setCommunityOpen}
+                  clickMenu={communityMenu}
+                  setClickMenu={setCommunityMenu}
+                />
 
-                {showAllCommunity ? <FiArrowUp /> : <FaArrowDown />}
-              </St.LinktoCommunityPosts>
+                <St.LinktoCommunityPosts
+                  onClick={handleToggleShowAllCommunity}
+                  style={{
+                    display: communityResults.length <= 6 ? 'none' : 'flex'
+                  }}
+                >
+                  {showAllCommunity ? <p>숨기기</p> : <p>더보기</p>}
+
+                  {showAllCommunity ? <FiArrowUp /> : <FaArrowDown />}
+                </St.LinktoCommunityPosts>
+              </St.WebDropdown>
             </St.CommunityTitle>
             {/* 커뮤니티 모바일 */}
             {isMobile && showClickedList && (
-              <CommunityList posts={sortedCommunityResults} />
+              <CommunityList posts={sortedMobileCommunityResults} />
             )}
             {!isMobile &&
               (isLoading ? (
