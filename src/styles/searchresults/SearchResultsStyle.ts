@@ -390,7 +390,6 @@ export const CommunityTitle = styled.div<{
 export const LinktoCommunityPosts = styled.div`
   text-decoration: none;
   cursor: pointer;
-  font-weight: bold;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -403,7 +402,6 @@ export const LinktoCommunityPosts = styled.div`
   background: var(--opc-20);
   border-radius: 4.5rem;
   font-size: var(--fontSize-H6);
-  font-weight: var(--fontWeight-medium);
   color: var(--11-gray);
   @media screen and (max-width: 768px) {
     display: flex;
