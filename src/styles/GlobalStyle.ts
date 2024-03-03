@@ -62,6 +62,7 @@ export const GlobalStyles = createGlobalStyle`
     src: url('/fonts/BMJUA.woff2') format('woff2');
     font-weight: 300;
     font-style: normal;
+    font-display: fallback;
 }
 
 @font-face {
@@ -70,7 +71,7 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 500;
     font-style: normal;
     font-display: fallback;
-    fallback: sans-serif;
+    /* fallback: sans-serif; */
 }
 @font-face {
     font-family: 'DalseoHealing-Bold';
@@ -78,7 +79,7 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 700;
     font-style: normal;
     font-display: fallback;
-    fallback: sans-serif;
+    /* fallback: sans-serif; */
 }
 
 html, body, div, span, applet, object, iframe,
@@ -98,7 +99,7 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font: inherit;
+	/* font: inherit; */
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
@@ -122,9 +123,7 @@ body {
     background-size: var(--s) var(--s), calc(var(--s)/2) calc(var(--s)/2);
     background-color: var(--bgColor);
 
-
-    //
-    font-family: 'DalseoHealing-Medium', sans-serif;
+    
     color: var(--black);
     overflow-x: hidden;
     @media screen and (max-width: 768px){
@@ -136,10 +135,7 @@ input,
 textarea {
     font-family: 'DalseoHealing-Medium', sans-serif;
 }
-input {
-    font-family: 'DalseoHealing-Medium', sans-serif;
 
-}
 input {
     background-color: var(--opc-30);
 }
@@ -160,6 +156,7 @@ table {
 }
 
 html {
+    font-family: 'DalseoHealing-Medium', sans-serif;
     font-size: 62.5%;
     
 }
