@@ -57,7 +57,7 @@ export const GlobalStyles = createGlobalStyle`
     /*!사용법! {color: var(--primary-color)}*/
 }
 
-@font-face {
+/* @font-face {
     font-family: 'BM-JUA';
     src: url('/fonts/BMJUA.woff2') format('woff2');
     font-weight: 300;
@@ -72,7 +72,7 @@ export const GlobalStyles = createGlobalStyle`
     font-style: normal;
     font-display: fallback;
  
-}
+} */
 /* 
 사용하지 않는것 같아 주석 처리함
 
@@ -125,7 +125,7 @@ body {
     conic-gradient(from 90deg at 1px 1px,var(--_g));
     background-size: var(--s) var(--s), calc(var(--s)/2) calc(var(--s)/2);
     background-color: var(--bgColor);
-    font-family: 'DalseoHealing-Medium', sans-serif;
+
     
     color: var(--black);
     overflow-x: hidden;
