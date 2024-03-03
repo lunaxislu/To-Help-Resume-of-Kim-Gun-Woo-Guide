@@ -147,7 +147,6 @@ export const Sell = styled.button`
   border: 0;
   background: transparent;
   cursor: pointer;
-  font-family: 'Pretendard-Medium';
   gap: 0.6rem;
 
   @media screen and (max-width: 768px) {
@@ -175,7 +174,6 @@ export const Chat = styled.button`
   border: 0;
   background: transparent;
   cursor: pointer;
-  font-family: 'Pretendard-Medium';
 
   gap: 0.6rem;
 
@@ -204,7 +202,6 @@ export const Alert = styled.button`
   height: 2.7rem;
   border: 0;
   background: transparent;
-  font-family: 'Pretendard-Medium';
   position: relative;
 
   cursor: pointer;
@@ -343,7 +340,6 @@ export const LogOut = styled.button`
   border: none;
   margin-top: 0.3rem;
   background: transparent;
-  font-family: 'Pretendard-Medium';
 
   color: var(--11-gray);
   font-weight: var(--fontWeight-medium);
