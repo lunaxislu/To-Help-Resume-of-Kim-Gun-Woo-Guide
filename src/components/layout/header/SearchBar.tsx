@@ -8,8 +8,8 @@ import React, {
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store/store';
-import { IoIosClose } from 'react-icons/io';
-import { GrPrevious } from 'react-icons/gr';
+import { IoIosClose } from '@react-icons/all-files/io/IoIosClose';
+import { GrPrevious } from '@react-icons/all-files/gr/GrPrevious';
 import {
   ClearInputButton,
   SearchBtn,

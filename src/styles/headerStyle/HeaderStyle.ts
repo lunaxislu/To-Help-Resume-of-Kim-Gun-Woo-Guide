@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
-import { TbLogout } from 'react-icons/tb';
-import { FaBell } from 'react-icons/fa';
+import { GiHamburgerMenu } from '@react-icons/all-files/gi/GiHamburgerMenu';
+import { FaGlassCheers } from '@react-icons/all-files/fa/FaGlassCheers';
+import { AiOutlineLogout } from '@react-icons/all-files/ai/AiOutlineLogout';
+import { FaBell } from '@react-icons/all-files/fa/FaBell';
 import styled, { keyframes } from 'styled-components';
 
 export const Hr = styled.hr`
@@ -272,7 +272,7 @@ export const Button = styled.button`
   }
 `;
 
-export const LogoutImage = styled(TbLogout)`
+export const LogoutImage = styled(AiOutlineLogout)`
   width: 2.5rem;
   height: 2.5rem;
   color: var(--opc-100);
@@ -364,7 +364,7 @@ export const HamburgerMenu = styled(GiHamburgerMenu)`
   }
 `;
 
-export const MobileSearchIcon = styled(FaMagnifyingGlass)`
+export const MobileSearchIcon = styled(FaGlassCheers)`
   width: 2rem;
   height: 2rem;
   color: var(--opc-100);

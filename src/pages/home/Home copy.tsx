@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { FaArrowRight } from 'react-icons/fa6';
+import { FaArrowRight } from '@react-icons/all-files/fa/FaArrowRight';
 import { useQuery } from 'react-query';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { supabase } from '../../api/supabase/supabaseClient';
 import CommunityList from '../../components/community/CommunityList';
@@ -16,15 +16,6 @@ type UsedItemsCountData = {
   } | null;
 };
 const Home = () => {
-  const navigate = useNavigate();
-
-  const carouselImages: string[] = [
-    process.env.PUBLIC_URL + '/assets/bannerMain.jpg',
-    process.env.PUBLIC_URL + '/assets/carousel0.png',
-    process.env.PUBLIC_URL + '/assets/carousel1.png',
-    process.env.PUBLIC_URL + '/assets/carousel2.png',
-    process.env.PUBLIC_URL + '/assets/carousel3.png'
-  ];
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   // 처음 홈화면이 로딩되었을때 현 사용자의 ID를 가져와 로컬스토리지에 담는 로직 시작 (중감자동무)//
   const getUserId = async () => {

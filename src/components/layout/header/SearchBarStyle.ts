@@ -1,4 +1,4 @@
-import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { FaGlassCheers } from '@react-icons/all-files/fa/FaGlassCheers';
 import styled, { css } from 'styled-components';
 
 type MobileProps = {
@@ -110,7 +110,7 @@ const ClearInputButton = styled.div`
     cursor: pointer;
   }
 `;
-const StMagnifyGlass = styled(FaMagnifyingGlass)`
+const StMagnifyGlass = styled(FaGlassCheers)`
   position: absolute;
   top: 32%;
   right: 55%;
@@ -138,7 +138,7 @@ const SearchBtn = styled.button`
   }
 `;
 
-const SearchIcon = styled(FaMagnifyingGlass)`
+const SearchIcon = styled(FaGlassCheers)`
   width: 2.3rem;
   height: 2.3rem;
   @media screen and (max-width: 768px) {

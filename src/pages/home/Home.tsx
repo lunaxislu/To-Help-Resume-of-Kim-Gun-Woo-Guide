@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { FaArrowRight } from 'react-icons/fa6';
+import { FaArrowRight } from '@react-icons/all-files/fa/FaArrowRight';
 import { useQuery } from 'react-query';
 import { supabase } from '../../api/supabase/supabaseClient';
 import { fetchData } from '../../components/main/DataFetch';
