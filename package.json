@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@craco/craco": "^7.1.0",
     "@reduxjs/toolkit": "^2.0.1",
     "@supabase/auth-ui-react": "^0.4.7",
     "@supabase/auth-ui-shared": "^0.1.8",
@@ -22,7 +21,6 @@
     "@xeger/quill-image-actions": "^0.7.2",
     "@xeger/quill-image-formats": "^0.7.2",
     "aria-query": "^5.3.0",
-    "craco-alias": "^3.0.1",
     "draft-js": "^0.11.7",
     "html-react-parser": "^5.1.1",
     "lodash": "^4.17.21",
@@ -51,7 +49,6 @@
     "uuid": "^9.0.1",
     "uuidv4": "^6.2.13",
     "web-vitals": "^2.1.4",
-    "webpack-font-preload-plugin": "^1.5.0",
     "workbox-background-sync": "^6.4.2",
     "workbox-broadcast-update": "^6.4.2",
     "workbox-cacheable-response": "^6.4.2",

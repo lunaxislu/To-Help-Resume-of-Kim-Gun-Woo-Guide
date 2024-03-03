@@ -71,16 +71,16 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 500;
     font-style: normal;
     font-display: fallback;
-    /* fallback: sans-serif; */
+ 
 }
-@font-face {
+/* @font-face {
     font-family: 'DalseoHealing-Bold';
     src: url('/fonts/DalseoHealingBold.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
     font-display: fallback;
-    /* fallback: sans-serif; */
-}
+  
+} */
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -122,7 +122,7 @@ body {
     conic-gradient(from 90deg at 1px 1px,var(--_g));
     background-size: var(--s) var(--s), calc(var(--s)/2) calc(var(--s)/2);
     background-color: var(--bgColor);
-
+    font-family: 'DalseoHealing-Medium', sans-serif;
     
     color: var(--black);
     overflow-x: hidden;
@@ -156,7 +156,6 @@ table {
 }
 
 html {
-    font-family: 'DalseoHealing-Medium', sans-serif;
     font-size: 62.5%;
     
 }
