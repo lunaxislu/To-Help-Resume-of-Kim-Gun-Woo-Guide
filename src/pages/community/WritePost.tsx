@@ -23,7 +23,7 @@ Quill.register('modules/imageFormats', ImageFormats);
 const Write: React.FC = () => {
   const [profile, setProfile] = useState<ProfileObject[]>();
   const [userId, setUserId] = useState('');
-  console.log('write이에요');
+
   useEffect(() => {
     const fetchData = async () => {
       try {
