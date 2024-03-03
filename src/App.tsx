@@ -7,7 +7,7 @@ function App() {
   return (
     <QueryClientProvider client={queryclient}>
       <Router />
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }
