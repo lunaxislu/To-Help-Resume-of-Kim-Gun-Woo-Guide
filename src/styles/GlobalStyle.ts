@@ -73,7 +73,10 @@ export const GlobalStyles = createGlobalStyle`
     font-display: fallback;
  
 }
-/* @font-face {
+/* 
+사용하지 않는것 같아 주석 처리함
+
+@font-face {
     font-family: 'DalseoHealing-Bold';
     src: url('/fonts/DalseoHealingBold.woff2') format('woff2');
     font-weight: 700;
