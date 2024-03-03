@@ -3,6 +3,7 @@ import { supabase } from '../../../api/supabase/supabaseClient';
 import { v4 as uuid } from 'uuid';
 import * as St from '../../../styles/products/productsPosts/StProductsImageUpload';
 import * as Stc from '../../../styles/products/productsPosts/StProductsWriteForm';
+import FileResizer from 'react-image-file-resizer';
 
 interface Props {
   uploadedFileUrl: string[];
@@ -34,25 +35,44 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
   }
 
   const handleAddImages = async (file: File) => {
+    console.log('sd');
     try {
       const newFileName = uuid();
+      // png를 webp로 바꾸는 함수
+      const resizeFile = (file: File) =>
+        new Promise((res) => {
+          FileResizer.imageFileResizer(
+            file,
+            1500,
+            1500,
+            'WEBP',
+            20,
+            0,
+            (uri) => res(uri),
+            'file'
+          );
+        });
+      const resize = await resizeFile(file);
+
       const { data, error } = await supabase.storage
         .from('images')
-        .upload(`products/${newFileName}`, file);
+        .upload(`products/${newFileName}`, resize as File);
 
       if (error) {
         console.log('파일이 업로드 되지 않습니다.', error);
         return;
       }
-      const res = supabase.storage.from('images').getPublicUrl(data.path, {
-        transform: {
-          width: 500,
-          resize: 'contain',
-          format: 'origin'
-        }
-      });
-      setFiles((prevFiles) => [file, ...prevFiles]);
-        setUploadedFileUrl((prev: any) => [...prev, res.data.publicUrl]);
+      // const res = supabase.storage.from('images').getPublicUrl(data.path, {
+      //   transform: {
+      //     width: 500,
+      //     resize: 'contain',
+      //     format: 'origin'
+      //   }
+      // });
+      const res = supabase.storage.from('images').getPublicUrl(data.path);
+
+      setFiles((prevFiles) => [resize as File, ...prevFiles]);
+      setUploadedFileUrl((prev: any) => [...prev, res.data.publicUrl]);
     } catch (error) {
       console.error(
         '알 수 없는 문제가 발생하였습니다. 다시 시도하여 주십시오.',
@@ -77,8 +97,8 @@ const ProductsImage = ({ uploadedFileUrl, setUploadedFileUrl }: Props) => {
 
   // X 버튼 클릭 시 이미지 삭제
   const handleDeleteImage = (idx: any) => {
-      setUploadedFileUrl(uploadedFileUrl.filter((_, index) => index !== idx));
-      setFiles(files.filter((_, index) => index !== idx));
+    setUploadedFileUrl(uploadedFileUrl.filter((_, index) => index !== idx));
+    setFiles(files.filter((_, index) => index !== idx));
   };
 
   // useEffect(() => {

@@ -1,6 +1,7 @@
 import ReactQuill from 'react-quill';
 import { v4 as uuid } from 'uuid';
 import { supabase } from '../../../api/supabase/supabaseClient';
+import FileResizer from 'react-image-file-resizer';
 export const quillImageHandler = (
   quillRef: React.MutableRefObject<ReactQuill | null>,
   setFormValues: (
@@ -24,10 +25,24 @@ export const quillImageHandler = (
     input.addEventListener('change', async () => {
       const file = input.files![0];
       const fileNewName = uuid();
-
+      // png를 webp로 바꾸는 함수
+      const resizeFile = (file: File) =>
+        new Promise((res) => {
+          FileResizer.imageFileResizer(
+            file,
+            1500,
+            1500,
+            'WEBP',
+            20,
+            0,
+            (uri) => res(uri),
+            'file'
+          );
+        });
+      const resize = await resizeFile(file);
       const { data, error } = await supabase.storage
         .from('images')
-        .upload(`quill_imgs/${fileNewName}.png`, file);
+        .upload(`quill_imgs/${fileNewName}.webp`, resize as File);
 
       if (error) {
         console.error('이미지 업로드 중 오류 발생:', error);
@@ -36,7 +51,7 @@ export const quillImageHandler = (
 
         const response = supabase.storage
           .from('images')
-          .getPublicUrl(`quill_imgs/${fileNewName}.png`, {
+          .getPublicUrl(`quill_imgs/${fileNewName}.webp`, {
             transform: {
               width: 400,
               resize: 'contain',
